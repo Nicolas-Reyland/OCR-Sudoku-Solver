@@ -1,4 +1,4 @@
-# Projet-S3-OCR
+# OCR-Sudoku-Solver
 OCR Projet S3 Epita
 
 Credits :
