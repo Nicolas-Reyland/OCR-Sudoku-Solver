@@ -1,5 +1,5 @@
 # OCR-Sudoku-Solver
-OCR Projet S3 Epita
+OCR Sudoku Solver Projet S3 Epita
 
 Credits :
  * [Nicolas Reyland](https://github.com/Nicolas-Reyland)
