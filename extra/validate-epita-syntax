@@ -1,0 +1,13 @@
+#!/bin/bash
+set -e
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+cd "$SCRIPT_DIR"/.. # root of repo
+for file in $(find src -type f -name "*.c")
+do
+	echo -n "Checking $file ... "
+	if ./extra/syntax-validator.py "$file"; then
+		echo [ OK ]
+	else
+		echo [ FAILED ]
+	fi
+done

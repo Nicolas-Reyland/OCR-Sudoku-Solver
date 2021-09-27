@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-cd "$SCRIPT_DIR"/tests
+cd "$SCRIPT_DIR"/../tests # tests dir in repo
 for folder in *
 do
 	echo "Testing module: ${folder:2}"
