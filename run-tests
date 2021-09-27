@@ -1,0 +1,18 @@
+#!/bin/bash
+set -e
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+cd "$SCRIPT_DIR"/tests
+for folder in *
+do
+	echo "Testing module: ${folder:2}"
+	for sub_folder in "$folder"/*
+	do
+		if [ $sub_folder == "$folder"/base ]; then
+			echo " - base"
+		else
+			echo " - sub-module: $(echo ""$sub_folder"" | cut -d '/' -f 2)"
+		fi
+		# run the sub-module here ...
+
+	done
+done
