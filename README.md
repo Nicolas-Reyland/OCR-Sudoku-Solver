@@ -6,3 +6,5 @@ Credits :
  * [Lilian Schall](https://github.com/LilianSchall)
  * [Théo Schandel](https://github.com/ahmedhassayoune)
  * [Ahmed Hassayoune](https://github.com/theoschandel)
+
+some additional information here
