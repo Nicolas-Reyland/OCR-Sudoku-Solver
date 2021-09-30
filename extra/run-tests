@@ -12,7 +12,6 @@ do
 		else
 			echo " - sub-module: $(echo ""$sub_folder"" | cut -d '/' -f 2)"
 		fi
-		# run the sub-module here ...
-
+		# run the sub-module tests ...
 	done
 done
