@@ -8,7 +8,7 @@ int main(void) {
 	nn_Model model = {
 		.name = "Example Model",
 		.num_layers = 3,
-		.optiingizer = optimizers.RMSPROP,
+		.optimizer = optimizers.RMSPROP,
 		.loss = losses.CategoricalCrossentropy
 	};
 
