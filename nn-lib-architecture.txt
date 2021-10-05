@@ -1,0 +1,114 @@
+// Architecture of the nn C-lib
+
+Model :
+  Model *
+    - (ModelLayers) layers
+    - (functions->losses) loss
+    - (functions->optimizers) optimizer
+    - ($void) save // save_architecture & save_weights_and_bias
+    - ($void) saveArchitecture
+    - ($void) saveWeightsAndBias
+    - ($void) load
+  Layers :
+    ModelLayers *
+      - (uint) num_layers
+      - (Layer) input_layer
+      - (uint) num_hidden
+      - (malloc array) hidden_layers // en soit, le projet ne demande qu'un seul hiddenLayer
+      - (Layer) output_layer
+    Layer *
+      - (utils->Struct->ShapeDescription) shape
+      - (activation) activation
+
+Data :
+  DataCollectionTuple *
+    - (DataCollection) data1
+    - (DataCollection) data2
+  DataCollection *
+    - (utils->Struct->ShapeDescription) shape
+    - (void* - linked-list) data
+    - ($DataCollectionTuple) splitTrainTest
+    - ($void) loadData
+  Data *
+    - (DataCollection) train_X    // ~ 70 %
+    - (DataCollection) train_Y    // ~ 70 %
+    - (DataCollection) test_X     // ~ 30 %
+    - (DataCollection) test_Y     // ~ 30 %
+
+RunSession *
+  - (Data) data
+  - (uint) num_epochs
+  - (double) loss_threshold
+  - (bool) stop_on_loss_threshold_reached
+  - (bool) verbose
+  - ($void) train
+  - ($void) test
+
+functions :       //functions that will be applied on model(or for stats)
+  losses +       //taux d'erreurs
+    CategoricalCrossentropy
+    BinaryCrossentropy
+    SparseCategoricalCrossentropy
+  activations +
+    sigmoid
+    relu
+    leaky_relu    //optional
+    softmax
+    tanh
+  optimizers +
+    RMSprop
+    Adam
+
+utils :
+  Struct :
+    ShapeDescription *
+      - (uint) dims
+      - (uint) x
+      - (uint) y
+      - (uint) z
+  functions :
+    losses :
+      ($double) CategoricalCrossentropy
+      ($double) BinaryCrossentropy
+      ($double) SparseCategoricalCrossentropy
+    activations +
+      ($double) sigmoid
+      ($double) relu
+      ($double) leaky_relu    //optional
+      ($double) softmax
+      tanh
+    optimizers +
+      ($void) RMSprop
+      ($void) Adam
+
+
+
+/* Norme d'ecriture */
+
+Struct    : CamelCase (nn_[StructName])
+Enum      : FULLCAPS (ENUMVARIABLE) && pascalCase for Name (enum.ENUMVARIABLE)
+Function  : pascalCase (functionName)
+Variable  : snake_case (variable_name)
+Constant (define prepo) : FULLCAPS
+
+/* Vocab */
+* : Struct
++ : enum
+$ : function
+
+
+
+/* data file format */
+input file content :
+256 ...
+0 0
+1 0
+0 1
+
+output file content :
+0
+0
+1
+1
+
+//
