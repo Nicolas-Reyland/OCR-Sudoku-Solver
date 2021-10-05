@@ -13,4 +13,6 @@ double leaky_relu(double x);
 
 double softmax(Layer* layer);
 
+double tanh(double x);
+
 #endif
