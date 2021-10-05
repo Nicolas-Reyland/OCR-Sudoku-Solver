@@ -3,6 +3,14 @@
 #ifndef NN_ACTIVATIONS_H
 #define NN_ACTIVATIONS_H
 
-// code comes here
+#include <math.h>
+
+double sigmoid(double x);
+
+double relu(double x);
+
+double leaky_relu(double x);
+
+double softmax(Layer* layer);
 
 #endif
