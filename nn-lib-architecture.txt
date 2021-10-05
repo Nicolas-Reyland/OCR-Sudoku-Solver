@@ -35,16 +35,17 @@ Data :
     - (DataCollection) test_X     // ~ 30 %
     - (DataCollection) test_Y     // ~ 30 %
 
-RunSession *
-  - (Data) data
-  - (uint) num_epochs
-  - (double) loss_threshold
-  - (bool) stop_on_loss_threshold_reached
-  - (bool) verbose
-  - ($void) train
-  - ($void) test
+Session :
+  Session *
+    - (Data) data
+    - (uint) num_epochs
+    - (double) loss_threshold
+    - (bool) stop_on_loss_threshold_reached
+    - (bool) verbose
+    - ($void) train
+    - ($void) test
 
-functions :       //functions that will be applied on model(or for stats)
+FunctionsDescriptor :       //functions that will be applied on model(or for stats)
   losses +       //taux d'erreurs
     CategoricalCrossentropy
     BinaryCrossentropy
@@ -66,18 +67,18 @@ utils :
       - (uint) x
       - (uint) y
       - (uint) z
-  functions :
+  Functions :
     losses :
       ($double) CategoricalCrossentropy
       ($double) BinaryCrossentropy
       ($double) SparseCategoricalCrossentropy
-    activations +
+    activations :
       ($double) sigmoid
       ($double) relu
       ($double) leaky_relu    //optional
       ($double) softmax
       tanh
-    optimizers +
+    optimizers :
       ($void) RMSprop
       ($void) Adam
 
@@ -110,5 +111,31 @@ output file content :
 0
 1
 1
+
+/* File Architecture */
+Model :
+  Model * model.h/c
+  Layers :
+    ModelLayers * model_layers.h/c
+    Layer * layer.h/c
+
+Data :
+  DataCollectionTuple * data_collection_tuple.h/c
+  DataCollection * data_collection.h/c
+  Data * data.h/c
+
+Session :
+  Session * session.h/c
+
+FunctionsDescriptor :
+  functions_descriptors_enums.h/c
+
+utils :
+  Struct :
+    ShapeDescription * shape_description.h/c
+  Functions :
+    losses.h/c
+    activations.h/c
+    optimizers.h/c
 
 //
