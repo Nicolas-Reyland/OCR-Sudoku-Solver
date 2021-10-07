@@ -3,6 +3,7 @@
 #ifndef NN_FUNCTIONS_DESCRIPTOR_ENUMS_H
 #define NN_FUNCTIONS_DESCRIPTOR_ENUMS_H
 
-// code comes here
+typedef void lossFunction;
+typedef void optimizer;
 
 #endif
