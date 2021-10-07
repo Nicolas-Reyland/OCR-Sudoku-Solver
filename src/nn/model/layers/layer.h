@@ -11,7 +11,7 @@
 typedef struct nn_Layer {
   ShapeDescription shape;
   activationFunction activation_function;
-  //nn_Node[] nodes;
+  nn_Node* nodes;
 } nn_Layer;
 
 #endif
