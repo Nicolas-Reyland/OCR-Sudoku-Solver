@@ -6,5 +6,6 @@
 // temporarily, so I can impl the nn_Model struct
 typedef int lossFunction;
 typedef int optimizer;
+typedef int activationFunction;
 
 #endif

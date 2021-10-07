@@ -3,6 +3,8 @@
 #ifndef NN_NODE_H
 #define NN_NODE_H
 
-// code comes here
+typedef struct nn_Node {
+  int x;
+} nn_Node;
 
 #endif

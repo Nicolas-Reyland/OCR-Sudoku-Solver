@@ -3,6 +3,11 @@
 #ifndef NN_STRUCT_DESCRIPTION_H
 #define NN_STRUCT_DESCRIPTION_H
 
-// code comes here
+typedef struct ShapeDescription {
+  unsigned int dims;
+  unsigned int x;
+  unsigned int y;
+  unsigned int z;
+} ShapeDescription;
 
 #endif

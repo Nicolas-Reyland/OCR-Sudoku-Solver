@@ -18,10 +18,4 @@ typedef struct nn_Model {
 nn_Model createModel(nn_ModelLayers layers, lossFunction loss, optimizer optimizer);
 nn_Model loadModel(char* path);
 
-/*
-void _nn_Model_saveArchitectureFn(char*);
-void _nn_Model_saveWeightsAndBias(char*);
-nn_Model _nn_Model_loadFn(char*);
-*/
-
 #endif

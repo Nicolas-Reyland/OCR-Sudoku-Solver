@@ -3,9 +3,13 @@
 #ifndef NN_MODEL_LAYER_H
 #define NN_MODEL_LAYER_H
 
+#include "layer.h"
+
 typedef struct nn_ModelLayers {
-  unsigned int num_layers;
-  //
+  nn_Layer input_layer;
+  unsigned int num_hidden_layers;
+  nn_Layer* hidden_layers;
+  nn_Layer output_layer;
 } nn_ModelLayers;
 
 #endif

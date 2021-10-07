@@ -1,7 +1,6 @@
 // model.c
 #include "model.h"
 
-
 void _nn_Model_saveArchitectureFn(char* path)
 {
   //
