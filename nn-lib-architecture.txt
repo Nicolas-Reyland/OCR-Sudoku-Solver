@@ -17,8 +17,25 @@ Model :
       - (malloc array) hidden_layers // en soit, le projet ne demande qu'un seul hiddenLayer
       - (Layer) output_layer
     Layer *
+      - (bool) is_output
+      - (Layer) next_layer
       - (utils->Struct->ShapeDescription) shape
       - (activation) activation
+      - (linked-list-Node) nodes
+    Node *
+     - (double-array) weights //il pointe vers le layer d'avant
+     - (double) bias
+
+
+for (int = 0; i < hidden_layer.length; i++) {
+  double sum = 0;
+  for (int j = 0; j < input_layer.length: j++) {
+    sum += hidden_layer.nodes[i].weights[j] * inputs[j];
+  }
+  hidden_layer.raw_value = sum + hidden_layer.bias[i];
+  hidden_layer.value = hidden_layer->activation_fn(hidden_layer.raw_value);
+  // value = sigmoid(raw_value)
+}
 
 Data :
   DataCollectionTuple *
