@@ -14,7 +14,8 @@ nn: nn-model nn-data nn-session nn-utils nn-functions_descriptors
 
 .PHONY: nn-model
 nn-model: nn-model-layers
-	$(CC) -c -o src/nn/model/model.o src/nn/model/model.c # src/nn/model/layers/layer.o src/nn/model/layers/model_layer.o src/nn/model/layers/node.o
+	$(CC) -c -o src/nn/model/model.o src/nn/model/model.c
+# src/nn/model/layers/layer.o src/nn/model/layers/model_layer.o src/nn/model/layers/node.o
 
 .PHONY: nn-model-layers
 nn-model-layers:
@@ -37,6 +38,10 @@ nn-utils: nn-utils-structs nn-utils-functions
 .PHONY: nn-utils-structs
 nn-utils-structs:
 	$(CC) -c -o src/nn/utils/structs/shape_description.o src/nn/utils/structs/shape_description.c
+
+.PHONY: nn-utils-misc
+nn-utils-misc:
+	$(CC) -c -o src/nn/utils/misc/randomness.o src/nn/utils/misc/randomness.c
 
 .PHONY: nn-utils-functions
 nn-utils-functions:
