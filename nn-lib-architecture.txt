@@ -21,7 +21,9 @@ Model :
       - (activation) activation
       - (linked-list-Node) nodes
     Node *
+     - (uint) num_weights
      - (double-array) weights //il pointe vers le layer d'avant
+     - (uint) num_bias
      - (double) bias
 
 
@@ -96,7 +98,12 @@ utils :
     optimizers :
       ($void) RMSprop
       ($void) Adam
-
+  Misc :
+    // randomness
+    ($void) initRandom
+    ($double) getRandomDouble
+    ($double) getNormalizedRandomDouble
+    ($double) getNormalizedPositiveRandomDouble
 
 
 /* Norme d'ecriture */
@@ -152,5 +159,7 @@ utils :
     losses.h/c
     activations.h/c
     optimizers.h/c
+  Misc :
+    randomness.h/c
 
 //
