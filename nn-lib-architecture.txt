@@ -11,14 +11,12 @@ Model :
   ($void) loadModel
   Layers :
     ModelLayers *
-      - (uint) num_layers
       - (Layer) input_layer
-      - (uint) num_hidden
+      - (uint) num_hidden_layers
       - (malloc array) hidden_layers // en soit, le projet ne demande qu'un seul hiddenLayer
       - (Layer) output_layer
     Layer *
       - (bool) is_output
-      - (Layer) next_layer
       - (utils->Struct->ShapeDescription) shape
       - (activation) activation
       - (linked-list-Node) nodes
