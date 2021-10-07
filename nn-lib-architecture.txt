@@ -8,7 +8,7 @@ Model :
     - ($void) save // save_architecture & save_weights_and_bias
     - ($void) saveArchitecture
     - ($void) saveWeightsAndBias
-    - ($void) load
+  ($void) loadModel
   Layers :
     ModelLayers *
       - (uint) num_layers
