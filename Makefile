@@ -14,12 +14,13 @@ nn: nn-model nn-data nn-session nn-utils nn-functions_descriptors
 
 .PHONY: nn-model
 nn-model: nn-model-layers
-	$(CC) -c -o src/nn/model/model.o src/nn/model/model.c src/nn/model/layers/layer.o src/nn/model/layers/model_layer.o
+	$(CC) -c -o src/nn/model/model.o src/nn/model/model.c src/nn/model/layers/layer.o src/nn/model/layers/model_layer.o src/nn/model/layers/node.o
 
 .PHONY: nn-model-layers
 nn-model-layers:
 	$(CC) -c -o src/nn/model/layers/layer.o src/nn/model/layers/layer.c
 	$(CC) -c -o src/nn/model/layers/model_layer.o src/nn/model/layers/model_layer.c
+	$(CC) -c -o src/nn/model/layers/node.o src/nn/model/layers/node.c
 
 .PHONY: nn-data
 nn-data:
@@ -52,4 +53,3 @@ clean:
 	do
 		rm -f "$objetc_file"
 	done
-
