@@ -7,15 +7,15 @@
 #include "../functions_descriptors/functions_descriptors_enums.h"
 
 typedef struct nn_Model {
-  nn_ModelLayers layers;
+  nn_ModelLayers* layers;
   lossFunction loss;
   optimizer optimizer;
-  void (*saveArchitecture)(char*);
-  void (*saveWeightsAndBias)(char*);
-  void (*saveModel)(char*);
+  void (*saveArchitecture)(struct nn_Model* model, char*);
+  void (*saveWeightsAndBias)(struct nn_Model* model, char*);
+  void (*saveModel)(struct nn_Model* model, char*);
 } nn_Model;
 
-nn_Model createModel(nn_ModelLayers layers, lossFunction loss, optimizer optimizer);
-nn_Model loadModel(char* path);
+nn_Model* createModel(unsigned int num_layers, ShapeDescription model_architecture[], activationFunction activation_functions[], lossFunction loss, optimizer optimizer);
+nn_Model* loadModel(char* path);
 
 #endif

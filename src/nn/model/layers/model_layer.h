@@ -12,4 +12,6 @@ typedef struct nn_ModelLayers {
   nn_Layer output_layer;
 } nn_ModelLayers;
 
+nn_ModelLayers* _nn_createModelLayer(unsigned int num_hidden_layers, ShapeDescription model_architecture[], activationFunction activation_functions[]);
+
 #endif

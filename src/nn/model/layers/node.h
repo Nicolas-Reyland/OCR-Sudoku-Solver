@@ -13,6 +13,6 @@ typedef struct nn_Node {
   double bias;
 } nn_Node;
 
-nn_Node _nn_initNode(unsigned int num_weights);
+nn_Node* _nn_createNode(unsigned int num_weights);
 
 #endif

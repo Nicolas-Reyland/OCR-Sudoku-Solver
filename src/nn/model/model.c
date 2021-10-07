@@ -1,31 +1,33 @@
 // model.c
 #include "model.h"
 
-void _nn_Model_saveArchitectureFn(char* path)
+void _nn_Model_saveArchitectureFn(nn_Model* model, char* path)
 {
   //
 }
 
-void _nn_Model_saveWeightsAndBias(char* path)
+void _nn_Model_saveWeightsAndBias(nn_Model* model, char* path)
 {
   //
 }
 
-void _nn_Model_saveModel(char* dirpath)
+void _nn_Model_saveModel(nn_Model* model, char* dirpath)
 {
   //
 }
 
-nn_Model createModel(nn_ModelLayers layers, lossFunction loss, optimizer optimizer)
+nn_Model* createModel(unsigned int num_layers, ShapeDescription model_architecture[], activationFunction activation_functions[], lossFunction loss, optimizer optimizer)
 {
-  nn_Model model = {
-    .layers = layers,
-    .loss = loss,
-    .optimizer = optimizer
-  };
-  model.saveArchitecture = &_nn_Model_saveArchitectureFn;
-  model.saveWeightsAndBias = &_nn_Model_saveWeightsAndBias;
-  model.saveModel = &_nn_Model_saveModel;
+  nn_ModelLayers* layers = _nn_createModelLayer(num_layers - 2, model_architecture, activation_functions);
+  // malloc struct
+  nn_Model* model = malloc(sizeof(nn_Model));
+  model->layers = layers;
+  model->loss = loss;
+  model->optimizer = optimizer;
+  // add functions to struct
+  model->saveArchitecture = &_nn_Model_saveArchitectureFn;
+  model->saveWeightsAndBias = &_nn_Model_saveWeightsAndBias;
+  model->saveModel = &_nn_Model_saveModel;
   return model;
 }
 
