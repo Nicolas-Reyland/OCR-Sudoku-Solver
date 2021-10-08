@@ -8,7 +8,7 @@
 typedef struct nn_Sample
 {
     nn_ShapeDescription shape_description;
-    (double*) values;
+    double* values;
 } nn_Sample;
 
 nn_Sample* createSample(nn_ShapeDescription description, double* values);
