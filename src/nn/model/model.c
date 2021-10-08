@@ -17,7 +17,7 @@ void _nn_Model_saveModel(nn_Model* model, char* dirpath)
   //
 }
 
-nn_Model* createModel(unsigned int num_layers, ShapeDescription model_architecture[], activationFunction activations[], lossFunction loss, optimizer optimizer)
+nn_Model* createModel(unsigned int num_layers, nn_ShapeDescription model_architecture[], activation activations[], losses loss, optimizer optimizer)
 {
   nn_ModelLayers* layers = _nn_createModelLayer(num_layers - 2, model_architecture, activations);
   // malloc struct

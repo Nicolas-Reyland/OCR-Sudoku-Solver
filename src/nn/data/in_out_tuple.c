@@ -3,7 +3,7 @@
 
 nn_InOutTuple* createInOutTuple(nn_Sample* input, nn_Sample* output)
 {
-    nn_InOutTuple tuple = malloc(sizeof(nn_InOutTuple));
+    nn_InOutTuple* tuple = malloc(sizeof(nn_InOutTuple));
 
     tuple->input = input;
     tuple->output = output;
@@ -11,7 +11,7 @@ nn_InOutTuple* createInOutTuple(nn_Sample* input, nn_Sample* output)
     return tuple;
 }
 
-void freeInOutTuple(nn_InOutTuple tuple)
+void freeInOutTuple(nn_InOutTuple* tuple)
 {
     freeSample(tuple->input);
     freeSample(tuple->output);

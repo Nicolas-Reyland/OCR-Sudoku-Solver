@@ -18,17 +18,17 @@ double loss_threshold, bool stop_on_loss_threshold_reached, bool verbose)
 {
 	nn_Session* session = malloc(sizeof(nn_Session));
 
-	nn_Session->data 			= data;
-	nn_Session->nb_epochs 		= nb_epochs;
-	nn_Session->loss_threshold 	= loss_threshold;
-	nn_Session->verbose			= verbose;
+	session->data 			= data;
+	session->nb_epochs 		= nb_epochs;
+	session->loss_threshold 	= loss_threshold;
+	session->verbose			= verbose;
 
-	nn_Session->stop_on_loss_threshold_reached = stop_on_loss_threshold_reached;
+	session->stop_on_loss_threshold_reached = stop_on_loss_threshold_reached;
 
-	nn_Session->train 	= &_nn_train;
-	nn_Session->test	= &_nn_test;
+	session->train 	= &_nn_train;
+	session->test	= &_nn_test;
 
-	return nn_Session;
+	return session;
 }
 
 void freeSession(nn_Session* session)

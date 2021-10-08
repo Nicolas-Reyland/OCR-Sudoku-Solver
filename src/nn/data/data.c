@@ -9,26 +9,26 @@ nn_DataTuple _nn_dataSplitTrainTest(nn_Data* data, int splittingPercentage)
 {
     nn_DataTuple data_tuple;
 
-    LinkedList* list_to_split = data->data_collection->data;
+    linked_list* list_to_split = data->data_collection->data;
 
-    LinkedList* data1   = init_linked_list();
-    LinkedList* data2   = init_linked_list();
+    linked_list* data1   = init_linked_list();
+    linked_list* data2   = init_linked_list();
 
-    int total_size      = data->data_collection->data->;
-    int split_nb        =  / splittingPercentage;
+    int total_size      = data->data_collection->data->length;
+    int split_nb        =  total_size / splittingPercentage;
 
     for(int i = 0; i < split_nb; i++)
     {
-        data1->append_value(data1,list_to_split->get_value_at(i)->element);
+        data1->append_value(data1,((ll_node*)list_to_split->get_value_at(list_to_split,i))->value);
     }
     for (int i = split_nb; i < total_size; i++)
     {
-        data2->insert(data2,list_to_split->get_value_at(i)->element);
+        data2->append_value(data2,((ll_node*)list_to_split->get_value_at(list_to_split,i))->value);
     }
 
 
-    data_tuple->data1->data_collection = loadDataCollection(data1);
-    data_tuple->data2->data_collection = loadDataCollection(data2);
+    data_tuple.data1->data_collection = loadDataCollection(data1);
+    data_tuple.data2->data_collection = loadDataCollection(data2);
 
     freeData(data);
 

@@ -4,6 +4,7 @@
 #define NN_SESSION_H
 
 #include "../data/data.h"
+#include "../model/model.h"
 #include <stdbool.h>
 
 typedef struct nn_Session {
