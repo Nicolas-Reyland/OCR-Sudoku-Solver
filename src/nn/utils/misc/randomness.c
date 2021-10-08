@@ -4,7 +4,7 @@
 
 /* Initialize randomness
  */
-void nn_initRandom()
+void _nn_initRandom()
 {
   if (_nn_random_init_done)
     return;

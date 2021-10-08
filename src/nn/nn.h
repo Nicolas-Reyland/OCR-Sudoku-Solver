@@ -3,6 +3,9 @@
 #ifndef NN_NN_H
 #define NN_NN_H
 
-// code comes here
+#include "model/model.h"
+#include "session/session.h"
+#include "functions_descriptors/functions_descriptors_enums.h"
+#include "utils/structs/shape_description.h"
 
 #endif

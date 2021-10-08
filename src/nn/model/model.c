@@ -1,5 +1,6 @@
 // model.c
 #include "model.h"
+#include <stdio.h>
 
 void _nn_Model_saveArchitectureFn(nn_Model* model, char* path)
 {
@@ -16,9 +17,10 @@ void _nn_Model_saveModel(nn_Model* model, char* dirpath)
   //
 }
 
-nn_Model* createModel(unsigned int num_layers, ShapeDescription model_architecture[], activationFunction activation_functions[], lossFunction loss, optimizer optimizer)
+nn_Model* createModel(unsigned int num_layers, ShapeDescription model_architecture[], activationFunction activations[], lossFunction loss, optimizer optimizer)
 {
-  nn_ModelLayers* layers = _nn_createModelLayer(num_layers - 2, model_architecture, activation_functions);
+  nn_ModelLayers* layers = _nn_createModelLayer(num_layers - 2, model_architecture, activations);
+  printf("layers created\n");
   // malloc struct
   nn_Model* model = malloc(sizeof(nn_Model));
   model->layers = layers;
@@ -31,4 +33,4 @@ nn_Model* createModel(unsigned int num_layers, ShapeDescription model_architectu
   return model;
 }
 
-// nn_Model loadModel(char* path);
+// nn_Model* loadModel(char* path);

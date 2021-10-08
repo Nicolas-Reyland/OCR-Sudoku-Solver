@@ -4,15 +4,20 @@
 #define NN_ACTIVATIONS_H
 
 #include <math.h>
+#include "../../model/layers/layer.h"
 
-double sigmoid(double x);
+/* We must have a void return type and take a layer as input
+ * because of the softmax activation function
+ */
 
-double relu(double x);
+void sigmoid(nn_Layer* layer);
 
-double leaky_relu(double x);
+void relu(nn_Layer* layer);
 
-double softmax(Layer* layer);
+void leaky_relu(nn_Layer* layer);
 
-double tanh(double x);
+void softmax(nn_Layer* layer);
+
+void tan_h(nn_Layer* layer);
 
 #endif
