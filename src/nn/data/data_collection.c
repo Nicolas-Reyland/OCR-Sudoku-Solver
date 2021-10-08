@@ -2,9 +2,9 @@
 #include <stdlib.h>
 
 
-nn_DataCollection* loadDataCollection(LinkedList* data)
+nn_DataCollection* loadDataCollection(linked_list* data)
 {
-    nn_DataCollection data_collection = malloc(sizeof(nn_DataCollection));
+    nn_DataCollection* data_collection = malloc(sizeof(nn_DataCollection));
 
     data_collection->data = data;
 
@@ -12,7 +12,7 @@ nn_DataCollection* loadDataCollection(LinkedList* data)
 }
 
 
-void freeDataCollection(nn_DataCollection collection)
+void freeDataCollection(nn_DataCollection* collection)
 {
     free_linked_list(collection->data);
     free(collection);

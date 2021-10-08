@@ -8,7 +8,7 @@
 
 typedef struct nn_Session {
 	nn_Data* data;
-	uint nb_epochs;
+	unsigned int nb_epochs;
 	double loss_threshold;
 	bool stop_on_loss_threshold_reached;
 	bool verbose;

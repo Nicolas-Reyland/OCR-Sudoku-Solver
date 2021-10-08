@@ -18,10 +18,10 @@ typedef enum activation
 	TANH
 } activation;
 
-typedef enum OPTIMIZER
+typedef enum optimizer
 {
 	RMSPROP,
 	ADAM
-}
+} optimizer;
 
 #endif
