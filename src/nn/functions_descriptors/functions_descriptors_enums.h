@@ -3,9 +3,25 @@
 #ifndef NN_FUNCTIONS_DESCRIPTOR_ENUMS_H
 #define NN_FUNCTIONS_DESCRIPTOR_ENUMS_H
 
-// temporarily, so I can impl the nn_Model struct
-typedef int lossFunction;
-typedef int optimizer;
-typedef int activationFunction;
+typedef enum losses
+{
+	CATEGORICALCROSSENTROPY,
+	BINARYCROSSENTROPY,
+	SPARSECATEGORICALCROSSENTROPY
+} losses;
+
+typedef enum activation
+{
+	SIGMOID,
+	RELU,
+	SOFTMAX,
+	TANH
+} activation;
+
+typedef enum OPTIMIZER
+{
+	RMSPROP,
+	ADAM
+}
 
 #endif
