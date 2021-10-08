@@ -2,7 +2,7 @@
 
 #include "layer.h"
 
-nn_Layer* _nn_createLayer(ShapeDescription layer_shape, ShapeDescription next_layer_shape, activationFunction activation_function)
+nn_Layer* _nn_createLayer(nn_ShapeDescription layer_shape, nn_ShapeDescription next_layer_shape, activationFunction activation_function)
 {
   unsigned int num_next_layer_weights = next_layer_shape.x * next_layer_shape.y * next_layer_shape.z;
   // create nodes
