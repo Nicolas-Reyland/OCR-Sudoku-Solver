@@ -1,5 +1,5 @@
 #include "in_out_tuple.h"
-#include <stdio.h>
+#include <stdlib.h>
 
 nn_InOutTuple* createInOutTuple(nn_Sample* input, nn_Sample* output)
 {

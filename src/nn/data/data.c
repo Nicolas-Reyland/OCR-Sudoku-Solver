@@ -1,5 +1,5 @@
 #include "data.h"
-#include <stdio.h>
+#include <stdlib.h>
 
 /// <Summary>
 /// Splits a data struct into two data struct, based on a splitting percentage

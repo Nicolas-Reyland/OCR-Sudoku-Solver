@@ -1,5 +1,6 @@
 #include "data_collection.h"
-#include <stdio.h>
+#include <stdlib.h>
+
 
 nn_DataCollection* loadDataCollection(LinkedList* data)
 {

@@ -1,5 +1,4 @@
 #include "dataset.h"
-#include <stdio.h>
 #include <stdlib.h>
 
 nn_DataSet* createDataSet(nn_Data* trainData, nn_Data* testData)
