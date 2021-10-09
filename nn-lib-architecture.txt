@@ -38,20 +38,23 @@ for (int = 0; i < hidden_layer.length; i++) {
 }
 
 Data :
-  DataCollectionTuple *
-    - (DataCollection) data1
-    - (DataCollection) data2
   DataCollection *
-    - (utils->Struct->ShapeDescription) shape
-    - (void* - linked-list) data
-    - ($DataCollectionTuple) splitTrainTest
-    - ($void) loadData
+    - (InOutTuple - linked-list) data
+    ($void) loadDataCollection
+    ($void) freeDataCollection
+  DataTuple * 
+    - (Data) data1
+    - (Data) data2
   Data *
-    - (DataCollection) train_X    // ~ 70 %
-    - (DataCollection) train_Y    // ~ 70 %
-    - (DataCollection) test_X     // ~ 30 %
-    - (DataCollection) test_Y     // ~ 30 %
-
+    - (DataCollection) data_collection
+    - ($DataTuple) splitTrainTest
+    ($Data) createData
+    ($void) freeData
+  InOutTuple * 
+    - (Sample) input
+    - (Sample) output
+  InitData -> initialize data structure
+  
 Session :
   Session *
     - (Data) data
@@ -61,6 +64,11 @@ Session :
     - (bool) verbose
     - ($void) train
     - ($void) test
+
+Sample:
+  Sample * 
+    - (utils->Struct->ShapeDescription) shape
+    - (double array) values
 
 FunctionsDescriptor :       //functions that will be applied on model(or for stats)
   losses +       //taux d'erreurs
@@ -84,6 +92,13 @@ utils :
       - (uint) x
       - (uint) y
       - (uint) z
+    DataSet * 
+      - (Data) train
+      - (Data) test
+    ($DataSet*) createDataSet
+    ($void) freeDataSet
+    LinkedList *
+      ...library designed by nico
   Functions :
     losses :
       ($double) CategoricalCrossentropy
@@ -123,16 +138,13 @@ $ : function
 
 /* data file format */
 input file content :
-256 ...
-0 0
-1 0
-0 1
+{dims} {n} {x} {y} {z}
+{data1}
+{data2}
+...
+{datan}
 
-output file content :
-0
-0
-1
-1
+output file content is same format as input file
 
 /* File Architecture */
 Model :
@@ -155,11 +167,13 @@ FunctionsDescriptor :
 utils :
   Struct :
     ShapeDescription * shape_description.h/c
+    linked_list * linked_list.h/c
   Functions :
     losses.h/c
     activations.h/c
     optimizers.h/c
   Misc :
     randomness.h/c
+
 
 //
