@@ -7,7 +7,7 @@ double _convertStringToDouble(char* string);
 
 
 
-nn_Data* nn_Data_load_raw(char* path, nn_ShapeDescription description)
+nn_Data* nn_Data_load_raw(char* path, nn_ShapeDescription* description)
 {
     FILE* input_file = fopen(path,"r+");
 
@@ -17,11 +17,19 @@ nn_Data* nn_Data_load_raw(char* path, nn_ShapeDescription description)
         exit(EXIT_FAILURE);
     }
     
+    fscanf(input_file,"%d %d %d %d %d",&description->dims, &description->x, 
+    &description->y, &description->z);
+
+
+
     char car = fgetc(input_file);
+    while(car != '\n')
+        car = fgetc(input_file); //reading line to end 
+
     size_t j = 0; //cursor in our double array;
 
     //the size of the double array
-    size_t value_size = description.x*description.y*description.z; 
+    size_t value_size = description->x*description->y*description->z; 
 
     //normally, if we do the right things, then we define the dimensions
     //that are not used to 1, so that it doesn't break the malloc sizing lol
@@ -53,7 +61,7 @@ nn_Data* nn_Data_load_raw(char* path, nn_ShapeDescription description)
         }
         car = fgetc(input_file);
     }
-    
+    fclose(input_file);
 }
 
 double _convertStringToDouble(char* string)
