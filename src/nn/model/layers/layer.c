@@ -2,7 +2,7 @@
 
 #include "layer.h"
 
-nn_Layer* _nn_createLayer(nn_ShapeDescription layer_shape, nn_ShapeDescription next_layer_shape, activationFunction activation_function)
+nn_Layer* _nn_createLayer(nn_ShapeDescription layer_shape, nn_ShapeDescription next_layer_shape, activation activation)
 {
   unsigned int num_next_layer_weights = next_layer_shape.x * next_layer_shape.y * next_layer_shape.z;
   // create nodes
@@ -22,7 +22,7 @@ nn_Layer* _nn_createLayer(nn_ShapeDescription layer_shape, nn_ShapeDescription n
   // malloc struct
   nn_Layer* layer = malloc(sizeof(nn_Layer));
   layer->shape = layer_shape;
-  layer->activation_function = activation_function;
+  layer->activation = activation;
   layer->nodes = nodes;
   return layer;
 }
