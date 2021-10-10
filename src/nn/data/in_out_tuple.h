@@ -3,7 +3,7 @@
 #ifndef IN_OUT_TUPLE_H
 #define IN_OUT_TUPLE_H
 
-#include "../sample/sample.h"
+#include "sample/sample.h"
 
 typedef struct nn_InOutTuple
 {

@@ -37,7 +37,7 @@ nn-data: nn-data-sample
 
 .PHONY: nn-data-sample
 nn-data-sample: nn-utils-structs
-	$(CC) -c -o src/nn/sample/sample.o src/nn/sample/sample.c
+	$(CC) -c -o src/nn/data/sample/sample.o src/nn/data/sample/sample.c
 
 .PHONY: nn-session
 nn-session:
