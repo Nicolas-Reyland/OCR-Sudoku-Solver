@@ -1,3 +1,5 @@
+// init_data.c
+
 #include "init_data.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -5,46 +7,44 @@
 
 double _convertStringToDouble(char* string);
 
-
-
 nn_Data* nn_Data_load_raw(char* path, nn_ShapeDescription* description)
 {
-    FILE* input_file = fopen(path,"r+");
+    FILE* input_file = fopen(path, "r+");
 
     if(input_file == NULL)
     {
         printf("%s, the file does not exist. Exiting...\n", &path);
         exit(EXIT_FAILURE);
     }
-    
-    fscanf(input_file,"%d %d %d %d %d",&description->dims, &description->x, 
+
+    fscanf(input_file,"%d %d %d %d %d",&description->dims, &description->x,
     &description->y, &description->z);
 
 
 
     char car = fgetc(input_file);
     while(car != '\n')
-        car = fgetc(input_file); //reading line to end 
+        car = fgetc(input_file); //reading line to end
 
     size_t j = 0; //cursor in our double array;
 
     //the size of the double array
-    size_t value_size = description->x*description->y*description->z; 
+    size_t value_size = description->x*description->y*description->z;
 
     //normally, if we do the right things, then we define the dimensions
     //that are not used to 1, so that it doesn't break the malloc sizing lol
-    double* value = malloc(sizeof(double)*value_size); 
+    double* value = malloc(sizeof(double)*value_size);
     while(car != EOF)
     {
         char* string = malloc(sizeof(char) * NB_DOUBLE_BITS);
         size_t i = 0; //cursor in our string
 
-        
-        
+
+
         if(car != ' ')
         {
             //if we have allocated enough space to the string
-            if(i < NB_DOUBLE_BITS)  
+            if(i < NB_DOUBLE_BITS)
                 string[i] = car;
             else                    //dear God
             {
@@ -62,6 +62,8 @@ nn_Data* nn_Data_load_raw(char* path, nn_ShapeDescription* description)
         car = fgetc(input_file);
     }
     fclose(input_file);
+
+    // return something here
 }
 
 double _convertStringToDouble(char* string)

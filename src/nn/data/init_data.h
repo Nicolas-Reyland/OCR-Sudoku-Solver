@@ -1,4 +1,4 @@
-//init_data.h
+// init_data.h
 
 #ifndef INIT_DATA_H
 #define INIT_DATA_H
