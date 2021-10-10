@@ -32,6 +32,9 @@ nn-functions_descriptors:
 nn-data:
 	$(CC) -c -o src/nn/data/data.o src/nn/data/data.c
 	$(CC) -c -o src/nn/data/data_collection.o src/nn/data/data_collection.c
+	$(CC) -c -o src/nn/data/data_tuple.o src/nn/data/data_tuple.c
+	$(CC) -c -o src/nn/data/init_data.o src/nn/data/init_data.c
+	$(CC) -c -o src/nn/data/in_out_tuple.o src/nn/data/in_out_tuple.c
 
 .PHONY: nn-session
 nn-session:
