@@ -1,3 +1,8 @@
+// linked_list.h
+
+#ifndef MEM_LINKED_LIST_H
+#define MEM_LINKED_LIST_H
+
 /* linked_list Declaration */
 #include <stdlib.h>
 #include <stdbool.h>
@@ -83,3 +88,6 @@ void* linked_list_remove_value_at(linked_list *list, int index);
 
 // remove value
 int linked_list_index_of(linked_list *list, void* value);
+
+#endif
+

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 
-nn_DataCollection* loadDataCollection(linked_list* data)
+nn_DataCollection* loadDataCollection(iot_linked_list* data)
 {
     nn_DataCollection* data_collection = malloc(sizeof(nn_DataCollection));
 
@@ -14,6 +14,6 @@ nn_DataCollection* loadDataCollection(linked_list* data)
 
 void freeDataCollection(nn_DataCollection* collection)
 {
-    free_linked_list(collection->data);
+    free_iot_linked_list(collection->data);
     free(collection);
 }

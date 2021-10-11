@@ -1,25 +1,17 @@
 // mem-manager.h
 
-#ifndef NN_MEM-MANAGER_H
-#define NN_MEM-MANAGER_H
+#ifndef MEM_MEM_MANAGER_H
+#define MEM_MEM_MANAGER_H
 
 #include "linked_list.h"
 #include <stdbool.h>
 
-extern bool memory_is_tracked = false;
+// global variables
 linked_list* GPL; // GPL : Global Pointer List
 
+// public functions
 void initMemoryTracking(void);
-
-void* memtrack_malloc(size_t size);
-
-void* memtrack_calloc(size_t number, size_t size);
-
-void mmtrack_removeAllocatedObject(void* ptr);
-
-void _nn_trackAllocatedObject(void* ptr);
-
-void _nn_removeAllocatedObject(void *ptr);
+void trackAllocatedObject(void* ptr);
+void untrackFreedObject(void *ptr);
 
 #endif
-

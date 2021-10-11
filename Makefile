@@ -9,7 +9,7 @@ all: nn gui solver mem # src/nn/nn.o src/gui/gui.o src/solver/solver.o
 	$(CC) -o main src/nn/nn.o src/gui/gui.o src/solver/solver.o
 
 .PHONY: nn
-nn: nn-model nn-data nn-session nn-utils nn-functions_descriptors mem
+nn: mem nn-model nn-data nn-session nn-utils nn-functions_descriptors
 	$(CC) -c -o src/nn/nn.o src/nn/nn.c
 #src/nn/model/model.o src/nn/data/nn_data_header.o src/nn/session/session.o src/nn/utils/nn_utils_header.o src/nn/functions_descriptor/nn_functions_descriptors_header.o
 
@@ -63,7 +63,15 @@ nn-utils-functions: nn-utils-functions-activations
 .PHONY: nn-utils-functions-activations
 nn-utils-functions-activations:
 	$(CC) -c -o src/nn/utils/functions/activations.o src/nn/utils/functions/activations.c
-# the dep 'nn-model-layers' should be added here
+
+.PHONY: mem
+mem:
+	$(CC) -c -o src/mem/linked_list.o src/mem/linked_list.c
+	$(CC) -c -o src/mem/mem-manager.o src/mem/mem-manager.c
+
+
+
+
 
 .PHONY: mem
 mem:
@@ -73,4 +81,3 @@ mem:
 .PHONY: clean
 clean:
 	@./extra/make-clean.sh
-

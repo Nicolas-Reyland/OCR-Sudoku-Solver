@@ -22,17 +22,17 @@ nn_Data* nn_Data_load_raw(char* input_path, char* output_path, nn_ShapeDescripti
         printf("ERROR 404: %s, the file does not exist. Exiting...\n", *output_path);
         exit(EXIT_FAILURE);
     }
-    linked_list* data_list = init_linked_list();
+    iot_linked_list* data_list = init_iot_linked_list();
 
 
-    fscanf(input_file,"%d %d %d %d %d",&(description->dims), &(description->x), 
+    fscanf(input_file,"%d %d %d %d %d",&(description->dims), &(description->x),
     &(description->y), &(description->z));
 
 
 
     char cursorInput = fgetc(input_file);
     while(cursorInput != '\n')
-        cursorInput = fgetc(input_file); //reading line to end 
+        cursorInput = fgetc(input_file); //reading line to end
 
     do
     {
@@ -66,11 +66,11 @@ char _readFile(FILE* file, nn_ShapeDescription* description, double* values)
     size_t j = 0; //cursor in our double array;
 
     //the size of the double array
-    size_t value_size = description->x*description->y*description->z; 
+    size_t value_size = description->x*description->y*description->z;
 
     //normally, if we do the right things, then we define the dimensions
     //that are not used to 1, so that it doesn't break the malloc sizing lol
-    values = malloc(sizeof(double)*value_size); 
+    values = malloc(sizeof(double)*value_size);
 
     char car = fgetc(file);
     while(car != '\n' && car != EOF)
@@ -78,12 +78,12 @@ char _readFile(FILE* file, nn_ShapeDescription* description, double* values)
         char* string = malloc(sizeof(char) * NB_DOUBLE_BITS);
         size_t i = 0; //cursor in our string
 
-        
-        
+
+
         if(car != ' ')
         {
             //if we have allocated enough space to the string
-            if(i < NB_DOUBLE_BITS)  
+            if(i < NB_DOUBLE_BITS)
                 string[i] = car;
             else                    //dear God
             {
