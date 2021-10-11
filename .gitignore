@@ -51,5 +51,9 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-#vscode config
+# VS Code config files
 *.vscode
+
+# Valgrind core dumps
+vgcore.*
+
