@@ -4,7 +4,7 @@
 #define NN_MODEL_H
 
 #include "layers/model_layer.h"
-#include "../functions_descriptors/functions_descriptors_enums.h"
+#include "nn/functions_descriptors/functions_descriptors_enums.h"
 
 typedef struct nn_Model {
   nn_ModelLayers* layers;

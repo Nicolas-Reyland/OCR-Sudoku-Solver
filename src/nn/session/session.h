@@ -3,8 +3,8 @@
 #ifndef NN_SESSION_H
 #define NN_SESSION_H
 
-#include "../data/data.h"
-#include "../model/model.h"
+#include "nn/data/data.h"
+#include "nn/model/model.h"
 #include <stdbool.h>
 
 typedef struct nn_Session {

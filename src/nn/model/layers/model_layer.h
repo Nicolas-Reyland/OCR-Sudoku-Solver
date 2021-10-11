@@ -4,6 +4,7 @@
 #define NN_MODEL_LAYER_H
 
 #include "layer.h"
+#include <stdlib.h>
 
 typedef struct nn_ModelLayers {
   nn_Layer input_layer;

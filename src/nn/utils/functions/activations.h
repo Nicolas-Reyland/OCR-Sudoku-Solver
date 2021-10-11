@@ -4,7 +4,7 @@
 #define NN_ACTIVATIONS_H
 
 #include <math.h>
-#include "../../model/layers/layer.h"
+#include "nn/model/layers/layer.h"
 
 /* We must have a void return type and take a layer as input
  * because of the softmax activation function

@@ -5,8 +5,8 @@
 
 #include <stdbool.h>
 #include "node.h"
-#include "../../utils/structs/shape_description.h"
-#include "../../functions_descriptors/functions_descriptors_enums.h"
+#include "nn/utils/structs/shape_description.h"
+#include "nn/functions_descriptors/functions_descriptors_enums.h"
 
 typedef struct nn_Layer {
   nn_ShapeDescription shape;

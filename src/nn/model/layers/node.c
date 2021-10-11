@@ -1,7 +1,6 @@
 // node.c
 
 #include "node.h"
-#include <stdlib.h>
 
 nn_Node* _nn_createNode(unsigned int num_weights)
 {

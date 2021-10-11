@@ -1,5 +1,6 @@
 // model.c
 #include "model.h"
+#include "mem/mem-management.h"
 #include <stdio.h>
 
 void _nn_Model_saveArchitectureFn(nn_Model* model, char* path)

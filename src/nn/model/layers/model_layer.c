@@ -1,7 +1,6 @@
 // model_layer.c
 
 #include "model_layer.h"
-#include <stdlib.h>
 
 nn_ModelLayers* _nn_createModelLayer(unsigned int num_hidden_layers, nn_ShapeDescription model_architecture[], activation activations[])
 {

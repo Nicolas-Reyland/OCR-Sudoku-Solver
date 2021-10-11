@@ -5,7 +5,7 @@
 
 #include <stdlib.h>
 #include <time.h>
-#include "../../utils/misc/randomness.h"
+#include "nn/utils/misc/randomness.h"
 
 typedef struct nn_Node {
   unsigned int num_weights;

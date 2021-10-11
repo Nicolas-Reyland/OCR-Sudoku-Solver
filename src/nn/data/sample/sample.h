@@ -3,7 +3,7 @@
 #ifndef SAMPLE_H
 #define SAMPLE_H
 
-#include "../../utils/structs/shape_description.h"
+#include "nn/utils/structs/shape_description.h"
 
 typedef struct nn_Sample
 {

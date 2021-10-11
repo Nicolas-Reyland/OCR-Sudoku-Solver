@@ -1,7 +1,7 @@
 # Makefile for the https://github.com/Nicolas-Reyland/OCR-Sudoku-Solver project
 
 SHELL := /bin/bash
-CFLAGS := -Wall -Wextra
+CFLAGS := -Wall -Wextra -Isrc
 CC := gcc $(CFLAGS)
 
 .PHONY: all
@@ -73,4 +73,3 @@ mem:
 .PHONY: clean
 clean:
 	@./extra/make-clean.sh
-
