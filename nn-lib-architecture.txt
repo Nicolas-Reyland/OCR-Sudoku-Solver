@@ -112,7 +112,7 @@ utils :
         ($double) relu
         ($double) leaky_relu    //optional
         ($double) softmax
-        tanh
+        ($double) tanh
       optimizers :
         ($void) RMSprop
         ($void) Adam

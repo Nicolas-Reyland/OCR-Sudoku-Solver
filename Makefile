@@ -44,7 +44,7 @@ nn-session:
 	$(CC) -c -o src/nn/session/session.o src/nn/session/session.c
 
 .PHONY: nn-utils
-nn-utils: nn-utils-structs nn-utils-functions nn-utils-misc
+nn-utils: nn-utils-structs nn-utils-session nn-utils-misc
 	@echo empty utils
 
 .PHONY: nn-utils-structs
@@ -55,13 +55,14 @@ nn-utils-structs:
 nn-utils-misc:
 	$(CC) -c -o src/nn/utils/misc/randomness.o src/nn/utils/misc/randomness.c
 
-.PHONY: nn-utils-functions
-nn-utils-functions: nn-utils-functions-activations
-	$(CC) -c -o src/nn/utils/functions/optimizers.o src/nn/utils/functions/optimizers.c
-	$(CC) -c -o src/nn/utils/functions/losses.o src/nn/utils/functions/losses.c
+.PHONY: nn-utils-session
+nn-utils-functions: nn-utils-session-functions
+	$(CC) -c -o src/nn/utils/session/evaluate.o src/nn/utils/session/evaluate.c
 
-.PHONY: nn-utils-functions-activations
+.PHONY: nn-utils-session-functions
 nn-utils-functions-activations:
+	$(CC) -c -o src/nn/utils/functions/losses.o src/nn/utils/functions/losses.c
+	$(CC) -c -o src/nn/utils/functions/optimizers.o src/nn/utils/functions/optimizers.c
 	$(CC) -c -o src/nn/utils/functions/activations.o src/nn/utils/functions/activations.c
 
 .PHONY: mem
@@ -73,3 +74,4 @@ mem:
 .PHONY: clean
 clean:
 	@./extra/make-clean.sh
+
