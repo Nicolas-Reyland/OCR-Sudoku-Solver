@@ -5,7 +5,8 @@
 int main()
 {
 	// init random
-	_nn_initRandom();
+	initRandom();
+	initMemoryTracking();
 	// model architecture
 	nn_ShapeDescription model_architecture[3] = {
 		{ .dims = 3, .x = 3, .y = 3, .z = 3 },
@@ -19,8 +20,12 @@ int main()
 	// loss & optimizers
 	losses loss = CATEGORICALCROSSENTROPY;
 	optimizer optimizer = ADAM;
+	
 	// malloc model
 	nn_Model* model = createModel(3, model_architecture, activations, loss, optimizer);
+
+	// free model
+	freeModel(model);
 
 	return 0;
 }

@@ -1,3 +1,6 @@
+# test.out compiled binaries from test.c
+test.out
+
 # Prerequisites
 *.d
 
