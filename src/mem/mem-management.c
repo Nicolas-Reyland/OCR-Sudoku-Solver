@@ -19,7 +19,7 @@ void* mem_malloc(size_t size)
 
 void* mem_calloc(size_t number, size_t size)
 {
-	voir* ptr = calloc(number, size);
+	void* ptr = calloc(number, size);
 	_mem_trackAllocatedObject(ptr);
 	return ptr;
 }
@@ -34,7 +34,7 @@ void mem_free(void *ptr)
 	// TODO: we search two times through the list. optimize this pls
 	int index = GPL->index_of(GPL, ptr);
 	if (index == -1) {
-		printf("/!\\ Ptr %x is not in the list! Freeing anyway.\n", ptr);
+		printf("/!\\ Ptr %p is not in the list! Freeing anyway.\n", ptr);
 		free(ptr);
 		return;
 	}

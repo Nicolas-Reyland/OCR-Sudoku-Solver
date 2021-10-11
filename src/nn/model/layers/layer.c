@@ -29,7 +29,7 @@ nn_Layer* _nn_createLayer(nn_ShapeDescription layer_shape, nn_ShapeDescription n
 
 void _nn_freeLayer(nn_Layer* layer)
 {
-  for (unsigned int i = 0; i < shape.x * shape.y * shape.z; i++) {
+  for (unsigned int i = 0; i < layer->shape.x * layer->shape.y * layer->shape.z; i++) {
     nn_Node* node = layer->nodes[i];
     _nn_freeNode(node);
   }

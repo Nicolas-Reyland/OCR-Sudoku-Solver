@@ -15,7 +15,7 @@ linked_list* GPL; // GPL : Global Pointer List
 void initMemoryTracking(void);
 void* mem_malloc(size_t size);
 void* mem_calloc(size_t number, size_t size);
-void mem_trackAllocatedObject(void* ptr);
+void _mem_trackAllocatedObject(void* ptr);
 void mem_free(void *ptr);
 
 #endif

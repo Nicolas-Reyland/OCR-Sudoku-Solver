@@ -67,7 +67,7 @@ nn-utils-functions-activations:
 .PHONY: mem
 mem:
 	$(CC) -c -o src/mem/linked_list.o src/mem/linked_list.c
-	$(CC) -c -o src/mem/mem-manager.o src/mem/mem-manager.c
+	$(CC) -c -o src/mem/mem-management.o src/mem/mem-management.c
 
 
 .PHONY: clean

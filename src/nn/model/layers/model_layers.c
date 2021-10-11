@@ -28,10 +28,10 @@ nn_ModelLayers* _nn_createModelLayers(unsigned int num_hidden_layers, nn_ShapeDe
 
 void _nn_freeModelLayers(nn_ModelLayers* model_layers)
 {
-  _nn_freeLayer(model_layers->input_layer);
-  _nn_freeLayer(model_layers->output_layer);
+  _nn_freeLayer(&model_layers->input_layer);
+  _nn_freeLayer(&model_layers->output_layer);
   for (unsigned int i = 0; i < model_layers->num_hidden_layers; i++) {
-    _nn_freeLayer(model_layers->hidden_layers[i]);
+    _nn_freeLayer(&model_layers->hidden_layers[i]);
   }
   mem_free(model_layers->hidden_layers);
   mem_free(model_layers);
