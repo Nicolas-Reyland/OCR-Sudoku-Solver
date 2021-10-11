@@ -3,7 +3,7 @@
 #ifndef SAMPLE_H
 #define SAMPLE_H
 
-#include "../utils/structs/shape_description.h"
+#include "../../utils/structs/shape_description.h"
 
 typedef struct nn_Sample
 {
@@ -12,5 +12,6 @@ typedef struct nn_Sample
 } nn_Sample;
 
 nn_Sample* createSample(nn_ShapeDescription description, double* values);
-void freeSample(nn_Sample* sample)
+void freeSample(nn_Sample* sample);
+
 #endif

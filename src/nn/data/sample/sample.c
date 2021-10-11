@@ -1,5 +1,6 @@
 #include "sample.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 nn_Sample* createSample(nn_ShapeDescription description, double* values)
 {
