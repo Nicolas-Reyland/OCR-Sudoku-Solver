@@ -1,9 +1,6 @@
 #include <stdio.h>
 #include "src/nn/nn.h"
-#include "src/nn/model/model.h"
-#include "src/nn/model/model.h"
-#include "src/nn/utils/misc/randomness.h"
-#include "src/nn/functions_descriptors/functions_descriptors_enums.h"
+#include "src/mem/mem-manager.h"
 
 int main()
 {
