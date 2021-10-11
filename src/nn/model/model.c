@@ -1,7 +1,5 @@
 // model.c
 #include "model.h"
-#include "mem/mem-management.h"
-#include <stdio.h>
 
 void _nn_Model_saveArchitectureFn(nn_Model* model, char* path)
 {
@@ -31,6 +29,12 @@ nn_Model* createModel(unsigned int num_layers, nn_ShapeDescription model_archite
   model->saveWeightsAndBias = &_nn_Model_saveWeightsAndBias;
   model->saveModel = &_nn_Model_saveModel;
   return model;
+}
+
+void freeModel(nn_Model* model)
+{
+  _nn_freeModelLayers(model->layers);
+  mem_free(model);
 }
 
 // nn_Model* loadModel(char* path);

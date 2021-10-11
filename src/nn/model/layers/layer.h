@@ -16,5 +16,6 @@ typedef struct nn_Layer {
 } nn_Layer;
 
 nn_Layer* _nn_createLayer(nn_ShapeDescription layer_shape, nn_ShapeDescription next_layer_shape, activation activation);
+void _nn_freeLayer(nn_Layer* layer);
 
 #endif

@@ -1,7 +1,6 @@
+// init_data.c
+
 #include "init_data.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 double _convertStringToDouble(char* string);
 char _readFile(FILE* file, nn_ShapeDescription* description, double* values);
@@ -70,12 +69,12 @@ char _readFile(FILE* file, nn_ShapeDescription* description, double* values)
 
     //normally, if we do the right things, then we define the dimensions
     //that are not used to 1, so that it doesn't break the malloc sizing lol
-    values = malloc(sizeof(double)*value_size);
+    values = mem_malloc(sizeof(double)*value_size);
 
     char car = fgetc(file);
     while(car != '\n' && car != EOF)
     {
-        char* string = malloc(sizeof(char) * NB_DOUBLE_BITS);
+        char* string = mem_malloc(sizeof(char) * NB_DOUBLE_BITS);
         size_t i = 0; //cursor in our string
 
 
@@ -109,6 +108,6 @@ char _readFile(FILE* file, nn_ShapeDescription* description, double* values)
 double _convertStringToDouble(char* string)
 {
     double value = strtod(string,NULL);
-    free(string);
+    mem_free(string);
     return 0;
 }

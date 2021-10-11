@@ -7,9 +7,9 @@
 
 typedef struct nn_DataSet
 {
-    nn_Data* train; //should normally represent 70% of whole data we got
-    nn_Data* test;  //should normally represent 30% of whole data we got
-}nn_DataSet;
+    nn_Data* train; //classical proportions 70% of whole data we got
+    nn_Data* test;  //classical proportions 30% of whole data we got
+} nn_DataSet;
 
 nn_DataSet* createDataSet(nn_Data* trainData, nn_Data* testData);
 void freeDataSet(nn_DataSet* dataSet);

@@ -21,7 +21,7 @@ nn-model: nn-model-layers
 .PHONY: nn-model-layers
 nn-model-layers: nn-utils-misc
 	$(CC) -c -o src/nn/model/layers/layer.o src/nn/model/layers/layer.c
-	$(CC) -c -o src/nn/model/layers/model_layer.o src/nn/model/layers/model_layer.c
+	$(CC) -c -o src/nn/model/layers/model_layers.o src/nn/model/layers/model_layers.c
 	$(CC) -c -o src/nn/model/layers/node.o src/nn/model/layers/node.c
 
 .PHONY: nn-functions_descriptors
@@ -67,7 +67,7 @@ nn-utils-functions-activations:
 .PHONY: mem
 mem:
 	$(CC) -c -o src/mem/linked_list.o src/mem/linked_list.c
-	$(CC) -c -o src/mem/mem-manager.o src/mem/mem-manager.c
+	$(CC) -c -o src/mem/mem-management.o src/mem/mem-management.c
 
 
 .PHONY: clean

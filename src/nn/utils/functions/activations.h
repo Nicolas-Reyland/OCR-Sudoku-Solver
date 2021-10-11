@@ -11,13 +11,9 @@
  */
 
 void sigmoid(nn_Layer* layer);
-
 void relu(nn_Layer* layer);
-
 void leaky_relu(nn_Layer* layer);
-
 void softmax(nn_Layer* layer);
-
 void tan_h(nn_Layer* layer);
 
 #endif

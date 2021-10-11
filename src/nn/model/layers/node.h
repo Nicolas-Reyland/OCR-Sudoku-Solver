@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "nn/utils/misc/randomness.h"
+#include "mem/mem-management.h"
 
 typedef struct nn_Node {
   unsigned int num_weights;
@@ -16,5 +17,6 @@ typedef struct nn_Node {
 } nn_Node;
 
 nn_Node* _nn_createNode(unsigned int num_weights);
+void _nn_freeNode(nn_Node* node);
 
 #endif

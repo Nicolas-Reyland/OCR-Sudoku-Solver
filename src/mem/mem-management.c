@@ -10,16 +10,35 @@ void initMemoryTracking(void)
 	GPL = init_linked_list();
 }
 
-void trackAllocatedObject(void* ptr)
+void* mem_malloc(size_t size)
+{
+	void* ptr = malloc(size);
+	_mem_trackAllocatedObject(ptr);
+	return ptr;
+}
+
+void* mem_calloc(size_t number, size_t size)
+{
+	void* ptr = calloc(number, size);
+	_mem_trackAllocatedObject(ptr);
+	return ptr;
+}
+
+void _mem_trackAllocatedObject(void* ptr)
 {
 	GPL->append_value(GPL, ptr);
 }
 
-void untrackFreedObject(void *ptr)
+void mem_free(void *ptr)
 {
 	// TODO: we search two times through the list. optimize this pls
 	int index = GPL->index_of(GPL, ptr);
+	if (index == -1) {
+		printf("/!\\ Ptr %p is not in the list! Freeing anyway.\n", ptr);
+		free(ptr);
+		return;
+	}
 	GPL->remove_value_at(GPL, index);
-  // TODO: mabe a way to assert that the ptr is freed ?
+  free(ptr);
   ptr = NULL;
 }

@@ -1,7 +1,6 @@
 // data.c
 
 #include "data.h"
-#include <stdlib.h>
 
 /// <Summary>
 /// Splits a data struct into two data struct, based on a splitting percentage
@@ -43,7 +42,7 @@ nn_DataTuple _nn_dataSplitTrainTest(nn_Data* data, int splittingPercentage)
 nn_Data* createData(nn_DataCollection* collection)
 {
     //stuff comes here
-    nn_Data* data = malloc(sizeof(nn_Data));
+    nn_Data* data = mem_malloc(sizeof(nn_Data));
     data->data_collection = collection;
     data->splitTrainTest = &_nn_dataSplitTrainTest;
 
@@ -56,5 +55,5 @@ nn_Data* createData(nn_DataCollection* collection)
 void freeData(nn_Data* data)
 {
   freeDataCollection(data->data_collection);
-  free(data);
+  mem_free(data);
 }
