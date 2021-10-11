@@ -1,9 +1,10 @@
 // sample.h
 
-#ifndef SAMPLE_H
-#define SAMPLE_H
+#ifndef NN_SAMPLE_H
+#define NN_SAMPLE_H
 
 #include "nn/utils/structs/shape_description.h"
+#include <stdlib.h>
 
 typedef struct nn_Sample
 {

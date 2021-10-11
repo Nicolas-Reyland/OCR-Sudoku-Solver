@@ -14,5 +14,5 @@ void freeDataSet(nn_DataSet* dataSet)
 {
 	freeData(dataSet->train);
 	freeData(dataSet->test);
-	free(dataSet);
+	mem_free(dataSet);
 }

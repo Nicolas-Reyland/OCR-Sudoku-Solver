@@ -6,6 +6,7 @@
 #include "nn/data/data.h"
 #include "nn/model/model.h"
 #include <stdbool.h>
+#include <stdlib.h>
 
 typedef struct nn_Session {
 	nn_Data* data;
