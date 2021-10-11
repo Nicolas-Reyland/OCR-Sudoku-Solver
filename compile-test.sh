@@ -9,4 +9,4 @@ for file in $(find src/mem/ -type f -name "*.c")
 do
 	args+=("$file")
 done
-gcc -o main -lm test.c "${args[@]}" -Isrc
+gcc -o "test.out" -lm test.c "${args[@]}" -Isrc

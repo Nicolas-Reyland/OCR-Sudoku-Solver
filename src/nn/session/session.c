@@ -34,6 +34,6 @@ double loss_threshold, bool stop_on_loss_threshold_reached, bool verbose)
 
 void freeSession(nn_Session* session)
 {
-	freeData(session->data);
+	_nn_freeData(session->data);
 	mem_free(session);
 }

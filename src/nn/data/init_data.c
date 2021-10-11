@@ -6,7 +6,7 @@ double _convertStringToDouble(char* string);
 char _readFile(FILE* file, nn_ShapeDescription* description, double* values);
 
 
-nn_Data* nn_Data_load_raw(char* input_path, char* output_path, nn_ShapeDescription* description)
+nn_Data* nn_DataLoadRaw(char* input_path, char* output_path, nn_ShapeDescription* description)
 {
     FILE* input_file = fopen(input_path,"r+");
     FILE* output_file = fopen(output_path, "r+");
@@ -55,7 +55,7 @@ nn_Data* nn_Data_load_raw(char* input_path, char* output_path, nn_ShapeDescripti
     fclose(input_file);
     fclose(output_file);
 
-    return createData(loadDataCollection(data_list));
+    return _nn_createData(_nn_loadDataCollection(data_list));
 }
 
 

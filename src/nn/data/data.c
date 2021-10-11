@@ -28,10 +28,10 @@ nn_DataTuple _nn_dataSplitTrainTest(nn_Data* data, int splittingPercentage)
     }
 
 
-    data_tuple.data1->data_collection = loadDataCollection(data1);
-    data_tuple.data2->data_collection = loadDataCollection(data2);
+    data_tuple.data1->data_collection = _nn_loadDataCollection(data1);
+    data_tuple.data2->data_collection = _nn_loadDataCollection(data2);
 
-    freeData(data);
+    _nn_freeData(data);
 
     return data_tuple;
 }
@@ -39,7 +39,7 @@ nn_DataTuple _nn_dataSplitTrainTest(nn_Data* data, int splittingPercentage)
 /// <Summary>
 /// Create a pointer to a data struct
 /// <Summary/>
-nn_Data* createData(nn_DataCollection* collection)
+nn_Data* _nn_createData(nn_DataCollection* collection)
 {
     //stuff comes here
     nn_Data* data = mem_malloc(sizeof(nn_Data));
@@ -52,8 +52,8 @@ nn_Data* createData(nn_DataCollection* collection)
 /// <Summary>
 /// Delete the data from memory
 /// <Summary/>
-void freeData(nn_Data* data)
+void _nn_freeData(nn_Data* data)
 {
-  freeDataCollection(data->data_collection);
+  _nn_freeDataCollection(data->data_collection);
   mem_free(data);
 }

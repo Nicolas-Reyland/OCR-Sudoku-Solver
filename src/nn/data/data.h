@@ -20,7 +20,7 @@ typedef struct nn_DataTuple
 	nn_Data* data2;
 } nn_DataTuple;
 
-nn_Data* createData(nn_DataCollection* collection);
-void freeData(nn_Data* data);
+nn_Data* _nn_createData(nn_DataCollection* collection);
+void _nn_freeData(nn_Data* data);
 
 #endif
