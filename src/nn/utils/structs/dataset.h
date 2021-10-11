@@ -3,7 +3,7 @@
 #ifndef NN_DATASET_H
 #define NN_DATASET_H
 
-#include "../data/data.h"
+#include "../../data/data.h"
 
 typedef struct nn_DataSet
 {
