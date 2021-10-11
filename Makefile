@@ -72,10 +72,5 @@ mem:
 
 .PHONY: clean
 clean:
-	if [ -e main ]; then
-		rm -f main
-	fi
-	for object_file in $(find src/ -type f -name "*.o")
-	do
-		rm -f "$objetc_file"
-	done
+	@./extra/make-clean.sh
+
