@@ -9,22 +9,17 @@
 extern bool memory_is_tracked = false;
 linked_list* GPL; // GPL : Global Pointer List
 
-void initMemoryTracking(void)
-{
-	memory_is_tracked = true;
-	GPL = init_linked_list();
-}
+void initMemoryTracking(void);
 
-void trackAllocatedObject(void* ptr)
-{
-	GPL->append_value(GPL, ptr);
-}
+void* memtrack_malloc(size_t size);
 
-void removeAllocatedObject(void *ptr)
-{
-	// TODO: we search two times through the list. optimize this pls
-	int index = GPL->index_of(GPL, ptr);
-	GPL->remove_value_at(GPL, ptr);
-}
+void* memtrack_calloc(size_t number, size_t size);
+
+void mmtrack_removeAllocatedObject(void* ptr);
+
+void _nn_trackAllocatedObject(void* ptr);
+
+void _nn_removeAllocatedObject(void *ptr);
 
 #endif
+
