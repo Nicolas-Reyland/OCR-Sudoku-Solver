@@ -2,11 +2,11 @@
 
 #include "mem-manager.h"
 
-extern bool memory_is_tracked;
+bool memory_tracking_initialized = false;
 
 void initMemoryTracking(void)
 {
-	memory_is_tracked = true;
+	memory_tracking_initialized = true;
 	GPL = init_linked_list();
 }
 
