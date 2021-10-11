@@ -161,6 +161,7 @@ void linked_list_append_value(linked_list *list, void* value)
 void* linked_list_remove_value_at(linked_list *list, int index)
 {
 	_linked_list_assert_index(list, index);
+	void* removed_value = NULL;
 
 	// remove the head
 	if (index == 0)
@@ -168,6 +169,7 @@ void* linked_list_remove_value_at(linked_list *list, int index)
 		// there is only the head
 		if (list->length == 1)
 		{
+			removed_value = list->head->value;
 			free(list->head);
 			list->head = NULL;
 		}
@@ -176,6 +178,7 @@ void* linked_list_remove_value_at(linked_list *list, int index)
 		{
 			ll_node* old_head = list->head;
 			ll_node* new_head = old_head->next;
+			removed_value = old_head->value;
 			list->head = new_head;
 			free(old_head);
 			old_head = NULL;
@@ -186,6 +189,7 @@ void* linked_list_remove_value_at(linked_list *list, int index)
 	{
 		ll_node* previous_node = _linked_list_get_node_at(list, index - 1);
 		ll_node* current_node = previous_node->next;
+		removed_value = current_node->value;
 		ll_node* next_node = current_node->next;
 		previous_node->next = next_node;
 		free(current_node);
@@ -194,6 +198,7 @@ void* linked_list_remove_value_at(linked_list *list, int index)
 
 	// decrement the length
 	list->length--;
+	return removed_value;
 }
 
 // index of value
@@ -212,4 +217,3 @@ int linked_list_index_of(linked_list *list, void* value)
 
 	return -1;
 }
-
