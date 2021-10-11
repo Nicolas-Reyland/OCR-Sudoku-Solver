@@ -3,7 +3,7 @@
 #include "model_layer.h"
 #include <stdlib.h>
 
-nn_ModelLayers* _nn_createModelLayer(unsigned int num_hidden_layers, ShapeDescription model_architecture[], activationFunction activations[])
+nn_ModelLayers* _nn_createModelLayer(unsigned int num_hidden_layers, nn_ShapeDescription model_architecture[], activation activations[])
 {
   // input & output layers
   nn_Layer* input_layer = _nn_createLayer(model_architecture[0], model_architecture[1], activations[0]);

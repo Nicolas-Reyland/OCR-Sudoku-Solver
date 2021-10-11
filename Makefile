@@ -29,9 +29,15 @@ nn-functions_descriptors:
 	$(CC) -c -o src/nn/functions_descriptors/functions_descriptors_enums.o src/nn/functions_descriptors/functions_descriptors_enums.c
 
 .PHONY: nn-data
-nn-data:
+nn-data: nn-data-sample
 	$(CC) -c -o src/nn/data/data.o src/nn/data/data.c
 	$(CC) -c -o src/nn/data/data_collection.o src/nn/data/data_collection.c
+	$(CC) -c -o src/nn/data/init_data.o src/nn/data/init_data.c
+	$(CC) -c -o src/nn/data/in_out_tuple.o src/nn/data/in_out_tuple.c
+
+.PHONY: nn-data-sample
+nn-data-sample: nn-utils-structs
+	$(CC) -c -o src/nn/data/sample/sample.o src/nn/data/sample/sample.c
 
 .PHONY: nn-session
 nn-session:
