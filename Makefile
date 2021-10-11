@@ -70,14 +70,7 @@ mem:
 	$(CC) -c -o src/mem/mem-manager.o src/mem/mem-manager.c
 
 
-
-
-
-.PHONY: mem
-mem:
-	$(CC) -c -o src/mem/linked_list.o src/mem/linked_list.c
-	$(CC) -c -o src/mem/mem-manager.o src/mem/mem-manager.c
-
 .PHONY: clean
 clean:
 	@./extra/make-clean.sh
+
