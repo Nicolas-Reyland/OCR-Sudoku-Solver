@@ -38,12 +38,12 @@ nn_Data* nn_Data_load_raw(char* input_path, char* output_path, nn_ShapeDescripti
     {
         double* input_values;
         double* output_values;
-        cursorInput = readFile(input_file,description, input_values);
+        cursorInput = _readFile(input_file,description, input_values);
 
         //we don't need to read the cursor of output_file
         //since normally it should have the same nb of lines than
         //input_file (for safety later, make a private function that test it)
-        readFile(output_file,description,output_values);
+        _readFile(output_file,description,output_values);
 
         nn_Sample* input    = createSample(*description,output_values);
         nn_Sample* output   = createSample(*description,input_values);
