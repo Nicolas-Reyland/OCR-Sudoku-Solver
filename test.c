@@ -20,9 +20,13 @@ int main()
 	// loss & optimizers
 	losses loss = CATEGORICALCROSSENTROPY;
 	optimizer optimizer = ADAM;
-	
+
+	printf("Allocating model...\n");
+
 	// malloc model
 	nn_Model* model = createModel(3, model_architecture, activations, loss, optimizer);
+
+	printf("Model allocated.\n");
 
 	// free model
 	freeModel(model);
