@@ -5,7 +5,7 @@
 
 int main(void)
 {
-    const char* path = "imgs/grayscale(1).bmp";
+    const char* path = "imgs/grayscale(0).bmp";
     read_img(path);
     return 0;
 }

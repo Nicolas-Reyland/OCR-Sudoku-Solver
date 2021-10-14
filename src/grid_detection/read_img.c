@@ -3,6 +3,7 @@
 #include <math.h>
 #include <SDL2/SDL.h>
 #include "pixel_operation.h"
+#include "square_detection.h"
 
 void vertical_filter(SDL_Surface* image, SDL_Surface* vmask)
 {
@@ -53,6 +54,14 @@ SDL_Surface* merge_masks(SDL_Surface* hmask, SDL_Surface* vmask)
             SDL_GetRGB(pix1, hmask->format, &color1, &color1, &color1);
             SDL_GetRGB(pix2, vmask->format, &color2, &color2, &color2);
             Uint8 color = sqrt(color1*color1+color2*color2); 
+            if (color <= 25)
+            {
+                color = 0;
+            }
+            else 
+            {
+                color = 255;
+            }
             put_pixel(result, x, y, SDL_MapRGB(result->format, color, color, color));
         }
     }
@@ -72,16 +81,13 @@ void read_img(const char *path)
     SDL_Surface *vmask = SDL_CreateRGBSurface(0, image->w, image->h, 32, 0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
     horizontal_filter(image, hmask);
     vertical_filter(image, vmask);
-    if(SDL_SaveBMP(hmask, "hmask.bmp") != 0)
-    {
-        printf("SDL_SaveBMP failed: %s\n", SDL_GetError());
-    }
-    if(SDL_SaveBMP(vmask, "vmask.bmp") != 0)
-    {
-        printf("SDL_SaveBMP failed: %s\n", SDL_GetError());
-    }
     SDL_Surface* result = merge_masks(hmask, vmask);
     if(SDL_SaveBMP(result, "result.bmp") != 0)
+    {
+        printf("SDL_SaveBMP failed: %s\n", SDL_GetError());
+    }
+    SDL_Surface* HoughSpace = LineDetection(result);
+    if(SDL_SaveBMP(HoughSpace, "HoughSpace.bmp") != 0)
     {
         printf("SDL_SaveBMP failed: %s\n", SDL_GetError());
     }
