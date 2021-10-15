@@ -8,6 +8,8 @@
 #include <stdarg.h>
 #include <stdio.h>
 
+bool VERBOSE;
+
 int verbose(const char * restrict, ...);
 void setVerbose(bool);
 

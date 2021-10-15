@@ -3,11 +3,13 @@
 #include "utils/mem/mem-management.h"
 #include "utils/verbosity/verbose.h"
 
-int main(int* argc, char** argv)
+int main(int argc, char** argv)
 {
-	if (*argc > 1 && argv[1][0]) {
+	if (argc > 1 && argv[1][0]) {
 		setVerbose(false);
 	}
+
+	verbose("Allocating model...\n");
 	// init random
 	initRandom();
 	initMemoryTracking();

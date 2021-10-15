@@ -2,16 +2,17 @@
 
 #include "verbose.h"
 
-bool VERBOSE = true;
-
 void setVerbose(bool verb)
 {
     VERBOSE = verb;
 }
 
+bool VERBOSE = true;
+
 int verbose(const char * restrict format, ...) {
-    if( !VERBOSE )
+    if ( !VERBOSE ) {
         return 0;
+    }
 
     va_list args;
     va_start(args, format);
