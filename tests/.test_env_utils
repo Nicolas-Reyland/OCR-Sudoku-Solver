@@ -71,6 +71,7 @@ function _update_test_status {
 }
 
 function _exit_on_var {
+	_prefix_indent
 	if [[ "$1" = true ]]; then
 		echo "[!] Test '$TEST_NAME' NOT completed. Status: `status_string $TEST_STATUS`"
 		_exit_test
@@ -82,7 +83,8 @@ function _exit_test {
 }
 
 function test_finished {
-	echo "[!] Test completed. Status: `status_string $TEST_STATUS`"
+	_prefix_indent
+	echo "[!] Test '$TEST_NAME' completed. Status: `status_string $TEST_STATUS`"
 	_exit_test
 }
 

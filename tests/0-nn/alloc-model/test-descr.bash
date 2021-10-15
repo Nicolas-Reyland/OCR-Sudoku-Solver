@@ -15,7 +15,6 @@
 
 # Test Description
 export TEST_STEPS_DESCR=(2 2)
-echo "TEST Description: $TEST_STEPS_DESCR"
 
 # Declare variables
 export abs_program_path=""
@@ -48,18 +47,21 @@ function prepare_steps {
 
 # Step 1
 function step_1 {
+	prefix_tabs=$(_prefix_indent)
+	alias sed-stdout='sed -e "s/^/$prefix_tabs | /;"'
+	alias compile='gcc '"$test_root_path"'/test.c '"${dot_c_files[@]}"' -I'"$project_root_path"'/src -lm'
 	case $1 in
 		1)
 			# Compile without warnings
-			nowarn_compilation=$(gcc -o $abs_program_path "$test_root_path"/test.c "${dot_c_files[@]}" -I$project_root_path/src -lm 2>&1) || test_error "Compilation failed"
+			nowarn_compilation=$(gcc "$test_root_path"/test.c "${dot_c_files[@]}" -I"$project_root_path"/src -lm -o $abs_program_path > /dev/null 2>&1) || test_error "Compilation failed"
 			;;
 		2)
-			fullwarn_compilation=$(gcc -o $abs_program_path.2 "$test_root_path"/test.c "${dot_c_files[@]}" -Isrc -Wall -Wextra -lm 2>&1)
+			fullwarn_compilation=$(gcc "$test_root_path"/test.c "${dot_c_files[@]}" -I"$project_root_path"/src -lm -o $abs_program_path.2 -Wall -Wextra > /dev/null 2>&1 | sed -e "s/^/$prefix_tabs | /;")
 			if [[ -n "$fullwarn_compilation" ]]; then
 				test_warn "Output in compiling file without flags :"
 				echo $nowarn_compilation
 			fi
-			werror_compilation=$(gcc -o $abs_program_path.3 "$test_root_path"/test.c "${dot_c_files[@]}" -Isrc -Wall -Wextra -Werror -lm 2>&1) || test_warn "Could not compile with ""-Werror"" flag"
+			werror_compilation=$(gcc "$test_root_path"/test.c "${dot_c_files[@]}" -I"$project_root_path"/src -lm -o $abs_program_path.3 -Wall -Wextra -Werror > /dev/null 2>&1 | sed -e "s/^/$prefix_tabs | /;") || test_warn "Could not compile with ""-Werror"" flag"
 			;;
 		*)
 			;;
@@ -71,13 +73,16 @@ function step_2 {
 	case $1 in
 		1)
 			# Check program return status
-			$abs_program_path > /dev/null 2>&1 || test_error "Program exits with non-zero status. Binaries are at ""$abs_program_path"""
+			prefix_tabs=$(_prefix_indent)
+			$abs_program_path | sed -e "s/^/$prefix_tabs | /;" || test_error "Program exits with non-zero status. Binaries are at ""$abs_program_path"""
 			;;
 		2)
 			# Valgrind memory check
-			export valgrind_memcheck_output=`valgrind --tool=memcheck --quiet $abs_program_path`
-			if [ -n $valgrind_memcheck_output ]; then
-				test_warn "Valgrind is not happy with your program: `$valgrind_memcheck_output`"
+			prefix_tabs=$(_prefix_indent)
+			valgrind --tool=memcheck --quiet $abs_program_path q 2> /tmp/valgrind-output
+			if [ -n "`cat /tmp/valgrind-output`" ]; then
+				test_warn "Valgrind is not happy with your program:"
+				cat /tmp/valgrind-output | sed -e "s/^/$prefix_tabs | /;"
 			fi
 			;;
 		*)

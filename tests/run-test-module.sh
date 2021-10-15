@@ -9,7 +9,6 @@ set +e
 trap "exit 1" TERM
 export TOP_PID=$$
 # Setup variables
-export TEST_OUTPUT_INDENT_LVL=0
 export TEST_ENV_VAR=1
 export EXIT_ON_WARNING=false
 export EXIT_ON_ERROR=true
@@ -22,7 +21,7 @@ if [ $# -ne 3 ]; then
 	echo Usage: ./runtest.sh test-name test-root-path project-root-path
 	test_problem "[?] Missing or too many arguments"
 fi
-TEST_STATUS=0
+TEST_STATUS=1
 ## Check test root path
 export test_root_path=$2
 if [ ! -d $test_root_path ]; then
@@ -38,14 +37,14 @@ fi
 
 # - Running the test -
 # Source the file
-. $test_root_path/run.sh
+. $test_root_path/test-descr.bash
 export TOTAL_STEPS=${#TEST_STEPS_DESCR[@]}
 
 ## Prepare the steps
 fn_exists prepare_steps && prepare_steps
 
 ## Execute all the steps
-((TEST_OUTPUT_INDENT_LVL++))
+#TEST_OUTPUT_INDENT_LVL=1
 for step_index in ${!TEST_STEPS_DESCR[@]}
 do
 	num_sub_steps=${TEST_STEPS_DESCR[$step_index]}
@@ -62,7 +61,6 @@ do
 	((TEST_OUTPUT_INDENT_LVL--))
 	announce_step_end $step_index
 done
-((TEST_OUTPUT_INDENT_LVL--))
 
 # call end of test
 test_finished
