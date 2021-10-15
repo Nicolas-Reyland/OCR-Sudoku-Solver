@@ -2,7 +2,7 @@
 
 #include "verbose.h"
 
-#define VERBOSE false
+bool VERBOSE = true;
 
 void setVerbose(bool verb)
 {

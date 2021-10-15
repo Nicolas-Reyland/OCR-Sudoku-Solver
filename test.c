@@ -1,8 +1,11 @@
-#include <stdio.h>
+#include "utils/verbosity/verbose.h"
 #include "nn/nn.h"
-#include "mem/mem-management.h"
+#include "utils/mem/mem-management.h"
+#include "utils/verbosity/verbose.h"
 
-int main()
+#define VERBOSE false
+
+int main(int* argc, char** argv)
 {
 	// init random
 	initRandom();
@@ -21,12 +24,12 @@ int main()
 	losses loss = CATEGORICALCROSSENTROPY;
 	optimizer optimizer = ADAM;
 
-	printf("Allocating model...\n");
+	verbose("Allocating model...\n");
 
 	// malloc model
 	nn_Model* model = createModel(3, model_architecture, activations, loss, optimizer);
 
-	printf("Model allocated.\n");
+	verbose("Model allocated.\n");
 
 	// free model
 	freeModel(model);
