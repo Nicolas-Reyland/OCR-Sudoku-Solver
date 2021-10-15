@@ -1,0 +1,62 @@
+#!/bin/bash
+
+# Setup utils functions
+function status_string {
+	case $1 in
+		0)
+			echo -n "SUCCESS" # All tests successful
+			;;
+		1)
+			echo -n "IMPERFECT" # Some tests raised warnings. no fails
+			;;
+		2)
+			echo -n "FAILED" # Some tests failed
+			;;
+		3)
+			echo -n "PROBLEMATIC" # Some tests could not be run
+			;;
+		*)
+			echo -n "UNDEFINED TEST STATUS: ""$1""" # Unknown test status
+			;;
+		esac
+}
+
+function test_warn {
+	echo "[W]: $@"
+	_update_test_status 1
+	_exit_on_var $EXIT_ON_WARNING
+}
+
+function test_error {
+	echo "[E]: $@"
+	_update_test_status 2
+	_exit_on_var $EXIT_ON_ERROR
+}
+
+function test_problem {
+	echo "[Problem]: $@"
+	_update_test_status 3
+	_exit_on_var $EXIT_ON_PROBLEM
+}
+
+function _update_test_status {
+	if [[ $TEST_STATUS -lt $1 ]]; then
+		TEST_STATUS=$1
+	fi
+}
+
+function _exit_on_var {
+	if [[ "$1" = true ]]; then
+		echo "[!] Test '$TEST_NAME' NOT completed. Status: `status_string $TEST_STATUS`"
+		_exit_test
+	fi
+}
+
+function _exit_test {
+	kill -s TERM $TOP_PID
+}
+
+function test_finished {
+	echo "[!] Test completed. Status: `status_string $TEST_STATUS`"
+	_exit_test
+}
