@@ -1,11 +1,11 @@
 #!/bin/bash
-# Test file for nn/conv
+# Test file for nn/alloc-model
 
 # Testing the allocation and freeing of the nn_Model struct
 # Steps :
 # 1. compile a C src file which allocates, then frees a nn_Model struct
 # 2. running the compiled program
-# Checks :
+# Sub-steps :
 # 1.
 #  - compilation
 #  - compilation with warning
