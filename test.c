@@ -26,15 +26,17 @@ int main(int argc, char** argv)
 	losses loss = CATEGORICALCROSSENTROPY;
 	optimizer optimizer = ADAM;
 
-	verbose("Allocating model...\n");
+	verbose("Allocating model...");
 
 	// malloc model
 	nn_Model* model = createModel(3, model_architecture, activations, loss, optimizer);
 
-	verbose("Model allocated.\n");
+	verbose("Model allocated.");
 
 	// free model
 	freeModel(model);
+
+	verbose("Model freed.");
 
 	return 0;
 }
