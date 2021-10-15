@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-export TEST_OUTPUT_INDENT_LVL=1
+export TEST_OUTPUT_INDENT_LVL=1 # start at indentation level of 1 for tests
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 cd $SCRIPT_DIR/../tests # tests dir in repo
 for folder in *
@@ -15,6 +15,7 @@ do
 		# run the sub-module test
 		if [[ -f $sub_folder/test-descr.bash ]]; then
 			set +e # tolerate bash errors
+			TEST_OUTPUT_INDENT_LVL=1
 			./run-test-module.sh ${sub_folder:2} $sub_folder $SCRIPT_DIR/.. &&	echo "Test ${sub_folder:2} done" || echo "Test ${sub_folder:2} done (problem occured)"
 			set -e # exit script on bash errors
 		fi
