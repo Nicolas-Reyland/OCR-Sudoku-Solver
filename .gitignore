@@ -1,5 +1,6 @@
-# test.out compiled binaries from test.c
+# compiled binaries from various scripts
 test.out
+src/gui/gui
 
 # Prerequisites
 *.d
