@@ -1,6 +1,28 @@
 #!/bin/bash
 
 # Setup utils functions
+function _prefix_indent {
+	for ((i=0;i<$TEST_OUTPUT_INDENT_LVL;i++))
+	do
+		echo -n -e ' \t '
+	done
+}
+
+function announce_step_start {
+	_prefix_indent
+	echo "[-] Starting step $1/$TOTAL_STEPS of $TEST_NAME"
+}
+
+function announce_step_end {
+	_prefix_indent
+	echo "[-] Ended step $1/$TOTAL_STEPS of $TEST_NAME (STATUS: `status_string $TEST_STATUS`)"
+}
+
+function announce_sub_step_start {
+	_prefix_indent
+	echo "[-] Starting sub step $2 of step $1"
+}
+
 function status_string {
 	case $1 in
 		0)
@@ -18,22 +40,25 @@ function status_string {
 		*)
 			echo -n "UNDEFINED TEST STATUS: ""$1""" # Unknown test status
 			;;
-		esac
+	esac
 }
 
 function test_warn {
+	_prefix_indent
 	echo "[W]: $@"
 	_update_test_status 1
 	_exit_on_var $EXIT_ON_WARNING
 }
 
 function test_error {
+	_prefix_indent
 	echo "[E]: $@"
 	_update_test_status 2
 	_exit_on_var $EXIT_ON_ERROR
 }
 
 function test_problem {
+	_prefix_indent
 	echo "[Problem]: $@"
 	_update_test_status 3
 	_exit_on_var $EXIT_ON_PROBLEM
@@ -59,4 +84,8 @@ function _exit_test {
 function test_finished {
 	echo "[!] Test completed. Status: `status_string $TEST_STATUS`"
 	_exit_test
+}
+
+function fn_exists {
+	declare -F "$1" > /dev/null
 }

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# - Setup test environment -
 # Load utils functions
 SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 . $SCRIPT_DIR/.test_env_utils
@@ -8,6 +9,7 @@ set +e
 trap "exit 1" TERM
 export TOP_PID=$$
 # Setup variables
+export TEST_OUTPUT_INDENT_LVL=0
 export TEST_ENV_VAR=1
 export EXIT_ON_WARNING=false
 export EXIT_ON_ERROR=true
@@ -34,4 +36,36 @@ if [ ! -d $project_root_path ]; then
 	exit 1
 fi
 
+# - Running the test -
+# Source the file
 . $test_root_path/run.sh
+export TOTAL_STEPS=${#TEST_STEPS_DESCR[@]}
+
+## Prepare the steps
+fn_exists prepare_steps && prepare_steps
+
+## Execute all the steps
+((TEST_OUTPUT_INDENT_LVL++))
+for step_index in ${!TEST_STEPS_DESCR[@]}
+do
+	num_sub_steps=${TEST_STEPS_DESCR[$step_index]}
+	# once the step_index is used as an index, we can increment it
+	((step_index++))
+	announce_step_start $step_index
+	# ssc : sub step counter
+	((TEST_OUTPUT_INDENT_LVL++))
+	for ((ssc=1;ssc<=$num_sub_steps;ssc++))
+	do
+		announce_sub_step_start $step_index $ssc
+		eval "step_$step_index $ssc"
+	done
+	((TEST_OUTPUT_INDENT_LVL--))
+	announce_step_end $step_index
+done
+((TEST_OUTPUT_INDENT_LVL--))
+
+# call end of test
+test_finished
+
+
+#

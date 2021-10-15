@@ -20,7 +20,7 @@ int main(int argc, char** argv)
 	};
 	// activation functions
 	activation activations[3] = {
-		0, 1, 2
+		SIGMOID, SIGMOID, SOFTMAX
 	};
 	// loss & optimizers
 	losses loss = CATEGORICALCROSSENTROPY;
