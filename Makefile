@@ -1,7 +1,7 @@
 # Makefile for the https://github.com/Nicolas-Reyland/OCR-Sudoku-Solver project
 
 SHELL := /bin/bash
-CFLAGS := -Wall -Wextra
+CFLAGS := -Wall -Wextra -Isrc
 CC := gcc $(CFLAGS)
 
 .PHONY: all
@@ -21,7 +21,7 @@ nn-model: nn-model-layers
 .PHONY: nn-model-layers
 nn-model-layers: nn-utils-misc
 	$(CC) -c -o src/nn/model/layers/layer.o src/nn/model/layers/layer.c
-	$(CC) -c -o src/nn/model/layers/model_layer.o src/nn/model/layers/model_layer.c
+	$(CC) -c -o src/nn/model/layers/model_layers.o src/nn/model/layers/model_layers.c
 	$(CC) -c -o src/nn/model/layers/node.o src/nn/model/layers/node.c
 
 .PHONY: nn-functions_descriptors
@@ -44,7 +44,7 @@ nn-session:
 	$(CC) -c -o src/nn/session/session.o src/nn/session/session.c
 
 .PHONY: nn-utils
-nn-utils: nn-utils-structs nn-utils-functions nn-utils-misc
+nn-utils: nn-utils-structs nn-utils-session nn-utils-misc
 	@echo empty utils
 
 .PHONY: nn-utils-structs
@@ -55,22 +55,22 @@ nn-utils-structs:
 nn-utils-misc:
 	$(CC) -c -o src/nn/utils/misc/randomness.o src/nn/utils/misc/randomness.c
 
-.PHONY: nn-utils-functions
-nn-utils-functions: nn-utils-functions-activations
-	$(CC) -c -o src/nn/utils/functions/optimizers.o src/nn/utils/functions/optimizers.c
-	$(CC) -c -o src/nn/utils/functions/losses.o src/nn/utils/functions/losses.c
+.PHONY: nn-utils-session
+nn-utils-functions: nn-utils-session-functions
+	$(CC) -c -o src/nn/utils/session/evaluate.o src/nn/utils/session/evaluate.c
 
-.PHONY: nn-utils-functions-activations
+.PHONY: nn-utils-session-functions
 nn-utils-functions-activations:
+	$(CC) -c -o src/nn/utils/functions/losses.o src/nn/utils/functions/losses.c
+	$(CC) -c -o src/nn/utils/functions/optimizers.o src/nn/utils/functions/optimizers.c
 	$(CC) -c -o src/nn/utils/functions/activations.o src/nn/utils/functions/activations.c
 
 .PHONY: mem
 mem:
 	$(CC) -c -o src/mem/linked_list.o src/mem/linked_list.c
-	$(CC) -c -o src/mem/mem-manager.o src/mem/mem-manager.c
+	$(CC) -c -o src/mem/mem-management.o src/mem/mem-management.c
 
 
 .PHONY: clean
 clean:
 	@./extra/make-clean.sh
-

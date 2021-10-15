@@ -1,6 +1,6 @@
 /* iot_linked_list Implementation */
 #include "in_out_tuple_linked_list.h"
-#include <stdio.h>
+#include "utils/verbosity/verbose.h"
 #include <errno.h>
 
 // init function

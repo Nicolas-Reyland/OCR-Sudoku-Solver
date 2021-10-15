@@ -6,7 +6,7 @@
 /* linked_list Declaration */
 #include <stdlib.h>
 #include <stdbool.h>
-#include <stdio.h>
+#include "utils/verbosity/verbose.h"
 #include "in_out_tuple.h"
 
 /* Constants */

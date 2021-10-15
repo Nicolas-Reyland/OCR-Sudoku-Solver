@@ -1,3 +1,6 @@
+# test.out compiled binaries from test.c
+test.out
+
 # Prerequisites
 *.d
 
@@ -50,3 +53,10 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# VS Code config files
+*.vscode
+
+# Valgrind core dumps
+vgcore.*
+

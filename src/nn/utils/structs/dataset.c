@@ -1,7 +1,7 @@
 #include "dataset.h"
 #include <stdlib.h>
 
-nn_DataSet* createDataSet(nn_Data* trainData, nn_Data* testData)
+nn_DataSet* _nn_createDataSet(nn_Data* trainData, nn_Data* testData)
 {
 	nn_DataSet* set = malloc(sizeof(nn_DataSet));
 	set->train 		= trainData;
@@ -10,9 +10,9 @@ nn_DataSet* createDataSet(nn_Data* trainData, nn_Data* testData)
 	return set;
 }
 
-void freeDataSet(nn_DataSet* dataSet)
+void _nn_freeDataSet(nn_DataSet* dataSet)
 {
-	freeData(dataSet->train);
-	freeData(dataSet->test);
-	free(dataSet);
+	_nn_freeData(dataSet->train);
+	_nn_freeData(dataSet->test);
+	mem_free(dataSet);
 }

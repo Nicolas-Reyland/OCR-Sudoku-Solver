@@ -6,7 +6,7 @@
 /* linked_list Declaration */
 #include <stdlib.h>
 #include <stdbool.h>
-#include <stdio.h>
+#include "utils/verbosity/verbose.h"
 
 /* Constants */
 #define LL_INDEX_ERROR_MSG "linked_list:IndexError: %d out of bounds with linked list of length %d"

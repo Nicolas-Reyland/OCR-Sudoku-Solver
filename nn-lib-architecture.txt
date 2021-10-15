@@ -25,24 +25,12 @@ Model :
      - (double-array) weights //il pointe vers le layer d'avant
      - (uint) num_bias
      - (double) bias
-
-
-for (int = 0; i < hidden_layer.length; i++) {
-  double sum = 0;
-  for (int j = 0; j < input_layer.length: j++) {
-    sum += hidden_layer.nodes[i].weights[j] * inputs[j];
-  }
-  hidden_layer.raw_value = sum + hidden_layer.bias[i];
-  hidden_layer.value = hidden_layer->activation_fn(hidden_layer.raw_value);
-  // value = sigmoid(raw_value)
-}
-
 Data :
   DataCollection *
     - (InOutTuple - linked-list) data
     ($void) loadDataCollection
     ($void) freeDataCollection
-  DataTuple * 
+  DataTuple *
     - (Data) data1
     - (Data) data2
   Data *
@@ -50,11 +38,11 @@ Data :
     - ($DataTuple) splitTrainTest
     ($Data) createData
     ($void) freeData
-  InOutTuple * 
+  InOutTuple *
     - (Sample) input
     - (Sample) output
   InitData -> initialize data structure
-  
+
 Session :
   Session *
     - (Data) data
@@ -63,10 +51,15 @@ Session :
     - (bool) stop_on_loss_threshold_reached
     - (bool) verbose
     - ($void) train
-    - ($void) test
+    - ($nn_TestResult) test
+  nn_TestResult *
+    - (double) min_loss
+    - (double) avg_loss
+    - (double) max_loss
+    - (double) percentage // % of good results
 
 Sample:
-  Sample * 
+  Sample *
     - (utils->Struct->ShapeDescription) shape
     - (double array) values
 
@@ -92,34 +85,37 @@ utils :
       - (uint) x
       - (uint) y
       - (uint) z
-    DataSet * 
+    DataSet *
       - (Data) train
       - (Data) test
     ($DataSet*) createDataSet
     ($void) freeDataSet
-    LinkedList *
+    iot_linked_list *
       ...library designed by nico
-  Functions :
-    losses :
-      ($double) CategoricalCrossentropy
-      ($double) BinaryCrossentropy
-      ($double) SparseCategoricalCrossentropy
-    activations :
-      ($double) sigmoid
-      ($double) relu
-      ($double) leaky_relu    //optional
-      ($double) softmax
-      tanh
-    optimizers :
-      ($void) RMSprop
-      ($void) Adam
   Misc :
     // randomness
     ($void) initRandom
     ($double) getRandomDouble
     ($double) getNormalizedRandomDouble
     ($double) getNormalizedPositiveRandomDouble
-
+  Session :
+    evaluate.h/c
+    - ($void) forward_propagation
+    - ($void) backwards_propagation
+    Functions :
+      losses :
+        ($double) CategoricalCrossentropy
+        ($double) BinaryCrossentropy
+        ($double) SparseCategoricalCrossentropy
+      activations :
+        ($double) sigmoid
+        ($double) relu
+        ($double) leaky_relu    //optional
+        ($double) softmax
+        ($double) tanh
+      optimizers :
+        ($void) RMSprop
+        ($void) Adam
 
 /* Norme d'ecriture */
 
@@ -168,12 +164,30 @@ utils :
   Struct :
     ShapeDescription * shape_description.h/c
     linked_list * linked_list.h/c
-  Functions :
-    losses.h/c
-    activations.h/c
-    optimizers.h/c
   Misc :
     randomness.h/c
+  Session:
+    evaluate.h/c
+    Functions :
+      losses.h/c
+      activations.h/c
+      optimizers.h/c
 
+
+//
+
+
+
+
+for (int = 0; i < hidden_layer.length; i++) {
+  double sum = 0;
+  for (int j = 0; j < input_layer.length: j++) {
+    sum += hidden_layer.nodes[i].weights[j] * inputs[j];
+  }
+  hidden_layer.raw_value = sum + hidden_layer.bias[i];
+  hidden_layer.value = hidden_layer->activation(hidden_layer.raw_value);
+  // value = sigmoid(raw_value)
+
+}
 
 //

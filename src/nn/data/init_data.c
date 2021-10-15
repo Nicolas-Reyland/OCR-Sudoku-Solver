@@ -1,25 +1,24 @@
+// init_data.c
+
 #include "init_data.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 double _convertStringToDouble(char* string);
 char _readFile(FILE* file, nn_ShapeDescription* description, double* values);
 
 
-nn_Data* nn_Data_load_raw(char* input_path, char* output_path, nn_ShapeDescription* description)
+nn_Data* nn_DataLoadRaw(char* input_path, char* output_path, nn_ShapeDescription* description)
 {
     FILE* input_file = fopen(input_path,"r+");
     FILE* output_file = fopen(output_path, "r+");
 
     if(input_file == NULL)
     {
-        printf("ERROR 404: %s, the file does not exist. Exiting...\n", *input_path);
+        verbose("ERROR 404: %s, the file does not exist. Exiting...\n", *input_path);
         exit(EXIT_FAILURE);
     }
     if(output_file == NULL)
     {
-        printf("ERROR 404: %s, the file does not exist. Exiting...\n", *output_path);
+        verbose("ERROR 404: %s, the file does not exist. Exiting...\n", *output_path);
         exit(EXIT_FAILURE);
     }
     iot_linked_list* data_list = init_iot_linked_list();
@@ -56,7 +55,7 @@ nn_Data* nn_Data_load_raw(char* input_path, char* output_path, nn_ShapeDescripti
     fclose(input_file);
     fclose(output_file);
 
-    return createData(loadDataCollection(data_list));
+    return _nn_createData(_nn_loadDataCollection(data_list));
 }
 
 
@@ -70,12 +69,12 @@ char _readFile(FILE* file, nn_ShapeDescription* description, double* values)
 
     //normally, if we do the right things, then we define the dimensions
     //that are not used to 1, so that it doesn't break the malloc sizing lol
-    values = malloc(sizeof(double)*value_size);
+    values = mem_malloc(sizeof(double)*value_size);
 
     char car = fgetc(file);
     while(car != '\n' && car != EOF)
     {
-        char* string = malloc(sizeof(char) * NB_DOUBLE_BITS);
+        char* string = mem_malloc(sizeof(char) * NB_DOUBLE_BITS);
         size_t i = 0; //cursor in our string
 
 
@@ -87,7 +86,7 @@ char _readFile(FILE* file, nn_ShapeDescription* description, double* values)
                 string[i] = car;
             else                    //dear God
             {
-                printf("Error at loading data, string buffer not enough big to\
+                verbose("Error at loading data, string buffer not enough big to\
                  store current data... exiting\n");
                 exit(EXIT_FAILURE);
             }
@@ -109,6 +108,6 @@ char _readFile(FILE* file, nn_ShapeDescription* description, double* values)
 double _convertStringToDouble(char* string)
 {
     double value = strtod(string,NULL);
-    free(string);
+    mem_free(string);
     return 0;
 }
