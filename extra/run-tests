@@ -10,8 +10,6 @@ do
 	do
 		module_name=$(echo ""$sub_folder"" | cut -d '/' -f 2)
 		if [ $sub_folder == $folder/base ]; then
-			echo " - base"
-		else
 			echo " - sub-module: $module_name"
 		fi
 		# run the sub-module test
