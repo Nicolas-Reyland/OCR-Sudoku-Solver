@@ -13,12 +13,12 @@ nn_Data* nn_DataLoadRaw(char* input_path, char* output_path, nn_ShapeDescription
 
     if(input_file == NULL)
     {
-        printf("ERROR 404: %s, the file does not exist. Exiting...\n", *input_path);
+        verbose("ERROR 404: %s, the file does not exist. Exiting...\n", *input_path);
         exit(EXIT_FAILURE);
     }
     if(output_file == NULL)
     {
-        printf("ERROR 404: %s, the file does not exist. Exiting...\n", *output_path);
+        verbose("ERROR 404: %s, the file does not exist. Exiting...\n", *output_path);
         exit(EXIT_FAILURE);
     }
     iot_linked_list* data_list = init_iot_linked_list();
@@ -86,7 +86,7 @@ char _readFile(FILE* file, nn_ShapeDescription* description, double* values)
                 string[i] = car;
             else                    //dear God
             {
-                printf("Error at loading data, string buffer not enough big to\
+                verbose("Error at loading data, string buffer not enough big to\
                  store current data... exiting\n");
                 exit(EXIT_FAILURE);
             }

@@ -7,7 +7,7 @@
 
 #include "data.h"
 #include "in_out_tuple.h"
-#include <stdio.h>
+#include "utils/verbosity/verbose.h"
 #include <stdlib.h>
 #include <string.h>
 

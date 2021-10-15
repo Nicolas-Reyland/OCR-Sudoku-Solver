@@ -34,7 +34,7 @@ void mem_free(void *ptr)
 	// TODO: we search two times through the list. optimize this pls
 	int index = GPL->index_of(GPL, ptr);
 	if (index == -1) {
-		printf("/!\\ Ptr %p is not in the list! Freeing anyway.\n", ptr);
+		verbose("/!\\ Ptr %p is not in the list! Freeing anyway.\n", ptr);
 		free(ptr);
 		return;
 	}

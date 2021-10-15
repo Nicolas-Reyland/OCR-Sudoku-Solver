@@ -2,7 +2,7 @@
 
 #include "model_layers.h"
 
-//#include <stdio.h>
+//#include "utils/verbosity/verbose.h"
 
 nn_ModelLayers* _nn_createModelLayers(unsigned int num_hidden_layers, nn_ShapeDescription model_architecture[], activation activations[])
 {
@@ -14,12 +14,12 @@ nn_ModelLayers* _nn_createModelLayers(unsigned int num_hidden_layers, nn_ShapeDe
   if (num_hidden_layers) {
     hidden_layers = mem_calloc(num_hidden_layers, sizeof(nn_Layer));
     for (unsigned int i = 0; i < num_hidden_layers; i++) {
-      //printf("Allocating hidden layer ...\n");
+      //verbose("Allocating hidden layer ...\n");
       nn_Layer* hidden_layer = _nn_createLayer(model_architecture[i + 1], model_architecture[i + 2], activations[i + 1]);
       hidden_layers[0] = *hidden_layer;
     }
   }
-  //printf("layers are allocated.\n");
+  //verbose("layers are allocated.\n");
   // malloc struct
   nn_ModelLayers* model_layers = mem_malloc(sizeof(nn_ModelLayers));
   model_layers->input_layer = *input_layer;

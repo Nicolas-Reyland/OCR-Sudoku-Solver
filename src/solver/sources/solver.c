@@ -6,7 +6,7 @@
  * by Lilian Schall 2021 Sudoku Solver Epita
  */
 
-#include <stdio.h>
+#include "utils/verbosity/verbose.h"
 #include <stdlib.h>
 
 #include "./../headers/const.h"

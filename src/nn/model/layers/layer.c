@@ -10,7 +10,7 @@ nn_Layer* _nn_createLayer(nn_ShapeDescription layer_shape, nn_ShapeDescription n
   for (unsigned int z = 0; z < layer_shape.z; z++) {
     for (unsigned int y = 0; y < layer_shape.y; y++) {
       for (unsigned int x = 0; x < layer_shape.x; x++) {
-        //printf("Allocating node %d %d %d\n", x, y, z);
+        //verbose("Allocating node %d %d %d\n", x, y, z);
         nn_Node* node = _nn_createNode(num_next_layer_weights);
         nodes[
           + x
@@ -20,7 +20,7 @@ nn_Layer* _nn_createLayer(nn_ShapeDescription layer_shape, nn_ShapeDescription n
       }
     }
   }
-  //printf("Done allocating nodes\n");
+  //verbose("Done allocating nodes\n");
   // malloc struct
   nn_Layer* layer = malloc(sizeof(nn_Layer));
   layer->shape = layer_shape;

@@ -1,6 +1,6 @@
 /* linked_list Implementation */
 #include "linked_list.h"
-#include <stdio.h>
+#include "utils/verbosity/verbose.h"
 #include <errno.h>
 
 // init function
@@ -39,8 +39,8 @@ void _free_linked_list_node(ll_node* node)
 // error message
 void _linked_list_exit_msg(const char* msg)
 {
-	fprintf(stderr, "%s", msg);
-	fprintf(stderr, "%s", "\n");
+	fverbose(stderr, "%s", msg);
+	fverbose(stderr, "%s", "\n");
 	exit(EXIT_FAILURE);
 }
 
@@ -55,7 +55,7 @@ void _linked_list_assert_index(linked_list *list, int index)
 {
 	if (_linked_list_valid_index(list, index)) return;
 	char msg[255];
-	sprintf(msg, LL_INDEX_ERROR_MSG, index, list->length);
+	sverbose(msg, LL_INDEX_ERROR_MSG, index, list->length);
 	_linked_list_exit_msg(msg);
 }
 
@@ -71,7 +71,7 @@ ll_node* _linked_list_get_node_at(linked_list *list, int index)
 		if (node == NULL)
 		{
 			char msg[255];
-			sprintf(msg, LL_NULL_POINTER_NODE, i);
+			sverbose(msg, LL_NULL_POINTER_NODE, i);
 			_linked_list_exit_msg(msg);
 		}
 	}
@@ -89,7 +89,7 @@ ll_node* _linked_list_new_node()
 	if (node == NULL)
 	{
 		char msg[255];
-		sprintf(msg, LL_MEM_ALLOC_ERROR_MSG, ll_node_size);
+		sverbose(msg, LL_MEM_ALLOC_ERROR_MSG, ll_node_size);
 		_linked_list_exit_msg(msg);
 	}
 	return node;

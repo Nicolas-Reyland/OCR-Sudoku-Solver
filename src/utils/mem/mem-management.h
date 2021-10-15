@@ -6,7 +6,7 @@
 #include "linked_list.h"
 #include <stdlib.h>
 #include <stdbool.h>
-#include <stdio.h>
+#include "utils/verbosity/verbose.h"
 
 // global variables
 linked_list* GPL; // GPL : Global Pointer List

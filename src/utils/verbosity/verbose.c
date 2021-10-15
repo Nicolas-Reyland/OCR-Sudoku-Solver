@@ -1,9 +1,13 @@
+// verbose.c
+
 #include "verbose.h"
-#include <stdbool.h>
-#include <stdarg.h>
-#include <stdio.h>
 
 #define VERBOSE false
+
+void setVerbose(bool verb)
+{
+    VERBOSE = verb;
+}
 
 int verbose(const char * restrict format, ...) {
     if( !VERBOSE )

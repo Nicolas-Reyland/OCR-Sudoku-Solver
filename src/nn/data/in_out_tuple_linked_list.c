@@ -1,6 +1,6 @@
 /* iot_linked_list Implementation */
 #include "in_out_tuple_linked_list.h"
-#include <stdio.h>
+#include "utils/verbosity/verbose.h"
 #include <errno.h>
 
 // init function
@@ -39,8 +39,8 @@ void _free_iot_linked_list_node(iot_ll_node* node)
 // error message
 void _iot_linked_list_exit_msg(const char* msg)
 {
-	fprintf(stderr, "%s", msg);
-	fprintf(stderr, "%s", "\n");
+	fverbose(stderr, "%s", msg);
+	fverbose(stderr, "%s", "\n");
 	exit(EXIT_FAILURE);
 }
 
@@ -55,7 +55,7 @@ void _iot_linked_list_assert_index(iot_linked_list *list, int index)
 {
 	if (_iot_linked_list_valid_index(list, index)) return;
 	char msg[255];
-	sprintf(msg, IOT_LL_INDEX_ERROR_MSG, index, list->length);
+	sverbose(msg, IOT_LL_INDEX_ERROR_MSG, index, list->length);
 	_iot_linked_list_exit_msg(msg);
 }
 
@@ -71,7 +71,7 @@ iot_ll_node* _iot_linked_list_get_node_at(iot_linked_list *list, int index)
 		if (node == NULL)
 		{
 			char msg[255];
-			sprintf(msg, IOT_LL_NULL_POINTER_NODE, i);
+			sverbose(msg, IOT_LL_NULL_POINTER_NODE, i);
 			_iot_linked_list_exit_msg(msg);
 		}
 	}
@@ -89,7 +89,7 @@ iot_ll_node* _iot_linked_list_new_node()
 	if (node == NULL)
 	{
 		char msg[255];
-		sprintf(msg, IOT_LL_MEM_ALLOC_ERROR_MSG, iot_ll_node_size);
+		sverbose(msg, IOT_LL_MEM_ALLOC_ERROR_MSG, iot_ll_node_size);
 		_iot_linked_list_exit_msg(msg);
 	}
 	return node;
