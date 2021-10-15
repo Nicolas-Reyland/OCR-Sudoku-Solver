@@ -5,7 +5,7 @@
 
 #include "layers/model_layers.h"
 #include "nn/functions_descriptors/functions_descriptors_enums.h"
-#include "mem/mem-management.h"
+#include "utils/mem/mem-management.h"
 
 typedef struct nn_Model {
   nn_ModelLayers* layers;

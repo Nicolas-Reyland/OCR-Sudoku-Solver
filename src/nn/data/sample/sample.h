@@ -5,7 +5,7 @@
 
 #include <stdlib.h>
 #include "nn/utils/structs/shape_description.h"
-#include "mem/mem-management.h"
+#include "utils/mem/mem-management.h"
 
 typedef struct nn_Sample
 {
