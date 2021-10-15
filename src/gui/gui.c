@@ -15,6 +15,7 @@ GdkPixbuf* create_pixbuf(const gchar *filename);
 GdkPixbuf* resize_pixbuf(GdkPixbuf *pixbuf);
 GtkWidget* gui_load_image(const gchar *filename);
 void open_dialog(GtkWidget *button, GtkWidget** widget_pointers[]);
+void display_img_process_steps(GtkWidget *button, GtkWidget** widget_pointers[]);
 
 int main(int argc, char **argv)
 {
@@ -26,24 +27,21 @@ int main(int argc, char **argv)
 
     // Boxes
     GtkWidget *main_box = NULL;
-    GtkWidget *buttons_box = NULL;
-
-    GdkPixbuf *icon = NULL;
-    //GdkPixbuf *image_pixbuf = NULL;
+    GtkWidget *top_buttons_box = NULL;
+    GtkWidget *bottom_buttons_box = NULL;
 
     // Images
+    GdkPixbuf *icon = NULL;
     GtkWidget *image = NULL;
 
     // Buttons
-    GtkWidget *ld_img_button = NULL;
-    GtkWidget *rotate_button = NULL;
-    GtkWidget *grayscale_button = NULL;
+    GtkWidget *load_img_button = NULL;
+    GtkWidget *grayscale_img_button = NULL;
+    GtkWidget *blurred_img_button = NULL;
+    GtkWidget *binarised_img_button = NULL;
 
     // Variable that helps display an image
-    GtkWidget** widget_pointers[3] = {&window, &main_box, &image};
-
-    // File chooser dialog
-    //GtkWidget *file_chooser_dialog = NULL;
+    GtkWidget** widget_pointers[3] = {&window, &top_buttons_box, &image};
 
     // Errors
     //GError *err = NULL;
@@ -68,6 +66,9 @@ int main(int argc, char **argv)
     icon = create_pixbuf("gui_images/icon.jpg");
     gtk_window_set_icon(GTK_WINDOW(window), icon);
 
+    image = gui_load_image("gui_images/no_image.png");
+    image_process("gui_images/no_image.png");
+
     // Frame creation
     frame = gtk_frame_new("Loaded Image");
     gtk_frame_set_label_align (GTK_FRAME(frame), 0.5, 1.0);
@@ -79,35 +80,41 @@ int main(int argc, char **argv)
     main_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     gtk_container_add(GTK_CONTAINER(frame), main_box);
 
-    buttons_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    top_buttons_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    bottom_buttons_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 
     // Buttons creation
-    ld_img_button = gtk_button_new_with_label("Load Image");
-    gtk_widget_set_tooltip_text(ld_img_button, "Loads an image");
+    load_img_button = gtk_button_new_with_label("Load Image");
+    gtk_widget_set_tooltip_text(load_img_button, "Loads an image");
 
-    rotate_button = gtk_button_new_with_label("Rotate");
-    gtk_widget_set_tooltip_text(rotate_button, "Rotates the image");
+    grayscale_img_button = gtk_button_new_with_label("Grayscale image");
+    gtk_widget_set_tooltip_text(grayscale_img_button, "Displays the grayscale image");
 
-    grayscale_button = gtk_button_new_with_label("Grayscale");
-    gtk_widget_set_tooltip_text(grayscale_button, "Grayscale the image");
+    blurred_img_button = gtk_button_new_with_label("Blurred image");
+    gtk_widget_set_tooltip_text(blurred_img_button, "Displays the blurred image");
 
-    // Set the buttons position in the 'buttons_box'
-    gtk_box_pack_start(GTK_BOX(buttons_box), ld_img_button, TRUE, FALSE, 0);
-    gtk_box_set_center_widget(GTK_BOX(buttons_box), grayscale_button);
-    gtk_box_pack_end(GTK_BOX(buttons_box), rotate_button, TRUE, FALSE, 0);
+    binarised_img_button = gtk_button_new_with_label("Binarised image");
+    gtk_widget_set_tooltip_text(binarised_img_button, "Displays the binarised image");
 
-    image = gui_load_image("gui_images/no_image.png");
+    // Sets the buttons and image position in the 'top_buttons_box'
+    gtk_box_pack_start(GTK_BOX(top_buttons_box), image, TRUE, FALSE, 0);
+    gtk_box_pack_end(GTK_BOX(top_buttons_box), load_img_button, FALSE, FALSE, 0);
 
-    gtk_box_pack_start(GTK_BOX(main_box), image, TRUE, FALSE, 0);
-    gtk_box_pack_end(GTK_BOX(main_box), buttons_box, FALSE, FALSE, 20);
+    // Sets the buttons position in the 'bottom_buttons_box'
+    gtk_box_pack_start(GTK_BOX(bottom_buttons_box), grayscale_img_button, TRUE, FALSE, 0);
+    gtk_box_set_center_widget(GTK_BOX(bottom_buttons_box), blurred_img_button);
+    gtk_box_pack_end(GTK_BOX(bottom_buttons_box), binarised_img_button, TRUE, FALSE, 0);
 
-    //
-    image_process("sudoku_images_test/sudoku_test_6.jpg");
-    //
+    gtk_box_pack_start(GTK_BOX(main_box), top_buttons_box, TRUE, FALSE, 0);
+    gtk_box_pack_end(GTK_BOX(main_box), bottom_buttons_box, FALSE, FALSE, 20);
 
-    //
-    g_signal_connect(ld_img_button, "clicked", G_CALLBACK(open_dialog), widget_pointers);
-    //  
+    // Sets the action of the top buttons
+    g_signal_connect(load_img_button, "clicked", G_CALLBACK(open_dialog), widget_pointers);
+    
+    // Sets the action of the bottom buttons
+    g_signal_connect(grayscale_img_button, "clicked", G_CALLBACK(display_img_process_steps), widget_pointers);
+    g_signal_connect(blurred_img_button, "clicked", G_CALLBACK(display_img_process_steps), widget_pointers);
+    g_signal_connect(binarised_img_button, "clicked", G_CALLBACK(display_img_process_steps), widget_pointers);
 
     g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
@@ -189,7 +196,7 @@ void open_dialog(GtkWidget *button, GtkWidget** widget_pointers[])
     //assert();
 
     GtkWidget **window = widget_pointers[0];
-    GtkWidget **main_box = widget_pointers[1];
+    GtkWidget **top_buttons_box = widget_pointers[1];
     GtkWidget **image = widget_pointers[2];
     
     GtkWidget *dialog = NULL;
@@ -199,7 +206,7 @@ void open_dialog(GtkWidget *button, GtkWidget** widget_pointers[])
     if (*window == NULL)
         printf("THE WINDOW POINTER IS NULL");
 
-    if (*main_box == NULL)
+    if (*top_buttons_box == NULL)
         printf("THE IMAGE POINTER IS NULL");
 
     if (*image == NULL)
@@ -242,8 +249,9 @@ void open_dialog(GtkWidget *button, GtkWidget** widget_pointers[])
             gtk_widget_destroy(*image);
 
             *image = gui_load_image(filename);
+            image_process(filename);
 
-            gtk_box_pack_start(GTK_BOX(*main_box), *image, TRUE, FALSE, 0);
+            gtk_box_pack_start(GTK_BOX(*top_buttons_box), *image, TRUE, FALSE, 0);
 
             gtk_widget_show_all(*window);
         }
@@ -252,4 +260,56 @@ void open_dialog(GtkWidget *button, GtkWidget** widget_pointers[])
         printf("You pressed the cancel button\n");
 
     gtk_widget_destroy(dialog);
+}
+
+void display_img_process_steps(GtkWidget *button, GtkWidget** widget_pointers[])
+{
+    //assert();
+    GtkWidget **window = widget_pointers[0];
+    GtkWidget **top_buttons_box = widget_pointers[1];
+    GtkWidget **image = widget_pointers[2];
+
+    const gchar* button_label = gtk_button_get_label(GTK_BUTTON(button));
+
+    // CONDITIONS MUST BE MODIFIED
+    if (button_label[1] == 'r')
+    {
+        if (create_pixbuf(SAVED_IMG_NAME_G))
+        {
+            gtk_widget_destroy(*image);
+
+            *image = gui_load_image(SAVED_IMG_NAME_G);
+
+            gtk_box_pack_start(GTK_BOX(*top_buttons_box), *image, TRUE, FALSE, 0);
+
+            gtk_widget_show_all(*window);
+        }
+    }
+    else if (button_label[1] == 'l')
+    {
+        if (create_pixbuf(SAVED_IMG_NAME_BL))
+        {
+            gtk_widget_destroy(*image);
+
+            *image = gui_load_image(SAVED_IMG_NAME_BL);
+
+            gtk_box_pack_start(GTK_BOX(*top_buttons_box), *image, TRUE, FALSE, 0);
+
+            gtk_widget_show_all(*window);
+        }
+    }
+    else // button_label = "Binarised image"
+    {
+        if (create_pixbuf(SAVED_IMG_NAME_BI))
+        {
+            gtk_widget_destroy(*image);
+
+            *image = gui_load_image(SAVED_IMG_NAME_BI);
+
+            gtk_box_pack_start(GTK_BOX(*top_buttons_box), *image, TRUE, FALSE, 0);
+
+            gtk_widget_show_all(*window);
+        }
+    }
+    //
 }

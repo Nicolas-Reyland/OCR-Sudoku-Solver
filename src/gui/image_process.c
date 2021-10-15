@@ -5,6 +5,7 @@
 #include <gtk/gtk.h>
 #include <math.h>
 #include <err.h>
+#include "image_process.h"
 #include "pixel_operations.h"
 
 static const int g_blur_kernel_5[5][5] = {{1, 4, 7, 4, 1},
@@ -206,7 +207,7 @@ void image_process(char *path)
 		}
 	}
 
-	SDL_SaveBMP(surface, "grayscale.bmp");
+	SDL_SaveBMP(surface, SAVED_IMG_NAME_G);
 
 	//===================================================
 	//******************G.Blur process*******************
@@ -236,7 +237,7 @@ void image_process(char *path)
 	}
 
 	SDL_FreeSurface(surface);
-	SDL_SaveBMP(blurred_surface, "blurred_image.bmp");
+	SDL_SaveBMP(blurred_surface, SAVED_IMG_NAME_BL);
 
 	//===================================================
 	//***********Sauvola binarisation process************
@@ -274,5 +275,5 @@ void image_process(char *path)
 	}
 
 	SDL_FreeSurface(blurred_surface);
-	SDL_SaveBMP(binarised_surface, "binarised_image.bmp");
+	SDL_SaveBMP(binarised_surface, SAVED_IMG_NAME_BI);
 }
