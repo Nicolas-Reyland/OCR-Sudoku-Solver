@@ -11,6 +11,7 @@
 bool VERBOSE;
 
 int verbose(const char * restrict, ...);
+int verbose_no_endline(const char * restrict, ...);
 void setVerbose(bool);
 
 #endif
