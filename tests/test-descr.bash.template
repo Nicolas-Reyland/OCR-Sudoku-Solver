@@ -1,0 +1,55 @@
+#!/bin/bash
+# Test file for ...
+
+# Testing ... what you are testing ...
+# Steps :
+# 1. ...
+# 2. ...
+# Sub-steps :
+# 1.
+#  - ...
+#  - ...
+# 2.
+#  - ...
+#  - ...
+
+# Test Description
+export TEST_STEPS_DESCR=(2 2 2)
+
+# Declare variabes & functions
+# ...
+
+# Steps preparation
+function prepare_steps {
+	# ...
+}
+
+# Step 1
+function step_1 {
+	# ...
+	case $1 in
+		1)
+			# ...
+			;;
+		2)
+			# ...
+			;;
+		*)
+			;;
+	esac
+}
+
+# Step 2
+function step_2 {
+	# ...
+	case $1 in
+		1)
+			# ...
+			;;
+		2)
+			# ...
+			;;
+		*)
+			;;
+	esac
+}
