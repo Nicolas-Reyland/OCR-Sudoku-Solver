@@ -14,9 +14,9 @@ do
 		fi
 		# run the sub-module test
 		if [[ -f $sub_folder/test-descr.bash ]]; then
-			set +e
+			set +e # tolerate bash errors
 			./run-test-module.sh ${sub_folder:2} $sub_folder $SCRIPT_DIR/.. &&	echo "Test ${sub_folder:2} done" || echo "Test ${sub_folder:2} done (problem occured)"
-			set -e
+			set -e # exit script on bash errors
 		fi
 	done
 done
