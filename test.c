@@ -3,10 +3,11 @@
 #include "utils/mem/mem-management.h"
 #include "utils/verbosity/verbose.h"
 
-#define VERBOSE false
-
 int main(int* argc, char** argv)
 {
+	if (*argc > 1 && argv[1][0]) {
+		setVerbose(false);
+	}
 	// init random
 	initRandom();
 	initMemoryTracking();
