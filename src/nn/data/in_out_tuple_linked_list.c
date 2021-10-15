@@ -6,7 +6,7 @@
 // init function
 iot_linked_list* init_iot_linked_list()
 {
-	iot_linked_list* list = (iot_linked_list*) malloc(sizeof(iot_linked_list));
+	iot_linked_list* list = (iot_linked_list*) mem_malloc(sizeof(iot_linked_list));
 	// setup attributes
 	list->length = 0;
 	list->value_size = sizeof(nn_InOutTuple*);
@@ -84,7 +84,7 @@ iot_ll_node* _iot_linked_list_new_node()
 {
 	// allocate new memory for node
 	size_t iot_ll_node_size = sizeof(struct iot_ll_node);
-	struct iot_ll_node *node = (struct iot_ll_node*) malloc(iot_ll_node_size);
+	struct iot_ll_node *node = (struct iot_ll_node*) mem_malloc(iot_ll_node_size);
 	// if the pointer is NULL, the allocation faled
 	if (node == NULL)
 	{

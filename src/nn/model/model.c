@@ -20,7 +20,7 @@ nn_Model* createModel(unsigned int num_layers, nn_ShapeDescription model_archite
 {
   nn_ModelLayers* layers = _nn_createModelLayers(num_layers - 2, model_architecture, activations);
   // malloc struct
-  nn_Model* model = malloc(sizeof(nn_Model));
+  nn_Model* model = mem_malloc(sizeof(nn_Model));
   model->layers = layers;
   model->loss = loss;
   model->optimizer = optimizer;
@@ -34,6 +34,7 @@ nn_Model* createModel(unsigned int num_layers, nn_ShapeDescription model_archite
 void freeModel(nn_Model* model)
 {
   _nn_freeModelLayers(model->layers);
+  verbose("freed model layers");
   mem_free(model);
 }
 

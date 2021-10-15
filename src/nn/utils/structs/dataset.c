@@ -3,7 +3,7 @@
 
 nn_DataSet* _nn_createDataSet(nn_Data* trainData, nn_Data* testData)
 {
-	nn_DataSet* set = malloc(sizeof(nn_DataSet));
+	nn_DataSet* set = mem_malloc(sizeof(nn_DataSet));
 	set->train 		= trainData;
 	set->test 		= testData;
 
