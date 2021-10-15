@@ -9,7 +9,6 @@ int main(int argc, char** argv)
 		setVerbose(false);
 	}
 
-	verbose("Allocating model...\n");
 	// init random
 	initRandom();
 	initMemoryTracking();
