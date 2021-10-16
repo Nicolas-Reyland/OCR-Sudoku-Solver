@@ -52,9 +52,10 @@ int main()
 
 void printLayer(int index, nn_Layer* layer)
 {
+	printf("index: %d\n", index);
 	nn_Node* node;
 	for (size_t i = 0; i < layer->nb_nodes; i++) {
-		node = layer->nodes[0];
+		node = layer->nodes[i];
 		for (size_t j = 0; j < node->num_weights; j++) {
 			printf("layers[%d]->nodes[%ld]->weights[%ld] = %lf\n", index, i, j, node->weights[j]);
 		}
