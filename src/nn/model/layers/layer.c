@@ -32,11 +32,14 @@ nn_Layer* _nn_createLayer(nn_ShapeDescription layer_shape, nn_ShapeDescription n
 
 nn_Layer* _nn_createOutputLayer(nn_ShapeDescription layer_shape, activation activation)
 {
-  // The output layer does not have weights
-  nn_ShapeDescription empty_shape = {
-    .dims = 0, .x = 0, .y = 0, .z = 0
-  };
-  return _nn_createLayer(layer_shape, empty_shape, activation);
+  // The output layer does not have weights, but must have a bias
+  nn_Layer* layer = _nn_createLayer(layer_shape, layer_shape, activation);
+  for (size_t i = 0; i < layer->nb_nodes; i++) {
+    free(layer->nodes[i]->weights);
+    layer->nodes[i]->weights = NULL;
+    layer->nodes[i]->num_weights = 0;
+  }
+  return layer;
 }
 
 void _nn_freeLayer(nn_Layer* layer)

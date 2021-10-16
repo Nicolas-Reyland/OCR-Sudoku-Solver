@@ -39,7 +39,7 @@ void _nn_printData(nn_Data* data)
 {
     iot_ll_node* node = data->data_collection->data
         ->head;
-    for(size_t i = 0; i < data->data_collection->data->length;i++)
+    for(size_t i = 0; i < (size_t)data->data_collection->data->length;i++)
     {
         nn_InOutTuple* tuple = node->value;
         if(tuple == NULL)
