@@ -29,7 +29,7 @@ function prepare_steps {
 		dot_c_files+=("$file")
 	done
 	# absolute program path
-	abs_program_path="/tmp/nn-alloc-test-test.out"
+	abs_program_path="$tmp_dir/nn-alloc-test-test.out"
 	if [ -f $abs_program_path ]; then
 		rm $abs_program_path
 	fi
@@ -77,10 +77,10 @@ function step_2 {
 		2)
 			# Valgrind memory check
 			prefix_tabs=$(_prefix_indent)
-			valgrind --tool=memcheck --quiet $abs_program_path q 2> /tmp/valgrind-output
-			if [ -n "`cat /tmp/valgrind-output`" ]; then
+			valgrind --tool=memcheck --quiet $abs_program_path q 2> $tmp_dir/valgrind-output
+			if [ -n "`cat $tmp_dir/valgrind-output`" ]; then
 				test_warn "Valgrind is not happy with your program:"
-				cat /tmp/valgrind-output | sed -e "s/^/$prefix_tabs | /;"
+				cat $tmp_dir/valgrind-output | sed -e "s/^/$prefix_tabs | /;"
 			fi
 			;;
 		*)
