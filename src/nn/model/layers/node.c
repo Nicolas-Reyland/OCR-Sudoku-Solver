@@ -5,7 +5,7 @@
 
 nn_Node* _nn_createNode(size_t num_weights)
 {
-  double* weights, d_weights;
+  double* weights, * d_weights;
   double bias;
   // malloc weights
   if (num_weights) {
