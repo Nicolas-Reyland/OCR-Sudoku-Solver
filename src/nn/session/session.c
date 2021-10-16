@@ -22,7 +22,8 @@ void _nn_train(struct nn_Session* session, nn_Model* model)
 			
 			//we calculate the loss function 
 			double error = applyLosses(
-			model->layers->output_layer,
+			&(model->layers->output_layer),
+			tuple_array[i]->output->values,
 			model->loss
 			);
 			// we continue as long as we do not reached loss threshold 

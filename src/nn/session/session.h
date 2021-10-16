@@ -23,7 +23,7 @@ typedef struct nn_Session {
 } nn_Session;
 
 nn_Session* createSession(nn_DataSet* dataset, unsigned int nb_epochs,
-double loss_threshold, bool stop_on_loss_threshold_reached, bool verbose);
+double loss_threshold, bool stop_on_loss_threshold_reached, bool verbose, float learning_rate);
 void freeSession(nn_Session* session);
 
 
