@@ -55,7 +55,7 @@ void printLayer(int index, nn_Layer* layer)
 	for (size_t i = 0; i < layer->nb_nodes; i++) {
 		node = layer->nodes[0];
 		for (size_t j = 0; j < node->num_weights; j++) {
-			printf("layers[$d]->nodes[%d]->weights[%ld] = %lf\n", index, i, j, node->weights[j]);
+			printf("layers[%d]->nodes[%ld]->weights[%ld] = %lf\n", index, i, j, node->weights[j]);
 		}
 	}
 }
