@@ -41,13 +41,12 @@ nn_Layer* _nn_createOutputLayer(nn_ShapeDescription layer_shape, activation acti
 
 void _nn_freeLayer(nn_Layer* layer)
 {
-  verbose("freeing layer nodes");
+  verbose("freeing layer ...");
   for (size_t i = 0; i < layer->shape.x * layer->shape.y * layer->shape.z; i++) {
-    verbose("freeing node: %d", i);
     nn_Node* node = layer->nodes[i];
     _nn_freeNode(node);
   }
-  verbose("freed layer");
+  verbose("layer has been freed");
   mem_free(layer->nodes);
 }
 

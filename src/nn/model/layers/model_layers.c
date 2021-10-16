@@ -40,7 +40,6 @@ void _nn_freeModelLayers(nn_ModelLayers* model_layers)
     verbose("freeing hidden layer num %d", i);
     _nn_freeLayer(&model_layers->hidden_layers[i]);
   }
-  verbose("freed all layers");
   mem_free(model_layers->hidden_layers);
   mem_free(model_layers);
 }
