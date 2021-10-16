@@ -3,7 +3,6 @@
 #include "nn/nn.h"
 #include "utils/mem/mem-management.h"
 #include "utils/verbosity/verbose.h"
-#include "utils/verbosity/verbose.h"
 
 extern linked_list* GPL;
 extern bool _nn_random_init_done;
