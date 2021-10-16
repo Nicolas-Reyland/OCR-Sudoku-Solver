@@ -5,7 +5,7 @@
 #include <SDL2/SDL.h>
 #include <gtk/gtk.h>
 #include "image_process.h"
-//#include "../utils/mem/mem-management.h"
+#include "utils/mem/mem-management.h"
 
 #define WINDOW_WIDTH 1024
 #define WINDOW_HEIGHT 768
@@ -83,7 +83,7 @@ int main(int argc, char **argv)
     icon = create_pixbuf("gui_images/icon.jpg");
     gtk_window_set_icon(GTK_WINDOW(window), icon);
 
-    src_image_path = (char*)malloc(strlen("gui_images/no_image.png") * sizeof(char));
+    src_image_path = (char*)mem_malloc(strlen("gui_images/no_image.png") * sizeof(char));
     //if (!src_image_path)
     //    exit(0);
     printf("BEFORE: This is the value of the filename pointer -> %p\n", src_image_path);
@@ -311,8 +311,8 @@ void open_dialog(GtkWidget *button, GtkWidget** widget_pointers[])
             // it from the container 
             gtk_widget_destroy(*image);
 
-            free(src_image_path);
-            src_image_path = (char*)malloc(strlen(filename) * sizeof(char));
+            mem_free(src_image_path);
+            src_image_path = (char*)mem_malloc(strlen(filename) * sizeof(char));
             src_image_path = strcpy(src_image_path, filename);
 
             *image = gui_load_image(filename);
