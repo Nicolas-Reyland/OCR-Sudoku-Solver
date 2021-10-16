@@ -2,6 +2,13 @@
 
 #include "sample.h"
 
+void _nn_print(nn_Sample* sample)
+{
+  for(size_t i = 0; i < sample->nb_values;i++)
+    printf("%f, ", sample->values[i]);
+  printf("\n");
+}
+
 nn_Sample* createSample(nn_ShapeDescription description, double* values,
 size_t nb_values)
 {
@@ -9,6 +16,8 @@ size_t nb_values)
   sample->shape_description = description;
   sample->nb_values         = nb_values;
   sample->values            = values;
+  sample->print             = &_nn_print;
+
 
   return sample;
 }

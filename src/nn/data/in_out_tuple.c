@@ -2,13 +2,27 @@
 
 #include "in_out_tuple.h"
 
+void _nn_printTuple(nn_InOutTuple* tuple)
+{
+    printf("number of input values: %ld\n", tuple->input->nb_values);
+    printf("number of output values: %ld\n", tuple->output->nb_values);
+
+    printf("Input:\n");
+    tuple->input->print(tuple->input);
+    
+    printf("Output expected:\n");
+    tuple->output->print(tuple->output);
+    printf("\n");
+}
+
+
 nn_InOutTuple* createInOutTuple(nn_Sample* input, nn_Sample* output)
 {
     nn_InOutTuple* tuple = mem_malloc(sizeof(nn_InOutTuple));
 
-    tuple->input = input;
-    tuple->output = output;
-
+    tuple->input        = input;
+    tuple->output       = output;
+    tuple->printTuple   = &_nn_printTuple;
     return tuple;
 }
 

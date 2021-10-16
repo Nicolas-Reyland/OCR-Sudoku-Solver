@@ -42,16 +42,14 @@ void _nn_printData(nn_Data* data)
     for(size_t i = 0; i < data->data_collection->data->length;i++)
     {
         nn_InOutTuple* tuple = node->value;
-        printf("Tuple number %ld:\n",(i+1));
+        if(tuple == NULL)
+        {
+            printf("tuple is not defined, exiting...");
+            exit(EXIT_FAILURE);
+        }
+        printf("%ld/\n",(i+1));
+        tuple->printTuple(tuple);
 
-        printf("Input:\n");
-        for(size_t j = 0;j < tuple->input->nb_values;j++)
-            printf("%f, ",tuple->input->values[j]);
-
-        printf("\n");
-        printf("Output expected:\n");
-        for(size_t j = 0;j < tuple->output->nb_values;j++)
-            printf("%f, ",tuple->output->values[j]);
         node = node->next;
     }
 }
