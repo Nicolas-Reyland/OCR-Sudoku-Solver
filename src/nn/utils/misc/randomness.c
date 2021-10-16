@@ -33,18 +33,11 @@ double getRandomDouble(double min_value, double max_value)
   return random_double + min_value;
 }
 
-/* Returns a random double value between 0.0 and 1.0
- */
-double getNormalizedPositiveRandomDouble()
-{
-  return (double) rand() / D_RAND_MAX;
-}
-
 /* Returns a random double value between -1.0 and 1.0
  */
 double getNormalizedRandomDouble()
 {
-  return (double) rand() / RAND_MAX_DIV_BY_2 - 1.0;
+  return ltqnorm(rand() / D_RAND_MAX);
 }
 
 //

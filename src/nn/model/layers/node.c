@@ -1,7 +1,6 @@
 // node.c
 
 #include "node.h"
-#include "utils/macros/macros.h"
 
 nn_Node* _nn_createNode(size_t num_weights)
 {

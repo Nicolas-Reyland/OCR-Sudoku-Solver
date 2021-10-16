@@ -5,6 +5,7 @@
 
 #include <stdlib.h>
 #include <time.h>
+#include "utils/macros/macros.h"
 #include "nn/utils/misc/randomness.h"
 #include "utils/mem/mem-management.h"
 

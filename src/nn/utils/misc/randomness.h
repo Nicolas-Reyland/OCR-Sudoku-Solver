@@ -8,6 +8,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <errno.h>
+#include "nn/utils/misc/normal_distribution.h"
 
 static const double D_RAND_MAX = RAND_MAX;
 static const double RAND_MAX_DIV_BY_2 = RAND_MAX / 2;
