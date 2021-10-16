@@ -5,12 +5,14 @@
 void _nn_feedForward(nn_ModelLayers* model_layers, double* input)
 {
   // feed input layer with input
+  verbose("feeding the input layer");
   for (size_t i = 0; i < model_layers->input_layer.nb_nodes; i++) {
     model_layers->input_layer.nodes[i]->value = input[i];
   }
   // process middle-layers (if there are any)
   nn_Layer* last_layer;
   if (model_layers->num_hidden_layers) {
+    verbose("feeding the hidden layers");
     _nn_feedForwardLayer(&model_layers->input_layer, &model_layers->hidden_layers[0]);
     for (size_t i = 1; i < model_layers->num_hidden_layers; i++) {
       _nn_feedForwardLayer(&model_layers->hidden_layers[i-1], &model_layers->hidden_layers[i]);
@@ -20,6 +22,7 @@ void _nn_feedForward(nn_ModelLayers* model_layers, double* input)
     last_layer = &model_layers->input_layer;
   }
   // fast forward output_layer
+  verbose("feeding the last 'feedable' layer %p", last_layer);
   _nn_feedForwardLayer(last_layer, &model_layers->output_layer);
 }
 
@@ -27,13 +30,17 @@ void _nn_feedForwardLayer(nn_Layer* from_layer, nn_Layer* to_layer)
 {
   // have to verify first that the nodes do all have values
   for (size_t i = 0; i < to_layer->nb_nodes; i++) {
-    // init value at nan
-    to_layer->nodes[i]->value = 0.0/0.0;
+    verbose("new");
+    //verbose("Access at %ld < %ld", i, to_layer->nb_nodes);
+    // init raw value at bias
     to_layer->nodes[i]->raw_value = to_layer->nodes[i]->bias;
     // calculate the rest of the raw_value (using the weights)
     for (size_t j = 0; j < from_layer->nb_nodes; j++) {
-      to_layer->nodes[i]->raw_value += to_layer->nodes[i]->weights[j] * from_layer->nodes[j]->value;
+      verbose("raw: %lf %lf", to_layer->nodes[i]->raw_value, from_layer->nodes[j]->weights[i]);
+      //verbose("Access at %ld %ld", i, j);
+      to_layer->nodes[i]->raw_value += from_layer->nodes[j]->weights[i] * from_layer->nodes[j]->value;
     }
+      verbose("final: %lf", to_layer->nodes[i]->raw_value);
   }
   _nn_activateLayer(to_layer);
 }

@@ -39,6 +39,8 @@ void mem_free(void *ptr)
 		return;
 	}
 	GPL->remove_value_at(GPL, index);
-  free(ptr);
-  ptr = NULL;
+	if (ptr != NULL) {
+  	free(ptr);
+  	ptr = NULL;
+	}
 }
