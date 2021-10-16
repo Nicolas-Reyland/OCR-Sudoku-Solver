@@ -32,6 +32,7 @@ void free_iot_linked_list(iot_linked_list* list)
 void _free_iot_linked_list_node(iot_ll_node* node)
 {
 	if (node->next != NULL) _free_iot_linked_list_node(node->next);
+	freeInOutTuple(node->value);
 	free(node);
 }
 
