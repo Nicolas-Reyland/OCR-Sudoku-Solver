@@ -22,6 +22,8 @@ nn_Node* _nn_createNode(unsigned int num_weights)
   node->num_weights = num_weights;
   node->weights = weights;
   node->bias = bias;
+  node->raw_value = 0.0/0.0; // NAN (Not A Number)
+  node->value = 0.0/0.0; // NAN
   return node;
 }
 

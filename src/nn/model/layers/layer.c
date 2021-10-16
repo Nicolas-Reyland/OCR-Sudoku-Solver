@@ -26,6 +26,7 @@ nn_Layer* _nn_createLayer(nn_ShapeDescription layer_shape, nn_ShapeDescription n
   layer->shape = layer_shape;
   layer->activation = activation;
   layer->nodes = nodes;
+  nodes->nb_nodes = layer_shape.x * layer_shape.y * layer_shape.z;
   return layer;
 }
 
