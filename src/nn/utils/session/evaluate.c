@@ -30,17 +30,12 @@ void _nn_feedForwardLayer(nn_Layer* from_layer, nn_Layer* to_layer)
 {
   // have to verify first that the nodes do all have values
   for (size_t i = 0; i < to_layer->nb_nodes; i++) {
-    verbose("new");
-    //verbose("Access at %ld < %ld", i, to_layer->nb_nodes);
     // init raw value at bias
     to_layer->nodes[i]->raw_value = to_layer->nodes[i]->bias;
     // calculate the rest of the raw_value (using the weights)
     for (size_t j = 0; j < from_layer->nb_nodes; j++) {
-      verbose("raw: %lf %lf", to_layer->nodes[i]->raw_value, from_layer->nodes[j]->weights[i]);
-      //verbose("Access at %ld %ld", i, j);
       to_layer->nodes[i]->raw_value += from_layer->nodes[j]->weights[i] * from_layer->nodes[j]->value;
     }
-      verbose("final: %lf", to_layer->nodes[i]->raw_value);
   }
   _nn_activateLayer(to_layer);
 }
