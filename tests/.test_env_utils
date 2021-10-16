@@ -2,7 +2,7 @@
 
 # Setup utils functions
 function _prefix_indent {
-	for ((i=0;i<$TEST_OUTPUT_INDENT_LVL;i++))
+	for ((i=0;i<TEST_OUTPUT_INDENT_LVL;i++))
 	do
 		echo -n -e ' \t '
 	done

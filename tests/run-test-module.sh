@@ -21,7 +21,7 @@ if [ $# -ne 3 ]; then
 	echo Usage: ./runtest.sh test-name test-root-path project-root-path
 	test_problem "[?] Missing or too many arguments"
 fi
-TEST_STATUS=1
+TEST_STATUS=0
 ## Check test root path
 export test_root_path=$2
 if [ ! -d $test_root_path ]; then
