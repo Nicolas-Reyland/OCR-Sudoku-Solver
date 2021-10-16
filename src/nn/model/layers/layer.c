@@ -4,12 +4,12 @@
 
 nn_Layer* _nn_createLayer(nn_ShapeDescription layer_shape, nn_ShapeDescription next_layer_shape, activation activation)
 {
-  unsigned int num_next_layer_weights = next_layer_shape.x * next_layer_shape.y * next_layer_shape.z;
+  size_t num_next_layer_weights = next_layer_shape.x * next_layer_shape.y * next_layer_shape.z;
   // create nodes
   nn_Node** nodes = calloc(layer_shape.x * layer_shape.y * layer_shape.z, sizeof(nn_Node*));
-  for (unsigned int z = 0; z < layer_shape.z; z++) {
-    for (unsigned int y = 0; y < layer_shape.y; y++) {
-      for (unsigned int x = 0; x < layer_shape.x; x++) {
+  for (size_t z = 0; z < layer_shape.z; z++) {
+    for (size_t y = 0; y < layer_shape.y; y++) {
+      for (size_t x = 0; x < layer_shape.x; x++) {
         //verbose("Allocating node %d %d %d\n", x, y, z);
         nn_Node* node = _nn_createNode(num_next_layer_weights);
         nodes[
@@ -42,7 +42,7 @@ nn_Layer* _nn_createOutputLayer(nn_ShapeDescription layer_shape, activation acti
 void _nn_freeLayer(nn_Layer* layer)
 {
   verbose("freeing layer nodes");
-  for (unsigned int i = 0; i < layer->shape.x * layer->shape.y * layer->shape.z; i++) {
+  for (size_t i = 0; i < layer->shape.x * layer->shape.y * layer->shape.z; i++) {
     verbose("freeing node: %d", i);
     nn_Node* node = layer->nodes[i];
     _nn_freeNode(node);

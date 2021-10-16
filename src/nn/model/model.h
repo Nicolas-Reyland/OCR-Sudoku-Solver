@@ -16,7 +16,7 @@ typedef struct nn_Model {
   void (*saveModel)(struct nn_Model* model, char*);
 } nn_Model;
 
-nn_Model* createModel(unsigned int num_layers, nn_ShapeDescription model_architecture[], activation activations[], losses loss, optimizer optimizer);
+nn_Model* createModel(size_t num_layers, nn_ShapeDescription model_architecture[], activation activations[], losses loss, optimizer optimizer);
 void freeModel(nn_Model* model);
 nn_Model* loadModel(char* path);
 

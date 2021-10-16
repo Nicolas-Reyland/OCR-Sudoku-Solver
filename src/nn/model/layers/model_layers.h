@@ -13,7 +13,7 @@ typedef struct nn_ModelLayers {
   nn_Layer output_layer;
 } nn_ModelLayers;
 
-nn_ModelLayers* _nn_createModelLayers(unsigned int num_hidden_layers, nn_ShapeDescription model_architecture[], activation activations[]);
+nn_ModelLayers* _nn_createModelLayers(size_t num_hidden_layers, nn_ShapeDescription model_architecture[], activation activations[]);
 void _nn_freeModelLayers(nn_ModelLayers* model_layers);
 
 #endif

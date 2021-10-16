@@ -12,7 +12,7 @@ void _nn_fastForward(nn_ModelLayers* model_layers, double* input)
   nn_Layer* last_layer;
   if (model_layers->num_hidden_layers) {
     _nn_fastForwardLayer(&model_layers->input_layer, &model_layers->hidden_layers[0]);
-    for (unsigned int i = 1; i < model_layers->num_hidden_layers; i++) {
+    for (size_t i = 1; i < model_layers->num_hidden_layers; i++) {
       _nn_fastForwardLayer(&model_layers->hidden_layers[i-1], &model_layers->hidden_layers[i]);
     }
     last_layer = &model_layers->hidden_layers[model_layers->num_hidden_layers - 1];

@@ -3,7 +3,7 @@
 #include "node.h"
 #include "utils/macros/macros.h"
 
-nn_Node* _nn_createNode(unsigned int num_weights)
+nn_Node* _nn_createNode(size_t num_weights)
 {
   double* weights, d_weights;
   double bias;
@@ -11,7 +11,7 @@ nn_Node* _nn_createNode(unsigned int num_weights)
   if (num_weights) {
     weights = mem_calloc(num_weights, sizeof(double));
     d_weights = mem_calloc(num_weights, sizeof(double));
-    for (unsigned int i = 0; i < num_weights; i++) {
+    for (size_t i = 0; i < num_weights; i++) {
       weights[i] = 0.0;//getNormalizedRandomDouble();
     }
     bias = getNormalizedRandomDouble();
