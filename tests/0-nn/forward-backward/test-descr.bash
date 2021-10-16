@@ -3,13 +3,9 @@
 
 # Testing ... what you are testing ...
 # Steps :
-# 1. ...
-# 2. ...
+# 1. test output
 # Sub-steps :
 # 1.
-#  - ...
-#  - ...
-# 2.
 #  - ...
 #  - ...
 
@@ -35,13 +31,12 @@ function prepare_steps {
 	# absolute program path
 	abs_program_path="/tmp/nn-feed-test-test.out"
 	if [ -f $abs_program_path ]; then
-		rm $abs_program_path
+		rm -f $abs_program_path
 	fi
 }
 
 # Step 1
 function step_1 {
-	# ...
 	case $1 in
 		1)
 			$(gcc "$test_root_path"/test.c "${dot_c_files[@]}" -I"$project_root_path"/src -lm -o $abs_program_path > /dev/null 2>&1) || test_error "Compilation failed"
@@ -52,21 +47,6 @@ function step_1 {
 			if [[ -s /tmp/diff-output.txt ]]; then
 				test_error "Output does not match attended answer: `cat /tmp/diff-output.txt`"
 			fi
-			;;
-		*)
-			;;
-	esac
-}
-
-# Step 2
-function step_2 {
-	# ...
-	case $1 in
-		1)
-			# ...
-			;;
-		2)
-			# ...
 			;;
 		*)
 			;;

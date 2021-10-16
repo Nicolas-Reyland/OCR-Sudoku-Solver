@@ -7,12 +7,12 @@ extern linked_list* GPL;
 
 int main(int argc, char** argv)
 {
-	if (argc > 1 && argv[1][0]) {
+	if (argc > 1 && argv[1][0] == 'q') {
 		setVerbose(false);
 	}
 
 	// init random
-	initRandom();
+	/*initRandom();
 	initMemoryTracking();
 	// model architecture
 	nn_ShapeDescription model_architecture[3] = {
@@ -40,8 +40,8 @@ int main(int argc, char** argv)
 
 	verbose("Model freed.");
 
-	free(GPL);
-	
+	free(GPL);*/
+
 	printf("test output\n");
 
 	return 0;
