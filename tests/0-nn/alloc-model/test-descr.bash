@@ -48,20 +48,18 @@ function prepare_steps {
 # Step 1
 function step_1 {
 	prefix_tabs=$(_prefix_indent)
-	alias sed-stdout='sed -e "s/^/$prefix_tabs | /;"'
-	alias compile='gcc '"$test_root_path"'/test.c '"${dot_c_files[@]}"' -I'"$project_root_path"'/src -lm'
 	case $1 in
 		1)
 			# Compile without warnings
-			nowarn_compilation=$(gcc "$test_root_path"/test.c "${dot_c_files[@]}" -I"$project_root_path"/src -lm -o $abs_program_path > /dev/null 2>&1) || test_error "Compilation failed"
+			$(gcc "$test_root_path"/test.c "${dot_c_files[@]}" -I"$project_root_path"/src -lm -o $abs_program_path > /dev/null 2>&1) || test_error "Compilation failed"
 			;;
 		2)
 			fullwarn_compilation=$(gcc "$test_root_path"/test.c "${dot_c_files[@]}" -I"$project_root_path"/src -lm -o $abs_program_path.2 -Wall -Wextra > /dev/null 2>&1 | sed -e "s/^/$prefix_tabs | /;")
 			if [[ -n "$fullwarn_compilation" ]]; then
-				test_warn "Output in compiling file without flags :"
-				echo $nowarn_compilation
+				test_warn "Output in compiling test.c with warn flags :"
+				echo $fullwarn_compilation
 			fi
-			werror_compilation=$(gcc "$test_root_path"/test.c "${dot_c_files[@]}" -I"$project_root_path"/src -lm -o $abs_program_path.3 -Wall -Wextra -Werror > /dev/null 2>&1 | sed -e "s/^/$prefix_tabs | /;") || test_warn "Could not compile with ""-Werror"" flag"
+			$(gcc "$test_root_path"/test.c "${dot_c_files[@]}" -I"$project_root_path"/src -lm -o $abs_program_path.3 -Wall -Wextra -Werror > /dev/null 2>&1 | sed -e "s/^/$prefix_tabs | /;") || test_warn "Could not compile with ""-Werror"" flag"
 			;;
 		*)
 			;;
