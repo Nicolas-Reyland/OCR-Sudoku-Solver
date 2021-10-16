@@ -8,7 +8,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <errno.h>
-#include "nn/utils/misc/normal_distribution.h"
 #include "nn/data/in_out_tuple.h"
 
 static const double D_RAND_MAX = RAND_MAX;

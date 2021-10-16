@@ -37,7 +37,7 @@ double getRandomDouble(double min_value, double max_value)
  */
 double getNormalizedRandomDouble()
 {
-  return ltqnorm(rand() / D_RAND_MAX);
+  return ((double) rand() / RAND_MAX_DIV_BY_2) - 1.0;
 }
 
 //
