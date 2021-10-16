@@ -34,4 +34,4 @@ pixel_operations.o : pixel_operations.c
 	$(CC) -c $(CFLAGSNE) pixel_operations.c -o pixel_operations.o $(LDLIBS)
 
 clean :
-	rm *.o gui grayscale.bmp blurred_image.bmp binarised_image.bmp
+	rm *.o gui grayscale.bmp blurred_image.bmp binarised_image.bmp rotated_image.bmp
