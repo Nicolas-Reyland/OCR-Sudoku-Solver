@@ -57,7 +57,7 @@ dkms.conf
 
 # VS Code config files
 *.vscode
-
+*.DS_Store
 # Valgrind core dumps
 vgcore.*
 

@@ -35,10 +35,7 @@ void sigmoid(nn_Layer* layer)
 /* ReLu */
 double _nn_relu(double x)
 {
-	if (x < 0) {
-		return 0;
-	}
-	return x > 1 ? 1 : x;
+	return x >= 0 ? x : 0;
 }
 
 void relu(nn_Layer* layer)
@@ -47,9 +44,4 @@ void relu(nn_Layer* layer)
 		layer->nodes[i]->value = _nn_relu(layer->nodes[i]->raw_value);
 }
 
-/* Derivative Activation */
-double _nn_derivativeActivation(double x, activation activation)
-{
-	/* switch ... case ... */
-	return 1.0;
-}
+
