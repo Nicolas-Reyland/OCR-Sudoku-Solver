@@ -3,6 +3,8 @@
 #include "utils/mem/mem-management.h"
 #include "utils/verbosity/verbose.h"
 
+extern linked_list* GPL;
+
 int main(int argc, char** argv)
 {
 	if (argc > 1 && argv[1][0]) {
@@ -37,6 +39,8 @@ int main(int argc, char** argv)
 	freeModel(model);
 
 	verbose("Model freed.");
+
+	free(GPL);
 
 	return 0;
 }
