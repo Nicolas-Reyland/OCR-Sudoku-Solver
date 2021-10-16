@@ -41,6 +41,8 @@ int main(int argc, char** argv)
 	verbose("Model freed.");
 
 	free(GPL);
+	
+	printf("test output\n");
 
 	return 0;
 }

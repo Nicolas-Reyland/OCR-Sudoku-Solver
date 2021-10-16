@@ -14,7 +14,7 @@
 #  - ...
 
 # Test Description
-export TEST_STEPS_DESCR=(2 2 2)
+export TEST_STEPS_DESCR=(2)
 
 # Declare variabes & functions
 # ...
@@ -47,9 +47,11 @@ function step_1 {
 			$(gcc "$test_root_path"/test.c "${dot_c_files[@]}" -I"$project_root_path"/src -lm -o $abs_program_path > /dev/null 2>&1) || test_error "Compilation failed"
 			;;
 		2)
-			result=`$abs_program_path`
-			if [[ "$result" -ne `cat $test_root_path/output.txt` ]]; then
-				test_error "Output does not match"
+			$abs_program_path q > /tmp/nn-feeding-test-result.txt
+			diff /tmp/nn-feeding-test-result.txt $test_root_path/output.txt > /tmp/diff-output.txt
+			if [[ -s /tmp/diff-output.txt ]]; then
+				test_error "Output does not match attended answer: `cat /tmp/diff-output.txt`"
+			fi
 			;;
 		*)
 			;;
