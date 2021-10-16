@@ -10,7 +10,7 @@ extern bool _nn_random_init_done;
 
 void printLayer(int, nn_Layer* layer);
 
-int main(int argc, char** argv)
+int main()
 {
 	setVerbose(false);
 
@@ -20,6 +20,7 @@ int main(int argc, char** argv)
 	srand( 1234567890 );
 	_nn_random_init_done = true;
 	printf("Next random integer is: %d\n", rand());
+	printf("Next random normalized double: %lf\n", getNormalizedRandomDouble());
 	initMemoryTracking();
 	// model architecture
 	nn_ShapeDescription model_architecture[3] = {
