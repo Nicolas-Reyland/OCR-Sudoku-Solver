@@ -27,9 +27,19 @@ nn_Data* nn_DataLoadRaw(char* input_path, char* output_path, nn_ShapeDescription
     fscanf(input_file,"%ld %ld %ld %ld",&(description->dims), &(description->x),
     &(description->y), &(description->z));
 
+    nn_ShapeDescription output_description;
+
+    fscanf(output_file,"%ld %ld %ld %ld", 
+    &output_description.dims, 
+    &output_description.x, &output_description.y, &output_description.z);
+
     char cursorInput = fgetc(input_file);
     while(cursorInput != '\n')
-        cursorInput = fgetc(input_file); //reading line to end
+        cursorInput = fgetc(input_file); //reading line to end for input file
+
+    cursorInput = fgetc(output_file);
+    while(cursorInput != '\n')
+        cursorInput = fgetc(output_file); //same for output file
 
     do
     {
@@ -40,10 +50,12 @@ nn_Data* nn_DataLoadRaw(char* input_path, char* output_path, nn_ShapeDescription
         //we don't need to read the cursor of output_file
         //since normally it should have the same nb of lines than
         //input_file (for safety later, make a private function that test it)
-        _readFile(output_file,description,output_values);
-
-        nn_Sample* input    = createSample(*description,output_values);
-        nn_Sample* output   = createSample(*description,input_values);
+        _readFile(output_file,&output_description,output_values);
+        
+        nn_Sample* input    = createSample(*description,input_values,
+            description->x*description->y*description->z);
+        nn_Sample* output   = createSample(*description,output_values,
+            output_description.x*output_description.y*output_description.z);
 
         nn_InOutTuple* tuple = createInOutTuple(input,output);
 

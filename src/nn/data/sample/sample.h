@@ -10,10 +10,12 @@
 typedef struct nn_Sample
 {
     nn_ShapeDescription shape_description;
+    size_t nb_values;
     double* values;
 } nn_Sample;
 
-nn_Sample* createSample(nn_ShapeDescription description, double* values);
+nn_Sample* createSample(nn_ShapeDescription description, double* values,
+size_t nb_values);
 void freeSample(nn_Sample* sample);
 
 #endif
