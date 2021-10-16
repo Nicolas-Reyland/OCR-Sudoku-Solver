@@ -10,7 +10,7 @@
 #  - ...
 
 # Test Description
-export TEST_STEPS_DESCR=(2)
+export TEST_STEPS_DESCR=(2 2)
 
 # Declare variabes & functions
 # ...
@@ -29,7 +29,7 @@ function prepare_steps {
 		dot_c_files+=("$file")
 	done
 	# absolute program path
-	abs_program_path="$tmp_dir/nn-feed-test-test.out"
+	abs_program_path="$tmp_dir/nn-forward-backward-test.out"
 	if [ -f $abs_program_path ]; then
 		rm -f $abs_program_path
 	fi
@@ -39,13 +39,31 @@ function prepare_steps {
 function step_1 {
 	case $1 in
 		1)
-			$(gcc "$test_root_path"/test.c "${dot_c_files[@]}" -I"$project_root_path"/src -lm -o $abs_program_path > /dev/null 2>&1) || test_error "Compilation failed"
+			$(gcc "$test_root_path"/forward.c "${dot_c_files[@]}" -I"$project_root_path"/src -lm -o $abs_program_path > /dev/null 2>&1) || test_error "Compilation failed"
 			;;
 		2)
-			$abs_program_path > $tmp_dir/nn-feeding-test-result.txt
-			diff $tmp_dir/nn-feeding-test-result.txt $test_root_path/output.txt > $tmp_dir/diff-output.txt
+			$abs_program_path > $perm_tmp_dir/nn-forward-result.txt
+			diff $perm_tmp_dir/nn-forward-result.txt $test_root_path/forward-output.txt > $tmp_dir/diff-output.txt
 			if [[ -s $tmp_dir/diff-output.txt ]]; then
-				test_error "Output does not match attended answer: `cat $tmp_dir/diff-output.txt`"
+				test_error "Output does not match attended answer: `cat $tmp_dir/diff-output.txt && _prefix_indent && echo '[I] Output file at '$perm_tmp_dir/nn-forward-result.txt`"
+			fi
+			;;
+		*)
+			;;
+	esac
+}
+
+# Step 2
+function step_2 {
+	case $1 in
+		1)
+			$(gcc "$test_root_path"/backward.c "${dot_c_files[@]}" -I"$project_root_path"/src -lm -o $abs_program_path > /dev/null 2>&1) || test_error "Compilation failed"
+			;;
+		2)
+			$abs_program_path > $perm_tmp_dir/nn-backward-result.txt
+			diff $perm_tmp_dir/nn-backward-result.txt $test_root_path/backward-output.txt > $tmp_dir/diff-output.txt
+			if [[ -s $tmp_dir/diff-output.txt ]]; then
+				test_error "Output does not match attended answer: `cat $tmp_dir/diff-output.txt && _prefix_indent && echo '[I] Output file at '$perm_tmp_dir/nn-backward-result.txt`"
 			fi
 			;;
 		*)
