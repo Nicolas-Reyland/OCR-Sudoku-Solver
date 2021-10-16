@@ -42,7 +42,7 @@ void _nn_printData(nn_Data* data)
     for(size_t i = 0; i < data->data_collection->data->length;i++)
     {
         nn_InOutTuple* tuple = node->value;
-        printf("Tuple number %d:\n",(i+1));
+        printf("Tuple number %ld:\n",(i+1));
 
         printf("Input:\n");
         for(size_t j = 0;j < tuple->input->nb_values;j++)
