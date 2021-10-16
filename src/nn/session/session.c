@@ -38,7 +38,7 @@ void _nn_train(struct nn_Session* session, nn_Model* model)
 	return;
 }
 
-void _nn_test(struct nn_Session* session,nn_Model* model, nn_Data* test)
+void _nn_test(struct nn_Session* session,nn_Model* model)
 {
 	//code goes here
 	return;

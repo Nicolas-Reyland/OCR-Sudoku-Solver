@@ -225,7 +225,7 @@ nn_InOutTuple** iot_linked_list_to_array(iot_linked_list* list)
 {
 	size_t size = list->length;
 	nn_InOutTuple** array = mem_malloc(sizeof(nn_InOutTuple*)*size);
-	ll_node* node = list->head;
+	iot_ll_node* node = list->head;
 	size_t i = 0;
 	while(node != NULL)
 	{
