@@ -49,7 +49,7 @@ void shuffleArray(nn_InOutTuple** array, size_t n)
         for (i = 0; i < n - 1; i++)
         {
             size_t j = i + rand() / (RAND_MAX / (n - i) + 1);
-            int t = array[j];
+            nn_InOutTuple* t = array[j];
             array[j] = array[i];
             array[i] = t;
         }

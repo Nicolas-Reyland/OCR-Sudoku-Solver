@@ -94,22 +94,23 @@ void _nn_backPropagation(nn_Model* model, double* desired_output)
 void _nn_updateWeights(nn_ModelLayers* model_layers, float learning_rate)
 {
   //updating weights and bias of input layer
-  for(size_t i = 0; i < model_layers->input_layer->nb_nodes;i++)
+  for(size_t i = 0; i < model_layers->input_layer.nb_nodes;i++)
   {
-    nn_Node node = model_layers->input_layer->nodes[i];
-    for(size_t j = 0; j < model_layers->hidden_layers[0]->nb_nodes ;j++)
+    nn_Node* node = model_layers->input_layer.nodes[i];
+    for(size_t j = 0; j < model_layers->hidden_layers[0].nb_nodes ;j++)
     {
       node->weights[j] = node->weights[j] - (learning_rate*node->d_weights[j]);
     }
+    node->bias = node->bias - (learning_rate * node->d_bias);
   }
 
   //updating weights and bias of hidden layers
   for(size_t i = 0; i < model_layers->num_hidden_layers-1; i++)
   {
-    for(size_t j = 0; j < model_layers->hidden_layers[i]; j++)
+    for(size_t j = 0; j < model_layers->hidden_layers[i].nb_nodes; j++)
     {
-      nn_Layer* layer = model_layers->hidden_layers[i];
-      for(size_t k = 0; k < model_layers->hidden_layers[i+1];k++)
+      nn_Layer* layer = &(model_layers->hidden_layers[i]);
+      for(size_t k = 0; k < model_layers->hidden_layers[i+1].nb_nodes;k++)
       {
         //updating weight
         layer->nodes[j]->weights[k] = layer->nodes[j]->weights[k] - 
