@@ -43,7 +43,7 @@ void _nn_backPropagation(nn_Model* model, double* desired_output)
   // https://medium.com/analytics-vidhya/building-neural-network-framework-in-c-using-backpropagation-8ad589a0752d
   
   // get model layers struct
-  nn_ModelLayers* model_layers = model->model_layers;
+  nn_ModelLayers* model_layers = model->layers;
 
   // Calculate output layer derivative weights, values etc.
   nn_Layer* output_layer = &model_layers->output_layer;
