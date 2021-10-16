@@ -2,9 +2,9 @@
 
 #include "activations.h"
 
-void _nn_activateLayer(nn_Layer* layer, activation activation)
+void _nn_activateLayer(nn_Layer* layer)
 {
-	switch (activation)
+	switch (layer->activation)
 	{
 		case SIGMOID:
 			sigmoid(layer);
@@ -14,7 +14,7 @@ void _nn_activateLayer(nn_Layer* layer, activation activation)
 			break;
 		// case ...
 		default:
-			fprintf(stderr, "Unrecognised activation function: %d\n", activation);
+			fprintf(stderr, "Unrecognised activation function: %d\n", layer->activation);
 			exit(EXIT_FAILURE);
 			break;
 	}

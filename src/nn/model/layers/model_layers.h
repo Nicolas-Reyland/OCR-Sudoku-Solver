@@ -8,7 +8,7 @@
 
 typedef struct nn_ModelLayers {
   nn_Layer input_layer;
-  unsigned int num_hidden_layers;
+  size_t num_hidden_layers;
   nn_Layer* hidden_layers;
   nn_Layer output_layer;
 } nn_ModelLayers;

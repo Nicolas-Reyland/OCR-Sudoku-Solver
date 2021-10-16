@@ -11,7 +11,7 @@
  * because of the softmax activation function
  */
 
-void _nn_activateLayer(nn_Layer* layer, activation activation);
+void _nn_activateLayer(nn_Layer* layer);
 
 void sigmoid(nn_Layer* layer);
 void relu(nn_Layer* layer);
