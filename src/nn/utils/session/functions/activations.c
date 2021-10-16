@@ -15,7 +15,7 @@ void _nn_activateLayer(nn_Layer* layer)
 		case RELU:
 			relu(layer);
 			break;
-		case SOFTMAX!
+		case SOFTMAX:
 			softmax(layer);
 		default:
 			fprintf(stderr, "Unrecognised activation function: %d\n", layer->activation);
