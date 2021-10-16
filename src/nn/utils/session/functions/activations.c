@@ -46,3 +46,10 @@ void relu(nn_Layer* layer)
 	for (size_t i = 0; i < layer->nb_nodes; i++)
 		layer->nodes[i]->value = _nn_relu(layer->nodes[i]->raw_value);
 }
+
+/* Derivative Activation */
+double _nn_derivativeActivation(double x, activation activation)
+{
+	/* switch ... case ... */
+	return 1.0;
+}

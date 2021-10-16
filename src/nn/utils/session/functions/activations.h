@@ -19,4 +19,6 @@ void leaky_relu(nn_Layer* layer);
 void softmax(nn_Layer* layer);
 void tan_h(nn_Layer* layer);
 
+double _nn_derivativeActivation(double x, activation activation);
+
 #endif

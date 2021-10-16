@@ -3,6 +3,6 @@
 #ifndef NN_LOSSES_H
 #define NN_LOSSES_H
 
-// code comes here
+void _nn_emptyLossFunction(nn_ModelLayers* model_layers, double* desired_output);
 
 #endif
