@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include "nn/utils/misc/normal_distribution.h"
+#include "nn/data/in_out_tuple.h"
 
 static const double D_RAND_MAX = RAND_MAX;
 static const double RAND_MAX_DIV_BY_2 = RAND_MAX / 2;
@@ -18,5 +19,8 @@ void _nn_assertRandomInitialization();
 double getRandomDouble(double min_value, double max_value);
 double getNormalizedPositiveRandomDouble();
 double getNormalizedRandomDouble();
+
+
+void shuffleArray(nn_InOutTuple** array, size_t n);
 
 #endif
