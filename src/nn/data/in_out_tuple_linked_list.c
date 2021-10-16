@@ -22,17 +22,18 @@ iot_linked_list* init_iot_linked_list()
 }
 
 /* Free function */
-void free_iot_linked_list(iot_linked_list* list)
+void free_iot_linked_list(iot_linked_list* list, bool free_value)
 {
-	_free_iot_linked_list_node(list->head);
+	_free_iot_linked_list_node(list->head,free_value);
 	free(list);
 }
 
 // free node
-void _free_iot_linked_list_node(iot_ll_node* node)
+void _free_iot_linked_list_node(iot_ll_node* node, bool free_value)
 {
-	if (node->next != NULL) _free_iot_linked_list_node(node->next);
-	freeInOutTuple(node->value);
+	if (node->next != NULL) _free_iot_linked_list_node(node->next,free_value);
+	if(free_value)
+		freeInOutTuple(node->value); 
 	free(node);
 }
 
@@ -217,4 +218,20 @@ int iot_linked_list_index_of(iot_linked_list *list, nn_InOutTuple* value)
 	} while (node != NULL);
 
 	return -1;
+}
+
+//transforms the list into a dynamical allocated array assigned to gpl
+nn_InOutTuple** iot_linked_list_to_array(iot_linked_list* list)
+{
+	size_t size = list->length;
+	nn_InOutTuple** array = mem_malloc(sizeof(nn_InOutTuple*)*size);
+	ll_node* node = list->head;
+	size_t i = 0;
+	while(node != NULL)
+	{
+		array[i] = node->value;
+		i++;
+		node = node->next;
+	}
+	return array;
 }

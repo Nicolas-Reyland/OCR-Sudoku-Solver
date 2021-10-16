@@ -12,7 +12,7 @@ nn_DataSet* _nn_createDataSet(nn_Data* trainData, nn_Data* testData)
 
 void _nn_freeDataSet(nn_DataSet* dataSet)
 {
-	_nn_freeData(dataSet->train);
-	_nn_freeData(dataSet->test);
+	_nn_freeData(dataSet->train,true);
+	_nn_freeData(dataSet->test,true);
 	mem_free(dataSet);
 }

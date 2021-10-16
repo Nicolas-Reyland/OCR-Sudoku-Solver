@@ -13,6 +13,6 @@ typedef struct nn_DataCollection //needs to be defined as a pointer please
 } nn_DataCollection;
 
 nn_DataCollection* _nn_loadDataCollection(iot_linked_list* data);
-void _nn_freeDataCollection(nn_DataCollection* collection);
+void _nn_freeDataCollection(nn_DataCollection* collection, bool free_value);
 
 #endif

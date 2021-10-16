@@ -27,12 +27,17 @@ nn_DataTuple _nn_dataSplitTrainTest(nn_Data* data, int splittingPercentage)
 
     // add data to tuple struct at creation (and stop gcc from complaining)
     nn_DataTuple data_tuple = {
-      .data1 = _nn_createData(_nn_loadDataCollection(data1)),
-      .data2 = _nn_createData(_nn_loadDataCollection(data2))
+        .data1 = _nn_createData(_nn_loadDataCollection(data1)),
+        .data2 = _nn_createData(_nn_loadDataCollection(data2))
     };
 
-    _nn_freeData(data);
+    _nn_freeData(data,false);
     return data_tuple;
+}
+
+void _nn_printData(nn_Data* data)
+{
+
 }
 
 /// <Summary>
@@ -44,6 +49,7 @@ nn_Data* _nn_createData(nn_DataCollection* collection)
     nn_Data* data = mem_malloc(sizeof(nn_Data));
     data->data_collection = collection;
     data->splitTrainTest = &_nn_dataSplitTrainTest;
+    data->printData = &_nn_printData;
 
     return data;
 }
@@ -51,8 +57,8 @@ nn_Data* _nn_createData(nn_DataCollection* collection)
 /// <Summary>
 /// Delete the data from memory
 /// <Summary/>
-void _nn_freeData(nn_Data* data)
+void _nn_freeData(nn_Data* data,bool free_value)
 {
-  _nn_freeDataCollection(data->data_collection);
+  _nn_freeDataCollection(data->data_collection,free_value);
   mem_free(data);
 }
