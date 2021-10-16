@@ -34,6 +34,10 @@ if [ ! -d $project_root_path ]; then
 	echo "[?] Project root path (\$3 : $3) is not a directory (from `pwd`)"
 	exit 1
 fi
+## Add tmp dir path
+export tmp_dir="/tmp/ocr-tests"
+export perm_tmp_dir="/tmp/ocr-tests-perm"
+mkdir -p $tmp_dir $perm_tmp_dir
 
 # - Running the test -
 # Source the file
@@ -61,6 +65,9 @@ do
 	((TEST_OUTPUT_INDENT_LVL--))
 	announce_step_end $step_index
 done
+
+# clean test env
+rm -rf $tmp_dir
 
 # call end of test
 test_finished
