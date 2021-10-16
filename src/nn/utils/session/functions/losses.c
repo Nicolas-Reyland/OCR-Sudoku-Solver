@@ -2,12 +2,12 @@
 
 #include "losses.h"
 
-double* _nn_binaryCrossEntropy(nn_Layer* layer, double *desired_output);
-double* _nn_categoricalCrossEntropy(nn_Layer* layer, double *desired_output);
-double* _nn_sparseCategoricalCrossEntropy(nn_Layer* layer, 
+double _nn_binaryCrossEntropy(nn_Layer* layer, double* desired_output);
+double _nn_categoricalCrossEntropy(nn_Layer* layer, double* desired_output);
+double _nn_sparseCategoricalCrossEntropy(nn_Layer* layer, 
 double *desired_output);
 
-double* applyLosses(nn_Layer* layer, double *desired_output, losses losses)
+double applyLosses(nn_Layer* layer, double *desired_output, losses losses)
 {
 	switch(losses)
 	{
@@ -29,30 +29,33 @@ double* applyLosses(nn_Layer* layer, double *desired_output, losses losses)
 }
 
 
-double* _nn_binaryCrossEntropy(nn_Layer* layer, double *desired_output)
+double _nn_binaryCrossEntropy(nn_Layer* layer, double* desired_output)
 {
-	double *deltaOutput = mem_malloc(sizeof(double)*layer->nb_nodes);
+	double sum = 0;
 	for(size_t i = 0; i < layer->nb_nodes; i++)
 	{
-
+		sum += desired_output[i] * log(layer->nodes[i]->value) + 
+		(1 - desired_output[i])* log(1 - layer->nodes[i]->value);
 	}
+	sum = sum * (1/layer->nb_nodes);
+	return - sum;
 }
 /*
 * Apply categoricalCrossEntropy to output Layer
 */
-double* _nn_categoricalCrossEntropy(nn_Layer* layer, double *desired_output)
+double _nn_categoricalCrossEntropy(nn_Layer* layer, double* desired_output)
 {
-	double *deltaOutput = mem_malloc(sizeof(double)*layer->nb_nodes);
+	double sum = 0;
 	for(size_t i = 0; i < layer->nb_nodes; i++)
 	{
-		
+		sum += desired_output[i] * log(layer->nodes[i]->value);
 	}
+	return -sum;
 }
 
-double* _nn_sparseCategoricalCrossEntropy(nn_Layer* layer, 
-double *desired_output)
+double _nn_sparseCategoricalCrossEntropy(nn_Layer* layer, 
+double* desired_output)
 {
-	double *deltaOutput = mem_malloc(sizeof(double)*layer->nb_nodes);
 	for(size_t i = 0; i < layer->nb_nodes; i++)
 	{
 		
