@@ -5,7 +5,7 @@
 
 #include "nn/model/layers/layer.h"
 
-void applyLosses(nn_Layer* layer, double *desired_output, losses losses);
+double* applyLosses(nn_Layer* layer, double *desired_output, losses losses);
 
 
 
