@@ -70,7 +70,7 @@ void _nn_backPropagation(nn_Model* model, double* desired_output)
   /* ATTENTION: next_layer is the next layer looking at the model BACKWARDS.
    * So if current_layer is the layer at index 'i', next_layer is at the index 'i - 1' (towards the input layer)
    */
-  for (size_t i = model_layers->num_hidden_layers - 1; i >= 0; i--) { // for (...yers - 1 ; i-- > 0; )
+  for (size_t i = model_layers->num_hidden_layers - 1; /* manually breaking btw */; i--) { // for (...yers - 1 ; i-- > 0; )
     current_layer = &model_layers->hidden_layers[i];
     next_layer = i == 0 ? &model_layers->input_layer : &model_layers->hidden_layers[i - 1];
     // calculate derivatives for current layer
@@ -84,6 +84,9 @@ void _nn_backPropagation(nn_Model* model, double* desired_output)
         }
       }
       current_layer->nodes[j]->d_bias = current_layer->nodes[j]->delta_value;
+    }
+    if (i == 0) {
+      break; // cannot check if i <= 0 bc i has type size_t
     }
   }
 }

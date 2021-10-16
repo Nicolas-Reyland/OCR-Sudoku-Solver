@@ -8,7 +8,6 @@
 #include "nn/model/layers/layer.h"
 #include "nn/functions_descriptors/functions_descriptors_enums.h"
 
-
 double _nn_derivativeActivation(double x, activation activation);
 
 #endif

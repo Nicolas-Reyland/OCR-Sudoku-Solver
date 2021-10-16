@@ -8,8 +8,6 @@
 /// <Summary/>
 nn_DataTuple _nn_dataSplitTrainTest(nn_Data* data, int splittingPercentage)
 {
-    nn_DataTuple data_tuple;
-
     iot_linked_list* list_to_split = data->data_collection->data;
 
     iot_linked_list* data1   = init_iot_linked_list();
@@ -27,12 +25,13 @@ nn_DataTuple _nn_dataSplitTrainTest(nn_Data* data, int splittingPercentage)
         data2->append_value(data2,((iot_ll_node*)list_to_split->get_value_at(list_to_split,i))->value);
     }
 
-
-    data_tuple.data1->data_collection = _nn_loadDataCollection(data1);
-    data_tuple.data2->data_collection = _nn_loadDataCollection(data2);
+    // add data to tuple struct at creation (and stop gcc from complaining)
+    nn_DataTuple data_tuple = {
+      .data1 = _nn_createData(_nn_loadDataCollection(data1)),
+      .data2 = _nn_createData(_nn_loadDataCollection(data2))
+    };
 
     _nn_freeData(data);
-
     return data_tuple;
 }
 

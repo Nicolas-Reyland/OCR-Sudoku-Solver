@@ -23,11 +23,9 @@ nn_Data* nn_DataLoadRaw(char* input_path, char* output_path, nn_ShapeDescription
     }
     iot_linked_list* data_list = init_iot_linked_list();
 
-
-    fscanf(input_file,"%d %d %d %d %d",&(description->dims), &(description->x),
+    // was "%ld %ld %ld %ld %d". brought back to "%ld %ld %ld %ld". hope its ok
+    fscanf(input_file,"%ld %ld %ld %ld",&(description->dims), &(description->x),
     &(description->y), &(description->z));
-
-
 
     char cursorInput = fgetc(input_file);
     while(cursorInput != '\n')
@@ -35,9 +33,9 @@ nn_Data* nn_DataLoadRaw(char* input_path, char* output_path, nn_ShapeDescription
 
     do
     {
-        double* input_values;
-        double* output_values;
-        cursorInput = _readFile(input_file,description, input_values);
+        double* input_values = NULL;
+        double* output_values = NULL;
+        cursorInput = _readFile(input_file, description, input_values);
 
         //we don't need to read the cursor of output_file
         //since normally it should have the same nb of lines than
@@ -109,5 +107,5 @@ double _convertStringToDouble(char* string)
 {
     double value = strtod(string,NULL);
     mem_free(string);
-    return 0;
+    return value;
 }
