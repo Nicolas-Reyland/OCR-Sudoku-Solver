@@ -53,11 +53,3 @@ double _nn_categoricalCrossEntropy(nn_Layer* layer, double* desired_output)
 	return -sum;
 }
 
-double _nn_sparseCategoricalCrossEntropy(nn_Layer* layer, 
-double* desired_output)
-{
-	for(size_t i = 0; i < layer->nb_nodes; i++)
-	{
-		
-	}
-}
