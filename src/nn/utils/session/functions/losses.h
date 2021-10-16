@@ -9,6 +9,4 @@
 
 double applyLosses(nn_Layer* layer, double *desired_output, losses losses);
 
-
-
 #endif

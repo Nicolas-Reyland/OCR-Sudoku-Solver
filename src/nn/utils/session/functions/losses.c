@@ -4,7 +4,7 @@
 
 double _nn_binaryCrossEntropy(nn_Layer* layer, double* desired_output);
 double _nn_categoricalCrossEntropy(nn_Layer* layer, double* desired_output);
-double _nn_sparseCategoricalCrossEntropy(nn_Layer* layer, 
+double _nn_sparseCategoricalCrossEntropy(nn_Layer* layer,
 double *desired_output);
 
 double applyLosses(nn_Layer* layer, double *desired_output, losses losses)
@@ -12,13 +12,13 @@ double applyLosses(nn_Layer* layer, double *desired_output, losses losses)
 	switch(losses)
 	{
 		case CATEGORICALCROSSENTROPY:
-			return _nn_categoricalCrossEntropy(layer,desired_output);
+			return _nn_categoricalCrossEntropy(layer, desired_output);
 			break;
 		case SPARSECATEGORICALCROSSENTROPY:
-			return _nn_sparseCategoricalCrossEntropy(layer,desired_output);
+			return _nn_sparseCategoricalCrossEntropy(layer, desired_output);
 			break;
 		case BINARYCROSSENTROPY:
-			return _nn_binaryCrossEntropy(layer,desired_output);
+			return _nn_binaryCrossEntropy(layer, desired_output);
 		default:
 			fprintf(stderr, "ApplyLosses: unrecognized losses function: %d\n",
 			 losses);
@@ -51,5 +51,10 @@ double _nn_categoricalCrossEntropy(nn_Layer* layer, double* desired_output)
 		sum += desired_output[i] * log(layer->nodes[i]->value);
 	}
 	return -sum;
+}
+
+double _nn_sparseCategoricalCrossEntropy(nn_Layer* layer, double* desired_output)
+{
+	return 0.0;
 }
 
