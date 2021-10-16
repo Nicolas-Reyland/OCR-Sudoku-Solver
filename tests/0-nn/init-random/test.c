@@ -58,5 +58,6 @@ void printLayer(int index, nn_Layer* layer)
 		for (size_t j = 0; j < node->num_weights; j++) {
 			printf("layers[%d]->nodes[%ld]->weights[%ld] = %lf\n", index, i, j, node->weights[j]);
 		}
+		printf("bias: %lf\n", node->bias);
 	}
 }
