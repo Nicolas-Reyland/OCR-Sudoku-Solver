@@ -6,6 +6,7 @@
 #include "nn/model/model.h"
 #include "nn/utils/session/functions/activations.h"
 #include "nn/utils/session/functions/derivation.h"
+#include "nn/utils/session/functions/losses.h"
 
 void _nn_feedForward(nn_ModelLayers* model, double* input);
 void _nn_feedForwardLayer(nn_Layer* from_layer, nn_Layer* to_layer);

@@ -17,6 +17,7 @@ typedef struct nn_Session {
 	double loss_threshold;
 	bool stop_on_loss_threshold_reached;
 	bool verbose;
+	float learning_rate;
 	void (*train)(struct nn_Session* session, nn_Model* model);
 	void (*test)(struct nn_Session* session,nn_Model* model);
 } nn_Session;
@@ -25,7 +26,6 @@ nn_Session* createSession(nn_DataSet* dataset, unsigned int nb_epochs,
 double loss_threshold, bool stop_on_loss_threshold_reached, bool verbose);
 void freeSession(nn_Session* session);
 
-#include "nn/data/in_out_tuple.h"
-void shuffleArray(nn_InOutTuple** array, size_t n);
+
 
 #endif
