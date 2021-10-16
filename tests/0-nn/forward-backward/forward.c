@@ -42,7 +42,6 @@ int main()
 	
 	// feed input data to the model
 	double input_data[3] = { 0.1, -0.23, 0.75 };
-	setVerbose(true);
 	_nn_feedForward(model->layers, input_data);
 	printf("forward feeding done\n");
 	
