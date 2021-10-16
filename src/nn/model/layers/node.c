@@ -12,7 +12,7 @@ nn_Node* _nn_createNode(size_t num_weights)
     weights = mem_calloc(num_weights, sizeof(double));
     d_weights = mem_calloc(num_weights, sizeof(double));
     for (size_t i = 0; i < num_weights; i++) {
-      weights[i] = 0.0;//getNormalizedRandomDouble();
+      weights[i] = getNormalizedRandomDouble();
     }
     bias = getNormalizedRandomDouble();
   } else {
