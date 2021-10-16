@@ -6,7 +6,7 @@ nn_Layer* _nn_createLayer(nn_ShapeDescription layer_shape, nn_ShapeDescription n
 {
   size_t num_next_layer_weights = next_layer_shape.x * next_layer_shape.y * next_layer_shape.z;
   // create nodes
-  nn_Node** nodes = calloc(layer_shape.x * layer_shape.y * layer_shape.z, sizeof(nn_Node*));
+  nn_Node** nodes = mem_calloc(layer_shape.x * layer_shape.y * layer_shape.z, sizeof(nn_Node*));
   for (size_t z = 0; z < layer_shape.z; z++) {
     for (size_t y = 0; y < layer_shape.y; y++) {
       for (size_t x = 0; x < layer_shape.x; x++) {
