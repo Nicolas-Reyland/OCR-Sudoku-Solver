@@ -6,7 +6,7 @@
 /* linked_list Declaration */
 #include <stdlib.h>
 #include <stdbool.h>
-#include <stdio.h>
+#include "utils/verbosity/verbose.h"
 #include "in_out_tuple.h"
 
 /* Constants */
@@ -49,13 +49,13 @@ struct iot_linked_list
 iot_linked_list* init_iot_linked_list();
 
 /* Free function */
-void free_iot_linked_list(iot_linked_list* list);
+void free_iot_linked_list(iot_linked_list* list, bool free_value);
 
 
 /* 'Private' Methods */
 
 // free node
-void _free_iot_linked_list_node(iot_ll_node* node);
+void _free_iot_linked_list_node(iot_ll_node* node, bool free_value);
 
 // error message
 void _iot_linked_list_exit_msg(const char* msg);
@@ -89,5 +89,8 @@ nn_InOutTuple* iot_linked_list_remove_value_at(iot_linked_list *list, int index)
 
 // remove value
 int iot_linked_list_index_of(iot_linked_list *list, nn_InOutTuple* value);
+
+//transforms the list into a dynamical allocated array assigned to gpl
+nn_InOutTuple** iot_linked_list_to_array(iot_linked_list* list);
 
 #endif

@@ -4,10 +4,10 @@
 #define NN_STRUCT_DESCRIPTION_H
 
 typedef struct nn_ShapeDescription {
-  unsigned int dims;
-  unsigned int x;
-  unsigned int y;
-  unsigned int z;
+  size_t dims;
+  size_t x;
+  size_t y;
+  size_t z;
 } nn_ShapeDescription;
 
 #endif

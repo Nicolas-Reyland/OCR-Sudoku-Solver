@@ -1,11 +1,13 @@
-#include "sample.h"
-#include <stdio.h>
-#include <stdlib.h>
+// sample.c
 
-nn_Sample* createSample(nn_ShapeDescription description, double* values)
+#include "sample.h"
+
+nn_Sample* createSample(nn_ShapeDescription description, double* values,
+size_t nb_values)
 {
-  nn_Sample* sample         = malloc(sizeof(nn_Sample));
+  nn_Sample* sample         = mem_malloc(sizeof(nn_Sample));
   sample->shape_description = description;
+  sample->nb_values         = nb_values;
   sample->values            = values;
 
   return sample;
@@ -13,6 +15,6 @@ nn_Sample* createSample(nn_ShapeDescription description, double* values)
 
 void freeSample(nn_Sample* sample)
 {
-  free(sample->values);
-  free(sample);
+  mem_free(sample->values);
+  mem_free(sample);
 }

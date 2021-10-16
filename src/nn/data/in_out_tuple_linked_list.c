@@ -1,12 +1,12 @@
 /* iot_linked_list Implementation */
 #include "in_out_tuple_linked_list.h"
-#include <stdio.h>
+#include "utils/verbosity/verbose.h"
 #include <errno.h>
 
 // init function
 iot_linked_list* init_iot_linked_list()
 {
-	iot_linked_list* list = (iot_linked_list*) malloc(sizeof(iot_linked_list));
+	iot_linked_list* list = (iot_linked_list*) mem_malloc(sizeof(iot_linked_list));
 	// setup attributes
 	list->length = 0;
 	list->value_size = sizeof(nn_InOutTuple*);
@@ -22,16 +22,18 @@ iot_linked_list* init_iot_linked_list()
 }
 
 /* Free function */
-void free_iot_linked_list(iot_linked_list* list)
+void free_iot_linked_list(iot_linked_list* list, bool free_value)
 {
-	_free_iot_linked_list_node(list->head);
+	_free_iot_linked_list_node(list->head,free_value);
 	free(list);
 }
 
 // free node
-void _free_iot_linked_list_node(iot_ll_node* node)
+void _free_iot_linked_list_node(iot_ll_node* node, bool free_value)
 {
-	if (node->next != NULL) _free_iot_linked_list_node(node->next);
+	if (node->next != NULL) _free_iot_linked_list_node(node->next,free_value);
+	if(free_value)
+		freeInOutTuple(node->value); 
 	free(node);
 }
 
@@ -84,7 +86,7 @@ iot_ll_node* _iot_linked_list_new_node()
 {
 	// allocate new memory for node
 	size_t iot_ll_node_size = sizeof(struct iot_ll_node);
-	struct iot_ll_node *node = (struct iot_ll_node*) malloc(iot_ll_node_size);
+	struct iot_ll_node *node = (struct iot_ll_node*) mem_malloc(iot_ll_node_size);
 	// if the pointer is NULL, the allocation faled
 	if (node == NULL)
 	{
@@ -216,4 +218,20 @@ int iot_linked_list_index_of(iot_linked_list *list, nn_InOutTuple* value)
 	} while (node != NULL);
 
 	return -1;
+}
+
+//transforms the list into a dynamical allocated array assigned to gpl
+nn_InOutTuple** iot_linked_list_to_array(iot_linked_list* list)
+{
+	size_t size = list->length;
+	nn_InOutTuple** array = mem_malloc(sizeof(nn_InOutTuple*)*size);
+	iot_ll_node* node = list->head;
+	size_t i = 0;
+	while(node != NULL)
+	{
+		array[i] = node->value;
+		i++;
+		node = node->next;
+	}
+	return array;
 }

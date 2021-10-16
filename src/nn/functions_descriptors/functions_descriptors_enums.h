@@ -14,6 +14,7 @@ typedef enum activation
 {
 	SIGMOID,
 	RELU,
+	LEAKY_RELU,
 	SOFTMAX,
 	TANH
 } activation;

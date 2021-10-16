@@ -1,17 +1,22 @@
 #!/bin/bash
 set -e
+export TEST_OUTPUT_INDENT_LVL=1
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-cd "$SCRIPT_DIR"/../tests # tests dir in repo
+cd $SCRIPT_DIR/../tests # tests dir in repo
 for folder in *
 do
 	echo "Testing module: ${folder:2}"
-	for sub_folder in "$folder"/*
+	for sub_folder in $folder/*
 	do
-		if [ $sub_folder == "$folder"/base ]; then
-			echo " - base"
-		else
-			echo " - sub-module: $(echo ""$sub_folder"" | cut -d '/' -f 2)"
+		module_name=$(echo ""$sub_folder"" | cut -d '/' -f 2)
+		if [ $sub_folder == $folder/base ]; then
+			echo " - sub-module: $module_name"
 		fi
-		# run the sub-module tests ...
+		# run the sub-module test
+		if [[ -f $sub_folder/test-descr.bash ]]; then
+			set +e
+			./run-test-module.sh ${sub_folder:2} $sub_folder $SCRIPT_DIR/.. &&	echo "Test ${sub_folder:2} done" || echo "Test ${sub_folder:2} done (problem occured)"
+			set -e
+		fi
 	done
 done
