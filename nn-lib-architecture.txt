@@ -182,12 +182,16 @@ utils :
 for (int = 0; i < hidden_layer.length; i++) {
   double sum = 0;
   for (int j = 0; j < input_layer.length: j++) {
-    sum += hidden_layer.nodes[i].weights[j] * inputs[j];
+    sum += hidden_layer.nodes[i].weights[j] * input_layer.nodes[j].value;
   }
-  hidden_layer.raw_value = sum + hidden_layer.bias[i];
-  hidden_layer.value = hidden_layer->activation(hidden_layer.raw_value);
+  hidden_layer.nodes[i].raw_value = sum + hidden_layer.bias[i];
+  // NO ! must activate whole layer at once (bc of softmax & co.)
+  /*
+  hidden_layer.nodes[i].value = hidden_layer->activation(hidden_layer.raw_value);
   // value = sigmoid(raw_value)
-
+  */
 }
+actiateWholeLayer(hidden_layer)
+
 
 //
