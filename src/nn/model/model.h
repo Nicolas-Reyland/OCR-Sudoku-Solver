@@ -3,6 +3,7 @@
 #ifndef NN_MODEL_H
 #define NN_MODEL_H
 
+#include <string.h>
 #include "layers/model_layers.h"
 #include "nn/functions_descriptors/functions_descriptors_enums.h"
 #include "utils/mem/mem-management.h"

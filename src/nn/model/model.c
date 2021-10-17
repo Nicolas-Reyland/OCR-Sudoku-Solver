@@ -3,17 +3,31 @@
 
 void _nn_Model_saveArchitectureFn(nn_Model* model, char* path)
 {
-  fprintf(stderr, "Not implemented yet : save arch\n");
+  FILE* architecture_file = fopen(path, "w+");
+
+  if(architecture_file == NULL)
+  {
+    printf("saveArchitecture: %s, the file does not exist. Exiting...\n",path);
+    exit(EXIT_FAILURE);
+  }
 }
 
 void _nn_Model_saveWeightsAndBias(nn_Model* model, char* path)
 {
-  fprintf(stderr, "Not implemented yet : save weights & bias\n");
+  FILE* wab_file = fopen(path,"w+");
+
+  if(wab_file = NULL)
+  {
+    printf("saveWeightsAndBias: %s, the file does not exist. Exiting...\n",path);
+    exit(EXIT_FAILURE);
+  }
+
 }
 
 void _nn_Model_saveModel(nn_Model* model, char* dirpath)
 {
-  fprintf(stderr, "Not implemented yet : save model\n");
+  _nn_Model_saveArchitectureFn(model, strcat(dirpath,"architecture.mdl"));
+  _nn_Model_saveWeightsAndBias(model,strcat(dirpath,"weightsandbias.mdl"));
 }
 
 nn_Model* createModel(size_t num_layers, nn_ShapeDescription model_architecture[], activation activations[], losses loss, optimizer optimizer)
