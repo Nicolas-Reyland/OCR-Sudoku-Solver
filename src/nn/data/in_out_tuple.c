@@ -4,16 +4,14 @@
 
 void _nn_printTuple(nn_InOutTuple* tuple)
 {
-    printf("number of input values: %ld\n", tuple->input->nb_values);
-    printf("number of output values: %ld\n", tuple->output->nb_values);
+    verbose("number of input values: %ld", tuple->input->nb_values);
+    verbose("number of output values: %ld", tuple->output->nb_values);
 
-    printf("Input:\n");
+    verbose("Input:");
     tuple->input->print(tuple->input);
     
-    printf("Output expected:\n");
+    verbose("Output expected:");
     tuple->output->print(tuple->output);
-    printf("pointer address: %p\n",tuple);
-    printf("\n");
 }
 
 
@@ -34,7 +32,6 @@ void freeInOutTuple(nn_InOutTuple* tuple)
         verbose("freeInOutTuple: tuple is null.");
         exit(EXIT_FAILURE);
     }
-    printf("pointer tuple address: %p\n",tuple);
     freeSample(tuple->input);
     freeSample(tuple->output);
     mem_free(tuple);

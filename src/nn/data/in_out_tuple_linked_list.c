@@ -24,7 +24,6 @@ iot_linked_list* init_iot_linked_list()
 /* Free function */
 void free_iot_linked_list(iot_linked_list* list, bool free_value)
 {
-    verbose("Freeing linkedlist...");
 	if(list == NULL)
     {
         verbose("free_iot_linked_list: list is null.");
@@ -43,7 +42,6 @@ void free_iot_linked_list(iot_linked_list* list, bool free_value)
 // free node
 void _free_iot_linked_list_node(iot_ll_node* node, bool free_value)
 {
-    verbose("Freeing Node...");
 	if(node == NULL)
     {
         verbose("_free_iot_linked_list_node: node is null.");
