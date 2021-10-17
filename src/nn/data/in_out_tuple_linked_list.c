@@ -163,7 +163,6 @@ void iot_linked_list_append_value(iot_linked_list *list, nn_InOutTuple* value)
 	// add to empty list
 	if (list->length == 0)
 	{
-		verbose("first item !");
 		list->head = _iot_linked_list_new_node();
 		list->head->value = value;
 	}
