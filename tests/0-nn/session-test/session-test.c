@@ -51,24 +51,19 @@ int main()
 	};
 	// activation functions
 	activation activations[3] = {
-		SIGMOID, SIGMOID, SIGMOID
+		RELU,RELU, SIGMOID
 	};
 	// loss & optimizers
-	losses loss = BINARYCROSSENTROPY;
+	losses loss = MEANSQUAREDERROR;
 	optimizer optimizer = ADAM;
 	// malloc model
 	nn_Model* model = createModel(3, model_architecture, activations, loss, optimizer);
 	
 	
 
-	nn_Session* session = createSession(dataset,2000,1.0e-5,true,true,0.0001);
+	nn_Session* session = createSession(dataset,1000,0.01,true,false,0.0001);
 	session->train(session,model);
-
-	// print the layers weights
-	model->layers->printModelLayers(model->layers);
-
-	// print the layers values
-	model->layers->printModelLayersValues(model->layers);
+	session->test(session,model);
 
 	// free model
 	freeModel(model);
