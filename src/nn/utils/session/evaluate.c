@@ -5,14 +5,12 @@
 void _nn_feedForward(nn_ModelLayers* model_layers, double* input)
 {
   // feed input layer with input
-  verbose("feeding the input layer");
   for (size_t i = 0; i < model_layers->input_layer.nb_nodes; i++) {
     model_layers->input_layer.nodes[i]->value = input[i];
   }
   // process middle-layers (if there are any)
   nn_Layer* last_layer;
   if (model_layers->num_hidden_layers) {
-    verbose("feeding the hidden layers");
     _nn_feedForwardLayer(&model_layers->input_layer, &model_layers->hidden_layers[0]);
     for (size_t i = 1; i < model_layers->num_hidden_layers; i++) {
       _nn_feedForwardLayer(&model_layers->hidden_layers[i-1], &model_layers->hidden_layers[i]);
@@ -22,7 +20,6 @@ void _nn_feedForward(nn_ModelLayers* model_layers, double* input)
     last_layer = &model_layers->input_layer;
   }
   // fast forward output_layer
-  verbose("feeding the last 'feedable' layer %p", last_layer);
   _nn_feedForwardLayer(last_layer, &model_layers->output_layer);
 }
 
@@ -46,14 +43,14 @@ void _nn_backPropagation(nn_Model* model, double* desired_output)
   
   // get model layers struct
   nn_ModelLayers* model_layers = model->layers;
-
   // Calculate output layer derivative weights, values etc.
   nn_Layer* output_layer = &model_layers->output_layer;
-  for (size_t j = 0; output_layer->nb_nodes; j++) {
+  for (size_t j = 0; j < output_layer->nb_nodes; j++) {
     // calculate derivative raw_value of output_layer
     output_layer->nodes[j]->delta_value = (output_layer->nodes[j]->value - desired_output[j]) * _nn_derivativeActivation(output_layer->nodes[j]->raw_value, output_layer->activation);
     // derivative weights of output_layer
     nn_Layer* layer_before_output;
+
     if (model_layers->num_hidden_layers) {
       layer_before_output = &model_layers->hidden_layers[model_layers->num_hidden_layers - 1];
     } else {
@@ -66,7 +63,6 @@ void _nn_backPropagation(nn_Model* model, double* desired_output)
     // derivative bias
     output_layer->nodes[j]->d_bias = output_layer->nodes[j]->delta_value;
   }
-
   // Propagate backwards towards the hidden layers
   nn_Layer* current_layer, * next_layer;
   /* ATTENTION: next_layer is the next layer looking at the model BACKWARDS.

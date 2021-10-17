@@ -13,24 +13,36 @@ void _nn_train(struct nn_Session* session, nn_Model* model)
 	size_t epoch = 0;
 	while (epoch < session->nb_epochs && loss_threshold_condition)
 	{
+		verbose("Epoch number: %ld",epoch);
+		verbose("Shuffling tuples...");
 		shuffleArray(tuple_array,sample_size);
 		size_t i = 0;
 		while(i < sample_size && loss_threshold_condition)
 		{
+			verbose("Training Tuple:");
+			tuple_array[i]->printTuple(tuple_array[i]);
 			_nn_feedForward(model->layers,tuple_array[i]->input->values);
-			_nn_backPropagation(model,tuple_array[i]->output->values);
-			
 			//we calculate the loss function 
 			double error = applyLosses(
 			&(model->layers->output_layer),
 			tuple_array[i]->output->values,
 			model->loss
 			);
+			verbose("Losses error = %f",error);
+			if(session->verbose)
+			{
+				//model->layers->printModelLayers(model->layers);
+				model->layers->printModelLayersValues(model->layers);
+			}
 			// we continue as long as we do not reached loss threshold 
 			// or we continue as long as we have epochs to do 
 			loss_threshold_condition = 
-				session->stop_on_loss_threshold_reached ||
+				!session->stop_on_loss_threshold_reached ||
 				error > session->loss_threshold;
+			_nn_backPropagation(model,tuple_array[i]->output->values);
+			_nn_updateWeights(model->layers,session->learning_rate);
+			
+			
 			i++;
 		}
 		epoch++;
