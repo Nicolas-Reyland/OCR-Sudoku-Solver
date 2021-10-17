@@ -303,6 +303,9 @@ void rotate_image(char *path, double angle)
 	Uint32 pixel;
 	Uint8 r, g, b;
 
+	double min_limit = 31 * PI / 36;
+	double max_limit = 41 * PI / 36;
+
 	int x = 0;
 	int y = 0;
 
@@ -331,44 +334,83 @@ void rotate_image(char *path, double angle)
 	color_surface(rotated_surface,
 				SDL_MapRGB(rotated_surface->format, 255, 255, 255));
 
-	for(int i = 0; i < src_surf_w; i++)
+	double angle_abs_val = fabs(angle);
+
+	if (min_limit < angle_abs_val && angle_abs_val < max_limit)
 	{
-		for (int j = 0; j < src_surf_h;j++)
+		for(int i = 0; i < src_surf_w; i++)
 		{
-			pixel = get_pixel(src_surface, i, j);
-			SDL_GetRGB(pixel, src_surface->format, &r, &g, &b);
-			pixel = SDL_MapRGB(rotated_surface->format, r, g, b);
-			
-			x = i - half_src_surf_w;
-			y = half_src_surf_h - j;
-			
-			
-			//===================================================
-			//*********************Rotation**********************
-			//===================================================
+			for (int j = 0; j < src_surf_h; j++)
+			{
+				pixel = get_pixel(src_surface, i, j);
+				SDL_GetRGB(pixel, src_surface->format, &r, &g, &b);
+				pixel = SDL_MapRGB(rotated_surface->format, r, g, b);
+				
+				x = i - half_src_surf_w;
+				y = half_src_surf_h - j;
+				
+				//===================================================
+				//****************Rotation-Formula 1*****************
+				//===================================================
 
-			//rotated_x = round(x * cos(angle) - y * sin(angle));
-			//rotated_y = round(x * sin(angle) + y * cos(angle));
+				rotated_x = round(x * cos(angle) - y * sin(angle));
+				rotated_y = round(x * sin(angle) + y * cos(angle));
 
-			// Shear 1
-			rotated_x = round(x-y*tan(angle/2));
-			rotated_y = y;
+				//===================================================
 
-			// Shear 2
-			rotated_y = round(rotated_x*sin(angle)+rotated_y);
+				//printf("rotated_x = %d | rotated_y = %d\n", rotated_x, rotated_y);
 
-			// Shear 3
-			rotated_x = round(rotated_x-rotated_y*tan(angle/2));
+				rotated_x = rotated_x + half_src_surf_w;
+				rotated_y = half_src_surf_h - rotated_y;
 
-			rotated_x = rotated_x + half_src_surf_w;
-			rotated_y = half_src_surf_h - rotated_y;
+				rotated_x = (rot_surf_edge - src_surf_w) / 2 + rotated_x;
+				rotated_y = (rot_surf_edge - src_surf_h) / 2 + rotated_y;
 
-			rotated_x = (rot_surf_edge - src_surf_w) / 2 + rotated_x;
-			rotated_y = (rot_surf_edge - src_surf_h) / 2 + rotated_y;
+				put_pixel(rotated_surface, rotated_x, rotated_y, pixel);
 
-			//===================================================
+			}
+		}
+	}
+	else // tan(pi/2) is undefined
+	{
+		for(int i = 0; i < src_surf_w; i++)
+		{
+			for (int j = 0; j < src_surf_h; j++)
+			{
+				pixel = get_pixel(src_surface, i, j);
+				SDL_GetRGB(pixel, src_surface->format, &r, &g, &b);
+				pixel = SDL_MapRGB(rotated_surface->format, r, g, b);
+				
+				x = i - half_src_surf_w;
+				y = half_src_surf_h - j;
+				
+				
+				//===================================================
+				//****************Rotation-Formula 2*****************
+				//===================================================
 
-			put_pixel(rotated_surface, rotated_x, rotated_y, pixel);
+				// Shear 1
+				rotated_x = round(x-y*tan(angle/2));
+				rotated_y = y;
+
+				// Shear 2
+				rotated_y = round(rotated_x*sin(angle)+rotated_y);
+
+				// Shear 3
+				rotated_x = round(rotated_x-rotated_y*tan(angle/2));
+
+				//===================================================
+
+				rotated_x = rotated_x + half_src_surf_w;
+				rotated_y = half_src_surf_h - rotated_y;
+
+				//printf("rotated_x = %d | rotated_y = %d\n", rotated_x, rotated_y);
+
+				rotated_x = (rot_surf_edge - src_surf_w) / 2 + rotated_x;
+				rotated_y = (rot_surf_edge - src_surf_h) / 2 + rotated_y;
+
+				put_pixel(rotated_surface, rotated_x, rotated_y, pixel);
+			}
 		}
 	}
 
