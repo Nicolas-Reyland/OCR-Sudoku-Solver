@@ -17,6 +17,7 @@ void _nn_activateLayer(nn_Layer* layer)
 			break;
 		case SOFTMAX:
 			softmax(layer);
+			break;
 		default:
 			fprintf(stderr, "Unrecognised activation function: %d\n", layer->activation);
 			exit(EXIT_FAILURE);
