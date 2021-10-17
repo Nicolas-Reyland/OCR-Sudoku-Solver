@@ -6,6 +6,9 @@ double _convertStringToDouble(char* string);
 char defineShapeDescription(nn_ShapeDescription* description, FILE* file);
 char _readFile(FILE* file, nn_ShapeDescription* description, double* values);
 
+void verifyListCompleteness(iot_ll_node* node, size_t length);
+
+
 
 
 nn_Data* nn_DataLoadRaw(char* input_path, char* output_path, nn_ShapeDescription* description)
@@ -24,12 +27,11 @@ nn_Data* nn_DataLoadRaw(char* input_path, char* output_path, nn_ShapeDescription
         exit(EXIT_FAILURE);
     }
     iot_linked_list* data_list = init_iot_linked_list();
-
     // was "%ld %ld %ld %ld %d". brought back to "%ld %ld %ld %ld". hope its ok
     
 
     nn_ShapeDescription output_description;
-
+                        
     char cursorInput =  defineShapeDescription(description,input_file);
                         defineShapeDescription(&output_description,output_file);
 
@@ -37,20 +39,20 @@ nn_Data* nn_DataLoadRaw(char* input_path, char* output_path, nn_ShapeDescription
     size_t output_size  =   output_description.x * output_description.y *
                             output_description.z;
     
+    verifyListCompleteness(data_list->head,data_list->length);
+
     do
     {
         //normally, if we do the right things, then we define the dimensions
         //that are not used to 1, so that it doesn't break the malloc sizing lol
         double* input_values    = mem_calloc(input_size,sizeof(double));
         double* output_values   = mem_calloc(output_size,sizeof(double));
-
         cursorInput = _readFile(input_file, description, input_values);
 
         //we don't need to read the cursor of output_file
         //since normally it should have the same nb of lines than
         //input_file (for safety later, make a private function that test it)
         _readFile(output_file,&output_description, output_values);
-
         nn_Sample* input    = createSample(*description,input_values,
             description->x*description->y*description->z);
         nn_Sample* output   = createSample(*description,output_values,
@@ -58,12 +60,13 @@ nn_Data* nn_DataLoadRaw(char* input_path, char* output_path, nn_ShapeDescription
 
         nn_InOutTuple* tuple = createInOutTuple(input,output);
         data_list->append_value(data_list,tuple);
-
+        verifyListCompleteness(data_list->head,data_list->length);
     } while (cursorInput != EOF);
 
     fclose(input_file);
     fclose(output_file);
 
+    
     return _nn_createData(_nn_loadDataCollection(data_list));
 }
 
@@ -127,10 +130,21 @@ char defineShapeDescription(nn_ShapeDescription* description, FILE* file)
     //we define the shape description by reading the file
     fscanf(file,"%ld %ld %ld %ld",&(description->dims), &(description->x),
     &(description->y), &(description->z));
-
     char cursor = fgetc(file);
     while(cursor != '\n')
         cursor = fgetc(file); //reading to end of line
     
     return cursor;
+}
+
+void verifyListCompleteness(iot_ll_node* node, size_t length)
+{
+    if(node == NULL)
+    {
+        if(length == 0)
+            return;
+        verbose("Linked list is not complete. There is too much element linked...");
+        exit(EXIT_FAILURE);
+    }
+    verifyListCompleteness(node->next,length-1);
 }

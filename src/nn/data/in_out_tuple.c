@@ -12,6 +12,7 @@ void _nn_printTuple(nn_InOutTuple* tuple)
     
     printf("Output expected:\n");
     tuple->output->print(tuple->output);
+    printf("pointer address: %p\n",tuple);
     printf("\n");
 }
 
@@ -28,6 +29,12 @@ nn_InOutTuple* createInOutTuple(nn_Sample* input, nn_Sample* output)
 
 void freeInOutTuple(nn_InOutTuple* tuple)
 {
+    if(tuple == NULL)
+    {
+        verbose("freeInOutTuple: tuple is null.");
+        exit(EXIT_FAILURE);
+    }
+    printf("pointer tuple address: %p\n",tuple);
     freeSample(tuple->input);
     freeSample(tuple->output);
     mem_free(tuple);

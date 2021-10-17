@@ -73,6 +73,11 @@ nn_Data* _nn_createData(nn_DataCollection* collection)
 /// <Summary/>
 void _nn_freeData(nn_Data* data,bool free_value)
 {
-  _nn_freeDataCollection(data->data_collection,free_value);
-  mem_free(data);
+    if(data == NULL)
+    {
+        verbose("freeData: data is null.");
+        exit(EXIT_FAILURE);
+    }
+    _nn_freeDataCollection(data->data_collection,free_value);
+    mem_free(data);
 }

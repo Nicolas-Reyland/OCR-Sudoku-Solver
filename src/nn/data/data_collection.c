@@ -13,6 +13,11 @@ nn_DataCollection* _nn_loadDataCollection(iot_linked_list* data)
 
 void _nn_freeDataCollection(nn_DataCollection* collection, bool free_value)
 {
+    if(collection == NULL)
+    {
+        verbose("freeDataCollection: collection is null.");
+        exit(EXIT_FAILURE);
+    }
     free_iot_linked_list(collection->data,free_value);
     mem_free(collection);
 }
