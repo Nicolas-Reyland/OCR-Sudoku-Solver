@@ -42,10 +42,10 @@ function step_1 {
 			$(gcc "$test_root_path"/session-test.c "${dot_c_files[@]}" -I"$project_root_path"/src -lm -o $abs_program_path > /dev/null 2>&1) || test_error "Compilation failed"
 			;;
 		2)
-			$abs_program_path > $perm_tmp_dir/nn-session-result.txt
-			diff $perm_tmp_dir/nn-session-test.txt $test_root_path/session-output.txt > $tmp_dir/diff-output.txt
+			$abs_program_path > $perm_tmp_dir/nn-session-test-result.txt
+			diff $perm_tmp_dir/nn-session-test-result.txt $test_root_path/session-output.txt > $tmp_dir/diff-output.txt
 			if [[ -s $tmp_dir/diff-output.txt ]]; then
-				test_error "Output does not match attended answer: `cat $tmp_dir/diff-output.txt && _prefix_indent && echo '[I] Output file at '$perm_tmp_dir/nn-session-result.txt`"
+				test_error "Output does not match attended answer: `cat $tmp_dir/diff-output.txt && _prefix_indent && echo '[I] Output file at '$perm_tmp_dir/nn-session-test-result.txt`"
 			fi
 			;;
 		*)

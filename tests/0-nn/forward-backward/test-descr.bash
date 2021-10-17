@@ -10,7 +10,8 @@
 #  - ...
 
 # Test Description
-export TEST_STEPS_DESCR=(2)# 2)
+export TEST_STEPS_DESCR=(2)
+# 2)
 
 # Declare variabes & functions
 # ...
