@@ -90,6 +90,10 @@ utils:
 	$(CC) $(CFLAGS) -c -o src/utils/mem/mem-management.o src/utils/mem/mem-management.c
 	$(CC) $(CFLAGS) -c -o src/utils/verbosity/verbose.o src/utils/verbosity/verbose.c
 
+# ------- Test Framework ------- 
+.PHONY: test
+test:
+	@./extra/run-tests
 
 # ------- Misc Rules -------
 .PHONY: clean
