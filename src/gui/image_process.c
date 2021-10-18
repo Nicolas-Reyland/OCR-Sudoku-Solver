@@ -19,14 +19,18 @@ static const int g_blur_kernel_5[5][5] = {{1, 4, 7, 4, 1},
 #define G_BLUR_KERNEL_SIZE 5
 #define G_BLUR_KERNEL_SUM 273
 
-static const int s_binarisation_mean_mat[3][3] = 
+#define S_BINARISATION_SIZE 15
+// K takes a value from the interval [0.2, 0.5]
+//#define K_BINARISATION 0.02f
+#define K_BINARISATION 0.2f
+
+/*
+static const int s_binarisation_mean_mat[S_BINARISATION_SIZE][S_BINARISATION_SIZE] = 
 										{{1, 1, 1},
 										{1, 1, 1},
 										{1, 1, 1}};
+*/
 
-#define S_BINARISATION_SIZE 3
-// K takes a value from the interval [0.2, 0.5]
-#define K_BINARISATION 0.02f
 // R is the max value of the standard deviation of an image in grayscale
 #define R 128
 
@@ -59,6 +63,66 @@ void color_surface(SDL_Surface *surface, Uint32 pixel)
 			put_pixel(surface, i, j, pixel);
 		}
 	}
+}
+
+unsigned long int **create_integral_image(SDL_Surface *surface)
+{
+	Uint32 pixel;
+	Uint8 composant;
+
+	size_t surface_width = surface->w;
+	size_t surface_height = surface->h;
+
+	// 2D unsigned long int array allocation
+	unsigned long int **integral_image = NULL;
+
+	integral_image = malloc(surface_width * sizeof(unsigned long int*));
+	for(size_t i = 0; i < surface_width; i++)
+		integral_image[i] = malloc(surface_height * sizeof(unsigned long int));
+
+	// Pixel (0,0)
+	pixel = get_pixel(surface, 0, 0);
+	SDL_GetRGB(pixel, surface->format, 
+					&composant, NULL, NULL);
+
+	integral_image[0][0] = composant;
+
+	// First row (i, 0)
+	for (size_t i = 1; i < surface_width; i++)
+	{
+		pixel = get_pixel(surface, i, 0);
+		SDL_GetRGB(pixel, surface->format, 
+					&composant, NULL, NULL);
+
+		integral_image[i][0] = integral_image[i - 1][0] + composant;
+	}
+
+	// First column (0, j)
+	for (size_t j = 1; j < surface_height; j++)
+	{
+		pixel = get_pixel(surface, 0, j);
+		SDL_GetRGB(pixel, surface->format, 
+					&composant, NULL, NULL);
+
+		integral_image[0][j] = integral_image[0][j - 1] + composant;
+	}
+
+	// All the remaining pixels
+	for (size_t i = 1; i < surface_width; i++)
+	{
+		for (size_t j = 1; j < surface_height; j++)
+		{
+			pixel = get_pixel(surface, i, j);
+			SDL_GetRGB(pixel, surface->format, 
+					&composant, NULL, NULL);
+
+			integral_image[i][j] = integral_image[i][j - 1] + 
+									integral_image[i - 1][j] + 
+									composant;
+		}
+	}
+
+	return integral_image;
 }
 
 void grayscale(Uint8 *r, Uint8 *g, Uint8 *b)
@@ -148,7 +212,7 @@ float sauvola_binarisation(SDL_Surface *src_surface, int i, int j)
 				SDL_GetRGB(pixel, src_surface->format, 
 					&current_r, &current_r, &current_r);
 
-				mean += s_binarisation_mean_mat[x][y] * current_r;
+				mean += /*s_binarisation_mean_mat[x][y] * */current_r;
 			}
 
 			current_j += 1;
@@ -174,7 +238,7 @@ float sauvola_binarisation(SDL_Surface *src_surface, int i, int j)
 				SDL_GetRGB(pixel, src_surface->format, 
 					&current_r, &current_r, &current_r);
 
-				std_deviation += pow((current_r - mean), 2);
+				std_deviation += (current_r - mean) * (current_r - mean);
 			}
 
 			current_j += 1;
@@ -188,6 +252,7 @@ float sauvola_binarisation(SDL_Surface *src_surface, int i, int j)
 	std_deviation = sqrt(std_deviation);
 
 	threshold = mean * (1 + K_BINARISATION * ((std_deviation / R) - 1));
+	//threshold = mean * ((1 + K_BINARISATION * std_deviation)/(R - 1));
 
 	return threshold;
 }
@@ -280,10 +345,10 @@ void image_process(char *path)
 			//r = r >= threshold;
 			//r = r * 255;
 			
-			if (r >= threshold)
-				r = 0;
-			else
+			if (r > threshold)
 				r = 255;
+			else
+				r = 0;
 
 			pixel = SDL_MapRGB(binarised_surface->format, r, r, r);
 			put_pixel(binarised_surface, i, j, pixel);

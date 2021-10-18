@@ -9,6 +9,7 @@
 void init_sdl();
 SDL_Surface* load_image(char *path);
 void color_surface(SDL_Surface *surface, Uint32 pixel);
+unsigned long int **create_integral_image(SDL_Surface *surface);
 void grayscale(Uint8 *r, Uint8 *g, Uint8 *b);
 void gaussian_blur(SDL_Surface *src_surface, int i, int j, 
 	Uint8 *r_dest, Uint8 *g_dest, Uint8 *b_dest);

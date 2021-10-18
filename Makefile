@@ -2,7 +2,7 @@
 
 SHELL := /bin/bash
 CFLAGS := -std=c99 -O1 -Wall -Wextra -Isrc
-CFLAGS_GUI := `pkg-config --cflags sdl2` `pkg-config --cflags gtk+-3.0`
+CFLAGS_GUI := -Wall -Wextra -std=c99 -O1 `pkg-config --cflags sdl2` `pkg-config --cflags gtk+-3.0` -I..
 LDLIBS_NN = -lm
 LDLIBS_GUI = -lm `pkg-config --libs sdl2` -lSDL2_image `pkg-config --libs gtk+-3.0`
 CC := gcc
@@ -72,7 +72,7 @@ nn-utils-functions-activations:
 
 # ------- GUI & Image Processing -------
 gui : utils src/gui/gui.o src/gui/image_process.o src/gui/pixel_operations.o
-	$(CC) $(CFLAGS_GUI) src/gui/gui.o src/gui/image_process.o src/gui/pixel_operations.o -o src/gui/gui $(LDLIBS_GUI)
+	$(CC) $(CFLAGS_GUI) src/gui/gui.o src/gui/image_process.o src/gui/pixel_operations.o -o gui $(LDLIBS_GUI)
 
 src/gui/gui.o : src/gui/gui.c
 	$(CC) -c $(CFLAGS_GUI) src/gui/gui.c -o src/gui/gui.o $(LDLIBS_GUI)
@@ -82,6 +82,9 @@ src/gui/image_process.o : src/gui/image_process.c
 
 src/gui/pixel_operations.o : src/gui/pixel_operations.c
 	$(CC) -c $(CFLAGS_GUI) src/gui/pixel_operations.c -o src/gui/pixel_operations.o $(LDLIBS_GUI)
+
+gui_clean :
+	rm gui.o image_process.o pixel_operations.o gui grayscale.bmp blurred_image.bmp binarised_image.bmp rotated_image.bmp
 
 # ------- Utils -------
 .PHONY: utils
