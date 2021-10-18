@@ -16,21 +16,21 @@ layers[0]->nodes[2]->weights[2] = 0.985507
 layers[0]->nodes[2]->weights[3] = 0.700011
 bias: 0.497127
 index: 1
-layers[1]->nodes[0]->weights[0] = -0.749929
-layers[1]->nodes[0]->weights[1] = -0.145395
-bias: 0.396391
-layers[1]->nodes[1]->weights[0] = -0.861029
-layers[1]->nodes[1]->weights[1] = -0.567556
-bias: -0.221031
-layers[1]->nodes[2]->weights[0] = 0.619464
-layers[1]->nodes[2]->weights[1] = -0.554448
-bias: -0.658010
-layers[1]->nodes[3]->weights[0] = 0.228236
-layers[1]->nodes[3]->weights[1] = 0.057730
-bias: -0.714088
+layers[1]->nodes[0]->weights[0] = 0.303889
+layers[1]->nodes[0]->weights[1] = 0.803527
+bias: -0.822229
+layers[1]->nodes[1]->weights[0] = -0.231126
+layers[1]->nodes[1]->weights[1] = -0.749929
+bias: -0.145395
+layers[1]->nodes[2]->weights[0] = 0.396391
+layers[1]->nodes[2]->weights[1] = -0.861029
+bias: -0.567556
+layers[1]->nodes[3]->weights[0] = -0.221031
+layers[1]->nodes[3]->weights[1] = 0.619464
+bias: -0.554448
 index: 2
-bias: 0.303889
-bias: -0.231126
+bias: 0.326000
+bias: -0.190477
 forward feeding done
 index: 0
 layers[0]->nodes[0]->value = 0.100000
@@ -40,16 +40,16 @@ layers[0]->nodes[1]->raw_value = nan
 layers[0]->nodes[2]->value = 0.750000
 layers[0]->nodes[2]->raw_value = nan
 index: 1
-layers[1]->nodes[0]->value = 0.598496
-layers[1]->nodes[0]->raw_value = 0.598496
-layers[1]->nodes[1]->value = 0.564735
-layers[1]->nodes[1]->raw_value = 0.564735
+layers[1]->nodes[0]->value = 0.000000
+layers[1]->nodes[0]->raw_value = -0.620125
+layers[1]->nodes[1]->value = 0.640371
+layers[1]->nodes[1]->raw_value = 0.640371
 layers[1]->nodes[2]->value = 0.000000
-layers[1]->nodes[2]->raw_value = -0.187348
+layers[1]->nodes[2]->raw_value = -0.096894
 layers[1]->nodes[3]->value = 0.000000
-layers[1]->nodes[3]->raw_value = -0.378626
+layers[1]->nodes[3]->raw_value = -0.218986
 index: 2
-layers[2]->nodes[0]->value = 0.347240
-layers[2]->nodes[0]->raw_value = -0.631195
-layers[2]->nodes[1]->value = 0.345549
-layers[2]->nodes[1]->raw_value = -0.638663
+layers[2]->nodes[0]->value = 0.544381
+layers[2]->nodes[0]->raw_value = 0.177994
+layers[2]->nodes[1]->value = 0.338338
+layers[2]->nodes[1]->raw_value = -0.670710
