@@ -85,7 +85,7 @@ function _exit_test {
 function test_finished {
 	_prefix_indent
 	echo "[!] Test '$TEST_NAME' completed. Status: `status_string $TEST_STATUS`"
-	_exit_test
+	exit 0
 }
 
 function fn_exists {

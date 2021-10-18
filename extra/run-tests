@@ -1,22 +1,24 @@
 #!/bin/bash
 set -e
 export TEST_OUTPUT_INDENT_LVL=1
+export order_file_name="order.descr"
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 cd $SCRIPT_DIR/../tests # tests dir in repo
-for folder in *
+while IFS= read -r folder
 do
-	echo "Testing module: ${folder:2}"
-	for sub_folder in $folder/*
+	echo " ---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---"
+	echo "[T] Executing test-module $folder"
+	while IFS= read -r sub_folder
 	do
-		module_name=$(echo ""$sub_folder"" | cut -d '/' -f 2)
-		if [ $sub_folder == $folder/base ]; then
-			echo " - sub-module: $module_name"
-		fi
 		# run the sub-module test
-		if [[ -f $sub_folder/test-descr.bash ]]; then
+		full_path=$folder/$sub_folder
+		if [[ -f $full_path/test-descr.bash ]]; then
 			set +e
-			./run-test-module.sh ${sub_folder:2} $sub_folder $SCRIPT_DIR/.. &&	echo "Test ${sub_folder:2} done" || echo "Test ${sub_folder:2} done (problem occured)"
+			(./run-test-module.sh $full_path $full_path $SCRIPT_DIR/..) && (echo -n -e ' \t '; echo "[t] sub-test $sub_folder done") || (echo -n -e ' \t '; echo "[t] sub-test $sub_folder done (NOT successful)")
 			set -e
+			echo
 		fi
-	done
-done
+	done < $folder/$order_file_name
+	echo "[T] Done test-module $folder"
+	echo
+done < $order_file_name
