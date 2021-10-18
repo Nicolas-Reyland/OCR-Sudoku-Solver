@@ -4,6 +4,7 @@
 #define NN_MODEL_LAYERS_H
 
 #include "layer.h"
+#include "utils/verbosity/verbose.h"
 #include <stdlib.h>
 
 typedef struct nn_ModelLayers {

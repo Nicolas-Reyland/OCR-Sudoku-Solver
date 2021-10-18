@@ -2,8 +2,6 @@
 
 #include "model_layers.h"
 
-//#include "utils/verbosity/verbose.h"
-
 void _nn_printModelLayers(nn_ModelLayers* model_layer)
 {
 	nn_Layer* layer;
