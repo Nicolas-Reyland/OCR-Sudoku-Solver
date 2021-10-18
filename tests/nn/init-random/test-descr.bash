@@ -3,11 +3,11 @@
 
 # Testing ... what you are testing ...
 # Steps :
-# 1. test output
+# 1. check weights & bias initialization
 # Sub-steps :
 # 1.
-#  - ...
-#  - ...
+#  - compile test.c
+#  - compare test.c compiled program execution output to output.txt
 
 # Test Description
 export TEST_STEPS_DESCR=(2)
@@ -45,7 +45,7 @@ function step_1 {
 			$abs_program_path q > $perm_tmp_dir/nn-init-random-result.txt
 			diff $perm_tmp_dir/nn-init-random-result.txt $test_root_path/output.txt > $tmp_dir/diff-output.txt
 			if [[ -s $tmp_dir/diff-output.txt ]]; then
-				test_error "Output does not match attended answer: `cat $tmp_dir/diff-output.txt && _prefix_indent && echo '[I] Output file at '$perm_tmp_dir/nn-init-random-result.txt`"
+				test_error "Output does not match attended answer: `echo;print_normal $(cat $tmp_dir/diff-output.txt && _prefix_indent && echo '[I] Output file at '$perm_tmp_dir/nn-init-random-result.txt)`"
 			fi
 			;;
 		*)

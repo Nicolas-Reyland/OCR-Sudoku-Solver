@@ -4,21 +4,30 @@ export TEST_OUTPUT_INDENT_LVL=1
 export order_file_name="order.descr"
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 cd $SCRIPT_DIR/../tests # tests dir in repo
+. .test_env_print_utils
 while IFS= read -r folder
 do
-	echo " ---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---"
-	echo "[T] Executing test-module $folder"
+	if [ ! -f $folder/$order_file_name ]; then
+		print_nel_yellow "No order file in "
+		print_nel_blue "$folder"
+		print_yellow ". Skipping test module (`print_nel_white $folder/$order_file_name;print_nel_yellow ')'`"
+		continue
+	fi
+	print_green " ---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---"
+	print_cyan "[T] Executing test-module $folder"
 	while IFS= read -r sub_folder
 	do
 		# run the sub-module test
 		full_path=$folder/$sub_folder
 		if [[ -f $full_path/test-descr.bash ]]; then
 			set +e
-			(./run-test-module.sh $full_path $full_path $SCRIPT_DIR/..) && (echo -n -e ' \t '; echo "[t] sub-test $sub_folder done") || (echo -n -e ' \t '; echo "[t] sub-test $sub_folder done (NOT successful)")
+			(./run-test-module.sh $full_path $full_path $SCRIPT_DIR/..) \
+				&& (echo -n -e ' \t '; print_normal "[t] sub-test $sub_folder done") \
+				|| (echo -n -e ' \t '; print_nel_normal "[t] sub-test $sub_folder done ";print_magenta "(NOT successful)")
 			set -e
 			echo
 		fi
 	done < $folder/$order_file_name
-	echo "[T] Done test-module $folder"
+	print_cyan "[T] Done test-module $folder"
 	echo
 done < $order_file_name

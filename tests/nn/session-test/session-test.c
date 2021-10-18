@@ -58,8 +58,6 @@ int main()
 	optimizer optimizer = ADAM;
 	// malloc model
 	nn_Model* model = createModel(3, model_architecture, activations, loss, optimizer);
-	
-	
 
 	nn_Session* session = createSession(dataset,1000,0.01,true,false,0.0001);
 	session->train(session,model);

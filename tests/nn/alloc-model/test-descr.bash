@@ -51,7 +51,8 @@ function step_1 {
 	case $1 in
 		1)
 			# Compile without warnings
-			$(gcc "$test_root_path"/test.c "${dot_c_files[@]}" -I"$project_root_path"/src -lm -o $abs_program_path > /dev/null 2>&1) || test_error "Compilation failed"
+			$(gcc "$test_root_path"/test.c "${dot_c_files[@]}" -I"$project_root_path"/src -lm -o $abs_program_path > /dev/null 2>&1) || \
+				test_error "Compilation failed"
 			;;
 		2)
 			fullwarn_compilation=$(gcc "$test_root_path"/test.c "${dot_c_files[@]}" -I"$project_root_path"/src -lm -o $abs_program_path.2 -Wall -Wextra > /dev/null 2>&1 | sed -e "s/^/$prefix_tabs | /;")
@@ -59,7 +60,8 @@ function step_1 {
 				test_warn "Output in compiling test.c with warn flags :"
 				echo $fullwarn_compilation
 			fi
-			$(gcc "$test_root_path"/test.c "${dot_c_files[@]}" -I"$project_root_path"/src -lm -o $abs_program_path.3 -Wall -Wextra -Werror > /dev/null 2>&1 | sed -e "s/^/$prefix_tabs | /;") || test_warn "Could not compile with ""-Werror"" flag"
+			$(gcc "$test_root_path"/test.c "${dot_c_files[@]}" -I"$project_root_path"/src -lm -o $abs_program_path.3 -Wall -Wextra -Werror > /dev/null 2>&1 | sed -e "s/^/$prefix_tabs | /;") || \
+				test_warn "Could not compile with ""-Werror"" flag"
 			;;
 		*)
 			;;
@@ -72,7 +74,8 @@ function step_2 {
 		1)
 			# Check program return status
 			prefix_tabs=$(_prefix_indent)
-			$abs_program_path | sed -e "s/^/$prefix_tabs | /;" || test_error "Program exits with non-zero status. Binaries are at ""$abs_program_path"""
+			$abs_program_path | sed -e "s/^/$prefix_tabs | /;" || \
+				test_error "Program exits with non-zero status. Binaries are at ""$abs_program_path"""
 			;;
 		2)
 			# Valgrind memory check
@@ -80,7 +83,7 @@ function step_2 {
 			valgrind --tool=memcheck --quiet $abs_program_path q 2> $tmp_dir/valgrind-output
 			if [ -n "`cat $tmp_dir/valgrind-output`" ]; then
 				test_warn "Valgrind is not happy with your program:"
-				cat $tmp_dir/valgrind-output | sed -e "s/^/$prefix_tabs | /;"
+				print_normal `cat $tmp_dir/valgrind-output | sed -e "s/^/$prefix_tabs | /;"`
 			fi
 			;;
 		*)
