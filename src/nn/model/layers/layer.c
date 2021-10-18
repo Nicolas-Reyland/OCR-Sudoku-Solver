@@ -2,15 +2,14 @@
 
 #include "layer.h"
 
-nn_Layer* _nn_createLayer(nn_ShapeDescription layer_shape, nn_ShapeDescription next_layer_shape, activation activation)
+nn_Layer* _nn_createLayerWrapped(nn_ShapeDescription layer_shape, nn_ShapeDescription next_layer_shape, activation activation, bool alloc_weights)
 {
-  size_t num_next_layer_weights = next_layer_shape.x * next_layer_shape.y * next_layer_shape.z;
+  size_t num_next_layer_weights = alloc_weights ? next_layer_shape.x * next_layer_shape.y * next_layer_shape.z : 0;
   // create nodes
   nn_Node** nodes = mem_calloc(layer_shape.x * layer_shape.y * layer_shape.z, sizeof(nn_Node*));
   for (size_t z = 0; z < layer_shape.z; z++) {
     for (size_t y = 0; y < layer_shape.y; y++) {
       for (size_t x = 0; x < layer_shape.x; x++) {
-        //verbose("Allocating node %d %d %d\n", x, y, z);
         nn_Node* node = _nn_createNode(num_next_layer_weights);
         nodes[
           z * layer_shape.y * layer_shape.x
@@ -30,16 +29,14 @@ nn_Layer* _nn_createLayer(nn_ShapeDescription layer_shape, nn_ShapeDescription n
   return layer;
 }
 
+nn_Layer* _nn_createLayer(nn_ShapeDescription layer_shape, nn_ShapeDescription next_layer_shape, activation activation)
+{
+  return _nn_createLayerWrapped(layer_shape, next_layer_shape, activation, true);
+}
+
 nn_Layer* _nn_createOutputLayer(nn_ShapeDescription layer_shape, activation activation)
 {
-  // The output layer does not have weights, but must have a bias
-  nn_Layer* layer = _nn_createLayer(layer_shape, layer_shape, activation);
-  for (size_t i = 0; i < layer->nb_nodes; i++) {
-    free(layer->nodes[i]->weights);
-    layer->nodes[i]->weights = NULL;
-    layer->nodes[i]->num_weights = 0;
-  }
-  return layer;
+  return _nn_createLayerWrapped(layer_shape, layer_shape, activation, false);
 }
 
 void _nn_freeLayer(nn_Layer* layer)
