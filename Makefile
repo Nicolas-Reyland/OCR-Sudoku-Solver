@@ -95,6 +95,10 @@ utils:
 test:
 	@./extra/run-tests
 
+.PHONY: clean-test
+clean-test:
+	@rm -rf /tmp/ocr-tests{,-perm}
+
 # ------- Misc Rules -------
 .PHONY: clean
 clean:
