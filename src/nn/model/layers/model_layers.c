@@ -38,7 +38,7 @@ void _nn_printModelLayersValues(nn_ModelLayers* model_layer)
 nn_ModelLayers* _nn_createModelLayers(size_t num_hidden_layers, nn_ShapeDescription model_architecture[], activation activations[])
 {
   // input & output layers
-  nn_Layer* input_layer = _nn_createLayer(model_architecture[0], model_architecture[1], activations[0]);
+  nn_Layer* input_layer = _nn_createInputLayer(model_architecture[0], model_architecture[1], activations[0]);
   nn_Layer* output_layer = _nn_createOutputLayer(model_architecture[num_hidden_layers + 1], activations[num_hidden_layers + 1]);
   // hidden layers
   nn_Layer* hidden_layers = NULL;

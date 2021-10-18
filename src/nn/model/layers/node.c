@@ -2,7 +2,7 @@
 
 #include "node.h"
 
-nn_Node* _nn_createNode(size_t num_weights)
+nn_Node* _nn_createNode(size_t num_weights, bool init_bias)
 {
   double* weights, * d_weights;
   // malloc weights
@@ -16,7 +16,13 @@ nn_Node* _nn_createNode(size_t num_weights)
     weights = NULL;
     d_weights = NULL;
   }
-  double bias = getNormalizedRandomDouble();
+  // init bias
+  double bias;
+  if (init_bias) {
+    bias = getNormalizedRandomDouble();
+  } else {
+    bias = NAN;
+  }
   // malloc struct
   nn_Node* node = mem_malloc(sizeof(nn_Node));
   node->num_weights = num_weights;

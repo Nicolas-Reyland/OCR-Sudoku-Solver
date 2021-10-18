@@ -27,7 +27,7 @@ typedef struct nn_Node {
   double d_value;
 } nn_Node;
 
-nn_Node* _nn_createNode(size_t num_weights);
+nn_Node* _nn_createNode(size_t num_weights, bool init_bias);
 void _nn_freeNode(nn_Node* node);
 
 #endif

@@ -2,7 +2,7 @@
 
 #include "layer.h"
 
-nn_Layer* _nn_createLayerWrapped(nn_ShapeDescription layer_shape, nn_ShapeDescription next_layer_shape, activation activation, bool alloc_weights)
+nn_Layer* _nn_createLayerWrapped(nn_ShapeDescription layer_shape, nn_ShapeDescription next_layer_shape, activation activation, bool alloc_weights, bool init_bias)
 {
   size_t num_next_layer_weights = alloc_weights ? next_layer_shape.x * next_layer_shape.y * next_layer_shape.z : 0;
   // create nodes
@@ -10,7 +10,7 @@ nn_Layer* _nn_createLayerWrapped(nn_ShapeDescription layer_shape, nn_ShapeDescri
   for (size_t z = 0; z < layer_shape.z; z++) {
     for (size_t y = 0; y < layer_shape.y; y++) {
       for (size_t x = 0; x < layer_shape.x; x++) {
-        nn_Node* node = _nn_createNode(num_next_layer_weights);
+        nn_Node* node = _nn_createNode(num_next_layer_weights, init_bias);
         nodes[
           z * layer_shape.y * layer_shape.x
           + y * layer_shape.x
@@ -29,14 +29,19 @@ nn_Layer* _nn_createLayerWrapped(nn_ShapeDescription layer_shape, nn_ShapeDescri
   return layer;
 }
 
+nn_Layer* _nn_createInputLayer(nn_ShapeDescription layer_shape, nn_ShapeDescription next_layer_shape, activation activation)
+{
+  return _nn_createLayerWrapped(layer_shape, next_layer_shape, activation, true, false);
+}
+
 nn_Layer* _nn_createLayer(nn_ShapeDescription layer_shape, nn_ShapeDescription next_layer_shape, activation activation)
 {
-  return _nn_createLayerWrapped(layer_shape, next_layer_shape, activation, true);
+  return _nn_createLayerWrapped(layer_shape, next_layer_shape, activation, true, true);
 }
 
 nn_Layer* _nn_createOutputLayer(nn_ShapeDescription layer_shape, activation activation)
 {
-  return _nn_createLayerWrapped(layer_shape, layer_shape, activation, false);
+  return _nn_createLayerWrapped(layer_shape, layer_shape, activation, false, true);
 }
 
 void _nn_freeLayer(nn_Layer* layer)
