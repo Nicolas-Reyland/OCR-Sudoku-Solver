@@ -1,10 +1,18 @@
 #!/bin/bash
+
+# setup script execution policy
 set -e
+# setup global variables
 export TEST_OUTPUT_INDENT_LVL=1
 export order_file_name="order.descr"
+# cd into the right dir
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 cd $SCRIPT_DIR/../tests # tests dir in repo
+# source print utils
 . .test_env_print_utils
+# print the banner
+print_banner $SCRIPT_DIR/test-framework-banners
+# start reading test order descriptions
 while IFS= read -r folder
 do
 	if [ ! -f $folder/$order_file_name ]; then
