@@ -71,6 +71,6 @@ rm -rf $tmp_dir
 
 # call end of test
 test_finished
-
+exit 0
 
 #
