@@ -111,8 +111,7 @@ function _exit_test {
 }
 
 function test_finished {
-	print_info_text "[!]" " Test '$TEST_NAME' completed. Status: `status_string $TEST_STATUS`"
-	exit 0
+	print_info_text "[!]" " Test '`print_nel_blue $TEST_NAME`' completed. Status: `status_string $TEST_STATUS`"
 }
 
 function fn_exists {

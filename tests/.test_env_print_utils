@@ -21,6 +21,14 @@ COLOR_MAGENTA=`tput setaf 5`
 COLOR_CYAN=`tput setaf 6`
 COLOR_WHITE=`tput setaf 7`
 
+# Banner function
+function print_banner {
+	banner=`ls "$1" | shuf -n 1`
+	content=`cat "$1/$banner"`
+	echo "`tput setaf $((RANDOM % 7 + 1))`$content${COLOR_RESET}"
+	echo
+}
+
 # Setup text functions
 function print_normal {
 	echo "${COLOR_RESET}$@${COLOR_RESET}"
