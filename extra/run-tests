@@ -14,7 +14,9 @@ do
 		continue
 	fi
 	print_green " ---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---"
-	print_cyan "[T] Executing test-module $folder"
+	print_nel_cyan "[T]"
+	print_nel_white " Executing test-module "
+	print_blue "$folder"
 	while IFS= read -r sub_folder
 	do
 		# run the sub-module test
@@ -22,12 +24,14 @@ do
 		if [[ -f $full_path/test-descr.bash ]]; then
 			set +e
 			(./run-test-module.sh $full_path $full_path $SCRIPT_DIR/..) \
-				&& (echo -n -e ' \t '; print_normal "[t] sub-test $sub_folder done") \
-				|| (echo -n -e ' \t '; print_nel_normal "[t] sub-test $sub_folder done ";print_magenta "(NOT successful)")
+				&& (echo -n -e ' \t '; print_normal "`print_nel_cyan '[t]'` sub-test `print_nel_blue $sub_folder` done") \
+				|| (echo -n -e ' \t '; print_nel_normal "`print_nel_cyan '[t]'` sub-test `print_nel_blue $sub_folder` done ";print_magenta "(NOT successful)")
 			set -e
 			echo
 		fi
 	done < $folder/$order_file_name
-	print_cyan "[T] Done test-module $folder"
+	print_nel_cyan "[T]"
+	print_nel_white " Done test-module "
+	print_blue "$folder"
 	echo
 done < $order_file_name
