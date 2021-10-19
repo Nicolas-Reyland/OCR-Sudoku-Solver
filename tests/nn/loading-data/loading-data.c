@@ -33,8 +33,8 @@ int main()
 	nn_ShapeDescription* description;
 
 	nn_Data* data = nn_DataLoadRaw(
-		"/home/lilian/root/input.txt",
-		"/home/lilian/root/output.txt",
+		"datas/xor/input.txt",
+		"datas/xor/output.txt",
 		description);
 	printf("created data.\n");
 	data->printData(data);
