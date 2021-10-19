@@ -11,16 +11,19 @@ void printModelLayers(nn_ModelLayers* model_layer);
 void printModelLayersValues(nn_ModelLayers* model_layer);
 
 
-int main()
+int main(int argc, char** argv)
 {
 	setVerbose(true);
-	// init random
-	// initRandom(); // NOT initializing random this ways
-	// custom random init
-	srand( 1234567890 );
-	_nn_random_init_done = true;
-	printf("Next random integer is: %d\n", rand());
 	initMemoryTracking();
+	initRandom();
+	
+	// get path to project as arg
+	char input_path[255], output_path[255];
+	char* path_to_project = argv[1];
+	strcpy(input_path, path_to_project);
+	strcpy(output_path, path_to_project);
+	strcat(input_path, "/datas/xor/input.txt");
+	strcat(output_path, "/datas/xor/output.txt");
 
 	nn_ShapeDescription train_description;
 	nn_ShapeDescription test_description;
@@ -29,16 +32,15 @@ int main()
 	nn_Data* test;
 
 	train = nn_DataLoadRaw(
-		"datas/xor/input.txt",
-		"datas/xor/output.txt",
+		input_path,
+		output_path,
 		&train_description);
 	verbose("Created train data");
 	test = nn_DataLoadRaw(
-		"datas/xor/input.txt",
-		"data/xor/output.txt",
+		input_path,
+		output_path,
 		&test_description);
 	verbose("Created test data");
-
 
 	nn_DataSet* dataset = _nn_createDataSet(train,test);	
 	verbose("Created dataset.");

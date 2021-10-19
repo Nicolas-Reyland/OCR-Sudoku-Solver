@@ -1,1 +1,64 @@
-forward output
+Created train data
+Created test data
+Created dataset.
+Done allocating nodes
+Done allocating nodes
+Allocating hidden layer ...
+Done allocating nodes
+layers are allocated.
+Training Tuple:
+number of input values: 2
+number of output values: 1
+Input:
+1.000000, 1.000000, 
+Output expected:
+0.000000, 
+Result:
+0.642276 
+Losses error = 0.412519
+Training Tuple:
+number of input values: 2
+number of output values: 1
+Input:
+1.000000, 0.000000, 
+Output expected:
+1.000000, 
+Result:
+0.642276 
+Losses error = 0.127966
+Training Tuple:
+number of input values: 2
+number of output values: 1
+Input:
+0.000000, 1.000000, 
+Output expected:
+1.000000, 
+Result:
+0.642276 
+Losses error = 0.127966
+Training Tuple:
+number of input values: 2
+number of output values: 1
+Input:
+0.000000, 0.000000, 
+Output expected:
+0.000000, 
+Result:
+0.642276 
+Losses error = 0.412519
+freeing layer ...
+layer has been freed
+freed input layer
+freeing layer ...
+layer has been freed
+freed output layer
+freeing hidden layer num 0
+freeing layer ...
+layer has been freed
+freed model layers
+Freeing test data...
+Test data freed !
+Freeing train data...
+Train data freed !
+Freeing dataset...
+Dataset freed !
