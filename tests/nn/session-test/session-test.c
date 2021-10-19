@@ -29,13 +29,13 @@ int main()
 	nn_Data* test;
 
 	train = nn_DataLoadRaw(
-		"/home/lilian/root/input.txt",
-		"/home/lilian/root/output.txt",
+		"input.txt",
+		"output.txt",
 		&train_description);
 	verbose("Created train data");
 	test = nn_DataLoadRaw(
-		"/home/lilian/root/copy/input.txt",
-		"/home/lilian/root/copy/output.txt",
+		"input.txt",
+		"output.txt",
 		&test_description);
 	verbose("Created test data");
 
