@@ -42,7 +42,7 @@ function step_1 {
 			$(gcc "$test_root_path"/test.c "${dot_c_files[@]}" -I"$project_root_path"/src -lm -o $abs_program_path > /dev/null 2>&1) || test_error "Compilation failed"
 			;;
 		2)
-			$abs_program_path q > $perm_tmp_dir/nn-init-random-result.txt
+			$abs_program_path > $perm_tmp_dir/nn-init-random-result.txt 2>&1
 			diff $perm_tmp_dir/nn-init-random-result.txt $test_root_path/output.txt > $tmp_dir/diff-output.txt
 			if [[ -s $tmp_dir/diff-output.txt ]]; then
 				test_error "Output does not match attended answer: `echo;print_normal $(cat $tmp_dir/diff-output.txt && _prefix_indent && echo '[I] Output file at '$perm_tmp_dir/nn-init-random-result.txt)`"
