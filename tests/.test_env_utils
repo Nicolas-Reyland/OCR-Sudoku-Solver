@@ -101,7 +101,7 @@ function _update_test_status {
 
 function _exit_on_var {
 	if [[ "$1" = true ]]; then
-		print_info_text "[!]" " Test '`print_nel_blue $TEST_NAME`' NOT completed. Status: `status_string $TEST_STATUS`"
+		print_info_text "[!]" " Test `print_nel_blue $TEST_NAME` NOT completed. Status: `status_string $TEST_STATUS`"
 		_exit_test
 	fi
 }
@@ -111,7 +111,7 @@ function _exit_test {
 }
 
 function test_finished {
-	print_info_text "[!]" " Test '`print_nel_blue $TEST_NAME`' completed. Status: `status_string $TEST_STATUS`"
+	print_info_text "[!]" " Test `print_nel_blue $TEST_NAME` completed. Status: `status_string $TEST_STATUS`"
 }
 
 function fn_exists {
