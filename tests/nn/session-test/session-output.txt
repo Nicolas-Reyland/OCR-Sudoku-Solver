@@ -1,3 +1,4 @@
+Next random integer is: 1727406014
 Created train data
 Created test data
 Created dataset.
@@ -10,12 +11,12 @@ Training Tuple:
 number of input values: 2
 number of output values: 1
 Input:
-1.000000, 1.000000, 
+0.000000, 0.000000, 
 Output expected:
 0.000000, 
 Result:
-0.642276 
-Losses error = 0.412519
+0.657127 
+Losses error = 0.431816
 Training Tuple:
 number of input values: 2
 number of output values: 1
@@ -24,8 +25,18 @@ Input:
 Output expected:
 1.000000, 
 Result:
-0.642276 
-Losses error = 0.127966
+0.842583 
+Losses error = 0.024780
+Training Tuple:
+number of input values: 2
+number of output values: 1
+Input:
+1.000000, 1.000000, 
+Output expected:
+0.000000, 
+Result:
+0.849839 
+Losses error = 0.722227
 Training Tuple:
 number of input values: 2
 number of output values: 1
@@ -34,18 +45,8 @@ Input:
 Output expected:
 1.000000, 
 Result:
-0.642276 
-Losses error = 0.127966
-Training Tuple:
-number of input values: 2
-number of output values: 1
-Input:
-0.000000, 0.000000, 
-Output expected:
-0.000000, 
-Result:
-0.642276 
-Losses error = 0.412519
+0.715327 
+Losses error = 0.081039
 freeing layer ...
 layer has been freed
 freed input layer

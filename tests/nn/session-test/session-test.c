@@ -14,8 +14,13 @@ void printModelLayersValues(nn_ModelLayers* model_layer);
 int main(int argc, char** argv)
 {
 	setVerbose(true);
+	// init random
+	// initRandom(); // NOT initializing random this ways
+	// custom random init
+	srand( 1234567890 );
+	_nn_random_init_done = true;
+	printf("Next random integer is: %d\n", rand());
 	initMemoryTracking();
-	initRandom();
 	
 	// get path to project as arg
 	char input_path[255], output_path[255];
