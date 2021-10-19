@@ -86,10 +86,11 @@ void read_img(const char *path)
     {
         printf("SDL_SaveBMP failed: %s\n", SDL_GetError());
     }
-    SDL_Surface* HoughSpace = LineDetection(result);
-    if(SDL_SaveBMP(HoughSpace, "HoughSpace.bmp") != 0)
+    LineDetection(result);
+    if(SDL_SaveBMP(result, "resultingLines.bmp") != 0)
     {
         printf("SDL_SaveBMP failed: %s\n", SDL_GetError());
     }
+    LineDetection(result);
     SDL_Quit();
 }
