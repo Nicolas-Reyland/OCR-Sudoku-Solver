@@ -16,24 +16,22 @@ nn_Data* nn_DataLoadRaw(char* input_path, char* output_path, nn_ShapeDescription
     FILE* input_file = fopen(input_path,"r+");
     FILE* output_file = fopen(output_path, "r+");
 
-    if(input_file == NULL)
+    if (input_file == NULL)
     {
         verbose("ERROR 404: %s, the file does not exist. Exiting...\n", *input_path);
         exit(EXIT_FAILURE);
     }
-    if(output_file == NULL)
+    if (output_file == NULL)
     {
         verbose("ERROR 404: %s, the file does not exist. Exiting...\n", *output_path);
         exit(EXIT_FAILURE);
     }
     iot_linked_list* data_list = init_iot_linked_list();
-    // was "%ld %ld %ld %ld %d". brought back to "%ld %ld %ld %ld". hope its ok
-    
 
-    nn_ShapeDescription output_description;
+    nn_ShapeDescription output_description = { .dims = 0, .x = 0, .y = 0, .z = 0};
                         
-    char cursorInput =  defineShapeDescription(description,input_file);
-                        defineShapeDescription(&output_description,output_file);
+    char cursorInput =  defineShapeDescription(description, input_file);
+                        defineShapeDescription(&output_description, output_file);
 
     size_t input_size   =   description->x * description->y * description->y;
     size_t output_size  =   output_description.x * output_description.y *
@@ -52,7 +50,7 @@ nn_Data* nn_DataLoadRaw(char* input_path, char* output_path, nn_ShapeDescription
         //we don't need to read the cursor of output_file
         //since normally it should have the same nb of lines than
         //input_file (for safety later, make a private function that test it)
-        _readFile(output_file,&output_description, output_values);
+        _readFile(output_file, &output_description, output_values);
         nn_Sample* input    = createSample(*description,input_values,
             description->x*description->y*description->z);
         nn_Sample* output   = createSample(*description,output_values,
@@ -65,7 +63,6 @@ nn_Data* nn_DataLoadRaw(char* input_path, char* output_path, nn_ShapeDescription
 
     fclose(input_file);
     fclose(output_file);
-
     
     return _nn_createData(_nn_loadDataCollection(data_list));
 }
