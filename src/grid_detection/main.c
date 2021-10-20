@@ -7,7 +7,7 @@
 int main(void)
 {
     SDL_Init(SDL_INIT_VIDEO);
-	SDL_Surface* image = IMG_Load("imgs/grid.bmp");	
+	SDL_Surface* image = IMG_Load("imgs/binarised_image(3).bmp");	
     if (!image) 
     {
         printf("Failed to load image at %s: %s\n", "imgs/grid.bmp", SDL_GetError());
