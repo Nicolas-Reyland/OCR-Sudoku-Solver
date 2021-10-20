@@ -17,20 +17,17 @@ LDLIBS = -lm `pkg-config --libs sdl2` -lSDL2_image
 
 all : main
 
-main : main.o read_img.o pixel_operation.o square_detection.o
-	$(CC) $(CFLAGSNE) main.o read_img.o pixel_operation.o square_detection.o -o main $(LDLIBS)
+main : main.o detect_grid.o pixel_operation.o
+	$(CC) $(CFLAGSNE) main.o detect_grid.o pixel_operation.o -o main $(LDLIBS)
 
 main.o : main.c
 	$(CC) -c $(CFLAGSNE) main.c -o main.o $(LDLIBS)
 
-read_img.o : read_img.c
-	$(CC) -c $(CFLAGSNE) read_img.c -o read_img.o $(LDLIBS)
+detect_grid.o : detect_grid.c
+	$(CC) -c $(CFLAGSNE) detect_grid.c -o detect_grid.o $(LDLIBS)
 
 pixel_operation.o : pixel_operation.c
 	$(CC) -c $(CFLAGSNE) pixel_operation.c -o pixel_operation.o $(LDLIBS)
 
-square_detection.o : square_detection.c
-	$(CC) -c $(CFLAGSNE) square_detection.c -o square_detection.o $(LDLIBS)
-
 clean :
-	rm *.o main
+	rm *.o main *.bmp
