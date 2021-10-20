@@ -29,7 +29,10 @@ double _nn_derivativeActivation(double x, activation activation)
 
 double dSigmoid(double x)
 {
-    return (exp(x))/((1+exp(x))*(1+exp(x)));
+    // the 'x' is already the output of a sigmoid function
+    // and we don't want to calculate d_sigmoid(sigmoid(x)), but
+    // d_sigmoid(x), thus returning ' x * (1.0 - x)'
+    return x * (1.0 - x);
 }
 
 double dRelu(double x)
