@@ -7,13 +7,20 @@
 int main(void)
 {
     SDL_Init(SDL_INIT_VIDEO);
-	SDL_Surface* image = IMG_Load("imgs/binarised_image(3).bmp");	
+    const char* file = "imgs/binarised_image(4).bmp";
+	SDL_Surface* image = IMG_Load(file);	
     if (!image) 
     {
-        printf("Failed to load image at %s: %s\n", "imgs/grid.bmp", SDL_GetError());
+        printf("Failed to load image at %s: %s\n", file, SDL_GetError());
         return 1;
     }
-    detect_grid(image);
+    SDL_Surface* baseimage = IMG_Load(file);	
+    if (!image) 
+    {
+        printf("Failed to load image at %s: %s\n", file, SDL_GetError());
+        return 1;
+    }
+    detect_grid(image, baseimage);
     if(SDL_SaveBMP(image, "result.bmp") != 0)
     {
         printf("SDL_SaveBMP failed: %s\n", SDL_GetError());
