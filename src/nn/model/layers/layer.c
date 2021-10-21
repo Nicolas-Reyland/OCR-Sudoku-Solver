@@ -29,9 +29,9 @@ nn_Layer* _nn_createLayerWrapped(nn_ShapeDescription layer_shape, nn_ShapeDescri
   return layer;
 }
 
-nn_Layer* _nn_createInputLayer(nn_ShapeDescription layer_shape, nn_ShapeDescription next_layer_shape, activation activation)
+nn_Layer* _nn_createInputLayer(nn_ShapeDescription layer_shape, nn_ShapeDescription next_layer_shape)
 {
-  return _nn_createLayerWrapped(layer_shape, next_layer_shape, activation, true, false);
+  return _nn_createLayerWrapped(layer_shape, next_layer_shape, NO_ACTIVATION, true, false);
 }
 
 nn_Layer* _nn_createLayer(nn_ShapeDescription layer_shape, nn_ShapeDescription next_layer_shape, activation activation)

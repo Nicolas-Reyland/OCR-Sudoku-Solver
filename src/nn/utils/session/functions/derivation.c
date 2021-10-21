@@ -16,7 +16,9 @@ double _nn_derivativeActivation(double x, activation activation)
       case RELU:
           return dRelu(x);
       case SOFTMAX:
-          return dSigmoid(x); //there is no derivative for softmax
+          // there is no derivative for softmax
+          // returning 1.0 so it has no impact (x * derivative = x * 1.0 = x)
+          return 1.0;
       default:
           fprintf(stderr, 
           "derivativeActivation: Unrecognised activation function: %d\n",
