@@ -22,7 +22,7 @@ static const int g_blur_kernel_5[5][5] = {{1, 4, 7, 4, 1},
 #define S_BINARISATION_SIZE 15
 // K takes a value from the interval [0.2, 0.5]
 //#define K_BINARISATION 0.02f
-#define K_BINARISATION 0.5f
+#define K_BINARISATION 0.3f
 
 /*
 static const int s_binarisation_mean_mat[S_BINARISATION_SIZE][S_BINARISATION_SIZE] = 
@@ -425,10 +425,11 @@ void image_process(char *path)
 	unsigned long int **std_deviation_ii = 
 	create_integral_image(blurred_surface, margin, STD_DEVIATION);
 
-	size_t ii_x = (margin / 2) + margin % 2;
-	size_t ii_y = ii_x;
+	//size_t ii_x = (margin / 2) + margin % 2;
+	//size_t ii_y = ii_x;
 
-	printf("Value ii -> %lu\n", std_deviation_ii[ii_x + surf_width - 2][ii_y + surf_height - 2]);
+	//printf("Value ii -> %lu\n", std_deviation_ii[ii_x + surf_width - 2][ii_y + surf_height - 2] + 2);
+	//printf("%lu\n", sizeof(unsigned long int));
 
 	for(int i = 0; i < surf_width; i++)
 	{
