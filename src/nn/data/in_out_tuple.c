@@ -4,8 +4,8 @@
 
 void _nn_printTuple(nn_InOutTuple* tuple)
 {
-    verbose("number of input values: %ld", tuple->input->nb_values);
-    verbose("number of output values: %ld", tuple->output->nb_values);
+    verbose("number of input values: %ld", tuple->input->num_values);
+    verbose("number of output values: %ld", tuple->output->num_values);
 
     verbose("Input:");
     tuple->input->print(tuple->input);

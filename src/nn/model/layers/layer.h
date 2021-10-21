@@ -11,8 +11,8 @@
 typedef struct nn_Layer {
   nn_ShapeDescription shape;
   activation activation;
+  size_t num_nodes;
   nn_Node** nodes;
-  size_t nb_nodes;
 } nn_Layer;
 
 nn_Layer* _nn_createInputLayer(nn_ShapeDescription layer_shape, nn_ShapeDescription next_layer_shape);

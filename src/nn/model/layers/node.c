@@ -11,6 +11,7 @@ nn_Node* _nn_createNode(size_t num_weights, bool init_bias)
     d_weights = mem_calloc(num_weights, sizeof(double));
     for (size_t i = 0; i < num_weights; i++) {
       weights[i] = getNormalizedRandomDouble();
+      d_weights[i] = NAN;
     }
   } else {
     weights = NULL;
@@ -25,20 +26,19 @@ nn_Node* _nn_createNode(size_t num_weights, bool init_bias)
   }
   // malloc struct
   nn_Node* node = mem_malloc(sizeof(nn_Node));
-  node->num_weights = num_weights;
   // weights
+  node->num_weights = num_weights;
   node->weights = weights;
   node->d_weights = d_weights;
   // bias
   node->bias = bias;
   node->d_bias = NAN;
-  // delta value
-  node->delta_value = NAN;
-  // raw values
-  node->raw_value = NAN;
   // values
   node->value = NAN;
   node->d_value = NAN;
+  // raw values
+  node->raw_value = NAN;
+  node->d_raw_value = NAN;
   return node;
 }
 

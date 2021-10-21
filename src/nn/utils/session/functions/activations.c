@@ -37,7 +37,7 @@ double _nn_sigmoid(double x)
 
 void sigmoid(nn_Layer* layer)
 {
-	for (size_t i = 0; i < layer->nb_nodes; i++)
+	for (size_t i = 0; i < layer->num_nodes; i++)
 		layer->nodes[i]->value = _nn_sigmoid(layer->nodes[i]->raw_value);
 }
 
@@ -49,7 +49,7 @@ double _nn_relu(double x)
 
 void relu(nn_Layer* layer)
 {
-	for (size_t i = 0; i < layer->nb_nodes; i++)
+	for (size_t i = 0; i < layer->num_nodes; i++)
 		layer->nodes[i]->value = _nn_relu(layer->nodes[i]->raw_value);
 }
 
@@ -62,9 +62,9 @@ double _nn_softmax(double sum, double x)
 void softmax(nn_Layer* layer)
 {
 	double sum =0;
-	for(size_t i = 0; i < layer->nb_nodes;i++)
+	for(size_t i = 0; i < layer->num_nodes;i++)
 		sum += exp(layer->nodes[i]->raw_value);
 	
-	for(size_t i = 0; i< layer->nb_nodes;i++)
+	for(size_t i = 0; i< layer->num_nodes;i++)
 		layer->nodes[i]->value = _nn_softmax(sum, layer->nodes[i]->raw_value);
 }

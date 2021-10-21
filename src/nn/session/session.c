@@ -27,11 +27,11 @@ void _nn_train(struct nn_Session* session, nn_Model* model)
 				verbose("Testing Tuple:");
 				tuple_array[i]->printTuple(tuple_array[i]);			
 			}
-			_nn_feedForward(model->layers,tuple_array[i]->input->values);
+			_nn_feedForward(model,tuple_array[i]->input->values);
 
 			//we calculate the loss function 
 			double error = applyLosses(
-			&(model->layers->output_layer),
+			model->layers[model->num_layers - 1],
 			tuple_array[i]->output->values,
 			model->loss);
 			if(session->verbose)
@@ -39,16 +39,16 @@ void _nn_train(struct nn_Session* session, nn_Model* model)
 
 			if(session->verbose)
 			{
-				model->layers->printModelLayers(model->layers);
-				model->layers->printModelLayersValues(model->layers);
+				model->printModelLayers(model);
+				model->printModelLayersValues(model);
 			}
 			// we continue as long as we do not reached loss threshold 
 			// or we continue as long as we have epochs to do 
 			loss_threshold_condition = 
 				!session->stop_on_loss_threshold_reached ||
 				error > session->loss_threshold;
-			_nn_backPropagation(model,tuple_array[i]->output->values);
-			_nn_updateWeights(model->layers,session->learning_rate);
+			_nn_backPropagation(model, tuple_array[i]->output->values);
+			_nn_updateWeights(model, session->learning_rate);
 			
 			
 			i++;
@@ -69,16 +69,16 @@ void _nn_test(struct nn_Session* session,nn_Model* model)
 	{
 		verbose("Training Tuple:");
 		tuple_array[i]->printTuple(tuple_array[i]);
-		_nn_feedForward(model->layers,tuple_array[i]->input->values);
+		_nn_feedForward(model, tuple_array[i]->input->values);
 		
 		verbose("Result:");
-		for(size_t j = 0; j < model->layers->output_layer.nb_nodes; j++)
+		for(size_t j = 0; j < model->layers[model->num_layers - 1]->num_nodes; j++)
 			verbose_no_endline("%f ",
-			model->layers->output_layer.nodes[j]->value);
+			model->layers[model->num_layers - 1]->nodes[j]->value);
 		verbose("");
 		//we calculate the loss function 
 		double error = applyLosses(
-		&(model->layers->output_layer),
+		model->layers[model->num_layers - 1],
 		tuple_array[i]->output->values,
 		model->loss);
 		verbose("Losses error = %f",error);

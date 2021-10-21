@@ -11,10 +11,8 @@ Model :
   ($void) loadModel
   Layers :
     ModelLayers *
-      - (Layer) input_layer
-      - (uint) num_hidden_layers
-      - (malloc array) hidden_layers // en soit, le projet ne demande qu'un seul hiddenLayer
-      - (Layer) output_layer
+      - (uint) num_layers
+      - (malloc array) layers
     Layer *
       - (bool) is_output
       - (utils->Struct->ShapeDescription) shape
@@ -146,7 +144,7 @@ output file content is same format as input file
 Model :
   Model * model.h/c
   Layers :
-    ModelLayers * model_layers.h/c
+    ModelLayers * model->layers.h/c
     Layer * layer.h/c
 
 Data :
@@ -181,8 +179,8 @@ utils :
 
 for (int = 0; i < hidden_layer.length; i++) {
   double sum = 0;
-  for (int j = 0; j < input_layer.length: j++) {
-    sum += hidden_layer.nodes[i].weights[j] * input_layer.nodes[j].value;
+  for (int j = 0; j < layers[0].length: j++) {
+    sum += hidden_layer.nodes[i].weights[j] * layers[0].nodes[j].value;
   }
   hidden_layer.nodes[i].raw_value = sum + hidden_layer.bias[i];
   // NO ! must activate whole layer at once (bc of softmax & co.)
