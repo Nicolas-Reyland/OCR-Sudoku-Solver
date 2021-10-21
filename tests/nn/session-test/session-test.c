@@ -7,9 +7,16 @@
 extern linked_list* GPL;
 extern bool _nn_random_init_done;
 
-void printModelLayers(nn_ModelLayers* model_layer);
-void printModelLayersValues(nn_ModelLayers* model_layer);
-
+void oneLearningStep(nn_Model* model, double* input, double* output, double learning_rate)
+{
+	_nn_feedForward(model, input);
+	verbose("\tResult 1 : %lf", model->layers[model->num_layers - 1]->nodes[0]->value);
+	_nn_backPropagation(model, output);
+	verbose("\tUpdating weights");
+	_nn_updateWeights(model, learning_rate);
+	_nn_feedForward(model, input);
+	verbose("\tResult 2 : %lf", model->layers[model->num_layers - 1]->nodes[0]->value);
+}
 
 int main(int argc, char** argv)
 {
@@ -22,6 +29,8 @@ int main(int argc, char** argv)
 	printf("Next random integer is: %d\n", rand());
 	initMemoryTracking();
 	
+	verbose("init done");
+
 	// get path to project as arg
 	char input_path[255], output_path[255];
 	char* path_to_project = argv[1];
@@ -54,11 +63,11 @@ int main(int argc, char** argv)
 	nn_ShapeDescription model_architecture[3] = {
 		train_description,
 		{ .dims = 1, .x = 2, .y = 1, .z = 1 },
-		{ .dims = 1, .x = 1, .y = 1, .z = 1 }
+		{ .dims = 1, .x = 1, .y = 1, .z = 1 },
 	};
 	// activation functions
-	activation activations[3] = {
-		RELU,RELU, SIGMOID
+	activation activations[2] = {
+		SIGMOID, SIGMOID
 	};
 	// loss & optimizers
 	losses loss = MEANSQUAREDERROR;
@@ -66,14 +75,47 @@ int main(int argc, char** argv)
 	// malloc model
 	nn_Model* model = createModel(3, model_architecture, activations, loss, optimizer);
 
-	nn_Session* session = createSession(dataset,1000,0.01,true,false,0.0001);
+	/*nn_Session* session = createSession(dataset,1000,0.01,true,false,0.0001);
 	session->train(session,model);
-	session->test(session,model);
+	session->test(session,model);*/
+
+	// one manual forward/backward propagation
+	double input_collection[4][2] = {
+		{ 1.0, 1.0 },
+		{ 1.0, 0.0 },
+		{ 0.0, 1.0 },
+		{ 0.0, 0.0 },
+	};
+	double output_collection[4][1] = {
+		{ 0.0 },
+		{ 1.0 },
+		{ 1.0 },
+		{ 0.0 },
+	};
+	
+	/*setVerbose(false);
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 4; j++) {
+			double* input = input_collection[j];
+			double* output = output_collection[j];
+			verbose("---------------------------");
+			oneLearningStep(model, input, output, 0.3);
+			verbose("\tSupposed: %lf", output[0]);
+		}
+	}*/
+	setVerbose(true);
+	for (int j = 0; j < 4; j++) {
+		double* input = input_collection[j];
+		double* output = output_collection[j];
+		verbose("---------------------------");
+		oneLearningStep(model, input, output, 0.2);
+		verbose("\tSupposed: %lf", output[0]);
+	}
 
 	// free model
 	freeModel(model);
 	//free session (and dataset)
-	freeSession(session);
+	//freeSession(session);
 	free(GPL);
 
 	return 0;

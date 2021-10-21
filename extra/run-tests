@@ -10,6 +10,16 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 cd $SCRIPT_DIR/../tests # tests dir in repo
 # source print utils
 . .test_env_print_utils
+# special case : specific test requested
+if [ -n "$1" ]; then
+	print_nel_cyan "[R]"
+	print_nel_white " Special test module requested : "
+	print_blue "$1"
+	(./run-test-module.sh $1 $1 $SCRIPT_DIR/..) \
+		&& (print_normal "`print_nel_cyan '[R]'` requested test `print_nel_blue $sub_folder` done";exit 0) \
+		|| (print_nel_normal "`print_nel_cyan '[R]'` requested test `print_nel_blue $sub_folder` done ";print_magenta "(NOT successful)";exit 1)
+	exit 1
+fi
 # print the banner
 print_banner $SCRIPT_DIR/test-framework-banners
 # start reading test order descriptions
@@ -23,7 +33,7 @@ do
 	fi
 	print_green " ---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---*---"
 	print_nel_cyan "[T]"
-	print_nel_white " Executing test-module "
+	print_nel_white " Executing module "
 	print_blue "$folder"
 	while IFS= read -r sub_folder
 	do
@@ -32,8 +42,8 @@ do
 		if [[ -f $full_path/test-descr.bash ]]; then
 			set +e
 			(./run-test-module.sh $full_path $full_path $SCRIPT_DIR/..) \
-				&& (echo -n -e ' \t '; print_normal "`print_nel_cyan '[t]'` sub-test `print_nel_blue $sub_folder` done") \
-				|| (echo -n -e ' \t '; print_nel_normal "`print_nel_cyan '[t]'` sub-test `print_nel_blue $sub_folder` done ";print_magenta "(NOT successful)")
+				&& (echo -n -e ' \t '; print_normal "`print_nel_cyan '[t]'` sub-module `print_nel_blue $sub_folder` done") \
+				|| (echo -n -e ' \t '; print_nel_normal "`print_nel_cyan '[t]'` sub-module `print_nel_blue $sub_folder` done ";print_magenta "(NOT successful)")
 			set -e
 			echo
 		fi

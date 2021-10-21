@@ -12,7 +12,7 @@ int main(int argc, char** argv)
 {
 	setVerbose(true);
 	initMemoryTracking();
-	
+
 	// get path to project as arg
 	char input_path[255], output_path[255];
 	char* path_to_project = argv[1];

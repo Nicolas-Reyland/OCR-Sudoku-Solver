@@ -7,9 +7,6 @@
 extern linked_list* GPL;
 extern bool _nn_random_init_done;
 
-void printModelLayers(nn_ModelLayers* model_layer);
-void printModelLayersValues(nn_ModelLayers* model_layer);
-
 int main()
 {
 	setVerbose(false);
@@ -29,7 +26,7 @@ int main()
 	};
 	// activation functions
 	activation activations[3] = {
-		RELU, RELU, SIGMOID
+		RELU, SIGMOID
 	};
 	// loss & optimizers
 	losses loss = CATEGORICALCROSSENTROPY;
@@ -38,51 +35,20 @@ int main()
 	nn_Model* model = createModel(3, model_architecture, activations, loss, optimizer);
 
 	// print the layers weights
-	printModelLayers(model->layers);
+	model->printModelLayers(model);
 	
 	// feed input data to the model
 	double input_data[3] = { 0.1, -0.23, 0.75 };
-	_nn_feedForward(model->layers, input_data);
+	_nn_feedForward(model, input_data);
 	printf("forward feeding done\n");
 	
 	// print the layers values
-	printModelLayersValues(model->layers);
+	//model->printModelLayers(model);
+	model->printModelLayersValues(model);
 
 	// free model
 	freeModel(model);
 	free(GPL);
 
 	return 0;
-}
-
-void printModelLayers(nn_ModelLayers* model_layer)
-{
-	nn_Layer* layer;
-	for (size_t index = 0; index < model_layer->num_hidden_layers + 2; index++) {
-		layer = index == 0 ? &model_layer->input_layer : (index == model_layer->num_hidden_layers + 1 ? &model_layer->output_layer : &model_layer->hidden_layers[index - 1]);
-		printf("index: %ld\n", index);
-		nn_Node* node;
-		for (size_t i = 0; i < layer->nb_nodes; i++) {
-			node = layer->nodes[i];
-			for (size_t j = 0; j < node->num_weights; j++) {
-				printf("layers[%ld]->nodes[%ld]->weights[%ld] = %lf\n", index, i, j, node->weights[j]);
-			}
-			printf("bias: %lf\n", node->bias);
-		}
-	}
-}
-
-void printModelLayersValues(nn_ModelLayers* model_layer)
-{
-	nn_Layer* layer;
-	for (size_t index = 0; index < model_layer->num_hidden_layers + 2; index++) {
-		layer = index == 0 ? &model_layer->input_layer : (index == model_layer->num_hidden_layers + 1 ? &model_layer->output_layer : &model_layer->hidden_layers[index - 1]);
-		printf("index: %ld\n", index);
-		nn_Node* node;
-		for (size_t i = 0; i < layer->nb_nodes; i++) {
-			node = layer->nodes[i];
-			printf("layers[%ld]->nodes[%ld]->value = %lf\n", index, i, node->value);
-			printf("layers[%ld]->nodes[%ld]->raw_value = %lf\n", index, i, node->raw_value);
-		}
-	}
 }

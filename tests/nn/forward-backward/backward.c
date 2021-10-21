@@ -7,7 +7,7 @@
 extern linked_list* GPL;
 extern bool _nn_random_init_done;
 
-void printModelLayers(nn_ModelLayer* model_layer);
+void printModelLayers(nn_ModelLayer* model->layers);
 
 int main()
 {
@@ -28,7 +28,7 @@ int main()
 	};
 	// activation functions
 	activation activations[3] = {
-		SIGMOID, SIGMOID, SOFTMAX
+		SIGMOID, SOFTMAX
 	};
 	// loss & optimizers
 	losses loss = CATEGORICALCROSSENTROPY;
@@ -46,14 +46,14 @@ int main()
 	return 0;
 }
 
-void printModelLayers(nn_ModelLayer* model_layer)
+void printModelLayers(nn_ModelLayer* model->layers)
 {
 	nn_Layer* layer;
-	for (size_t index = 0; index < model_layer->num_hidden_layers + 2; index++) {
-		layer = index == 0 ? model_layer->input_layer : (i == model_layer->num_hidden_layers + 1 ? model_layer->output_layer : model_layer->num_hidden_layers[index - 1]);
+	for (size_t index = 0; index < model->model->num_layers + 2; index++) {
+		layer = index == 0 ? model->layers->layers[0] : (i == model->model->num_layers + 1 ? model->layers->layers[model->num_layers - 1] : model->model->num_layers[index - 1]);
 		printf("index: %d\n", index);
 		nn_Node* node;
-		for (size_t i = 0; i < layer->nb_nodes; i++) {
+		for (size_t i = 0; i < layer->num_nodes; i++) {
 			node = layer->nodes[i];
 			for (size_t j = 0; j < node->num_weights; j++) {
 				printf("layers[%d]->nodes[%ld]->weights[%ld] = %lf\n", index, i, j, node->weights[j]);

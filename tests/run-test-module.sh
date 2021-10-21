@@ -19,7 +19,7 @@ export TEST_STATUS=3
 ## Check args
 if [ $# -ne 3 ]; then
 	echo Usage: ./runtest.sh test-name test-root-path project-root-path
-	test_problem "Missing or too many arguments"
+	test_problem "Missing or too many arguments : $# != 3"
 fi
 TEST_STATUS=0
 ## Check test root path
