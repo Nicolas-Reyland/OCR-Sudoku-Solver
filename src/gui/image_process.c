@@ -331,7 +331,7 @@ float sauvola_binarisation(SDL_Surface *src_surface,
 	squared_pixel_sum = bottom_right_ii_val - bottom_left_ii_val 
 			- top_right_ii_val + top_left_ii_val;
 
-	std_deviation = squared_pixel_sum - (mean * mean);
+	std_deviation = squared_pixel_sum - (mean * mean * s_bin_size_pow_2);
 	std_deviation /= s_bin_size_pow_2;
 	std_deviation = sqrt(std_deviation);
 
@@ -428,7 +428,7 @@ void image_process(char *path)
 	size_t ii_x = (margin / 2) + margin % 2;
 	size_t ii_y = ii_x;
 
-	printf("Value ii -> %lu\n", std_deviation_ii[ii_x + surf_width - 1][ii_y + surf_height - 1]);
+	printf("Value ii -> %lu\n", std_deviation_ii[ii_x + surf_width - 2][ii_y + surf_height - 2]);
 
 	for(int i = 0; i < surf_width; i++)
 	{
