@@ -7,7 +7,7 @@
 int main(void)
 {
     SDL_Init(SDL_INIT_VIDEO);
-    const char* file = "imgs/binarised_image(4).bmp";
+    const char* file = "imgs/binarised_image.bmp";
 	SDL_Surface* image = IMG_Load(file);	
     if (!image) 
     {
