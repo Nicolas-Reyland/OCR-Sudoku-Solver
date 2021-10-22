@@ -80,10 +80,10 @@ function step_2 {
 		2)
 			# Valgrind memory check
 			prefix_tabs=$(_prefix_indent)
-			valgrind --tool=memcheck --quiet $abs_program_path q 2> $tmp_dir/valgrind-output
+			valgrind --quiet --tool=memcheck --leak-check=full $abs_program_path q 2> $tmp_dir/valgrind-output
 			if [ -n "`cat $tmp_dir/valgrind-output`" ]; then
+				cat $tmp_dir/valgrind-output | sed -e "s/^/$prefix_tabs | /;"
 				test_warn "Valgrind is not happy with your program:"
-				print_normal `cat $tmp_dir/valgrind-output | sed -e "s/^/$prefix_tabs | /;"`
 			fi
 			;;
 		*)
