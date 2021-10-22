@@ -86,7 +86,7 @@ int main(int argc, char** argv)
 
 	// activation functions
 	activation activations[2] = {
-		SIGMOID, RELU
+		SIGMOID, RELU,
 	};
 	// loss & optimizers
 	losses loss = MEANSQUAREDERROR;
@@ -103,7 +103,7 @@ int main(int argc, char** argv)
 		0.7337581455592692, 0.38951549199309304,
   };
 
-  double bias[3] = {
+  double bias[4] = {
     0.4207282591615261, -1.2390573331551968,
 		-0.6668209978600703, 0.8203841035223884,
   };
