@@ -34,7 +34,7 @@ double dSigmoid(double x)
     // the 'x' is already the output of a sigmoid function
     // and we don't want to calculate d_sigmoid(sigmoid(x)), but
     // d_sigmoid(x), thus returning ' x * (1.0 - x)'
-    return x * (1.0 - x);
+    return _nn_sigmoid(x) * (1.0 - _nn_sigmoid(x));
 }
 
 double dRelu(double x)

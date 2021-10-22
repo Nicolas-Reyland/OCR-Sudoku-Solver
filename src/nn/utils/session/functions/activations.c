@@ -44,7 +44,7 @@ void sigmoid(nn_Layer* layer)
 /* ReLu */
 double _nn_relu(double x)
 {
-	return x >= 0 ? x : 0;
+	return x > 0 ? x : 0;
 }
 
 void relu(nn_Layer* layer)
