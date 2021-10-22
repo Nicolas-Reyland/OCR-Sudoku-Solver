@@ -100,8 +100,8 @@ int main(int argc, char** argv)
   model->layers[2]->nodes[0]->bias = bias[2];
 
 	nn_Session* session = createSession(dataset, 20000, 0.0000001, false, false, 0.15);
-	session->train(session,model);
-	session->test(session,model);
+	session->train(session, model);
+	session->test(session, model);
 
 	// free model
 	freeModel(model);
