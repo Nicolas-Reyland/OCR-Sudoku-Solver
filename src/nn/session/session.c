@@ -16,15 +16,15 @@ void _nn_train(struct nn_Session* session, nn_Model* model)
 		if(session->verbose)
 		{
 			verbose("Epoch number: %ld",epoch);
-			verbose("Shuffling tuples...");
 		}
 		shuffleArray(tuple_array,sample_size);
 		size_t i = 0;
-		while(i < sample_size && loss_threshold_condition)
+		double loss_buffer = 0;
+		while(i < sample_size)
 		{
 			if(session->verbose)
 			{
-				verbose("Testing Tuple:");
+				verbose("Training Tuple:");
 				tuple_array[i]->printTuple(tuple_array[i]);			
 			}
 			_nn_feedForward(model,tuple_array[i]->input->values);
@@ -36,23 +36,22 @@ void _nn_train(struct nn_Session* session, nn_Model* model)
 			model->loss);
 			if(session->verbose)
 				verbose("Losses error = %f",error);
-
+			loss_buffer += error;
 			if(session->verbose)
 			{
 				model->printModelLayers(model);
 				model->printModelLayersValues(model);
 			}
-			// we continue as long as we do not reached loss threshold 
-			// or we continue as long as we have epochs to do 
-			loss_threshold_condition = 
-				!session->stop_on_loss_threshold_reached ||
-				error > session->loss_threshold;
+			
 			_nn_backPropagation(model, tuple_array[i]->output->values);
 			_nn_updateWeights(model, session->learning_rate);
-			
-			
 			i++;
 		}
+		// we continue as long as we do not reached loss threshold 
+		// or we continue as long as we have epochs to do 
+		loss_threshold_condition = 
+			!session->stop_on_loss_threshold_reached ||
+			loss_buffer > session->loss_threshold;
 		epoch++;
 	}
 	return;
@@ -67,7 +66,7 @@ void _nn_test(struct nn_Session* session,nn_Model* model)
 	shuffleArray(tuple_array,sample_size);
 	for(size_t i = 0; i < sample_size; i++)
 	{
-		verbose("Training Tuple:");
+		verbose("Testing Tuple:");
 		tuple_array[i]->printTuple(tuple_array[i]);
 		_nn_feedForward(model, tuple_array[i]->input->values);
 		

@@ -55,7 +55,7 @@ int main(int argc, char** argv)
 		&test_description);
 	verbose("Created test data");
 
-	nn_DataSet* dataset = _nn_createDataSet(train,test);	
+	nn_DataSet* dataset = _nn_createDataSet(train,test);
 	verbose("Created dataset.");
 
 	// model architecture
@@ -66,26 +66,26 @@ int main(int argc, char** argv)
 	};
 	// activation functions
 	activation activations[2] = {
-		SIGMOID, SIGMOID
+		SIGMOID, RELU
 	};
 	// loss & optimizers
 	losses loss = MEANSQUAREDERROR;
 	optimizer optimizer = ADAM;
 	// malloc model
 	nn_Model* model = createModel(3, model_architecture, activations, loss, optimizer);
-	
+
 	float weights[3][2] = {
     { 0.840188, 0.394383 },
     { 0.783099, 0.798440 },
     { 0.911647, 0.335223 },
   };
-  
+
   float bias[3] = {
     0.197551,
     0.768230,
     0.277775,
   };
-  
+
   // Initialize the weights
   model->layers[0]->nodes[0]->weights[0] = weights[0][0];
   model->layers[0]->nodes[0]->weights[1] = weights[0][1];
@@ -99,7 +99,7 @@ int main(int argc, char** argv)
   model->layers[1]->nodes[1]->bias = bias[1];
   model->layers[2]->nodes[0]->bias = bias[2];
 
-	nn_Session* session = createSession(dataset, 1000, 0.01, true, false, 0.0001);
+	nn_Session* session = createSession(dataset, 20000, 0.0000001, false, false, 0.15);
 	session->train(session,model);
 	session->test(session,model);
 
@@ -111,4 +111,3 @@ int main(int argc, char** argv)
 
 	return 0;
 }
-
