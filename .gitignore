@@ -2,6 +2,10 @@
 test.out
 src/gui/gui
 
+# Ignore numpy files
+*.npy
+*.npz
+
 # Prerequisites
 *.d
 
@@ -34,7 +38,7 @@ src/gui/gui
 
 # Executables
 *.exe
-*.out
+#*.out
 *.app
 *.i*86
 *.x86_64
