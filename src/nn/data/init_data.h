@@ -12,7 +12,7 @@
 #include <string.h>
 
 //public functions
-nn_Data* nn_DataLoadRaw(char* input_path, char* output_path, nn_ShapeDescription* nn_ShapeDescription);
+nn_Data* nn_DataLoadRaw(char* input_path, char* output_path, nn_ShapeDescription* description);
 
 //private functions
 
