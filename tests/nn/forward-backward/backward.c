@@ -94,7 +94,7 @@ int main(int argc, char** argv)
 	// malloc model
 	nn_Model* model = createModel(3, model_architecture, activations, loss, optimizer);
 	
-	float weights[10] = {
+	double weights[10] = {
 		0.5191132629958712, 0.9016446515235453,
 		-0.7148008947966464, -0.2837969102701097,
 		-0.001835438825513494, 0.36752814131639955,
@@ -103,7 +103,7 @@ int main(int argc, char** argv)
 		0.7337581455592692, 0.38951549199309304,
   };
 
-  float bias[3] = {
+  double bias[3] = {
     0.4207282591615261, -1.2390573331551968,
 		-0.6668209978600703, 0.8203841035223884,
   };

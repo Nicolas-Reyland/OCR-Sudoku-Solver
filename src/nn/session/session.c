@@ -86,7 +86,7 @@ void _nn_test(struct nn_Session* session,nn_Model* model)
 
 nn_Session* createSession(nn_DataSet* dataset, unsigned int nb_epochs,
 double loss_threshold, bool stop_on_loss_threshold_reached, bool verbose,
-float learning_rate)
+double learning_rate)
 {
 	nn_Session* session = mem_malloc(sizeof(nn_Session));
 
