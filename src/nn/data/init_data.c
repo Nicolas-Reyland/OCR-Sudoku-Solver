@@ -125,8 +125,12 @@ double _convertStringToDouble(char* string)
 char defineShapeDescription(nn_ShapeDescription* description, FILE* file)
 {
     //we define the shape description by reading the file
-    fscanf(file,"%ld %ld %ld %ld",&(description->dims), &(description->x),
+    int matched_values = fscanf(file,"%ld %ld %ld %ld",&(description->dims), &(description->x),
     &(description->y), &(description->z));
+    if (matched_values != 4) {
+      fprintf(stderr, "Could not match all the values of the (first) description line. Values matched: %d\n", matched_values);
+      exit(EXIT_FAILURE);
+    }
     char cursor = fgetc(file);
     while(cursor != '\n')
         cursor = fgetc(file); //reading to end of line
