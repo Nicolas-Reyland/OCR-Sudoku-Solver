@@ -2,26 +2,36 @@
 #include <stdio.h>
 #include <math.h>
 #include <SDL2/SDL.h>
-#include "pixel_operation.h"
+#include "pixel_operations.h"
 
 size_t segmentation(SDL_Surface* image, SDL_Surface* segmap);
 
 size_t propagate(SDL_Surface *image, SDL_Surface* segmap, int segval, size_t x, size_t y);
 
+size_t scanlinefill(SDL_Surface *image, SDL_Surface* segmap, int segval, long x, long y);
+
 void colorimage(SDL_Surface* image, SDL_Surface* segmap);
 
-void remove_other_obj(SDL_Surface* image, SDL_Surface* baseimage, SDL_Surface* segmap, size_t objval);
+void remove_other_obj(SDL_Surface* image, SDL_Surface* baseimage, SDL_Surface* segmap, size_t objval, int reducefactor);
 
 void find_extremity_coordinates(SDL_Surface* image, size_t* up, size_t* right, size_t* left, size_t* down);
 
+SDL_Surface* cut_image(SDL_Surface* image, size_t top, size_t bottom, size_t left, size_t right);
+
 void save_cases(SDL_Surface* image);
 
-SDL_Surface* cut_image(SDL_Surface* image, size_t top, size_t bottom, size_t left, size_t right);
+SDL_Surface* reduce_res(SDL_Surface* image);
 
 
 
 void detect_grid(SDL_Surface* image, SDL_Surface* baseimage)
 {
+    int reducefactor = 1;
+    while (sqrt(image->w*image->w+image->h*image->h) > 2200)
+    {
+        image = reduce_res(image);
+        reducefactor *= 2;
+    }
     SDL_Surface *segmap = SDL_CreateRGBSurface(0, image->w, image->h, 32, 0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
     size_t biggestObj = segmentation(image, segmap);
     colorimage(image, segmap);
@@ -29,16 +39,19 @@ void detect_grid(SDL_Surface* image, SDL_Surface* baseimage)
     {
         printf("SDL_SaveBMP failed: %s\n", SDL_GetError());
     }
-    remove_other_obj(image, baseimage,segmap, biggestObj);
+    remove_other_obj(image, baseimage, segmap, biggestObj, reducefactor);
+    if(SDL_SaveBMP(image, "isolated_grid.bmp") != 0)
+    {
+        printf("SDL_SaveBMP failed: %s\n", SDL_GetError());
+    }
     size_t top, right, left, bottom;
     find_extremity_coordinates(image, &top, &right, &left, &bottom);
-    Uint32 pix = SDL_MapRGB(image->format, 255, 0, 0);
-    put_pixel(image, right, top, pix);
-    put_pixel(image, left, top, pix);
-    put_pixel(image, right, bottom, pix);
-    put_pixel(image, left, bottom, pix);
-    baseimage = cut_image(baseimage, top, bottom, left, right);
+    baseimage = cut_image(baseimage, top*reducefactor, bottom*reducefactor, left*reducefactor, right*reducefactor);
     save_cases(baseimage);
+    if(SDL_SaveBMP(baseimage, "result.bmp") != 0)
+    {
+        printf("SDL_SaveBMP failed: %s\n", SDL_GetError());
+    }
 }
 
 size_t segmentation(SDL_Surface* image, SDL_Surface* segmap)
@@ -53,7 +66,7 @@ size_t segmentation(SDL_Surface* image, SDL_Surface* segmap)
             Uint32 pix = get_pixel(image, x, y);
             Uint8 color;
             SDL_GetRGB(pix, image->format, &color, &color, &color);
-            if (color == 255)
+            if (color == 0)
             {
                 Uint32 p = get_pixel(segmap, x, y);
                 if(p == 0)
@@ -69,6 +82,8 @@ size_t segmentation(SDL_Surface* image, SDL_Surface* segmap)
             }   
         }
     }
+    printf("number of element = %d\n", segval);
+    printf("max pixels in an element = %lu\n", max);
     return labelmax;
 }
 
@@ -79,11 +94,11 @@ size_t propagate(SDL_Surface *image, SDL_Surface* segmap, int segval, size_t x, 
     Uint32 pix = get_pixel(image, x, y);
     SDL_GetRGB(pix, image->format, &color, &color, &color);
     Uint32 p = get_pixel(segmap, x, y);
-    if(p != 0 || color == 0)
+    put_pixel(segmap, x, y, segval);
+    if(p != 0 || color != 0)
     {
         return 0;
     }
-    put_pixel(segmap, x, y, segval);
     if(y > 0)
     {
         n += propagate(image, segmap, segval, x, y-1);
@@ -103,6 +118,7 @@ size_t propagate(SDL_Surface *image, SDL_Surface* segmap, int segval, size_t x, 
     return 1 + n;
 }
 
+
 void colorimage(SDL_Surface *image, SDL_Surface* segmap)
 {
     Uint8 r,g,b;
@@ -119,7 +135,7 @@ void colorimage(SDL_Surface *image, SDL_Surface* segmap)
     }
 }
 
-void remove_other_obj(SDL_Surface* image, SDL_Surface* baseimage, SDL_Surface* segmap, size_t objval)
+void remove_other_obj(SDL_Surface* image, SDL_Surface* baseimage, SDL_Surface* segmap, size_t objval, int reducefactor)
 {
     for (size_t x = 0; x < (size_t)image->w; x++)
     {
@@ -133,7 +149,14 @@ void remove_other_obj(SDL_Surface* image, SDL_Surface* baseimage, SDL_Surface* s
             else
             {
                 put_pixel(image ,x ,y , SDL_MapRGB(image->format, 255, 255, 255));
-                put_pixel(baseimage ,x ,y , SDL_MapRGB(baseimage->format, 0, 0, 0));
+                for (size_t x1 = 0; x1 < (size_t)reducefactor; x1++)
+                {
+                    for (size_t y1 = 0; y1 < (size_t)reducefactor; y1++)
+                    {
+                        put_pixel(baseimage ,reducefactor*x+x1,reducefactor*y+y1, SDL_MapRGB(baseimage->format, 255, 255, 255));
+                    }
+                }
+                
             }
         }
     }
@@ -236,4 +259,36 @@ void save_cases(SDL_Surface* image)
             }
         }
     }
+}
+
+SDL_Surface* reduce_res(SDL_Surface* image)
+{
+    SDL_Surface *new = SDL_CreateRGBSurface(0, image->w/2, image->h/2, 32, 0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
+    for (size_t x = 0; x < (size_t)image->w/2; x++)
+    {
+        for (size_t y = 0; y < (size_t)image->h/2; y++)
+        {
+            Uint32 p1,p2,p3,p4;
+            p1 = get_pixel(image, 2*x, 2*y);
+            p2 = get_pixel(image, 2*x+1, 2*y);
+            p3 = get_pixel(image, 2*x, 2*y+1);
+            p4 = get_pixel(image, 2*x+1, 2*y+1);
+            Uint8 c,c1,c2,c3,c4;
+            SDL_GetRGB(p1, image->format, &c1, &c1, &c1);
+            SDL_GetRGB(p2, image->format, &c2, &c2, &c2);
+            SDL_GetRGB(p3, image->format, &c3, &c3, &c3);
+            SDL_GetRGB(p4, image->format, &c4, &c4, &c4);
+            c = (c1 + c2 + c3 + c4)/4;
+            if (c >= 127)
+            {
+                c = 255;
+            }
+            else
+            {
+                c = 0;
+            }
+            put_pixel(new, x, y, SDL_MapRGB(new->format, c, c, c));
+        }
+    }
+    return new;
 }
