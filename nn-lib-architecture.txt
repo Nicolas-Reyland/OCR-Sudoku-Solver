@@ -2,7 +2,8 @@
 
 Model :
   Model *
-    - (ModelLayers) layers
+    - (nn_Layer**) layers
+    - (size_t) num_layers
     - (functions->losses) loss
     - (functions->optimizers) optimizer
     - ($void) save // save_architecture & save_weights_and_bias
@@ -10,9 +11,6 @@ Model :
     - ($void) saveWeightsAndBias
   ($void) loadModel
   Layers :
-    ModelLayers *
-      - (uint) num_layers
-      - (malloc array) layers
     Layer *
       - (bool) is_output
       - (utils->Struct->ShapeDescription) shape
