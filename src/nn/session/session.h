@@ -11,7 +11,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-typedef struct nn_Session {
+typedef struct nn_Session nn_Session;
+struct nn_Session {
 	nn_DataSet* dataset;
 	unsigned int nb_epochs;
 	double loss_threshold;
@@ -20,7 +21,7 @@ typedef struct nn_Session {
 	double learning_rate;
 	void (*train)(struct nn_Session* session, nn_Model* model);
 	void (*test)(struct nn_Session* session,nn_Model* model);
-} nn_Session;
+}
 
 nn_Session* createSession(nn_DataSet* dataset, unsigned int nb_epochs,
 double loss_threshold, bool stop_on_loss_threshold_reached, bool verbose, double learning_rate);

@@ -57,7 +57,7 @@ void _nn_train(struct nn_Session* session, nn_Model* model)
 	return;
 }
 
-void _nn_test(struct nn_Session* session,nn_Model* model)
+void _nn_test(struct nn_Session* session, nn_Model* model)
 {
 	nn_InOutTuple** tuple_array = iot_linked_list_to_array(
 		session->dataset->test->data_collection->data);
