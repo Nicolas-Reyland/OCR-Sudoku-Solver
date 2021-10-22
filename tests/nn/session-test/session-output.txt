@@ -15,8 +15,8 @@ Input:
 Output expected:
 0.000000, 
 Result:
-0.657127 
-Losses error = 0.431816
+0.728986 
+Losses error = 0.531421
 Training Tuple:
 number of input values: 2
 number of output values: 1
@@ -25,8 +25,8 @@ Input:
 Output expected:
 1.000000, 
 Result:
-0.842583 
-Losses error = 0.024780
+0.765798 
+Losses error = 0.054851
 Training Tuple:
 number of input values: 2
 number of output values: 1
@@ -35,8 +35,8 @@ Input:
 Output expected:
 0.000000, 
 Result:
-0.849839 
-Losses error = 0.722227
+0.791105 
+Losses error = 0.625847
 Training Tuple:
 number of input values: 2
 number of output values: 1
@@ -45,21 +45,15 @@ Input:
 Output expected:
 1.000000, 
 Result:
-0.715327 
-Losses error = 0.081039
+0.767756 
+Losses error = 0.053937
+freeing layer 0
 freeing layer ...
 layer has been freed
-freed input layer
+freeing layer 1
 freeing layer ...
 layer has been freed
-freed output layer
-freeing hidden layer num 0
+freeing layer 2
 freeing layer ...
 layer has been freed
 freed model layers
-Freeing test data...
-Test data freed !
-Freeing train data...
-Train data freed !
-Freeing dataset...
-Dataset freed !

@@ -21,18 +21,17 @@ void oneLearningStep(nn_Model* model, double* input, double* output, double lear
 int main(int argc, char** argv)
 {
 	setVerbose(true);
-	// init random
-	// initRandom(); // NOT initializing random this ways
-	// custom random init
 	srand( 1234567890 );
 	_nn_random_init_done = true;
 	printf("Next random integer is: %d\n", rand());
 	initMemoryTracking();
-	
-	verbose("init done");
 
 	// get path to project as arg
 	char input_path[255], output_path[255];
+	if (argc != 2) {
+		fprintf(stderr, "Must give path to root of project as first argument\n");
+		exit(EXIT_FAILURE);
+	}
 	char* path_to_project = argv[1];
 	strcpy(input_path, path_to_project);
 	strcpy(output_path, path_to_project);
@@ -74,43 +73,35 @@ int main(int argc, char** argv)
 	optimizer optimizer = ADAM;
 	// malloc model
 	nn_Model* model = createModel(3, model_architecture, activations, loss, optimizer);
-
-	/*nn_Session* session = createSession(dataset,1000,0.01,true,false,0.0001);
-	session->train(session,model);
-	session->test(session,model);*/
-
-	// one manual forward/backward propagation
-	double input_collection[4][2] = {
-		{ 1.0, 1.0 },
-		{ 1.0, 0.0 },
-		{ 0.0, 1.0 },
-		{ 0.0, 0.0 },
-	};
-	double output_collection[4][1] = {
-		{ 0.0 },
-		{ 1.0 },
-		{ 1.0 },
-		{ 0.0 },
-	};
 	
-	/*setVerbose(false);
-	for (int i = 0; i < 10; i++) {
-		for (int j = 0; j < 4; j++) {
-			double* input = input_collection[j];
-			double* output = output_collection[j];
-			verbose("---------------------------");
-			oneLearningStep(model, input, output, 0.3);
-			verbose("\tSupposed: %lf", output[0]);
-		}
-	}*/
-	setVerbose(true);
-	for (int j = 0; j < 4; j++) {
-		double* input = input_collection[j];
-		double* output = output_collection[j];
-		verbose("---------------------------");
-		oneLearningStep(model, input, output, 0.2);
-		verbose("\tSupposed: %lf", output[0]);
-	}
+	float weights[3][2] = {
+    { 0.840188, 0.394383 },
+    { 0.783099, 0.798440 },
+    { 0.911647, 0.335223 },
+  };
+  
+  float bias[3] = {
+    0.197551,
+    0.768230,
+    0.277775,
+  };
+  
+  // Initialize the weights
+  model->layers[0]->nodes[0]->weights[0] = weights[0][0];
+  model->layers[0]->nodes[0]->weights[1] = weights[0][1];
+  model->layers[0]->nodes[1]->weights[0] = weights[1][0];
+  model->layers[0]->nodes[1]->weights[1] = weights[1][1];
+  model->layers[1]->nodes[0]->weights[0] = weights[2][0];
+  model->layers[1]->nodes[1]->weights[0] = weights[2][1];
+
+  // Initialize the bias
+  model->layers[1]->nodes[0]->bias = bias[0];
+  model->layers[1]->nodes[1]->bias = bias[1];
+  model->layers[2]->nodes[0]->bias = bias[2];
+
+	nn_Session* session = createSession(dataset, 1000, 0.01, true, false, 0.0001);
+	session->train(session,model);
+	session->test(session,model);
 
 	// free model
 	freeModel(model);
