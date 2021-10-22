@@ -2,10 +2,6 @@
 test.out
 src/gui/gui
 
-# Ignore numpy files
-*.npy
-*.npz
-
 # Prerequisites
 *.d
 
