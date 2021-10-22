@@ -29,7 +29,7 @@ int main()
 	};
 	// activation functions
 	activation activations[3] = {
-		SIGMOID, SIGMOID, SOFTMAX
+		SIGMOID, SOFTMAX
 	};
 	// loss & optimizers
 	losses loss = CATEGORICALCROSSENTROPY;
@@ -38,9 +38,9 @@ int main()
 	nn_Model* model = createModel(3, model_architecture, activations, loss, optimizer);
 
 	// here
-	printLayer(0, &model->layers->input_layer);
-	printLayer(1, &model->layers->hidden_layers[0]);
-	printLayer(2, &model->layers->output_layer);
+	printLayer(0, model->layers[0]);
+	printLayer(1, model->layers[1]);
+	printLayer(2, model->layers[2]);
 
 	// free model
 	freeModel(model);
@@ -53,7 +53,7 @@ void printLayer(int index, nn_Layer* layer)
 {
 	printf("index: %d\n", index);
 	nn_Node* node;
-	for (size_t i = 0; i < layer->nb_nodes; i++) {
+	for (size_t i = 0; i < layer->num_nodes; i++) {
 		node = layer->nodes[i];
 		for (size_t j = 0; j < node->num_weights; j++) {
 			printf("layers[%d]->nodes[%ld]->weights[%ld] = %lf\n", index, i, j, node->weights[j]);

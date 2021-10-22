@@ -11,23 +11,22 @@
 #include "utils/mem/mem-management.h"
 
 typedef struct nn_Node {
-  size_t num_weights;
   // weights
+  size_t num_weights;
   double* weights;
   double* d_weights;
   // bias
   double bias;
   double d_bias;
-  // raw values
-  double raw_value;
-  // delta value
-  double delta_value;
   // values
   double value;
   double d_value;
+  // raw values
+  double raw_value;
+  double d_raw_value;
 } nn_Node;
 
-nn_Node* _nn_createNode(size_t num_weights);
+nn_Node* _nn_createNode(size_t num_weights, bool init_bias);
 void _nn_freeNode(nn_Node* node);
 
 #endif

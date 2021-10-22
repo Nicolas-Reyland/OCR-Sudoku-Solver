@@ -1,0 +1,59 @@
+Next random integer is: 1727406014
+Created train data
+Created test data
+Created dataset.
+Done allocating nodes
+Done allocating nodes
+Allocating hidden layer ...
+Done allocating nodes
+layers are allocated.
+Training Tuple:
+number of input values: 2
+number of output values: 1
+Input:
+0.000000, 0.000000, 
+Output expected:
+0.000000, 
+Result:
+0.728986 
+Losses error = 0.531421
+Training Tuple:
+number of input values: 2
+number of output values: 1
+Input:
+1.000000, 0.000000, 
+Output expected:
+1.000000, 
+Result:
+0.765798 
+Losses error = 0.054851
+Training Tuple:
+number of input values: 2
+number of output values: 1
+Input:
+1.000000, 1.000000, 
+Output expected:
+0.000000, 
+Result:
+0.791105 
+Losses error = 0.625847
+Training Tuple:
+number of input values: 2
+number of output values: 1
+Input:
+0.000000, 1.000000, 
+Output expected:
+1.000000, 
+Result:
+0.767756 
+Losses error = 0.053937
+freeing layer 0
+freeing layer ...
+layer has been freed
+freeing layer 1
+freeing layer ...
+layer has been freed
+freeing layer 2
+freeing layer ...
+layer has been freed
+freed model layers

@@ -1,6 +1,9 @@
 #!/bin/bash
 
-# Setup utils functions
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+. $SCRIPT_DIR/.test_env_print_utils
+
 function _prefix_indent {
 	for ((i=0;i<TEST_OUTPUT_INDENT_LVL;i++))
 	do
@@ -8,58 +11,84 @@ function _prefix_indent {
 	done
 }
 
-function announce_step_start {
+# Setup print aliases
+function print_info_text {
 	_prefix_indent
-	echo "[-] Starting step $1/$TOTAL_STEPS of $TEST_NAME"
+	print_nel_cyan "$1"
+	print_white "${@:2}"
+}
+
+function print_success_text {
+	_prefix_indent
+	print_green "$@"
+}
+
+function print_warn_text {
+	_prefix_indent
+	print_nel_yellow $1
+	print_white "${@:2}"
+}
+
+function print_error_text {
+	_prefix_indent
+	print_nel_red $1
+	print_white "${@:2}"
+}
+
+function print_problem_text {
+	_prefix_indent
+	print_nel_magenta "$1"
+	print_white "${@:2}"
+}
+
+
+# Setup utils functions
+function announce_step_start {
+	print_info_text "[-]" " Starting step $1/$TOTAL_STEPS of `print_nel_blue $TEST_NAME`"
 }
 
 function announce_step_end {
-	_prefix_indent
-	echo "[-] Ended step $1/$TOTAL_STEPS of $TEST_NAME (STATUS: `status_string $TEST_STATUS`)"
+	print_info_text "[-]" " Ended step $1/$TOTAL_STEPS of `print_nel_blue $TEST_NAME` (STATUS: `status_string $TEST_STATUS`)"
 }
 
 function announce_sub_step_start {
-	_prefix_indent
-	echo "[-] Starting sub step $2 of step $1"
+	print_info_text "[-]" " Starting sub step $2 of step $1"
 }
 
 function status_string {
 	case $1 in
 		0)
-			echo -n "SUCCESS" # All tests successful
+			print_nel_green "SUCCESS" # All tests successful
 			;;
 		1)
-			echo -n "IMPERFECT" # Some tests raised warnings. no fails
+			print_nel_yellow "IMPERFECT" # Some tests raised warnings. no fails
 			;;
 		2)
-			echo -n "FAILED" # Some tests failed
+			print_nel_red "FAILED" # Some tests failed
 			;;
 		3)
-			echo -n "PROBLEMATIC" # Some tests could not be run
+			print_nel_magenta "PROBLEMATIC" # Some tests could not be run
 			;;
 		*)
-			echo -n "UNDEFINED TEST STATUS: ""$1""" # Unknown test status
+			print_nel_white "UNDEFINED TEST STATUS: ""$1""" # Unknown test status
 			;;
 	esac
 }
 
 function test_warn {
-	_prefix_indent
-	echo "[W]: $@"
+	print_warn_text "[W]" " $@"
 	_update_test_status 1
 	_exit_on_var $EXIT_ON_WARNING
 }
 
 function test_error {
-	_prefix_indent
-	echo "[E]: $@"
+	print_error_text "[E]" " $@"
 	_update_test_status 2
 	_exit_on_var $EXIT_ON_ERROR
 }
 
 function test_problem {
-	_prefix_indent
-	echo "[Problem]: $@"
+	print_problem_text "[?]" " $@"
 	_update_test_status 3
 	_exit_on_var $EXIT_ON_PROBLEM
 }
@@ -71,9 +100,8 @@ function _update_test_status {
 }
 
 function _exit_on_var {
-	_prefix_indent
 	if [[ "$1" = true ]]; then
-		echo "[!] Test '$TEST_NAME' NOT completed. Status: `status_string $TEST_STATUS`"
+		print_info_text "[!]" " Test `print_nel_blue $TEST_NAME` NOT completed. Status: `status_string $TEST_STATUS`"
 		_exit_test
 	fi
 }
@@ -83,11 +111,10 @@ function _exit_test {
 }
 
 function test_finished {
-	_prefix_indent
-	echo "[!] Test '$TEST_NAME' completed. Status: `status_string $TEST_STATUS`"
-	_exit_test
+	print_info_text "[!]" " Test `print_nel_blue $TEST_NAME` completed. Status: `status_string $TEST_STATUS`"
 }
 
 function fn_exists {
 	declare -F "$1" > /dev/null
+	return $?
 }

@@ -22,8 +22,8 @@ int main(int argc, char** argv)
 		{ .dims = 1, .x = 1, .y = 1, .z = 1 }
 	};
 	// activation functions
-	activation activations[3] = {
-		SIGMOID, SIGMOID, SOFTMAX
+	activation activations[2] = {
+		SIGMOID, SOFTMAX
 	};
 	// loss & optimizers
 	losses loss = CATEGORICALCROSSENTROPY;

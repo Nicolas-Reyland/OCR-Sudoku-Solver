@@ -24,16 +24,34 @@ iot_linked_list* init_iot_linked_list()
 /* Free function */
 void free_iot_linked_list(iot_linked_list* list, bool free_value)
 {
+	if(list == NULL)
+    {
+        verbose("free_iot_linked_list: list is null.");
+        exit(EXIT_FAILURE);
+    }
+	if(list->head == NULL)
+    {
+        verbose("free_iot_linked_list: head of list is null.");
+        exit(EXIT_FAILURE);
+    }
 	_free_iot_linked_list_node(list->head,free_value);
+	
 	free(list);
 }
 
 // free node
 void _free_iot_linked_list_node(iot_ll_node* node, bool free_value)
 {
-	if (node->next != NULL) _free_iot_linked_list_node(node->next,free_value);
+	if(node == NULL)
+    {
+        verbose("_free_iot_linked_list_node: node is null.");
+        exit(EXIT_FAILURE);
+    }
 	if(free_value)
+	{
 		freeInOutTuple(node->value); 
+	}
+	if (node->next != NULL) _free_iot_linked_list_node(node->next,free_value);
 	free(node);
 }
 
@@ -94,6 +112,7 @@ iot_ll_node* _iot_linked_list_new_node()
 		sprintf(msg, IOT_LL_MEM_ALLOC_ERROR_MSG, iot_ll_node_size);
 		_iot_linked_list_exit_msg(msg);
 	}
+	node->next = NULL;
 	return node;
 }
 

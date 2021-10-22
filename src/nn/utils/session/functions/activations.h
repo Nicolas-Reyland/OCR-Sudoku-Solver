@@ -14,10 +14,18 @@
 void _nn_activateLayer(nn_Layer* layer);
 
 void sigmoid(nn_Layer* layer);
+double _nn_sigmoid(double x);
+
 void relu(nn_Layer* layer);
+double _nn_relu(double x);
+
 void leaky_relu(nn_Layer* layer);
-void softmax(nn_Layer* layer);
+double _nn_leaky_relu(double x);
+
 void tan_h(nn_Layer* layer);
+double _nn_tan_h(double x);
+
+void softmax(nn_Layer* layer);
 
 
 #endif

@@ -19,19 +19,19 @@ export TEST_STATUS=3
 ## Check args
 if [ $# -ne 3 ]; then
 	echo Usage: ./runtest.sh test-name test-root-path project-root-path
-	test_problem "[?] Missing or too many arguments"
+	test_problem "Missing or too many arguments : $# != 3"
 fi
 TEST_STATUS=0
 ## Check test root path
 export test_root_path=$2
 if [ ! -d $test_root_path ]; then
-	echo "[?] Test root path (\$2 : $2) is not a directory (from `pwd`)"
+	test_problem "Test root path (\$2 : $2) is not a directory (from `pwd`)"
 	exit 1
 fi
 ## Check project root path
 export project_root_path=$3
 if [ ! -d $project_root_path ]; then
-	echo "[?] Project root path (\$3 : $3) is not a directory (from `pwd`)"
+	test_problem "Project root path (\$3 : $3) is not a directory (from `pwd`)"
 	exit 1
 fi
 ## Add tmp dir path
@@ -71,6 +71,6 @@ rm -rf $tmp_dir
 
 # call end of test
 test_finished
-
+exit 0
 
 #
