@@ -2,7 +2,7 @@
 
 #include "init_data.h"
 
-nn_DataSet* nn_loadData(char* data_dir_path, nn_ShapeDescription* description, bool verb_mode)
+nn_DataSet* nn_loadDataSet(char* data_dir_path, nn_ShapeDescription* description, bool verb_mode)
 {
   // alloc path strings
   char train_input_path[255];
@@ -27,8 +27,8 @@ nn_DataSet* nn_loadData(char* data_dir_path, nn_ShapeDescription* description, b
   verbose("test inputs:   %s", test_input_path);
   verbose("test outputs:  %s", test_output_path);
   // load the paths
-  nn_Data* train_data = nn_DataLoadRaw(train_input_path, train_output_path, description, verb_mode);
-  nn_Data* test_data = nn_DataLoadRaw(test_input_path, test_output_path, description, verb_mode);
+  nn_Data* train_data = nn_loadSingleDataInputOutput(train_input_path, train_output_path, description, verb_mode);
+  nn_Data* test_data = nn_loadSingleDataInputOutput(test_input_path, test_output_path, description, verb_mode);
   // create the dataset
   nn_DataSet* dataset = _nn_createDataSet(train_data, test_data);
   return dataset;
@@ -38,7 +38,7 @@ char defineShapeDescription(nn_ShapeDescription* description, FILE* file);
 bool _readLineInFile(FILE* file, nn_ShapeDescription* description, size_t num_values, double* values);
 void verifyListCompleteness(iot_ll_node* node, size_t length);
 
-nn_Data* nn_DataLoadRaw(char* input_path, char* output_path, nn_ShapeDescription* description, bool verb_mode)
+nn_Data* nn_loadSingleDataInputOutput(char* input_path, char* output_path, nn_ShapeDescription* description, bool verb_mode)
 {
     FILE* input_file = fopen(input_path,"r+");
     FILE* output_file = fopen(output_path, "r+");

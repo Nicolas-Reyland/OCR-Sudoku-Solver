@@ -23,7 +23,7 @@ int main(int argc, char** argv)
 
 	nn_ShapeDescription description = emptyShapeDescription();
 
-	nn_Data* data = nn_DataLoadRaw(
+	nn_Data* data = nn_loadSingleDataInputOutput(
 		input_path,
 		output_path,
 		&description,

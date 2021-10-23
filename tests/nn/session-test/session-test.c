@@ -44,14 +44,14 @@ int main(int argc, char** argv)
 	nn_Data* train;
 	nn_Data* test;
 
-	train = nn_DataLoadRaw(
+	train = nn_loadSingleDataInputOutput(
 		input_path,
 		output_path,
 		&train_description,
 		false
 	);
 	verbose("Created train data");
-	test = nn_DataLoadRaw(
+	test = nn_loadSingleDataInputOutput(
 		input_path,
 		output_path,
 		&test_description,
