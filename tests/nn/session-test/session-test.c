@@ -27,7 +27,7 @@ int main(int argc, char** argv)
 	initMemoryTracking();
 
 	// get path to project as arg
-	char input_path[255], output_path[255];
+	char input_path[255], output_path[255], save_path[512];
 	if (argc != 2) {
 		fprintf(stderr, "Must give path to root of project as first argument\n");
 		exit(EXIT_FAILURE);
@@ -37,6 +37,9 @@ int main(int argc, char** argv)
 	strcpy(output_path, path_to_project);
 	strcat(input_path, "/datas/xor/input.txt");
 	strcat(output_path, "/datas/xor/output.txt");
+
+	//strcat(save_path, path_to_project);
+	strcat(save_path, "/Users/lilian/Documents/2021-2025/2022/ocr/OCR-Sudoku-Solver/save/");
 
 	nn_ShapeDescription train_description;
 	nn_ShapeDescription test_description;
@@ -104,14 +107,21 @@ int main(int argc, char** argv)
   model->layers[2]->nodes[0]->bias = bias[2];
 
 	nn_Session* session = createSession(dataset, 20000, 0.0000001, false, false, 0.15);
-	setVerbose(false);
+	setVerbose(true);
 	session->train(session, model);
 	session->test(session, model);
+	model->printModelLayers(model);
 
+	verbose("Saving weights...");
+	printf("%s\n",save_path);
+	model->saveModel(model,save_path);
+
+	verbose("Saved weights !");
 	// free model
 	freeModel(model);
 	//free session (and dataset)
 	//freeSession(session);
+	setVerbose(false);
 	free(GPL);
 
 	return 0;
