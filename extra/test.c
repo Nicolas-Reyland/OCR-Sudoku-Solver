@@ -35,13 +35,13 @@ int main(int argc, char** argv)
 	verbose("Model allocated");
 	nn_ShapeDescription shape = emptyShapeDescription();
 	/*verbose("Reading the training data ...");
-	nn_Data* data_train = nn_DataLoadRaw("datas/mnist/train-first-19000.in", "datas/mnist/train-first-19000.out", &shape, true);
+	nn_Data* data_train = nn_loadSingleDataInputOutput("datas/mnist/train-first-19000.in", "datas/mnist/train-first-19000.out", &shape, true);
 	verbose("Reading the testing data ...");
-	nn_Data* data_test = nn_DataLoadRaw("datas/mnist/test.in", "datas/mnist/test.out", &shape, true);
+	nn_Data* data_test = nn_loadSingleDataInputOutput("datas/mnist/test.in", "datas/mnist/test.out", &shape, true);
 	verbose("Data read.");
-	nn_DataSet* dataset = _nn_createDataSet(data_train, data_test);*/
+	nn_DataSet* dataset = nn_createDataSet(data_train, data_test);*/
 
-	nn_DataSet* dataset = nn_loadData("datas/mnist/", &shape, true);
+	nn_DataSet* dataset = nn_loadDataSet("datas/mnist/", &shape, true);
 
 	nn_Session* session = createSession(
 		dataset,
