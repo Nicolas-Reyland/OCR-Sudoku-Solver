@@ -1,3 +1,7 @@
+# compiled binaries from various scripts
+test.out
+src/gui/gui
+
 # Prerequisites
 *.d
 
@@ -50,3 +54,10 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# VS Code config files
+*.vscode
+*.DS_Store
+# Valgrind core dumps
+vgcore.*
+

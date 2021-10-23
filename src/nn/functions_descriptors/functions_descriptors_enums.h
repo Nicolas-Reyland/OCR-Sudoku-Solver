@@ -7,14 +7,16 @@ typedef enum losses
 {
 	CATEGORICALCROSSENTROPY,
 	BINARYCROSSENTROPY,
-	SPARSECATEGORICALCROSSENTROPY
+	MEANSQUAREDERROR
 } losses;
 
 typedef enum activation
 {
+	NO_ACTIVATION, // e.g. for the input layer
 	SIGMOID,
 	RELU,
-	SOFTMAX,
+	LEAKY_RELU,
+	SOFTMAX, // output layer only
 	TANH
 } activation;
 

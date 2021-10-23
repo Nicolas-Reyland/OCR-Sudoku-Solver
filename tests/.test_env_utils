@@ -1,0 +1,120 @@
+#!/bin/bash
+
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+. $SCRIPT_DIR/.test_env_print_utils
+
+function _prefix_indent {
+	for ((i=0;i<TEST_OUTPUT_INDENT_LVL;i++))
+	do
+		echo -n -e ' \t '
+	done
+}
+
+# Setup print aliases
+function print_info_text {
+	_prefix_indent
+	print_nel_cyan "$1"
+	print_white "${@:2}"
+}
+
+function print_success_text {
+	_prefix_indent
+	print_green "$@"
+}
+
+function print_warn_text {
+	_prefix_indent
+	print_nel_yellow $1
+	print_white "${@:2}"
+}
+
+function print_error_text {
+	_prefix_indent
+	print_nel_red $1
+	print_white "${@:2}"
+}
+
+function print_problem_text {
+	_prefix_indent
+	print_nel_magenta "$1"
+	print_white "${@:2}"
+}
+
+
+# Setup utils functions
+function announce_step_start {
+	print_info_text "[-]" " Starting step $1/$TOTAL_STEPS of `print_nel_blue $TEST_NAME`"
+}
+
+function announce_step_end {
+	print_info_text "[-]" " Ended step $1/$TOTAL_STEPS of `print_nel_blue $TEST_NAME` (STATUS: `status_string $TEST_STATUS`)"
+}
+
+function announce_sub_step_start {
+	print_info_text "[-]" " Starting sub step $2 of step $1"
+}
+
+function status_string {
+	case $1 in
+		0)
+			print_nel_green "SUCCESS" # All tests successful
+			;;
+		1)
+			print_nel_yellow "IMPERFECT" # Some tests raised warnings. no fails
+			;;
+		2)
+			print_nel_red "FAILED" # Some tests failed
+			;;
+		3)
+			print_nel_magenta "PROBLEMATIC" # Some tests could not be run
+			;;
+		*)
+			print_nel_white "UNDEFINED TEST STATUS: ""$1""" # Unknown test status
+			;;
+	esac
+}
+
+function test_warn {
+	print_warn_text "[W]" " $@"
+	_update_test_status 1
+	_exit_on_var $EXIT_ON_WARNING
+}
+
+function test_error {
+	print_error_text "[E]" " $@"
+	_update_test_status 2
+	_exit_on_var $EXIT_ON_ERROR
+}
+
+function test_problem {
+	print_problem_text "[?]" " $@"
+	_update_test_status 3
+	_exit_on_var $EXIT_ON_PROBLEM
+}
+
+function _update_test_status {
+	if [[ $TEST_STATUS -lt $1 ]]; then
+		TEST_STATUS=$1
+	fi
+}
+
+function _exit_on_var {
+	if [[ "$1" = true ]]; then
+		print_info_text "[!]" " Test `print_nel_blue $TEST_NAME` NOT completed. Status: `status_string $TEST_STATUS`"
+		_exit_test
+	fi
+}
+
+function _exit_test {
+	kill -s TERM $TOP_PID
+}
+
+function test_finished {
+	print_info_text "[!]" " Test `print_nel_blue $TEST_NAME` completed. Status: `status_string $TEST_STATUS`"
+}
+
+function fn_exists {
+	declare -F "$1" > /dev/null
+	return $?
+}

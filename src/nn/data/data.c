@@ -1,7 +1,6 @@
 // data.c
 
 #include "data.h"
-#include <stdlib.h>
 
 /// <Summary>
 /// Splits a data struct into two data struct, based on a splitting percentage
@@ -9,8 +8,6 @@
 /// <Summary/>
 nn_DataTuple _nn_dataSplitTrainTest(nn_Data* data, int splittingPercentage)
 {
-    nn_DataTuple data_tuple;
-
     iot_linked_list* list_to_split = data->data_collection->data;
 
     iot_linked_list* data1   = init_iot_linked_list();
@@ -28,24 +25,45 @@ nn_DataTuple _nn_dataSplitTrainTest(nn_Data* data, int splittingPercentage)
         data2->append_value(data2,((iot_ll_node*)list_to_split->get_value_at(list_to_split,i))->value);
     }
 
+    // add data to tuple struct at creation (and stop gcc from complaining)
+    nn_DataTuple data_tuple = {
+        .data1 = _nn_createData(_nn_loadDataCollection(data1)),
+        .data2 = _nn_createData(_nn_loadDataCollection(data2))
+    };
 
-    data_tuple.data1->data_collection = loadDataCollection(data1);
-    data_tuple.data2->data_collection = loadDataCollection(data2);
-
-    freeData(data);
-
+    _nn_freeData(data,false);
     return data_tuple;
+}
+
+void _nn_printData(nn_Data* data)
+{
+    iot_ll_node* node = data->data_collection->data
+        ->head;
+    for(size_t i = 0; i < (size_t)data->data_collection->data->length;i++)
+    {
+        nn_InOutTuple* tuple = node->value;
+        if(tuple == NULL)
+        {
+            printf("tuple is not defined, exiting...");
+            exit(EXIT_FAILURE);
+        }
+        printf("%ld/\n",(i+1));
+        tuple->printTuple(tuple);
+
+        node = node->next;
+    }
 }
 
 /// <Summary>
 /// Create a pointer to a data struct
 /// <Summary/>
-nn_Data* createData(nn_DataCollection* collection)
+nn_Data* _nn_createData(nn_DataCollection* collection)
 {
     //stuff comes here
-    nn_Data* data = malloc(sizeof(nn_Data));
+    nn_Data* data = mem_malloc(sizeof(nn_Data));
     data->data_collection = collection;
     data->splitTrainTest = &_nn_dataSplitTrainTest;
+    data->printData = &_nn_printData;
 
     return data;
 }
@@ -53,8 +71,13 @@ nn_Data* createData(nn_DataCollection* collection)
 /// <Summary>
 /// Delete the data from memory
 /// <Summary/>
-void freeData(nn_Data* data)
+void _nn_freeData(nn_Data* data,bool free_value)
 {
-  freeDataCollection(data->data_collection);
-  free(data);
+    if(data == NULL)
+    {
+        verbose("freeData: data is null.");
+        exit(EXIT_FAILURE);
+    }
+    _nn_freeDataCollection(data->data_collection,free_value);
+    mem_free(data);
 }

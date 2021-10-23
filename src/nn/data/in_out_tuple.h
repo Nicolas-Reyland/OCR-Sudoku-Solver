@@ -4,11 +4,13 @@
 #define IN_OUT_TUPLE_H
 
 #include "sample/sample.h"
+#include <stdlib.h>
 
 typedef struct nn_InOutTuple
 {
     nn_Sample* input;
     nn_Sample* output;
+    void (*printTuple)(struct nn_InOutTuple*);
 } nn_InOutTuple;
 
 nn_InOutTuple* createInOutTuple(nn_Sample* input, nn_Sample* output);

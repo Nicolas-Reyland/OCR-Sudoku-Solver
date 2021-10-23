@@ -1,0 +1,93 @@
+#!/bin/bash
+# Test file for ... whatever ...
+
+# Testing ... what you are testing ...
+# Steps :
+# 1. step 1 desc
+# 2. step 2 desc
+...
+# n. step n descr
+# Sub-steps :
+# 1.
+#  - step 1/sub-step 1
+#  - step 1/sub-step 2
+...
+#  - step 1/sub-step n
+# 2.
+#  - step 2/sub-step 1
+#  - step 2/sub-step 2
+...
+#  - step 2/sub-step n
+...
+# n.
+#  - step n/sub-step 1
+#  - step n/sub-step 2
+...
+#  - step n/sub-step n
+
+# Test Description
+export TEST_STEPS_DESCR=(num_sub_steps_in_step_1 num_sub_steps_in_step_2 ... num_sub_steps_in_step_n)
+
+... declare variables & functions you need ...
+
+
+# Steps preparation
+function prepare_steps {
+	... prepare the steps here (variables, checks for installed deps) ...
+}
+
+# Step 1
+function step_1 {
+	...
+	case $1 in
+		1)
+			... step 1 sub-step 1 execution
+			;;
+		2)
+			... step 1 sub-step 2 execution
+			;;
+		...
+		n)
+			... step 1 sub-step n execution
+		*)
+			;;
+	esac
+}
+
+# Step 2
+function step_2 {
+	...
+	case $1 in
+		1)
+			... step 2 sub-step 1 execution
+			;;
+		2)
+			... step 2 sub-step 2 execution
+			;;
+		...
+		n)
+			... step 2 sub-step n execution
+		*)
+			;;
+	esac
+}
+
+...
+
+# Step n
+function step_n {
+	...
+	case $1 in
+		1)
+			... step n sub-step 1 execution
+			;;
+		2)
+			... step n sub-step 2 execution
+			;;
+		...
+		n)
+			... step n sub-step n execution
+		*)
+			;;
+	esac
+}
