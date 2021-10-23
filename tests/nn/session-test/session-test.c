@@ -1,4 +1,4 @@
-// session-test.c
+	// session-test.c
 
 #include "nn/nn.h"
 #include "utils/mem/mem-management.h"
@@ -27,7 +27,7 @@ int main(int argc, char** argv)
 	initMemoryTracking();
 
 	// get path to project as arg
-	char input_path[255], output_path[255];
+	char input_path[255], output_path[255], save_path[512];
 	if (argc != 2) {
 		fprintf(stderr, "Must give path to root of project as first argument\n");
 		exit(EXIT_FAILURE);
@@ -38,54 +38,61 @@ int main(int argc, char** argv)
 	strcat(input_path, "/datas/xor/input.txt");
 	strcat(output_path, "/datas/xor/output.txt");
 
+	strcpy(save_path, path_to_project);
+	strcat(save_path, "/save/");
+
 	nn_ShapeDescription train_description;
 	nn_ShapeDescription test_description;
 
 	nn_Data* train;
 	nn_Data* test;
 
-	train = nn_DataLoadRaw(
+	train = nn_loadSingleDataInputOutput(
 		input_path,
 		output_path,
-		&train_description);
+		&train_description,
+		false
+	);
 	verbose("Created train data");
-	test = nn_DataLoadRaw(
+	test = nn_loadSingleDataInputOutput(
 		input_path,
 		output_path,
-		&test_description);
+		&test_description,
+		false
+	);
 	verbose("Created test data");
 
-	nn_DataSet* dataset = _nn_createDataSet(train,test);	
+	nn_DataSet* dataset = nn_createDataSet(train,test);
 	verbose("Created dataset.");
 
 	// model architecture
 	nn_ShapeDescription model_architecture[3] = {
 		train_description,
-		{ .dims = 1, .x = 2, .y = 1, .z = 1 },
-		{ .dims = 1, .x = 1, .y = 1, .z = 1 },
+		create1DShapeDescription(2),
+		create1DShapeDescription(1),
 	};
 	// activation functions
 	activation activations[2] = {
-		SIGMOID, SIGMOID
+		SIGMOID, RELU
 	};
 	// loss & optimizers
 	losses loss = MEANSQUAREDERROR;
 	optimizer optimizer = ADAM;
 	// malloc model
 	nn_Model* model = createModel(3, model_architecture, activations, loss, optimizer);
-	
-	float weights[3][2] = {
+
+	double weights[3][2] = {
     { 0.840188, 0.394383 },
     { 0.783099, 0.798440 },
     { 0.911647, 0.335223 },
   };
-  
-  float bias[3] = {
+
+  double bias[3] = {
     0.197551,
     0.768230,
     0.277775,
   };
-  
+
   // Initialize the weights
   model->layers[0]->nodes[0]->weights[0] = weights[0][0];
   model->layers[0]->nodes[0]->weights[1] = weights[0][1];
@@ -99,16 +106,23 @@ int main(int argc, char** argv)
   model->layers[1]->nodes[1]->bias = bias[1];
   model->layers[2]->nodes[0]->bias = bias[2];
 
-	nn_Session* session = createSession(dataset, 1000, 0.01, true, false, 0.0001);
-	session->train(session,model);
-	session->test(session,model);
+	nn_Session* session = createSession(dataset, 20000, 0.0000001, false, false, 0.15);
+	setVerbose(true);
+	session->train(session, model);
+	session->test(session, model);
+	model->printModelLayers(model);
 
+	verbose("Saving weights...");
+	//verbose("%s\n", save_path); // if we verbose the path, it will be the full path and the test will not work on different machines for sure
+	model->saveModel(model, save_path);
+
+	verbose("Saved weights !");
 	// free model
 	freeModel(model);
 	//free session (and dataset)
 	//freeSession(session);
+	setVerbose(false);
 	free(GPL);
 
 	return 0;
 }
-

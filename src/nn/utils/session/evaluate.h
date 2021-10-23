@@ -10,6 +10,6 @@
 
 void _nn_feedForward(nn_Model* model, double* input);
 void _nn_backPropagation(nn_Model* model, double* desired_output);
-void _nn_updateWeights(nn_Model* model, float learning_rate);
+void _nn_updateWeights(nn_Model* model, double learning_rate);
 
 #endif
