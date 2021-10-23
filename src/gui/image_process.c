@@ -19,17 +19,10 @@ static const int g_blur_kernel_5[5][5] = {{1, 4, 7, 4, 1},
 #define G_BLUR_KERNEL_SIZE 5
 #define G_BLUR_KERNEL_SUM 273
 
-#define S_BINARISATION_SIZE 15
-// K takes a value from the interval [0.2, 0.5]
-//#define K_BINARISATION 0.02f
-#define K_BINARISATION 0.3f
+#define S_BINARISATION_SIZE 61
 
-/*
-static const int s_binarisation_mean_mat[S_BINARISATION_SIZE][S_BINARISATION_SIZE] = 
-										{{1, 1, 1},
-										{1, 1, 1},
-										{1, 1, 1}};
-*/
+// K takes a value from the interval [0.2, 0.5]
+#define K_BINARISATION 0.3f
 
 // R is the max value of the standard deviation of an image in grayscale
 #define R 128
@@ -65,7 +58,7 @@ void color_surface(SDL_Surface *surface, Uint32 pixel)
 	}
 }
 
-unsigned long int **create_integral_image(SDL_Surface *surface, 
+unsigned long long int **create_integral_image(SDL_Surface *surface, 
 					unsigned int margin, II_TYPE ii_type)
 {
 	Uint32 pixel;
@@ -80,13 +73,13 @@ unsigned long int **create_integral_image(SDL_Surface *surface,
 	int half_margin = margin / 2;
 
 	// 2D unsigned long int array allocation
-	unsigned long int **integral_image = 
-	(unsigned long int**)calloc(ii_width, sizeof(unsigned long int*));
+	unsigned long long int **integral_image = 
+	(unsigned long long int**)calloc(ii_width, sizeof(unsigned long long int*));
 
 	for(size_t i = 0; i < ii_width; i++)
 	{
 		integral_image[i] = 
-		(unsigned long int*)calloc(ii_height, sizeof(unsigned long int));
+		(unsigned long long int*)calloc(ii_height, sizeof(unsigned long long int));
 	}
 
 	// Represents pixel (0,0) in the integral image
@@ -182,15 +175,18 @@ unsigned long int **create_integral_image(SDL_Surface *surface,
 	return integral_image;
 }
 
-void free_integral_image(unsigned long int **integral_image, size_t width)
+void free_integral_image(unsigned long long int **integral_image, size_t width)
 {
 	for(size_t i = 0; i < width; i++)
+	{
 		free(integral_image[i]);
+		integral_image[i] = NULL;
+	}
 
 	free(integral_image);
 }
 
-unsigned long int integral_image_value(II_TYPE ii_type, Uint8 composant)
+unsigned long long int integral_image_value(II_TYPE ii_type, Uint8 composant)
 {
 	switch(ii_type)
 	{
@@ -208,13 +204,14 @@ unsigned long int integral_image_value(II_TYPE ii_type, Uint8 composant)
 void grayscale(Uint8 *r, Uint8 *g, Uint8 *b)
 {
 	Uint8 grayscale;
-	///* Mean method
-	grayscale = (*r + *g + *b) / 3;
-	//*/
-
-	/* BGR2GRAY -> opencv method
-	grayscale = *g * 0.7152f;
+	/* Mean method
+	grayscale = *r / 3 + *g / 3 + *b / 3;
 	*/
+
+	///* BGR2GRAY -> opencv method
+	//grayscale = roundf(*r * 0.2126f + *g * 0.7152f + *b * 0.0722f);
+	grayscale = *g;
+	//*/
 
 	*r = grayscale;
 	*g = grayscale;
@@ -263,9 +260,9 @@ void gaussian_blur(SDL_Surface *src_surface, int i, int j,
 	*b_dest = *r_dest;
 }
 
-float sauvola_binarisation(SDL_Surface *src_surface, 
-						unsigned long int **mean_ii, 
-						unsigned long int **std_deviation_ii, 
+double sauvola_binarisation(SDL_Surface *src_surface, 
+						unsigned long long int **mean_ii, 
+						unsigned long long int **std_deviation_ii, 
 						int i, int j)
 {
 	//Uint32 pixel;
@@ -273,11 +270,11 @@ float sauvola_binarisation(SDL_Surface *src_surface,
 
 	int s_bin_size_pow_2 = S_BINARISATION_SIZE * S_BINARISATION_SIZE;
 
-	float mean = 0.0f;
-	float std_deviation = 0.0f;
-	float threshold = 0.0f;
+	double mean = 0.0f;
+	double std_deviation = 0.0f;
+	double threshold = 0.0f;
 
-	unsigned long int squared_pixel_sum = 0;
+	unsigned long long int squared_pixel_sum = 0;
 
 	//int src_surface_w = src_surface->w;
 	//int src_surface_h = src_surface->h;
@@ -297,16 +294,16 @@ float sauvola_binarisation(SDL_Surface *src_surface,
 
 	//--------------------------------Mean--------------------------------
 
-	unsigned long int top_left_ii_val = 
+	unsigned long long int top_left_ii_val = 
 		mean_ii[ii_x + i - half_bin_size - 1][ii_y + j - half_bin_size - 1];
 
-	unsigned long int top_right_ii_val = 
+	unsigned long long int top_right_ii_val = 
 	mean_ii[ii_x + i + half_bin_size][ii_y + j - half_bin_size - 1];
 
-	unsigned long int bottom_right_ii_val = 
+	unsigned long long int bottom_right_ii_val = 
 	mean_ii[ii_x + i + half_bin_size][ii_y + j + half_bin_size];
 
-	unsigned long int bottom_left_ii_val = 
+	unsigned long long int bottom_left_ii_val = 
 	mean_ii[ii_x + i - half_bin_size - 1][ii_y + j + half_bin_size];
 
 	mean = bottom_right_ii_val - bottom_left_ii_val 
@@ -346,21 +343,21 @@ void image_process(char *path)
 	SDL_Surface *surface = NULL;
 	Uint32 pixel;
 	Uint8 r, g, b;
-	float threshold;
+	double threshold;
 
 	init_sdl();
 	surface = load_image(path);
 
-	int surf_width = surface->w;
-	int surf_height = surface->h;
+	size_t surf_width = surface->w;
+	size_t surf_height = surface->h;
 
 	//===================================================
 	//****************Grayscale process******************
 	//===================================================
 
-	for(int i = 0; i < surf_width; i++)
+	for(size_t i = 0; i < surf_width; i++)
 	{
-		for (int j = 0; j < surf_height;j++)
+		for (size_t j = 0; j < surf_height;j++)
 		{
 			pixel = get_pixel(surface, i, j);
 			SDL_GetRGB(pixel, surface->format, &r, &g, &b);
@@ -387,9 +384,9 @@ void image_process(char *path)
 	    printf("Failed to create surface -> %s\n", SDL_GetError());
 	}
 
-	for(int i = 0; i < surf_width; i++)
+	for(size_t i = 0; i < surf_width; i++)
 	{
-		for (int j = 0; j < surf_height;j++)
+		for (size_t j = 0; j < surf_height;j++)
 		{
 			//pixel = get_pixel(blurred_surface, i, j);
 			//SDL_GetRGB(pixel, blurred_surface->format, &r, &g, &b);
@@ -412,17 +409,19 @@ void image_process(char *path)
 	SDL_Surface *binarised_surface = SDL_CreateRGBSurface (0, 
 		surf_width, surf_height, 32, 0, 0, 0, 0);
 
+	/*
 	if(binarised_surface == NULL)
 	{
 	    printf("Failed to create surface -> %s\n", SDL_GetError());
 	}
+	*/
 
 	int margin = S_BINARISATION_SIZE + 1;
 
-	unsigned long int **mean_ii = 
+	unsigned long long int **mean_ii = 
 	create_integral_image(blurred_surface, margin, MEAN);
 
-	unsigned long int **std_deviation_ii = 
+	unsigned long long int **std_deviation_ii = 
 	create_integral_image(blurred_surface, margin, STD_DEVIATION);
 
 	//size_t ii_x = (margin / 2) + margin % 2;
@@ -431,15 +430,17 @@ void image_process(char *path)
 	//printf("Value ii -> %lu\n", std_deviation_ii[ii_x + surf_width - 2][ii_y + surf_height - 2] + 2);
 	//printf("%lu\n", sizeof(unsigned long int));
 
-	for(int i = 0; i < surf_width; i++)
+	for(size_t i = 0; i < surf_width; i++)
 	{
-		for (int j = 0; j < surf_height;j++)
+		for (size_t j = 0; j < surf_height;j++)
 		{
 			pixel = get_pixel(blurred_surface, i, j);
 			SDL_GetRGB(pixel, blurred_surface->format, &r, &g, &b);
 
 			threshold = sauvola_binarisation(blurred_surface, 
 							mean_ii, std_deviation_ii, i, j);
+
+			threshold = round(threshold);
 
 			//r = r >= threshold;
 			//r = r * 255;
@@ -461,6 +462,10 @@ void image_process(char *path)
 
 	free_integral_image(mean_ii, surf_width + margin);
 	free_integral_image(std_deviation_ii, surf_width + margin);
+
+	// To avoid to overwrite memory by reaccessing it
+	mean_ii = NULL;
+	std_deviation_ii = NULL;
 }
 
 // The angle given is in degrees
@@ -571,8 +576,6 @@ void rotate_image(char *path, double angle)
 
 				rotated_x = rotated_x + half_src_surf_w;
 				rotated_y = half_src_surf_h - rotated_y;
-
-				//printf("rotated_x = %d | rotated_y = %d\n", rotated_x, rotated_y);
 
 				rotated_x = (rot_surf_edge - src_surf_w) / 2 + rotated_x;
 				rotated_y = (rot_surf_edge - src_surf_h) / 2 + rotated_y;

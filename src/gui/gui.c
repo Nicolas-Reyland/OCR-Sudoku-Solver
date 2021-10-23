@@ -109,7 +109,8 @@ int main(int argc, char **argv)
     //g_object_set(frame, "margin", 25, NULL);
     
     //
-    gtk_widget_set_size_request(frame, IMAGE_MAX_WIDTH, IMAGE_MAX_HEIGHT);
+    gtk_widget_set_size_request(frame, round(IMAGE_MAX_WIDTH * 1.1), 
+                                    round(IMAGE_MAX_HEIGHT * 1.1));
     //
 
     gtk_container_add(GTK_CONTAINER(frame), image);
@@ -143,7 +144,7 @@ int main(int argc, char **argv)
     gtk_box_pack_end(GTK_BOX(main_box), bottom_buttons_box, FALSE, FALSE, 20);
 
     // Sets the image and right box position in the 'top_box'
-    gtk_box_pack_start(GTK_BOX(top_box), frame, FALSE, FALSE, 0);
+    gtk_box_set_center_widget(GTK_BOX(top_box), frame);
     gtk_box_pack_end(GTK_BOX(top_box), center_right_buttons_box, FALSE, FALSE, 20);
 
     // Sets the right buttons box in the center
