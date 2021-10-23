@@ -33,9 +33,8 @@ nn_Data* nn_DataLoadRaw(char* input_path, char* output_path, nn_ShapeDescription
     char cursorInput =  defineShapeDescription(description, input_file);
                         defineShapeDescription(&output_description, output_file);
 
-    size_t input_size   =   description->x * description->y * description->y;
-    size_t output_size  =   output_description.x * output_description.y *
-                            output_description.z;
+    size_t input_size   =   description->range;
+    size_t output_size  =   output_description.range;
     
     verifyListCompleteness(data_list->head,data_list->length);
 
@@ -52,9 +51,9 @@ nn_Data* nn_DataLoadRaw(char* input_path, char* output_path, nn_ShapeDescription
         //input_file (for safety later, make a private function that test it)
         _readFile(output_file, &output_description, output_values);
         nn_Sample* input    = createSample(*description,input_values,
-            description->x*description->y*description->z);
+            description->range);
         nn_Sample* output   = createSample(*description,output_values,
-            output_description.x*output_description.y*output_description.z);
+            output_description.range);
 
         nn_InOutTuple* tuple = createInOutTuple(input,output);
         data_list->append_value(data_list,tuple);
@@ -127,6 +126,8 @@ char defineShapeDescription(nn_ShapeDescription* description, FILE* file)
     //we define the shape description by reading the file
     int matched_values = fscanf(file,"%ld %ld %ld %ld",&(description->dims), &(description->x),
     &(description->y), &(description->z));
+    // re-calculate range
+    description->range = description->x * description->y * description->z;
     if (matched_values != 4) {
       fprintf(stderr, "Could not match all the values of the (first) description line. Values matched: %d\n", matched_values);
       exit(EXIT_FAILURE);
