@@ -17,8 +17,6 @@ size_t num_values)
   sample->num_values         = num_values;
   sample->values            = values;
   sample->print             = &_nn_print;
-
-
   return sample;
 }
 

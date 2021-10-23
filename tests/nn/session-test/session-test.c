@@ -47,12 +47,16 @@ int main(int argc, char** argv)
 	train = nn_DataLoadRaw(
 		input_path,
 		output_path,
-		&train_description);
+		&train_description,
+		false
+	);
 	verbose("Created train data");
 	test = nn_DataLoadRaw(
 		input_path,
 		output_path,
-		&test_description);
+		&test_description,
+		false
+	);
 	verbose("Created test data");
 
 	nn_DataSet* dataset = _nn_createDataSet(train,test);

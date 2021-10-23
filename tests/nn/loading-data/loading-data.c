@@ -26,7 +26,9 @@ int main(int argc, char** argv)
 	nn_Data* data = nn_DataLoadRaw(
 		input_path,
 		output_path,
-		&description);
+		&description,
+		false
+	);
 	printf("created data.\n");
 	data->printData(data);
 
