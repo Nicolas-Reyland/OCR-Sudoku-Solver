@@ -2,7 +2,38 @@
 
 #include "init_data.h"
 
-double _convertStringToDouble(char* string);
+nn_DataSet* nn_loadData(char* data_dir_path, nn_ShapeDescription* description, bool verb_mode)
+{
+  // alloc path strings
+  char train_input_path[255];
+  char test_input_path[255];
+  char train_output_path[255];
+  char test_output_path[255];
+  // concat paths
+  strcpy(train_input_path, data_dir_path);
+  strcat(train_input_path, "train.in");
+  //
+  strcpy(train_output_path, data_dir_path);
+  strcat(train_output_path, "train.out");
+  //
+  strcpy(test_input_path, data_dir_path);
+  strcat(test_input_path, "test.in");
+  //
+  strcpy(test_output_path, data_dir_path);
+  strcat(test_output_path, "train.out");
+  //
+  verbose("train inputs:  %s", train_input_path);
+  verbose("train outputs: %s", train_output_path);
+  verbose("test inputs:   %s", test_input_path);
+  verbose("test outputs:  %s", test_output_path);
+  // load the paths
+  nn_Data* train_data = nn_DataLoadRaw(train_input_path, train_output_path, description, verb_mode);
+  nn_Data* test_data = nn_DataLoadRaw(test_input_path, test_output_path, description, verb_mode);
+  // create the dataset
+  nn_DataSet* dataset = _nn_createDataSet(train_data, test_data);
+  return dataset;
+}
+
 char defineShapeDescription(nn_ShapeDescription* description, FILE* file);
 bool _readLineInFile(FILE* file, nn_ShapeDescription* description, size_t num_values, double* values);
 void verifyListCompleteness(iot_ll_node* node, size_t length);
@@ -14,12 +45,12 @@ nn_Data* nn_DataLoadRaw(char* input_path, char* output_path, nn_ShapeDescription
 
     if (input_file == NULL)
     {
-        verbose("ERROR 404: %s, the file does not exist. Exiting...\n", *input_path);
+        fprintf(stderr, "ERROR 404: \"%s\", the file does not exist. Exiting...\n", input_path);
         exit(EXIT_FAILURE);
     }
     if (output_file == NULL)
     {
-        verbose("ERROR 404: %s, the file does not exist. Exiting...\n", *output_path);
+        fprintf(stderr, "ERROR 404: \"%s\", the file does not exist. Exiting...\n", output_path);
         exit(EXIT_FAILURE);
     }
     iot_linked_list* data_list = init_iot_linked_list();
