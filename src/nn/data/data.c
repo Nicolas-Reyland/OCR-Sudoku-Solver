@@ -44,7 +44,7 @@ void _nn_printData(nn_Data* data)
         nn_InOutTuple* tuple = node->value;
         if(tuple == NULL)
         {
-            printf("tuple is not defined, exiting...");
+            fprintf(stderr, "tuple is not defined, exiting...");
             exit(EXIT_FAILURE);
         }
         printf("%ld/\n",(i+1));

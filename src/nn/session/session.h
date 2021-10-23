@@ -18,7 +18,7 @@ struct nn_Session {
 	unsigned int nb_epochs;
 	double loss_threshold;
 	bool stop_on_loss_threshold_reached;
-	bool verbose;
+	bool verb_mode;
 	double learning_rate;
 	void (*train)(struct nn_Session* session, nn_Model* model);
 	void (*test)(struct nn_Session* session,nn_Model* model);

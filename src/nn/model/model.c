@@ -39,7 +39,7 @@ void _nn_Model_saveArchitectureFn(nn_Model* model, char* path)
 
   if (architecture_file == NULL)
   {
-    printf("saveArchitecture: %s, the file does not exist. Exiting...\n",path);
+    fprintf(stderr, "saveArchitecture: %s, the file does not exist. Exiting...\n",path);
     exit(EXIT_FAILURE);
   }
 }
@@ -50,7 +50,7 @@ void _nn_Model_saveWeightsAndBias(nn_Model* model, char* path)
 
   if (wab_file == NULL)
   {
-    printf("saveWeightsAndBias: %s, the file does not exist. Exiting...\n",path);
+    fprintf(stderr, "saveWeightsAndBias: %s, the file does not exist. Exiting...\n",path);
     exit(EXIT_FAILURE);
   }
 

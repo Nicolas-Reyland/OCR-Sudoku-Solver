@@ -104,6 +104,7 @@ int main(int argc, char** argv)
   model->layers[2]->nodes[0]->bias = bias[2];
 
 	nn_Session* session = createSession(dataset, 20000, 0.0000001, false, false, 0.15);
+	setVerbose(false);
 	session->train(session, model);
 	session->test(session, model);
 

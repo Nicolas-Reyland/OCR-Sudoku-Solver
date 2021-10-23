@@ -7,13 +7,13 @@ void _nn_train(struct nn_Session* session, nn_Model* model)
 	nn_InOutTuple** tuple_array = iot_linked_list_to_array(
 		session->dataset->train->data_collection->data);
 	size_t sample_size =session->dataset->train->data_collection->data->length;
-	
+
 	bool loss_threshold_condition = true;
-	
+
 	size_t epoch = 0;
 	while (epoch < session->nb_epochs && loss_threshold_condition)
 	{
-		if(session->verbose)
+		if(session->verb_mode)
 		{
 			verbose("Epoch number: %ld",epoch);
 		}
@@ -22,34 +22,34 @@ void _nn_train(struct nn_Session* session, nn_Model* model)
 		double loss_buffer = 0;
 		while(i < sample_size)
 		{
-			if(session->verbose)
+			if(session->verb_mode)
 			{
 				verbose("Training Tuple:");
-				tuple_array[i]->printTuple(tuple_array[i]);			
+				tuple_array[i]->printTuple(tuple_array[i]);
 			}
 			_nn_feedForward(model,tuple_array[i]->input->values);
 
-			//we calculate the loss function 
+			//we calculate the loss function
 			double error = applyLosses(
 			model->layers[model->num_layers - 1],
 			tuple_array[i]->output->values,
 			model->loss);
-			if(session->verbose)
+			if(session->verb_mode)
 				verbose("Losses error = %f",error);
 			loss_buffer += error;
-			if(session->verbose)
+			if(session->verb_mode)
 			{
 				model->printModelLayers(model);
 				model->printModelLayersValues(model);
 			}
-			
+
 			_nn_backPropagation(model, tuple_array[i]->output->values);
 			_nn_updateWeights(model, session->learning_rate);
 			i++;
 		}
-		// we continue as long as we do not reached loss threshold 
-		// or we continue as long as we have epochs to do 
-		loss_threshold_condition = 
+		// we continue as long as we do not reached loss threshold
+		// or we continue as long as we have epochs to do
+		loss_threshold_condition =
 			!session->stop_on_loss_threshold_reached ||
 			loss_buffer > session->loss_threshold;
 		epoch++;
@@ -69,13 +69,13 @@ void _nn_test(struct nn_Session* session, nn_Model* model)
 		verbose("Testing Tuple:");
 		tuple_array[i]->printTuple(tuple_array[i]);
 		_nn_feedForward(model, tuple_array[i]->input->values);
-		
+
 		verbose("Result:");
 		for(size_t j = 0; j < model->layers[model->num_layers - 1]->num_nodes; j++)
-			verbose_no_endline("%f ",
+			verbose_no_endline("%lf ",
 			model->layers[model->num_layers - 1]->nodes[j]->value);
 		verbose("");
-		//we calculate the loss function 
+		//we calculate the loss function
 		double error = applyLosses(
 		model->layers[model->num_layers - 1],
 		tuple_array[i]->output->values,
@@ -93,7 +93,7 @@ double learning_rate)
 	session->dataset 			= dataset;
 	session->nb_epochs 			= nb_epochs;
 	session->loss_threshold 	= loss_threshold;
-	session->verbose			= verbose;
+	session->verb_mode			= verbose;
 	session->learning_rate		= learning_rate;
 
 	session->stop_on_loss_threshold_reached = stop_on_loss_threshold_reached;
@@ -109,4 +109,3 @@ void freeSession(nn_Session* session)
 	_nn_freeDataSet(session->dataset);
 	mem_free(session);
 }
-

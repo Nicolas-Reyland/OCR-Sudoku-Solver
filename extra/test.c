@@ -48,14 +48,14 @@ int main(int argc, char** argv)
 		10,
 		0.1,
 		false,
-		true,
+		false,
 		0.1
 	);
 
 	verbose("Session allocated");
 	session->train(session, model);
+	setVerbose(false)
 	session->test(session, model);
-
 	verbose("Model allocated.");
 
 	// free model
