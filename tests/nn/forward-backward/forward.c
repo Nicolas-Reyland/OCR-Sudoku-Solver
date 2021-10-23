@@ -20,9 +20,9 @@ int main()
 	initMemoryTracking();
 	// model architecture
 	nn_ShapeDescription model_architecture[3] = {
-		{ .dims = 1, .x = 3, .y = 1, .z = 1 },
-		{ .dims = 1, .x = 4, .y = 1, .z = 1 },
-		{ .dims = 1, .x = 2, .y = 1, .z = 1 }
+		create1DShapeDescription(3),
+		create1DShapeDescription(4),
+		create1DShapeDescription(2),
 	};
 	// activation functions
 	activation activations[3] = {

@@ -61,8 +61,8 @@ int main(int argc, char** argv)
 	// model architecture
 	nn_ShapeDescription model_architecture[3] = {
 		train_description,
-		{ .dims = 1, .x = 2, .y = 1, .z = 1 },
-		{ .dims = 1, .x = 1, .y = 1, .z = 1 },
+		create1DShapeDescription(2),
+		create1DShapeDescription(1),
 	};
 	// activation functions
 	activation activations[2] = {

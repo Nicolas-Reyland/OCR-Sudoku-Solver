@@ -28,7 +28,7 @@ nn_Data* nn_DataLoadRaw(char* input_path, char* output_path, nn_ShapeDescription
     }
     iot_linked_list* data_list = init_iot_linked_list();
 
-    nn_ShapeDescription output_description = { .dims = 0, .x = 0, .y = 0, .z = 0};
+    nn_ShapeDescription output_description = emptyShapeDescription();
                         
     char cursorInput =  defineShapeDescription(description, input_file);
                         defineShapeDescription(&output_description, output_file);
@@ -43,8 +43,8 @@ nn_Data* nn_DataLoadRaw(char* input_path, char* output_path, nn_ShapeDescription
     {
         //normally, if we do the right things, then we define the dimensions
         //that are not used to 1, so that it doesn't break the malloc sizing lol
-        double* input_values    = mem_calloc(input_size,sizeof(double));
-        double* output_values   = mem_calloc(output_size,sizeof(double));
+        double* input_values    = mem_calloc(input_size, sizeof(double));
+        double* output_values   = mem_calloc(output_size, sizeof(double));
         cursorInput = _readFile(input_file, description, input_values);
 
         //we don't need to read the cursor of output_file

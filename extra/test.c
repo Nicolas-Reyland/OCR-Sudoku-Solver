@@ -19,9 +19,9 @@ int main(int argc, char** argv)
 
 	// model architecture
 	nn_ShapeDescription model_architecture[3] = {
-		{ .dims = 1, .x = 2, .y = 1, .z = 1 },
-		{ .dims = 1, .x = 2, .y = 1, .z = 1 },
-		{ .dims = 1, .x = 1, .y = 1, .z = 1 }
+		create1DShapeDescription(2), // create1DShapeDescription(2),
+		create1DShapeDescription(2), // create1DShapeDescription(2),
+		create1DShapeDescription(1), // { .dims = 1, .x = 1, .y = 1, .z = 1 }
 	};
 	// activation functions
 	activation activations[2] = {
@@ -35,7 +35,7 @@ int main(int argc, char** argv)
 
 	// malloc model
 	nn_Model* model = createModel(3, model_architecture, activations, loss, optimizer);
-	nn_ShapeDescription shape = { .dims = 0, .x = 0, .y = 0, .z = 0 };
+	nn_ShapeDescription shape = emptyShapeDescription();
 	nn_Data* data_train = nn_DataLoadRaw("datas/xor/input.txt", "datas/xor/output.txt", &shape);
 	nn_Data* data_test = nn_DataLoadRaw("datas/xor/input.txt", "datas/xor/output.txt", &shape);
 	nn_DataSet* dataset = _nn_createDataSet(data_train, data_test);
