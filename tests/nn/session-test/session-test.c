@@ -1,4 +1,4 @@
-// session-test.c
+	// session-test.c
 
 #include "nn/nn.h"
 #include "utils/mem/mem-management.h"
@@ -59,7 +59,7 @@ int main(int argc, char** argv)
 	);
 	verbose("Created test data");
 
-	nn_DataSet* dataset = _nn_createDataSet(train,test);
+	nn_DataSet* dataset = nn_createDataSet(train,test);
 	verbose("Created dataset.");
 
 	// model architecture
