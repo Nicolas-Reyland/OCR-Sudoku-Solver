@@ -42,6 +42,12 @@ void _nn_Model_saveArchitectureFn(nn_Model* model, char* path)
     fprintf(stderr, "saveArchitecture: %s, the file does not exist. Exiting...\n",path);
     exit(EXIT_FAILURE);
   }
+  fprintf(architecture_file,"%lu\n\n",model->num_layers);
+  for (size_t i = 0; i < model->num_layers; i++)
+  {
+    fprintf(architecture_file,"%lu\n",model->layers[i]->num_nodes);
+  }
+  fclose(architecture_file);
 }
 
 void _nn_Model_saveWeightsAndBias(nn_Model* model, char* path)
@@ -54,12 +60,38 @@ void _nn_Model_saveWeightsAndBias(nn_Model* model, char* path)
     exit(EXIT_FAILURE);
   }
 
+
+  for(size_t i = 0; i < model->num_layers-1; i++)
+  {
+    
+    for(size_t j = 0; j < model->layers[i]->num_nodes; j++)
+    {
+      for(size_t k = 0; k < model->layers[i]->nodes[j]->num_weights; k++)
+      {
+        fprintf(wab_file,"%f ",model->layers[i]->nodes[j]->weights[k]);
+      }
+      fprintf(wab_file,"\n%f\n",model->layers[i]->nodes[j]->bias);
+    }
+  }
+  fclose(wab_file);
 }
 
 void _nn_Model_saveModel(nn_Model* model, char* dirpath)
 {
-  _nn_Model_saveArchitectureFn(model, strcat(dirpath,"architecture.mdl"));
-  _nn_Model_saveWeightsAndBias(model,strcat(dirpath,"weightsandbias.mdl"));
+  char* arch_file = mem_malloc(sizeof(double)*512);
+  char* weight_file = mem_malloc(sizeof(double)*512);
+
+  strcat(arch_file,dirpath);
+  strcat(weight_file,dirpath);
+
+  strcat(arch_file,"architecture.mdl");
+  strcat(weight_file,"weightsandbias.mdl");
+  
+  _nn_Model_saveArchitectureFn(model, arch_file);
+  _nn_Model_saveWeightsAndBias(model, weight_file);
+
+  mem_free(arch_file);
+  mem_free(weight_file);  
 }
 
 nn_Layer** _nn_createModelLayers(size_t num_layers, nn_ShapeDescription model_architecture[], activation activations[])

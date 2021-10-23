@@ -30,7 +30,7 @@ nn_DataSet* nn_loadData(char* data_dir_path, nn_ShapeDescription* description, b
   nn_Data* train_data = nn_DataLoadRaw(train_input_path, train_output_path, description, verb_mode);
   nn_Data* test_data = nn_DataLoadRaw(test_input_path, test_output_path, description, verb_mode);
   // create the dataset
-  nn_DataSet* dataset = _nn_createDataSet(train_data, test_data);
+  nn_DataSet* dataset = nn_createDataSet(train_data, test_data);
   return dataset;
 }
 
