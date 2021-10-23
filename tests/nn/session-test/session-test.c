@@ -38,8 +38,8 @@ int main(int argc, char** argv)
 	strcat(input_path, "/datas/xor/input.txt");
 	strcat(output_path, "/datas/xor/output.txt");
 
-	//strcat(save_path, path_to_project);
-	strcat(save_path, "/Users/lilian/Documents/2021-2025/2022/ocr/OCR-Sudoku-Solver/save/");
+	strcpy(save_path, path_to_project);
+	strcat(save_path, "/save/");
 
 	nn_ShapeDescription train_description;
 	nn_ShapeDescription test_description;
@@ -113,8 +113,8 @@ int main(int argc, char** argv)
 	model->printModelLayers(model);
 
 	verbose("Saving weights...");
-	printf("%s\n",save_path);
-	model->saveModel(model,save_path);
+	//verbose("%s\n", save_path); // if we verbose the path, it will be the full path and the test will not work on different machines for sure
+	model->saveModel(model, save_path);
 
 	verbose("Saved weights !");
 	// free model

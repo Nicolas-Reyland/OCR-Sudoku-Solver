@@ -47,6 +47,22 @@ Output expected:
 Result:
 1.000000 
 Losses error = 0.000000
+index: 0
+layers[0]->nodes[0]->weights[0] = 3.881428
+layers[0]->nodes[0]->weights[1] = 1.251794
+bias: nan
+layers[0]->nodes[1]->weights[0] = 3.941976
+layers[0]->nodes[1]->weights[1] = 1.264242
+bias: nan
+index: 1
+layers[1]->nodes[0]->weights[0] = 2.870541
+bias: -1.490041
+layers[1]->nodes[1]->weights[0] = -4.218809
+bias: -1.443649
+index: 2
+bias: 0.277775
+Saving weights...
+Saved weights !
 freeing layer 0
 freeing layer ...
 layer has been freed
