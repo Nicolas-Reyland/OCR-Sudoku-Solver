@@ -20,12 +20,11 @@ nn: utils nn-model nn-data nn-session nn-utils nn-functions_descriptors
 .PHONY: nn-model
 nn-model: nn-model-layers
 	$(CC) $(CFLAGS) -c -o src/nn/model/model.o src/nn/model/model.c
-# src/nn/model/layers/layer.o src/nn/model/layers/model_layer.o src/nn/model/layers/node.o
+# src/nn/model/layers/layer.o src/nn/model/layers/model->layers.o src/nn/model/layers/node.o
 
 .PHONY: nn-model-layers
 nn-model-layers: nn-utils-misc
 	$(CC) $(CFLAGS) -c -o src/nn/model/layers/layer.o src/nn/model/layers/layer.c
-	$(CC) $(CFLAGS) -c -o src/nn/model/layers/model_layers.o src/nn/model/layers/model_layers.c
 	$(CC) $(CFLAGS) -c -o src/nn/model/layers/node.o src/nn/model/layers/node.c
 
 .PHONY: nn-functions_descriptors
@@ -49,7 +48,6 @@ nn-session:
 
 .PHONY: nn-utils
 nn-utils: nn-utils-structs nn-utils-session nn-utils-misc
-	@echo empty utils
 
 .PHONY: nn-utils-structs
 nn-utils-structs:
@@ -93,6 +91,14 @@ utils:
 	$(CC) $(CFLAGS) -c -o src/utils/mem/mem-management.o src/utils/mem/mem-management.c
 	$(CC) $(CFLAGS) -c -o src/utils/verbosity/verbose.o src/utils/verbosity/verbose.c
 
+# ------- Test Framework ------- 
+.PHONY: test
+test:
+	@./extra/run-tests
+
+.PHONY: clean-test
+clean-test:
+	@rm -rf /tmp/ocr-tests{,-perm}
 
 # ------- Misc Rules -------
 .PHONY: clean

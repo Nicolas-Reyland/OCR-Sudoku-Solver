@@ -1,0 +1,55 @@
+Next random integer is: 1727406014
+index: 0
+layers[0]->nodes[0]->weights[0] = -0.387822
+layers[0]->nodes[0]->weights[1] = 0.943923
+layers[0]->nodes[0]->weights[2] = -0.690259
+layers[0]->nodes[0]->weights[3] = 0.068671
+bias: nan
+layers[0]->nodes[1]->weights[0] = 0.125120
+layers[0]->nodes[1]->weights[1] = -0.887093
+layers[0]->nodes[1]->weights[2] = 0.242496
+layers[0]->nodes[1]->weights[3] = 0.867138
+bias: nan
+layers[0]->nodes[2]->weights[0] = 0.853973
+layers[0]->nodes[2]->weights[1] = 0.841629
+layers[0]->nodes[2]->weights[2] = 0.049141
+layers[0]->nodes[2]->weights[3] = 0.996198
+bias: nan
+index: 1
+layers[1]->nodes[0]->weights[0] = 0.497127
+layers[1]->nodes[0]->weights[1] = 0.326000
+bias: -0.190477
+layers[1]->nodes[1]->weights[0] = 0.303889
+layers[1]->nodes[1]->weights[1] = 0.803527
+bias: -0.822229
+layers[1]->nodes[2]->weights[0] = -0.231126
+layers[1]->nodes[2]->weights[1] = -0.749929
+bias: -0.145395
+layers[1]->nodes[3]->weights[0] = 0.396391
+layers[1]->nodes[3]->weights[1] = -0.861029
+bias: -0.567556
+index: 2
+bias: 0.985507
+bias: 0.700011
+forward feeding done
+index: 0
+layers[0]->nodes[0]->value = 0.100000
+layers[0]->nodes[0]->raw_value = nan
+layers[0]->nodes[1]->value = -0.230000
+layers[0]->nodes[1]->raw_value = nan
+layers[0]->nodes[2]->value = 0.750000
+layers[0]->nodes[2]->raw_value = nan
+index: 1
+layers[1]->nodes[0]->value = 0.382443
+layers[1]->nodes[0]->raw_value = 0.382443
+layers[1]->nodes[1]->value = 0.107417
+layers[1]->nodes[1]->raw_value = 0.107417
+layers[1]->nodes[2]->value = 0.000000
+layers[1]->nodes[2]->raw_value = -0.233340
+layers[1]->nodes[3]->value = 0.000000
+layers[1]->nodes[3]->raw_value = -0.012983
+index: 2
+layers[2]->nodes[0]->value = 0.769993
+layers[2]->nodes[0]->raw_value = 1.208273
+layers[2]->nodes[1]->value = 0.713205
+layers[2]->nodes[1]->raw_value = 0.911000

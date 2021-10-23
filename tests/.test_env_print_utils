@@ -1,0 +1,95 @@
+#!/bin/bash
+
+# Num  Colour    #define         R G B
+
+# 0    black     COLOR_BLACK     0,0,0
+# 1    red       COLOR_RED       1,0,0
+# 2    green     COLOR_GREEN     0,1,0
+# 3    yellow    COLOR_YELLOW    1,1,0
+# 4    blue      COLOR_BLUE      0,0,1
+# 5    magenta   COLOR_MAGENTA   1,0,1
+# 6    cyan      COLOR_CYAN      0,1,1
+# 7    white     COLOR_WHITE     1,1,1
+
+# Setup individual colors
+COLOR_RESET=`tput sgr0`
+COLOR_RED=`tput setaf 1`
+COLOR_GREEN=`tput setaf 2`
+COLOR_YELLOW=`tput setaf 3`
+COLOR_BLUE=`tput setaf 4`
+COLOR_MAGENTA=`tput setaf 5`
+COLOR_CYAN=`tput setaf 6`
+COLOR_WHITE=`tput setaf 7`
+
+# Banner function
+function print_banner {
+	banner=`ls "$1" | shuf -n 1`
+	content=`cat "$1/$banner"`
+	echo "`tput setaf $((RANDOM % 7 + 1))`$content${COLOR_RESET}"
+	echo
+}
+
+# Setup text functions
+function print_normal {
+	echo "${COLOR_RESET}$@${COLOR_RESET}"
+}
+
+function print_nel_normal {
+	echo -n "${COLOR_RESET}$@${COLOR_RESET}"
+}
+
+function print_red {
+	print_normal "${COLOR_RED}$@"
+} 
+
+function print_nel_red {
+	print_nel_normal "${COLOR_RED}$@"
+}
+
+function print_green {
+	print_normal "${COLOR_GREEN}$@"
+} 
+
+function print_nel_green {
+	print_nel_normal "${COLOR_GREEN}$@"
+}
+
+function print_yellow {
+	print_normal "${COLOR_YELLOW}$@"
+} 
+
+function print_nel_yellow {
+	print_nel_normal "${COLOR_YELLOW}$@"
+}
+
+function print_blue {
+	print_normal "${COLOR_BLUE}$@"
+} 
+
+function print_nel_blue {
+	print_nel_normal "${COLOR_BLUE}$@"
+}
+
+function print_magenta {
+	print_normal "${COLOR_MAGENTA}$@"
+} 
+
+function print_nel_magenta {
+	print_nel_normal "${COLOR_MAGENTA}$@"
+}
+
+function print_cyan {
+	print_normal "${COLOR_CYAN}$@"
+} 
+
+function print_nel_cyan {
+	print_nel_normal "${COLOR_CYAN}$@"
+}
+
+function print_white {
+	print_normal "${COLOR_WHITE}$@"
+} 
+
+function print_nel_white {
+	print_nel_normal "${COLOR_WHITE}$@"
+}

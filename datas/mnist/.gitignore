@@ -1,0 +1,4 @@
+*.npy
+*.npz
+train-full.in
+train-full.out

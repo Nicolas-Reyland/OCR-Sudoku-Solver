@@ -39,19 +39,17 @@ void _nn_printData(nn_Data* data)
 {
     iot_ll_node* node = data->data_collection->data
         ->head;
-    for(size_t i = 0; i < data->data_collection->data->length;i++)
+    for(size_t i = 0; i < (size_t)data->data_collection->data->length;i++)
     {
         nn_InOutTuple* tuple = node->value;
-        printf("Tuple number %ld:\n",(i+1));
+        if(tuple == NULL)
+        {
+            fprintf(stderr, "tuple is not defined, exiting...");
+            exit(EXIT_FAILURE);
+        }
+        printf("%ld/\n",(i+1));
+        tuple->printTuple(tuple);
 
-        printf("Input:\n");
-        for(size_t j = 0;j < tuple->input->nb_values;j++)
-            printf("%f, ",tuple->input->values[j]);
-
-        printf("\n");
-        printf("Output expected:\n");
-        for(size_t j = 0;j < tuple->output->nb_values;j++)
-            printf("%f, ",tuple->output->values[j]);
         node = node->next;
     }
 }
@@ -75,6 +73,11 @@ nn_Data* _nn_createData(nn_DataCollection* collection)
 /// <Summary/>
 void _nn_freeData(nn_Data* data,bool free_value)
 {
-  _nn_freeDataCollection(data->data_collection,free_value);
-  mem_free(data);
+    if(data == NULL)
+    {
+        verbose("freeData: data is null.");
+        exit(EXIT_FAILURE);
+    }
+    _nn_freeDataCollection(data->data_collection,free_value);
+    mem_free(data);
 }

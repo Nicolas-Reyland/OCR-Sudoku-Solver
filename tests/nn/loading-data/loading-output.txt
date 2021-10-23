@@ -1,0 +1,29 @@
+created data.
+1/
+number of input values: 2
+number of output values: 1
+Input:
+1.000000, 1.000000, 
+Output expected:
+0.000000, 
+2/
+number of input values: 2
+number of output values: 1
+Input:
+1.000000, 0.000000, 
+Output expected:
+1.000000, 
+3/
+number of input values: 2
+number of output values: 1
+Input:
+0.000000, 1.000000, 
+Output expected:
+1.000000, 
+4/
+number of input values: 2
+number of output values: 1
+Input:
+0.000000, 0.000000, 
+Output expected:
+0.000000, 

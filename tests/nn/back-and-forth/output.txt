@@ -1,0 +1,768 @@
+base
+ ------------------------------------------------------------- 
+layer : 0
+	layers[0]->nodes->[0]->raw_value = nan
+	layers[0]->nodes->[0]->value = 0.000000
+	layers[0]->nodes->[0]->d_raw_value = nan
+	layers[0]->nodes->[0]->d_value = nan
+	layers[0]->nodes->[0]->weights[0] = -3.326491
+	layers[0]->nodes->[0]->d_weights[0] = 0.000000
+	layers[0]->nodes->[0]->weights[1] = -1.755271
+	layers[0]->nodes->[0]->d_weights[1] = -0.000000
+
+	layers[0]->nodes->[1]->raw_value = nan
+	layers[0]->nodes->[1]->value = 0.000000
+	layers[0]->nodes->[1]->d_raw_value = nan
+	layers[0]->nodes->[1]->d_value = nan
+	layers[0]->nodes->[1]->weights[0] = 3.326509
+	layers[0]->nodes->[1]->d_weights[0] = 0.000000
+	layers[0]->nodes->[1]->weights[1] = 1.818264
+	layers[0]->nodes->[1]->d_weights[1] = -0.000000
+
+layer : 1
+	layers[1]->nodes->[0]->raw_value = -0.000034
+	layers[1]->nodes->[0]->value = 0.000000
+	layers[1]->nodes->[0]->d_raw_value = 0.000000
+	layers[1]->nodes->[0]->d_value = 0.000230
+	layers[1]->nodes->[0]->weights[0] = 4.672442
+	layers[1]->nodes->[0]->d_weights[0] = 0.000000
+	layers[1]->nodes->[0]->bias = -0.000034
+	layers[1]->nodes->[0]->bias = 0.000000
+
+	layers[1]->nodes->[1]->raw_value = 1.748913
+	layers[1]->nodes->[1]->value = 1.748913
+	layers[1]->nodes->[1]->d_raw_value = -0.000147
+	layers[1]->nodes->[1]->d_value = -0.000147
+	layers[1]->nodes->[1]->weights[0] = -2.988085
+	layers[1]->nodes->[1]->d_weights[0] = 0.000086
+	layers[1]->nodes->[1]->bias = 1.748935
+	layers[1]->nodes->[1]->bias = -0.000147
+
+layer : 2
+	layers[2]->nodes->[0]->raw_value = -4.948103
+	layers[2]->nodes->[0]->value = 0.007047
+	layers[2]->nodes->[0]->d_raw_value = 0.000049
+	layers[2]->nodes->[0]->d_value = nan
+	layers[2]->nodes->[0]->bias = 0.277775
+	layers[2]->nodes->[0]->bias = 0.000049
+
+forward prop
+ ------------------------------------------------------------- 
+layer : 0
+	layers[0]->nodes->[0]->raw_value = nan
+	layers[0]->nodes->[0]->value = 1.000000
+	layers[0]->nodes->[0]->d_raw_value = nan
+	layers[0]->nodes->[0]->d_value = nan
+	layers[0]->nodes->[0]->weights[0] = -3.326491
+	layers[0]->nodes->[0]->d_weights[0] = 0.000000
+	layers[0]->nodes->[0]->weights[1] = -1.755271
+	layers[0]->nodes->[0]->d_weights[1] = -0.000000
+
+	layers[0]->nodes->[1]->raw_value = nan
+	layers[0]->nodes->[1]->value = 1.000000
+	layers[0]->nodes->[1]->d_raw_value = nan
+	layers[0]->nodes->[1]->d_value = nan
+	layers[0]->nodes->[1]->weights[0] = 3.326509
+	layers[0]->nodes->[1]->d_weights[0] = 0.000000
+	layers[0]->nodes->[1]->weights[1] = 1.818264
+	layers[0]->nodes->[1]->d_weights[1] = -0.000000
+
+layer : 1
+	layers[1]->nodes->[0]->raw_value = -0.000016
+	layers[1]->nodes->[0]->value = 0.000000
+	layers[1]->nodes->[0]->d_raw_value = 0.000000
+	layers[1]->nodes->[0]->d_value = 0.000230
+	layers[1]->nodes->[0]->weights[0] = 4.672442
+	layers[1]->nodes->[0]->d_weights[0] = 0.000000
+	layers[1]->nodes->[0]->bias = -0.000034
+	layers[1]->nodes->[0]->bias = 0.000000
+
+	layers[1]->nodes->[1]->raw_value = 1.811928
+	layers[1]->nodes->[1]->value = 1.811928
+	layers[1]->nodes->[1]->d_raw_value = -0.000147
+	layers[1]->nodes->[1]->d_value = -0.000147
+	layers[1]->nodes->[1]->weights[0] = -2.988085
+	layers[1]->nodes->[1]->d_weights[0] = 0.000086
+	layers[1]->nodes->[1]->bias = 1.748935
+	layers[1]->nodes->[1]->bias = -0.000147
+
+layer : 2
+	layers[2]->nodes->[0]->raw_value = -5.136420
+	layers[2]->nodes->[0]->value = 0.005844
+	layers[2]->nodes->[0]->d_raw_value = 0.000049
+	layers[2]->nodes->[0]->d_value = nan
+	layers[2]->nodes->[0]->bias = 0.277775
+	layers[2]->nodes->[0]->bias = 0.000049
+
+backward prop
+ ------------------------------------------------------------- 
+layer : 0
+	layers[0]->nodes->[0]->raw_value = nan
+	layers[0]->nodes->[0]->value = 1.000000
+	layers[0]->nodes->[0]->d_raw_value = nan
+	layers[0]->nodes->[0]->d_value = nan
+	layers[0]->nodes->[0]->weights[0] = -3.326491
+	layers[0]->nodes->[0]->d_weights[0] = 0.000000
+	layers[0]->nodes->[0]->weights[1] = -1.755271
+	layers[0]->nodes->[0]->d_weights[1] = -0.000101
+
+	layers[0]->nodes->[1]->raw_value = nan
+	layers[0]->nodes->[1]->value = 1.000000
+	layers[0]->nodes->[1]->d_raw_value = nan
+	layers[0]->nodes->[1]->d_value = nan
+	layers[0]->nodes->[1]->weights[0] = 3.326509
+	layers[0]->nodes->[1]->d_weights[0] = 0.000000
+	layers[0]->nodes->[1]->weights[1] = 1.818264
+	layers[0]->nodes->[1]->d_weights[1] = -0.000101
+
+layer : 1
+	layers[1]->nodes->[0]->raw_value = -0.000016
+	layers[1]->nodes->[0]->value = 0.000000
+	layers[1]->nodes->[0]->d_raw_value = 0.000000
+	layers[1]->nodes->[0]->d_value = 0.000159
+	layers[1]->nodes->[0]->weights[0] = 4.672442
+	layers[1]->nodes->[0]->d_weights[0] = 0.000000
+	layers[1]->nodes->[0]->bias = -0.000034
+	layers[1]->nodes->[0]->bias = 0.000000
+
+	layers[1]->nodes->[1]->raw_value = 1.811928
+	layers[1]->nodes->[1]->value = 1.811928
+	layers[1]->nodes->[1]->d_raw_value = -0.000101
+	layers[1]->nodes->[1]->d_value = -0.000101
+	layers[1]->nodes->[1]->weights[0] = -2.988085
+	layers[1]->nodes->[1]->d_weights[0] = 0.000062
+	layers[1]->nodes->[1]->bias = 1.748935
+	layers[1]->nodes->[1]->bias = -0.000101
+
+layer : 2
+	layers[2]->nodes->[0]->raw_value = -5.136420
+	layers[2]->nodes->[0]->value = 0.005844
+	layers[2]->nodes->[0]->d_raw_value = 0.000034
+	layers[2]->nodes->[0]->d_value = nan
+	layers[2]->nodes->[0]->bias = 0.277775
+	layers[2]->nodes->[0]->bias = 0.000034
+
+weights updated
+ ------------------------------------------------------------- 
+layer : 0
+	layers[0]->nodes->[0]->raw_value = nan
+	layers[0]->nodes->[0]->value = 1.000000
+	layers[0]->nodes->[0]->d_raw_value = nan
+	layers[0]->nodes->[0]->d_value = nan
+	layers[0]->nodes->[0]->weights[0] = -3.326491
+	layers[0]->nodes->[0]->d_weights[0] = 0.000000
+	layers[0]->nodes->[0]->weights[1] = -1.755256
+	layers[0]->nodes->[0]->d_weights[1] = -0.000101
+
+	layers[0]->nodes->[1]->raw_value = nan
+	layers[0]->nodes->[1]->value = 1.000000
+	layers[0]->nodes->[1]->d_raw_value = nan
+	layers[0]->nodes->[1]->d_value = nan
+	layers[0]->nodes->[1]->weights[0] = 3.326509
+	layers[0]->nodes->[1]->d_weights[0] = 0.000000
+	layers[0]->nodes->[1]->weights[1] = 1.818279
+	layers[0]->nodes->[1]->d_weights[1] = -0.000101
+
+layer : 1
+	layers[1]->nodes->[0]->raw_value = -0.000016
+	layers[1]->nodes->[0]->value = 0.000000
+	layers[1]->nodes->[0]->d_raw_value = 0.000000
+	layers[1]->nodes->[0]->d_value = 0.000159
+	layers[1]->nodes->[0]->weights[0] = 4.672442
+	layers[1]->nodes->[0]->d_weights[0] = 0.000000
+	layers[1]->nodes->[0]->bias = -0.000034
+	layers[1]->nodes->[0]->bias = 0.000000
+
+	layers[1]->nodes->[1]->raw_value = 1.811928
+	layers[1]->nodes->[1]->value = 1.811928
+	layers[1]->nodes->[1]->d_raw_value = -0.000101
+	layers[1]->nodes->[1]->d_value = -0.000101
+	layers[1]->nodes->[1]->weights[0] = -2.988095
+	layers[1]->nodes->[1]->d_weights[0] = 0.000062
+	layers[1]->nodes->[1]->bias = 1.748950
+	layers[1]->nodes->[1]->bias = -0.000101
+
+layer : 2
+	layers[2]->nodes->[0]->raw_value = -5.136420
+	layers[2]->nodes->[0]->value = 0.005844
+	layers[2]->nodes->[0]->d_raw_value = 0.000034
+	layers[2]->nodes->[0]->d_value = nan
+	layers[2]->nodes->[0]->bias = 0.277775
+	layers[2]->nodes->[0]->bias = 0.000034
+
+base
+ ------------------------------------------------------------- 
+layer : 0
+	layers[0]->nodes->[0]->raw_value = nan
+	layers[0]->nodes->[0]->value = 1.000000
+	layers[0]->nodes->[0]->d_raw_value = nan
+	layers[0]->nodes->[0]->d_value = nan
+	layers[0]->nodes->[0]->weights[0] = -3.326491
+	layers[0]->nodes->[0]->d_weights[0] = 0.000000
+	layers[0]->nodes->[0]->weights[1] = -1.755256
+	layers[0]->nodes->[0]->d_weights[1] = -0.000101
+
+	layers[0]->nodes->[1]->raw_value = nan
+	layers[0]->nodes->[1]->value = 1.000000
+	layers[0]->nodes->[1]->d_raw_value = nan
+	layers[0]->nodes->[1]->d_value = nan
+	layers[0]->nodes->[1]->weights[0] = 3.326509
+	layers[0]->nodes->[1]->d_weights[0] = 0.000000
+	layers[0]->nodes->[1]->weights[1] = 1.818279
+	layers[0]->nodes->[1]->d_weights[1] = -0.000101
+
+layer : 1
+	layers[1]->nodes->[0]->raw_value = -0.000016
+	layers[1]->nodes->[0]->value = 0.000000
+	layers[1]->nodes->[0]->d_raw_value = 0.000000
+	layers[1]->nodes->[0]->d_value = 0.000159
+	layers[1]->nodes->[0]->weights[0] = 4.672442
+	layers[1]->nodes->[0]->d_weights[0] = 0.000000
+	layers[1]->nodes->[0]->bias = -0.000034
+	layers[1]->nodes->[0]->bias = 0.000000
+
+	layers[1]->nodes->[1]->raw_value = 1.811928
+	layers[1]->nodes->[1]->value = 1.811928
+	layers[1]->nodes->[1]->d_raw_value = -0.000101
+	layers[1]->nodes->[1]->d_value = -0.000101
+	layers[1]->nodes->[1]->weights[0] = -2.988095
+	layers[1]->nodes->[1]->d_weights[0] = 0.000062
+	layers[1]->nodes->[1]->bias = 1.748950
+	layers[1]->nodes->[1]->bias = -0.000101
+
+layer : 2
+	layers[2]->nodes->[0]->raw_value = -5.136420
+	layers[2]->nodes->[0]->value = 0.005844
+	layers[2]->nodes->[0]->d_raw_value = 0.000034
+	layers[2]->nodes->[0]->d_value = nan
+	layers[2]->nodes->[0]->bias = 0.277775
+	layers[2]->nodes->[0]->bias = 0.000034
+
+forward prop
+ ------------------------------------------------------------- 
+layer : 0
+	layers[0]->nodes->[0]->raw_value = nan
+	layers[0]->nodes->[0]->value = 1.000000
+	layers[0]->nodes->[0]->d_raw_value = nan
+	layers[0]->nodes->[0]->d_value = nan
+	layers[0]->nodes->[0]->weights[0] = -3.326491
+	layers[0]->nodes->[0]->d_weights[0] = 0.000000
+	layers[0]->nodes->[0]->weights[1] = -1.755256
+	layers[0]->nodes->[0]->d_weights[1] = -0.000101
+
+	layers[0]->nodes->[1]->raw_value = nan
+	layers[0]->nodes->[1]->value = 0.000000
+	layers[0]->nodes->[1]->d_raw_value = nan
+	layers[0]->nodes->[1]->d_value = nan
+	layers[0]->nodes->[1]->weights[0] = 3.326509
+	layers[0]->nodes->[1]->d_weights[0] = 0.000000
+	layers[0]->nodes->[1]->weights[1] = 1.818279
+	layers[0]->nodes->[1]->d_weights[1] = -0.000101
+
+layer : 1
+	layers[1]->nodes->[0]->raw_value = -3.326525
+	layers[1]->nodes->[0]->value = 0.000000
+	layers[1]->nodes->[0]->d_raw_value = 0.000000
+	layers[1]->nodes->[0]->d_value = 0.000159
+	layers[1]->nodes->[0]->weights[0] = 4.672442
+	layers[1]->nodes->[0]->d_weights[0] = 0.000000
+	layers[1]->nodes->[0]->bias = -0.000034
+	layers[1]->nodes->[0]->bias = 0.000000
+
+	layers[1]->nodes->[1]->raw_value = -0.006305
+	layers[1]->nodes->[1]->value = 0.000000
+	layers[1]->nodes->[1]->d_raw_value = -0.000101
+	layers[1]->nodes->[1]->d_value = -0.000101
+	layers[1]->nodes->[1]->weights[0] = -2.988095
+	layers[1]->nodes->[1]->d_weights[0] = 0.000062
+	layers[1]->nodes->[1]->bias = 1.748950
+	layers[1]->nodes->[1]->bias = -0.000101
+
+layer : 2
+	layers[2]->nodes->[0]->raw_value = 0.277775
+	layers[2]->nodes->[0]->value = 0.569001
+	layers[2]->nodes->[0]->d_raw_value = 0.000034
+	layers[2]->nodes->[0]->d_value = nan
+	layers[2]->nodes->[0]->bias = 0.277775
+	layers[2]->nodes->[0]->bias = 0.000034
+
+backward prop
+ ------------------------------------------------------------- 
+layer : 0
+	layers[0]->nodes->[0]->raw_value = nan
+	layers[0]->nodes->[0]->value = 1.000000
+	layers[0]->nodes->[0]->d_raw_value = nan
+	layers[0]->nodes->[0]->d_value = nan
+	layers[0]->nodes->[0]->weights[0] = -3.326491
+	layers[0]->nodes->[0]->d_weights[0] = -0.000000
+	layers[0]->nodes->[0]->weights[1] = -1.755256
+	layers[0]->nodes->[0]->d_weights[1] = 0.000000
+
+	layers[0]->nodes->[1]->raw_value = nan
+	layers[0]->nodes->[1]->value = 0.000000
+	layers[0]->nodes->[1]->d_raw_value = nan
+	layers[0]->nodes->[1]->d_value = nan
+	layers[0]->nodes->[1]->weights[0] = 3.326509
+	layers[0]->nodes->[1]->d_weights[0] = -0.000000
+	layers[0]->nodes->[1]->weights[1] = 1.818279
+	layers[0]->nodes->[1]->d_weights[1] = 0.000000
+
+layer : 1
+	layers[1]->nodes->[0]->raw_value = -3.326525
+	layers[1]->nodes->[0]->value = 0.000000
+	layers[1]->nodes->[0]->d_raw_value = -0.000000
+	layers[1]->nodes->[0]->d_value = -0.493867
+	layers[1]->nodes->[0]->weights[0] = 4.672442
+	layers[1]->nodes->[0]->d_weights[0] = -0.000000
+	layers[1]->nodes->[0]->bias = -0.000034
+	layers[1]->nodes->[0]->bias = -0.000000
+
+	layers[1]->nodes->[1]->raw_value = -0.006305
+	layers[1]->nodes->[1]->value = 0.000000
+	layers[1]->nodes->[1]->d_raw_value = 0.000000
+	layers[1]->nodes->[1]->d_value = 0.315835
+	layers[1]->nodes->[1]->weights[0] = -2.988095
+	layers[1]->nodes->[1]->d_weights[0] = -0.000000
+	layers[1]->nodes->[1]->bias = 1.748950
+	layers[1]->nodes->[1]->bias = 0.000000
+
+layer : 2
+	layers[2]->nodes->[0]->raw_value = 0.277775
+	layers[2]->nodes->[0]->value = 0.569001
+	layers[2]->nodes->[0]->d_raw_value = -0.105698
+	layers[2]->nodes->[0]->d_value = nan
+	layers[2]->nodes->[0]->bias = 0.277775
+	layers[2]->nodes->[0]->bias = -0.105698
+
+weights updated
+ ------------------------------------------------------------- 
+layer : 0
+	layers[0]->nodes->[0]->raw_value = nan
+	layers[0]->nodes->[0]->value = 1.000000
+	layers[0]->nodes->[0]->d_raw_value = nan
+	layers[0]->nodes->[0]->d_value = nan
+	layers[0]->nodes->[0]->weights[0] = -3.326491
+	layers[0]->nodes->[0]->d_weights[0] = -0.000000
+	layers[0]->nodes->[0]->weights[1] = -1.755256
+	layers[0]->nodes->[0]->d_weights[1] = 0.000000
+
+	layers[0]->nodes->[1]->raw_value = nan
+	layers[0]->nodes->[1]->value = 0.000000
+	layers[0]->nodes->[1]->d_raw_value = nan
+	layers[0]->nodes->[1]->d_value = nan
+	layers[0]->nodes->[1]->weights[0] = 3.326509
+	layers[0]->nodes->[1]->d_weights[0] = -0.000000
+	layers[0]->nodes->[1]->weights[1] = 1.818279
+	layers[0]->nodes->[1]->d_weights[1] = 0.000000
+
+layer : 1
+	layers[1]->nodes->[0]->raw_value = -3.326525
+	layers[1]->nodes->[0]->value = 0.000000
+	layers[1]->nodes->[0]->d_raw_value = -0.000000
+	layers[1]->nodes->[0]->d_value = -0.493867
+	layers[1]->nodes->[0]->weights[0] = 4.672442
+	layers[1]->nodes->[0]->d_weights[0] = -0.000000
+	layers[1]->nodes->[0]->bias = -0.000034
+	layers[1]->nodes->[0]->bias = -0.000000
+
+	layers[1]->nodes->[1]->raw_value = -0.006305
+	layers[1]->nodes->[1]->value = 0.000000
+	layers[1]->nodes->[1]->d_raw_value = 0.000000
+	layers[1]->nodes->[1]->d_value = 0.315835
+	layers[1]->nodes->[1]->weights[0] = -2.988095
+	layers[1]->nodes->[1]->d_weights[0] = -0.000000
+	layers[1]->nodes->[1]->bias = 1.748950
+	layers[1]->nodes->[1]->bias = 0.000000
+
+layer : 2
+	layers[2]->nodes->[0]->raw_value = 0.277775
+	layers[2]->nodes->[0]->value = 0.569001
+	layers[2]->nodes->[0]->d_raw_value = -0.105698
+	layers[2]->nodes->[0]->d_value = nan
+	layers[2]->nodes->[0]->bias = 0.277775
+	layers[2]->nodes->[0]->bias = -0.105698
+
+base
+ ------------------------------------------------------------- 
+layer : 0
+	layers[0]->nodes->[0]->raw_value = nan
+	layers[0]->nodes->[0]->value = 1.000000
+	layers[0]->nodes->[0]->d_raw_value = nan
+	layers[0]->nodes->[0]->d_value = nan
+	layers[0]->nodes->[0]->weights[0] = -3.326491
+	layers[0]->nodes->[0]->d_weights[0] = -0.000000
+	layers[0]->nodes->[0]->weights[1] = -1.755256
+	layers[0]->nodes->[0]->d_weights[1] = 0.000000
+
+	layers[0]->nodes->[1]->raw_value = nan
+	layers[0]->nodes->[1]->value = 0.000000
+	layers[0]->nodes->[1]->d_raw_value = nan
+	layers[0]->nodes->[1]->d_value = nan
+	layers[0]->nodes->[1]->weights[0] = 3.326509
+	layers[0]->nodes->[1]->d_weights[0] = -0.000000
+	layers[0]->nodes->[1]->weights[1] = 1.818279
+	layers[0]->nodes->[1]->d_weights[1] = 0.000000
+
+layer : 1
+	layers[1]->nodes->[0]->raw_value = -3.326525
+	layers[1]->nodes->[0]->value = 0.000000
+	layers[1]->nodes->[0]->d_raw_value = -0.000000
+	layers[1]->nodes->[0]->d_value = -0.493867
+	layers[1]->nodes->[0]->weights[0] = 4.672442
+	layers[1]->nodes->[0]->d_weights[0] = -0.000000
+	layers[1]->nodes->[0]->bias = -0.000034
+	layers[1]->nodes->[0]->bias = -0.000000
+
+	layers[1]->nodes->[1]->raw_value = -0.006305
+	layers[1]->nodes->[1]->value = 0.000000
+	layers[1]->nodes->[1]->d_raw_value = 0.000000
+	layers[1]->nodes->[1]->d_value = 0.315835
+	layers[1]->nodes->[1]->weights[0] = -2.988095
+	layers[1]->nodes->[1]->d_weights[0] = -0.000000
+	layers[1]->nodes->[1]->bias = 1.748950
+	layers[1]->nodes->[1]->bias = 0.000000
+
+layer : 2
+	layers[2]->nodes->[0]->raw_value = 0.277775
+	layers[2]->nodes->[0]->value = 0.569001
+	layers[2]->nodes->[0]->d_raw_value = -0.105698
+	layers[2]->nodes->[0]->d_value = nan
+	layers[2]->nodes->[0]->bias = 0.277775
+	layers[2]->nodes->[0]->bias = -0.105698
+
+forward prop
+ ------------------------------------------------------------- 
+layer : 0
+	layers[0]->nodes->[0]->raw_value = nan
+	layers[0]->nodes->[0]->value = 0.000000
+	layers[0]->nodes->[0]->d_raw_value = nan
+	layers[0]->nodes->[0]->d_value = nan
+	layers[0]->nodes->[0]->weights[0] = -3.326491
+	layers[0]->nodes->[0]->d_weights[0] = -0.000000
+	layers[0]->nodes->[0]->weights[1] = -1.755256
+	layers[0]->nodes->[0]->d_weights[1] = 0.000000
+
+	layers[0]->nodes->[1]->raw_value = nan
+	layers[0]->nodes->[1]->value = 1.000000
+	layers[0]->nodes->[1]->d_raw_value = nan
+	layers[0]->nodes->[1]->d_value = nan
+	layers[0]->nodes->[1]->weights[0] = 3.326509
+	layers[0]->nodes->[1]->d_weights[0] = -0.000000
+	layers[0]->nodes->[1]->weights[1] = 1.818279
+	layers[0]->nodes->[1]->d_weights[1] = 0.000000
+
+layer : 1
+	layers[1]->nodes->[0]->raw_value = 3.326475
+	layers[1]->nodes->[0]->value = 3.326475
+	layers[1]->nodes->[0]->d_raw_value = -0.000000
+	layers[1]->nodes->[0]->d_value = -0.493867
+	layers[1]->nodes->[0]->weights[0] = 4.672442
+	layers[1]->nodes->[0]->d_weights[0] = -0.000000
+	layers[1]->nodes->[0]->bias = -0.000034
+	layers[1]->nodes->[0]->bias = -0.000000
+
+	layers[1]->nodes->[1]->raw_value = 3.567229
+	layers[1]->nodes->[1]->value = 3.567229
+	layers[1]->nodes->[1]->d_raw_value = 0.000000
+	layers[1]->nodes->[1]->d_value = 0.315835
+	layers[1]->nodes->[1]->weights[0] = -2.988095
+	layers[1]->nodes->[1]->d_weights[0] = -0.000000
+	layers[1]->nodes->[1]->bias = 1.748950
+	layers[1]->nodes->[1]->bias = 0.000000
+
+layer : 2
+	layers[2]->nodes->[0]->raw_value = 5.161321
+	layers[2]->nodes->[0]->value = 0.994299
+	layers[2]->nodes->[0]->d_raw_value = -0.105698
+	layers[2]->nodes->[0]->d_value = nan
+	layers[2]->nodes->[0]->bias = 0.277775
+	layers[2]->nodes->[0]->bias = -0.105698
+
+backward prop
+ ------------------------------------------------------------- 
+layer : 0
+	layers[0]->nodes->[0]->raw_value = nan
+	layers[0]->nodes->[0]->value = 0.000000
+	layers[0]->nodes->[0]->d_raw_value = nan
+	layers[0]->nodes->[0]->d_value = nan
+	layers[0]->nodes->[0]->weights[0] = -3.326491
+	layers[0]->nodes->[0]->d_weights[0] = -0.000000
+	layers[0]->nodes->[0]->weights[1] = -1.755256
+	layers[0]->nodes->[0]->d_weights[1] = 0.000000
+
+	layers[0]->nodes->[1]->raw_value = nan
+	layers[0]->nodes->[1]->value = 1.000000
+	layers[0]->nodes->[1]->d_raw_value = nan
+	layers[0]->nodes->[1]->d_value = nan
+	layers[0]->nodes->[1]->weights[0] = 3.326509
+	layers[0]->nodes->[1]->d_weights[0] = -0.000151
+	layers[0]->nodes->[1]->weights[1] = 1.818279
+	layers[0]->nodes->[1]->d_weights[1] = 0.000097
+
+layer : 1
+	layers[1]->nodes->[0]->raw_value = 3.326475
+	layers[1]->nodes->[0]->value = 3.326475
+	layers[1]->nodes->[0]->d_raw_value = -0.000151
+	layers[1]->nodes->[0]->d_value = -0.000151
+	layers[1]->nodes->[0]->weights[0] = 4.672442
+	layers[1]->nodes->[0]->d_weights[0] = -0.000108
+	layers[1]->nodes->[0]->bias = -0.000034
+	layers[1]->nodes->[0]->bias = -0.000151
+
+	layers[1]->nodes->[1]->raw_value = 3.567229
+	layers[1]->nodes->[1]->value = 3.567229
+	layers[1]->nodes->[1]->d_raw_value = 0.000097
+	layers[1]->nodes->[1]->d_value = 0.000097
+	layers[1]->nodes->[1]->weights[0] = -2.988095
+	layers[1]->nodes->[1]->d_weights[0] = -0.000115
+	layers[1]->nodes->[1]->bias = 1.748950
+	layers[1]->nodes->[1]->bias = 0.000097
+
+layer : 2
+	layers[2]->nodes->[0]->raw_value = 5.161321
+	layers[2]->nodes->[0]->value = 0.994299
+	layers[2]->nodes->[0]->d_raw_value = -0.000032
+	layers[2]->nodes->[0]->d_value = nan
+	layers[2]->nodes->[0]->bias = 0.277775
+	layers[2]->nodes->[0]->bias = -0.000032
+
+weights updated
+ ------------------------------------------------------------- 
+layer : 0
+	layers[0]->nodes->[0]->raw_value = nan
+	layers[0]->nodes->[0]->value = 0.000000
+	layers[0]->nodes->[0]->d_raw_value = nan
+	layers[0]->nodes->[0]->d_value = nan
+	layers[0]->nodes->[0]->weights[0] = -3.326491
+	layers[0]->nodes->[0]->d_weights[0] = -0.000000
+	layers[0]->nodes->[0]->weights[1] = -1.755256
+	layers[0]->nodes->[0]->d_weights[1] = 0.000000
+
+	layers[0]->nodes->[1]->raw_value = nan
+	layers[0]->nodes->[1]->value = 1.000000
+	layers[0]->nodes->[1]->d_raw_value = nan
+	layers[0]->nodes->[1]->d_value = nan
+	layers[0]->nodes->[1]->weights[0] = 3.326532
+	layers[0]->nodes->[1]->d_weights[0] = -0.000151
+	layers[0]->nodes->[1]->weights[1] = 1.818264
+	layers[0]->nodes->[1]->d_weights[1] = 0.000097
+
+layer : 1
+	layers[1]->nodes->[0]->raw_value = 3.326475
+	layers[1]->nodes->[0]->value = 3.326475
+	layers[1]->nodes->[0]->d_raw_value = -0.000151
+	layers[1]->nodes->[0]->d_value = -0.000151
+	layers[1]->nodes->[0]->weights[0] = 4.672458
+	layers[1]->nodes->[0]->d_weights[0] = -0.000108
+	layers[1]->nodes->[0]->bias = -0.000011
+	layers[1]->nodes->[0]->bias = -0.000151
+
+	layers[1]->nodes->[1]->raw_value = 3.567229
+	layers[1]->nodes->[1]->value = 3.567229
+	layers[1]->nodes->[1]->d_raw_value = 0.000097
+	layers[1]->nodes->[1]->d_value = 0.000097
+	layers[1]->nodes->[1]->weights[0] = -2.988077
+	layers[1]->nodes->[1]->d_weights[0] = -0.000115
+	layers[1]->nodes->[1]->bias = 1.748936
+	layers[1]->nodes->[1]->bias = 0.000097
+
+layer : 2
+	layers[2]->nodes->[0]->raw_value = 5.161321
+	layers[2]->nodes->[0]->value = 0.994299
+	layers[2]->nodes->[0]->d_raw_value = -0.000032
+	layers[2]->nodes->[0]->d_value = nan
+	layers[2]->nodes->[0]->bias = 0.277775
+	layers[2]->nodes->[0]->bias = -0.000032
+
+base
+ ------------------------------------------------------------- 
+layer : 0
+	layers[0]->nodes->[0]->raw_value = nan
+	layers[0]->nodes->[0]->value = 0.000000
+	layers[0]->nodes->[0]->d_raw_value = nan
+	layers[0]->nodes->[0]->d_value = nan
+	layers[0]->nodes->[0]->weights[0] = -3.326491
+	layers[0]->nodes->[0]->d_weights[0] = -0.000000
+	layers[0]->nodes->[0]->weights[1] = -1.755256
+	layers[0]->nodes->[0]->d_weights[1] = 0.000000
+
+	layers[0]->nodes->[1]->raw_value = nan
+	layers[0]->nodes->[1]->value = 1.000000
+	layers[0]->nodes->[1]->d_raw_value = nan
+	layers[0]->nodes->[1]->d_value = nan
+	layers[0]->nodes->[1]->weights[0] = 3.326532
+	layers[0]->nodes->[1]->d_weights[0] = -0.000151
+	layers[0]->nodes->[1]->weights[1] = 1.818264
+	layers[0]->nodes->[1]->d_weights[1] = 0.000097
+
+layer : 1
+	layers[1]->nodes->[0]->raw_value = 3.326475
+	layers[1]->nodes->[0]->value = 3.326475
+	layers[1]->nodes->[0]->d_raw_value = -0.000151
+	layers[1]->nodes->[0]->d_value = -0.000151
+	layers[1]->nodes->[0]->weights[0] = 4.672458
+	layers[1]->nodes->[0]->d_weights[0] = -0.000108
+	layers[1]->nodes->[0]->bias = -0.000011
+	layers[1]->nodes->[0]->bias = -0.000151
+
+	layers[1]->nodes->[1]->raw_value = 3.567229
+	layers[1]->nodes->[1]->value = 3.567229
+	layers[1]->nodes->[1]->d_raw_value = 0.000097
+	layers[1]->nodes->[1]->d_value = 0.000097
+	layers[1]->nodes->[1]->weights[0] = -2.988077
+	layers[1]->nodes->[1]->d_weights[0] = -0.000115
+	layers[1]->nodes->[1]->bias = 1.748936
+	layers[1]->nodes->[1]->bias = 0.000097
+
+layer : 2
+	layers[2]->nodes->[0]->raw_value = 5.161321
+	layers[2]->nodes->[0]->value = 0.994299
+	layers[2]->nodes->[0]->d_raw_value = -0.000032
+	layers[2]->nodes->[0]->d_value = nan
+	layers[2]->nodes->[0]->bias = 0.277775
+	layers[2]->nodes->[0]->bias = -0.000032
+
+forward prop
+ ------------------------------------------------------------- 
+layer : 0
+	layers[0]->nodes->[0]->raw_value = nan
+	layers[0]->nodes->[0]->value = 0.000000
+	layers[0]->nodes->[0]->d_raw_value = nan
+	layers[0]->nodes->[0]->d_value = nan
+	layers[0]->nodes->[0]->weights[0] = -3.326491
+	layers[0]->nodes->[0]->d_weights[0] = -0.000000
+	layers[0]->nodes->[0]->weights[1] = -1.755256
+	layers[0]->nodes->[0]->d_weights[1] = 0.000000
+
+	layers[0]->nodes->[1]->raw_value = nan
+	layers[0]->nodes->[1]->value = 0.000000
+	layers[0]->nodes->[1]->d_raw_value = nan
+	layers[0]->nodes->[1]->d_value = nan
+	layers[0]->nodes->[1]->weights[0] = 3.326532
+	layers[0]->nodes->[1]->d_weights[0] = -0.000151
+	layers[0]->nodes->[1]->weights[1] = 1.818264
+	layers[0]->nodes->[1]->d_weights[1] = 0.000097
+
+layer : 1
+	layers[1]->nodes->[0]->raw_value = -0.000011
+	layers[1]->nodes->[0]->value = 0.000000
+	layers[1]->nodes->[0]->d_raw_value = -0.000151
+	layers[1]->nodes->[0]->d_value = -0.000151
+	layers[1]->nodes->[0]->weights[0] = 4.672458
+	layers[1]->nodes->[0]->d_weights[0] = -0.000108
+	layers[1]->nodes->[0]->bias = -0.000011
+	layers[1]->nodes->[0]->bias = -0.000151
+
+	layers[1]->nodes->[1]->raw_value = 1.748936
+	layers[1]->nodes->[1]->value = 1.748936
+	layers[1]->nodes->[1]->d_raw_value = 0.000097
+	layers[1]->nodes->[1]->d_value = 0.000097
+	layers[1]->nodes->[1]->weights[0] = -2.988077
+	layers[1]->nodes->[1]->d_weights[0] = -0.000115
+	layers[1]->nodes->[1]->bias = 1.748936
+	layers[1]->nodes->[1]->bias = 0.000097
+
+layer : 2
+	layers[2]->nodes->[0]->raw_value = -4.948180
+	layers[2]->nodes->[0]->value = 0.007046
+	layers[2]->nodes->[0]->d_raw_value = -0.000032
+	layers[2]->nodes->[0]->d_value = nan
+	layers[2]->nodes->[0]->bias = 0.277775
+	layers[2]->nodes->[0]->bias = -0.000032
+
+backward prop
+ ------------------------------------------------------------- 
+layer : 0
+	layers[0]->nodes->[0]->raw_value = nan
+	layers[0]->nodes->[0]->value = 0.000000
+	layers[0]->nodes->[0]->d_raw_value = nan
+	layers[0]->nodes->[0]->d_value = nan
+	layers[0]->nodes->[0]->weights[0] = -3.326491
+	layers[0]->nodes->[0]->d_weights[0] = 0.000000
+	layers[0]->nodes->[0]->weights[1] = -1.755256
+	layers[0]->nodes->[0]->d_weights[1] = -0.000000
+
+	layers[0]->nodes->[1]->raw_value = nan
+	layers[0]->nodes->[1]->value = 0.000000
+	layers[0]->nodes->[1]->d_raw_value = nan
+	layers[0]->nodes->[1]->d_value = nan
+	layers[0]->nodes->[1]->weights[0] = 3.326532
+	layers[0]->nodes->[1]->d_weights[0] = 0.000000
+	layers[0]->nodes->[1]->weights[1] = 1.818264
+	layers[0]->nodes->[1]->d_weights[1] = -0.000000
+
+layer : 1
+	layers[1]->nodes->[0]->raw_value = -0.000011
+	layers[1]->nodes->[0]->value = 0.000000
+	layers[1]->nodes->[0]->d_raw_value = 0.000000
+	layers[1]->nodes->[0]->d_value = 0.000230
+	layers[1]->nodes->[0]->weights[0] = 4.672458
+	layers[1]->nodes->[0]->d_weights[0] = 0.000000
+	layers[1]->nodes->[0]->bias = -0.000011
+	layers[1]->nodes->[0]->bias = 0.000000
+
+	layers[1]->nodes->[1]->raw_value = 1.748936
+	layers[1]->nodes->[1]->value = 1.748936
+	layers[1]->nodes->[1]->d_raw_value = -0.000147
+	layers[1]->nodes->[1]->d_value = -0.000147
+	layers[1]->nodes->[1]->weights[0] = -2.988077
+	layers[1]->nodes->[1]->d_weights[0] = 0.000086
+	layers[1]->nodes->[1]->bias = 1.748936
+	layers[1]->nodes->[1]->bias = -0.000147
+
+layer : 2
+	layers[2]->nodes->[0]->raw_value = -4.948180
+	layers[2]->nodes->[0]->value = 0.007046
+	layers[2]->nodes->[0]->d_raw_value = 0.000049
+	layers[2]->nodes->[0]->d_value = nan
+	layers[2]->nodes->[0]->bias = 0.277775
+	layers[2]->nodes->[0]->bias = 0.000049
+
+weights updated
+ ------------------------------------------------------------- 
+layer : 0
+	layers[0]->nodes->[0]->raw_value = nan
+	layers[0]->nodes->[0]->value = 0.000000
+	layers[0]->nodes->[0]->d_raw_value = nan
+	layers[0]->nodes->[0]->d_value = nan
+	layers[0]->nodes->[0]->weights[0] = -3.326491
+	layers[0]->nodes->[0]->d_weights[0] = 0.000000
+	layers[0]->nodes->[0]->weights[1] = -1.755256
+	layers[0]->nodes->[0]->d_weights[1] = -0.000000
+
+	layers[0]->nodes->[1]->raw_value = nan
+	layers[0]->nodes->[1]->value = 0.000000
+	layers[0]->nodes->[1]->d_raw_value = nan
+	layers[0]->nodes->[1]->d_value = nan
+	layers[0]->nodes->[1]->weights[0] = 3.326532
+	layers[0]->nodes->[1]->d_weights[0] = 0.000000
+	layers[0]->nodes->[1]->weights[1] = 1.818264
+	layers[0]->nodes->[1]->d_weights[1] = -0.000000
+
+layer : 1
+	layers[1]->nodes->[0]->raw_value = -0.000011
+	layers[1]->nodes->[0]->value = 0.000000
+	layers[1]->nodes->[0]->d_raw_value = 0.000000
+	layers[1]->nodes->[0]->d_value = 0.000230
+	layers[1]->nodes->[0]->weights[0] = 4.672458
+	layers[1]->nodes->[0]->d_weights[0] = 0.000000
+	layers[1]->nodes->[0]->bias = -0.000011
+	layers[1]->nodes->[0]->bias = 0.000000
+
+	layers[1]->nodes->[1]->raw_value = 1.748936
+	layers[1]->nodes->[1]->value = 1.748936
+	layers[1]->nodes->[1]->d_raw_value = -0.000147
+	layers[1]->nodes->[1]->d_value = -0.000147
+	layers[1]->nodes->[1]->weights[0] = -2.988090
+	layers[1]->nodes->[1]->d_weights[0] = 0.000086
+	layers[1]->nodes->[1]->bias = 1.748958
+	layers[1]->nodes->[1]->bias = -0.000147
+
+layer : 2
+	layers[2]->nodes->[0]->raw_value = -4.948180
+	layers[2]->nodes->[0]->value = 0.007046
+	layers[2]->nodes->[0]->d_raw_value = 0.000049
+	layers[2]->nodes->[0]->d_value = nan
+	layers[2]->nodes->[0]->bias = 0.277775
+	layers[2]->nodes->[0]->bias = 0.000049
+
