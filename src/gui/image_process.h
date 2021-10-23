@@ -24,18 +24,8 @@ unsigned long long int integral_image_value(II_TYPE ii_type, Uint8 composant);
 
 void grayscale(Uint8 *r, Uint8 *g, Uint8 *b);
 
-int* boxes_sizes_for_gauss(float std_deviation, int nb_boxes);
-
-void box_blur(SDL_Surface *src_surface, SDL_Surface *blurred_surface, 
-										unsigned int bb_size);
-
-void hotizontal_box_blur(SDL_Surface *src_surface, 
-	SDL_Surface *h_blurred_surface, int box_radius);
-
-void vertical_box_blur(SDL_Surface *src_surface, 
-	SDL_Surface *v_blurred_surface, int box_radius);
-
-SDL_Surface* gaussian_blur(SDL_Surface *src_surface);
+void gaussian_blur(SDL_Surface *src_surface, int i, int j, 
+	Uint8 *r_dest, Uint8 *g_dest, Uint8 *b_dest);
 
 double sauvola_binarisation(unsigned long long int **mean_ii, 
 							unsigned long long int **std_deviation_ii, 

@@ -262,14 +262,16 @@ void open_dialog(GtkWidget *button, GtkWidget** widget_pointers[])
     GtkFileFilter *dialog_filter = NULL;
 
     //
+    if (button == NULL)
+        printf("open_dialog: No button is given in parameter\n");
     if (*window == NULL)
-        printf("THE WINDOW POINTER IS NULL");
+        printf("THE WINDOW POINTER IS NULL\n");
 
     if (*frame == NULL)
-        printf("THE IMAGE POINTER IS NULL");
+        printf("THE IMAGE POINTER IS NULL\n");
 
     if (*image == NULL)
-        printf("THE IMAGE POINTER IS NULL");
+        printf("THE IMAGE POINTER IS NULL\n");
     //
 
     dialog = gtk_file_chooser_dialog_new("Load an image", 
@@ -391,6 +393,9 @@ void display_rotated_image(GtkWidget *apply_button, GtkWidget** rotation_widget_
     GtkWidget **frame = rotation_widget_pointers[1];
     GtkWidget **image = rotation_widget_pointers[2];
     GtkWidget **rotate_img_entry = rotation_widget_pointers[3];
+
+    if (apply_button == NULL)
+        printf("display_rotated_image: No button is given in parameter\n");
 
     const char *angle = gtk_entry_get_text(GTK_ENTRY(*rotate_img_entry));
 
