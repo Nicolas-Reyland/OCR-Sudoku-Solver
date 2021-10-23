@@ -1,4 +1,4 @@
-Next random integer is: 395529916
+Next random integer is: 1727406014
 Created train data
 Created test data
 Created dataset.
@@ -21,11 +21,11 @@ Testing Tuple:
 number of input values: 2
 number of output values: 1
 Input:
-1.000000, 0.000000, 
+1.000000, 1.000000, 
 Output expected:
-1.000000, 
+0.000000, 
 Result:
-1.000000 
+0.000000 
 Losses error = 0.000000
 Testing Tuple:
 number of input values: 2
@@ -41,11 +41,11 @@ Testing Tuple:
 number of input values: 2
 number of output values: 1
 Input:
-1.000000, 1.000000, 
+1.000000, 0.000000, 
 Output expected:
-0.000000, 
+1.000000, 
 Result:
-0.000000 
+1.000000 
 Losses error = 0.000000
 freeing layer 0
 freeing layer ...
