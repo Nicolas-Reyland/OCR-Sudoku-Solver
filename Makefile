@@ -48,7 +48,6 @@ nn-session:
 
 .PHONY: nn-utils
 nn-utils: nn-utils-structs nn-utils-session nn-utils-misc
-	@echo empty utils
 
 .PHONY: nn-utils-structs
 nn-utils-structs:

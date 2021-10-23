@@ -64,7 +64,7 @@ void _nn_backPropagation(nn_Model* model, double* desired_output)
   }
 }
 
-void _nn_updateWeights(nn_Model* model, float learning_rate)
+void _nn_updateWeights(nn_Model* model, double learning_rate)
 {
   size_t num_layers = model->num_layers;
   nn_Layer** const layers = model->layers;

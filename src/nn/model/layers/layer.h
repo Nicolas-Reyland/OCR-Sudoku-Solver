@@ -4,7 +4,7 @@
 #define NN_LAYER_H
 
 #include <stdbool.h>
-#include "node.h"
+#include "node/node.h"
 #include "nn/utils/structs/shape_description.h"
 #include "nn/functions_descriptors/functions_descriptors_enums.h"
 

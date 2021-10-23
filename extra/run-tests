@@ -26,7 +26,7 @@ print_banner $SCRIPT_DIR/test-framework-banners
 while IFS= read -r folder
 do
 	if [ ! -f $folder/$order_file_name ]; then
-		print_nel_yellow "No order file in "
+		print_nel_yellow "[W] No order file in "
 		print_nel_blue "$folder"
 		print_yellow ". Skipping test module (`print_nel_white $folder/$order_file_name;print_nel_yellow ')'`"
 		continue

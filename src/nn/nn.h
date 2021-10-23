@@ -9,4 +9,6 @@
 #include "functions_descriptors/functions_descriptors_enums.h"
 #include "utils/structs/shape_description.h"
 
+void nn_init(void);
+
 #endif

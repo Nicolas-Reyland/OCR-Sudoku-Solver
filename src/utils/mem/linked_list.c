@@ -92,6 +92,7 @@ ll_node* _linked_list_new_node()
 		sprintf(msg, LL_MEM_ALLOC_ERROR_MSG, ll_node_size);
 		_linked_list_exit_msg(msg);
 	}
+	node->next = NULL;
 	return node;
 }
 

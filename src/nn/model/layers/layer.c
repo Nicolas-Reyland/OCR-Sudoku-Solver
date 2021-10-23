@@ -4,10 +4,10 @@
 
 nn_Layer* _nn_createLayerWrapped(nn_ShapeDescription layer_shape, nn_ShapeDescription next_layer_shape, activation activation, bool alloc_weights, bool init_bias)
 {
-  size_t num_nodes = layer_shape.x * layer_shape.y * layer_shape.z;
-  size_t num_nodes_next_layer = alloc_weights ? next_layer_shape.x * next_layer_shape.y * next_layer_shape.z : 0;
+  size_t num_nodes = layer_shape.range;
+  size_t num_nodes_next_layer = alloc_weights ? next_layer_shape.range : 0;
   // create nodes
-  nn_Node** nodes = mem_calloc(layer_shape.x * layer_shape.y * layer_shape.z, sizeof(nn_Node*));
+  nn_Node** nodes = mem_calloc(num_nodes, sizeof(nn_Node*));
   for (size_t z = 0; z < layer_shape.z; z++) {
     for (size_t y = 0; y < layer_shape.y; y++) {
       for (size_t x = 0; x < layer_shape.x; x++) {
@@ -48,7 +48,7 @@ nn_Layer* _nn_createOutputLayer(nn_ShapeDescription layer_shape, activation acti
 void _nn_freeLayer(nn_Layer* layer)
 {
   verbose("freeing layer ...");
-  for (size_t i = 0; i < layer->shape.x * layer->shape.y * layer->shape.z; i++) {
+  for (size_t i = 0; i < layer->shape.range; i++) {
     nn_Node* node = layer->nodes[i];
     _nn_freeNode(node);
   }

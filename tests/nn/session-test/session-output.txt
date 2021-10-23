@@ -7,37 +7,7 @@ Done allocating nodes
 Allocating hidden layer ...
 Done allocating nodes
 layers are allocated.
-Training Tuple:
-number of input values: 2
-number of output values: 1
-Input:
-0.000000, 0.000000, 
-Output expected:
-0.000000, 
-Result:
-0.728986 
-Losses error = 0.531421
-Training Tuple:
-number of input values: 2
-number of output values: 1
-Input:
-1.000000, 0.000000, 
-Output expected:
-1.000000, 
-Result:
-0.765798 
-Losses error = 0.054851
-Training Tuple:
-number of input values: 2
-number of output values: 1
-Input:
-1.000000, 1.000000, 
-Output expected:
-0.000000, 
-Result:
-0.791105 
-Losses error = 0.625847
-Training Tuple:
+Testing Tuple:
 number of input values: 2
 number of output values: 1
 Input:
@@ -45,8 +15,54 @@ Input:
 Output expected:
 1.000000, 
 Result:
-0.767756 
-Losses error = 0.053937
+1.000000 
+Losses error = 0.000000
+Testing Tuple:
+number of input values: 2
+number of output values: 1
+Input:
+1.000000, 1.000000, 
+Output expected:
+0.000000, 
+Result:
+0.000000 
+Losses error = 0.000000
+Testing Tuple:
+number of input values: 2
+number of output values: 1
+Input:
+0.000000, 0.000000, 
+Output expected:
+0.000000, 
+Result:
+0.000000 
+Losses error = 0.000000
+Testing Tuple:
+number of input values: 2
+number of output values: 1
+Input:
+1.000000, 0.000000, 
+Output expected:
+1.000000, 
+Result:
+1.000000 
+Losses error = 0.000000
+index: 0
+layers[0]->nodes[0]->weights[0] = 3.881428
+layers[0]->nodes[0]->weights[1] = 1.251794
+bias: nan
+layers[0]->nodes[1]->weights[0] = 3.941976
+layers[0]->nodes[1]->weights[1] = 1.264242
+bias: nan
+index: 1
+layers[1]->nodes[0]->weights[0] = 2.870541
+bias: -1.490041
+layers[1]->nodes[1]->weights[0] = -4.218809
+bias: -1.443649
+index: 2
+bias: 0.277775
+Saving weights...
+Saved weights !
 freeing layer 0
 freeing layer ...
 layer has been freed
