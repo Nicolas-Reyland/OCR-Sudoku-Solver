@@ -10,6 +10,7 @@
 
 #define PI 3.14159265358979323846
 
+/*
 static const int g_blur_kernel_5[5][5] = {{1, 4, 7, 4, 1},
 										{4, 16, 26, 16, 4},
 										{7, 26, 41, 26, 7},
@@ -18,6 +19,12 @@ static const int g_blur_kernel_5[5][5] = {{1, 4, 7, 4, 1},
 
 #define G_BLUR_KERNEL_SIZE 5
 #define G_BLUR_KERNEL_SUM 273
+*/
+
+static const float g_blur_kernel_5[7] = 
+{0.006, 0.061, 0.242, 0.383, 0.242, 0.061, 0.006};
+
+#define G_BLUR_KERNEL_SIZE 7
 
 #define S_BINARISATION_SIZE 61
 
@@ -219,45 +226,79 @@ void grayscale(Uint8 *r, Uint8 *g, Uint8 *b)
 }
 
 // Calculates the value of a pixel after applying a gaussian blur process
-void gaussian_blur(SDL_Surface *src_surface, int i, int j, 
-	Uint8 *r_dest, Uint8 *g_dest, Uint8 *b_dest)
+SDL_Surface* gaussian_blur(SDL_Surface *src_surface)
 {
 	Uint32 pixel;
-	Uint8 current_r;
+	Uint8 composant;
 
 	int src_surface_w = src_surface->w;
 	int src_surface_h = src_surface->h;
 
-	int r_sum = 0;
+	unsigned int *intermediate_p_array = 
+	(unsigned int*)calloc(src_surface_w * src_surface_h, sizeof(unsigned int));
 
-	int middle_coordinates = G_BLUR_KERNEL_SIZE / 2;
-	int current_i = i - middle_coordinates;
-	int current_j = j - middle_coordinates;
+	float composant_sum = 0.0f;
 
-	for (int x = 0; x < G_BLUR_KERNEL_SIZE; x++)
+	int mid_coordinates = G_BLUR_KERNEL_SIZE / 2;
+
+	for (int j = 0; j < src_surface_h; j++)
 	{
-		for (int y = 0; y < G_BLUR_KERNEL_SIZE; y++)
-		{
-			if(current_i >= 0 && current_i < src_surface_w && 
-				current_j >= 0 && current_j < src_surface_h)
+		for (int i = 0; i < src_surface_w; i++)
+		{	
+			for (int k = 0; k < G_BLUR_KERNEL_SIZE; k++)
 			{
-				pixel = get_pixel(src_surface, current_i, current_j);
-				SDL_GetRGB(pixel, src_surface->format, 
-					&current_r, &current_r, &current_r);
+				int current_i = i - mid_coordinates + k;
 
-				r_sum += g_blur_kernel_5[x][y] * current_r;
+				if(current_i >= 0 && current_i < src_surface_w)
+				{
+					pixel = get_pixel(src_surface, current_i, j);
+					SDL_GetRGB(pixel, src_surface->format, 
+						&composant, &composant, &composant);
+
+					composant_sum += g_blur_kernel_5[k] * composant;
+				}
 			}
 
-			current_j += 1;
-		}
+			intermediate_p_array[i * src_surface_h + j] = 
+			(unsigned int)(roundf(composant_sum));
 
-		current_j = j - middle_coordinates;
-		current_i += 1;
+			composant_sum = 0.0f;
+		}
 	}
 
-	*r_dest = r_sum / G_BLUR_KERNEL_SUM;
-	*g_dest = *r_dest;
-	*b_dest = *r_dest;
+	SDL_Surface *blurred_surface = SDL_CreateRGBSurface (0, 
+		src_surface_w, src_surface_h, 32, 0, 0, 0, 0);
+
+	for (int i = 0; i < src_surface_w; i++)
+	{
+		for (int j = 0; j < src_surface_h; j++)
+		{
+			for (int k = 0; k < G_BLUR_KERNEL_SIZE; k++)
+			{
+				int current_j = j - mid_coordinates + k;
+
+				if(current_j >= 0 && current_j < src_surface_h)
+				{
+					composant = 
+					intermediate_p_array[i * src_surface_h + current_j];
+
+					composant_sum += g_blur_kernel_5[k] * composant;
+				}
+			}
+
+			composant_sum = (Uint8)(roundf(composant_sum));
+			
+			pixel = SDL_MapRGB(blurred_surface->format, 
+						composant_sum, composant_sum, composant_sum);
+			put_pixel(blurred_surface, i, j, pixel);
+
+			composant_sum = 0.0f;
+		}
+	}
+
+	free(intermediate_p_array);
+
+	return blurred_surface;
 }
 
 double sauvola_binarisation(unsigned long long int **mean_ii, 
@@ -369,23 +410,11 @@ void image_process(char *path)
 	//===================================================
 
 	// Transparency is not activated
-	SDL_Surface *blurred_surface = SDL_CreateRGBSurface (0, 
-		surf_width, surf_height, 32, 0, 0, 0, 0);
+	SDL_Surface *blurred_surface = gaussian_blur(surface);
 
 	if(blurred_surface == NULL)
 	{
-	    printf("Failed to create surface -> %s\n", SDL_GetError());
-	}
-
-	for(size_t i = 0; i < surf_width; i++)
-	{
-		for (size_t j = 0; j < surf_height;j++)
-		{
-			gaussian_blur(surface, i, j, &r, &g, &b);
-
-			pixel = SDL_MapRGB(blurred_surface->format, r, g, b);
-			put_pixel(blurred_surface, i, j, pixel);
-		}
+	    printf("Failed to create gaussian blurred surface\n");
 	}
 
 	SDL_FreeSurface(surface);

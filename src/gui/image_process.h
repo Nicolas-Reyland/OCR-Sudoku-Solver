@@ -24,8 +24,7 @@ unsigned long long int integral_image_value(II_TYPE ii_type, Uint8 composant);
 
 void grayscale(Uint8 *r, Uint8 *g, Uint8 *b);
 
-void gaussian_blur(SDL_Surface *src_surface, int i, int j, 
-	Uint8 *r_dest, Uint8 *g_dest, Uint8 *b_dest);
+SDL_Surface* gaussian_blur(SDL_Surface *src_surface);
 
 double sauvola_binarisation(unsigned long long int **mean_ii, 
 							unsigned long long int **std_deviation_ii, 
