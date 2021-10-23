@@ -128,6 +128,7 @@ char defineShapeDescription(nn_ShapeDescription* description, FILE* file)
     &(description->y), &(description->z));
     // re-calculate range
     description->range = description->x * description->y * description->z;
+    // veriify that the line was well matched
     if (matched_values != 4) {
       fprintf(stderr, "Could not match all the values of the (first) description line. Values matched: %d\n", matched_values);
       exit(EXIT_FAILURE);
@@ -135,7 +136,7 @@ char defineShapeDescription(nn_ShapeDescription* description, FILE* file)
     char cursor = fgetc(file);
     while(cursor != '\n')
         cursor = fgetc(file); //reading to end of line
-    
+
     return cursor;
 }
 

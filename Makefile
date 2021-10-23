@@ -8,24 +8,25 @@ LDLIBS_GUI = -lm `pkg-config --libs sdl2` -lSDL2_image `pkg-config --libs gtk+-3
 CC := gcc
 
 .PHONY: all
-all: nn gui solver # src/nn/nn.o src/gui/gui.o src/solver/solver.o
+all: utils nn gui solver # src/nn/nn.o src/gui/gui.o src/solver/solver.o
 	@echo "all rule called (nothing to do as of yet)"
 
 # ------- Neural Networks -------
 .PHONY: nn
 nn: utils nn-model nn-data nn-session nn-utils nn-functions_descriptors
 	$(CC) $(CFLAGS) -c -o src/nn/nn.o src/nn/nn.c
-#src/nn/model/model.o src/nn/data/nn_data_header.o src/nn/session/session.o src/nn/utils/nn_utils_header.o src/nn/functions_descriptor/nn_functions_descriptors_header.o
 
 .PHONY: nn-model
 nn-model: nn-model-layers
 	$(CC) $(CFLAGS) -c -o src/nn/model/model.o src/nn/model/model.c
-# src/nn/model/layers/layer.o src/nn/model/layers/model->layers.o src/nn/model/layers/node.o
 
 .PHONY: nn-model-layers
-nn-model-layers: nn-utils-misc
+nn-model-layers: nn-model-layers-node nn-utils-structs
 	$(CC) $(CFLAGS) -c -o src/nn/model/layers/layer.o src/nn/model/layers/layer.c
-	$(CC) $(CFLAGS) -c -o src/nn/model/layers/node.o src/nn/model/layers/node.c
+
+.PHONY: nn-model-layers-node
+nn-model-layers-node: nn-utils-misc
+	$(CC) $(CFLAGS) -c -o src/nn/model/layers/node/node.o src/nn/model/layers/node/node.c
 
 .PHONY: nn-functions_descriptors
 nn-functions_descriptors:
@@ -37,6 +38,7 @@ nn-data: nn-data-sample
 	$(CC) $(CFLAGS) -c -o src/nn/data/data_collection.o src/nn/data/data_collection.c
 	$(CC) $(CFLAGS) -c -o src/nn/data/init_data.o src/nn/data/init_data.c
 	$(CC) $(CFLAGS) -c -o src/nn/data/in_out_tuple.o src/nn/data/in_out_tuple.c
+	$(CC) $(CFLAGS) -c -o src/nn/data/in_out_tuple_linked_list.o src/nn/data/in_out_tuple_linked_list.c
 
 .PHONY: nn-data-sample
 nn-data-sample: nn-utils-structs
@@ -52,6 +54,7 @@ nn-utils: nn-utils-structs nn-utils-session nn-utils-misc
 .PHONY: nn-utils-structs
 nn-utils-structs:
 	$(CC) $(CFLAGS) -c -o src/nn/utils/structs/shape_description.o src/nn/utils/structs/shape_description.c
+	$(CC) $(CFLAGS) -c -o src/nn/utils/structs/dataset.o src/nn/utils/structs/dataset.c
 
 .PHONY: nn-utils-misc
 nn-utils-misc:
@@ -66,6 +69,7 @@ nn-utils-functions-activations:
 	$(CC) $(CFLAGS) -c -o src/nn/utils/functions/losses.o src/nn/utils/functions/losses.c
 	$(CC) $(CFLAGS) -c -o src/nn/utils/functions/optimizers.o src/nn/utils/functions/optimizers.c
 	$(CC) $(CFLAGS) -c -o src/nn/utils/functions/activations.o src/nn/utils/functions/activations.c $(LDLIBS_NN)
+	$(CC) $(CFLAGS) -c -o src/nn/utils/functions/derivation.o src/nn/utils/functions/derivation.c $(LDLIBS_NN)
 
 
 # ------- GUI & Image Processing -------
@@ -83,9 +87,15 @@ src/gui/pixel_operations.o : src/gui/pixel_operations.c
 
 # ------- Utils -------
 .PHONY: utils
-utils:
+utils: utils-mem utils-verbosity
+
+.PHONY: utils-mem
+utils-mem:
 	$(CC) $(CFLAGS) -c -o src/utils/mem/linked_list.o src/utils/mem/linked_list.c
 	$(CC) $(CFLAGS) -c -o src/utils/mem/mem-management.o src/utils/mem/mem-management.c
+
+.PHONY: utils-verbosity
+utils-verbosity:
 	$(CC) $(CFLAGS) -c -o src/utils/verbosity/verbose.o src/utils/verbosity/verbose.c
 
 # ------- Test Framework ------- 
