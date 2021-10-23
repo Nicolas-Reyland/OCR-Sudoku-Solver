@@ -10,6 +10,7 @@
 
 #define PI 3.14159265358979323846
 
+/*
 static const int g_blur_kernel_5[5][5] = {{1, 4, 7, 4, 1},
 										{4, 16, 26, 16, 4},
 										{7, 26, 41, 26, 7},
@@ -18,6 +19,10 @@ static const int g_blur_kernel_5[5][5] = {{1, 4, 7, 4, 1},
 
 #define G_BLUR_KERNEL_SIZE 5
 #define G_BLUR_KERNEL_SUM 273
+*/
+
+#define G_STD_DEVIATION 1
+#define G_BOX_BLUR_NB 3
 
 #define S_BINARISATION_SIZE 61
 
@@ -218,56 +223,150 @@ void grayscale(Uint8 *r, Uint8 *g, Uint8 *b)
 	*b = grayscale;
 }
 
-// Calculates the value of a pixel after applying a gaussian blur process
-void gaussian_blur(SDL_Surface *src_surface, int i, int j, 
-	Uint8 *r_dest, Uint8 *g_dest, Uint8 *b_dest)
+int* boxes_sizes_for_gauss(float std_deviation, int nb_boxes)
 {
-	Uint32 pixel;
-	Uint8 current_r;
+	int *boxes_sizes = (int*)calloc(nb_boxes, sizeof(int));
 
-	int src_surface_w = src_surface->w;
-	int src_surface_h = src_surface->h;
+	double w_ideal = sqrt((12 * std_deviation * std_deviation / nb_boxes) + 1);
+	int wl = floor(w_ideal);
+	if (wl % 2 == 0)
+		wl -= 1;
+	int wu = wl + 2;
 
-	int r_sum = 0;
+	double m_ideal = 
+	(12 * std_deviation * std_deviation - nb_boxes * wl * wl 
+		- 4 * nb_boxes * wl - 3 * nb_boxes) / (-4 * wl - 4);
+	int m = round(m_ideal);
 
-	int middle_coordinates = G_BLUR_KERNEL_SIZE / 2;
-	int current_i = i - middle_coordinates;
-	int current_j = j - middle_coordinates;
-
-	for (int x = 0; x < G_BLUR_KERNEL_SIZE; x++)
+	for (int i = 0; i < nb_boxes; i++)
 	{
-		for (int y = 0; y < G_BLUR_KERNEL_SIZE; y++)
-		{
-			if(current_i >= 0 && current_i < src_surface_w && 
-				current_j >= 0 && current_j < src_surface_h)
-			{
-				pixel = get_pixel(src_surface, current_i, current_j);
-				SDL_GetRGB(pixel, src_surface->format, 
-					&current_r, &current_r, &current_r);
-
-				r_sum += g_blur_kernel_5[x][y] * current_r;
-			}
-
-			current_j += 1;
-		}
-
-		current_j = j - middle_coordinates;
-		current_i += 1;
+		if (i < m)
+			boxes_sizes[i] = wl;
+		else
+			boxes_sizes[i] = wu;
 	}
 
-	*r_dest = r_sum / G_BLUR_KERNEL_SUM;
-	*g_dest = *r_dest;
-	*b_dest = *r_dest;
+	return boxes_sizes;
 }
 
-double sauvola_binarisation(SDL_Surface *src_surface, 
-						unsigned long long int **mean_ii, 
-						unsigned long long int **std_deviation_ii, 
-						int i, int j)
+void box_blur(SDL_Surface *src_surface, SDL_Surface *blurred_surface, 
+										unsigned int bb_size)
 {
-	//Uint32 pixel;
-	//Uint8 current_r;
+	size_t surface_w = src_surface->w;
+	size_t surface_h = src_surface->h;
 
+	SDL_Surface *intermediate_surface = SDL_CreateRGBSurface (0, 
+		surface_w, surface_h, 32, 0, 0, 0, 0);
+
+	hotizontal_box_blur(src_surface, intermediate_surface, bb_size / 2);
+	vertical_box_blur(intermediate_surface, blurred_surface, bb_size / 2);
+
+	SDL_FreeSurface(intermediate_surface);
+}
+
+void hotizontal_box_blur(SDL_Surface *src_surface, 
+	SDL_Surface *h_blurred_surface, int box_radius)
+{
+	Uint32 pixel;
+	Uint8 composant;
+
+	long int surface_w = src_surface->w;
+	long int surface_h = src_surface->h;
+
+	for (long int i = 0; i < surface_w; i++)
+	{
+		for (long int j = 0; j < surface_h; j++)
+		{
+			unsigned int composant_sum = 0;
+			
+			for (int k = -box_radius; k < (box_radius + 1); k++)
+			{
+				if ((i + k) >= 0 && (i + k) < surface_w)
+				{
+					pixel = get_pixel(src_surface, i + k, j);
+					SDL_GetRGB(pixel, src_surface->format, 
+					&composant, &composant, &composant);
+
+					composant_sum += composant;
+				}
+			}
+
+			composant_sum /= (box_radius + box_radius + 1);
+			pixel = SDL_MapRGB(h_blurred_surface->format, 
+					composant_sum, composant_sum, composant_sum);
+			put_pixel(h_blurred_surface, i, j, pixel);
+		}
+	}
+}
+
+void vertical_box_blur(SDL_Surface *src_surface, 
+	SDL_Surface *v_blurred_surface, int box_radius)
+{
+	Uint32 pixel;
+	Uint8 composant;
+
+	long int surface_w = src_surface->w;
+	long int surface_h = src_surface->h;
+
+	for (long int i = 0; i < surface_w; i++)
+	{
+		for (long int j = 0; j < surface_h; j++)
+		{
+			unsigned int composant_sum = 0;
+
+			for (int k = -box_radius; k < (box_radius + 1); k++)
+			{
+				if ((j + k) >= 0 && (j + k) < surface_h)
+				{
+					pixel = get_pixel(src_surface, i, j + k);
+					SDL_GetRGB(pixel, src_surface->format, 
+					&composant, &composant, &composant);
+
+					composant_sum += composant;
+				}
+			}
+
+			composant_sum /= (box_radius + box_radius + 1);
+			pixel = SDL_MapRGB(v_blurred_surface->format, 
+					composant_sum, composant_sum, composant_sum);
+			put_pixel(v_blurred_surface, i, j, pixel);
+		}
+	}
+
+}
+
+SDL_Surface* gaussian_blur(SDL_Surface *src_surface)
+{
+	size_t surface_w = src_surface->w;
+	size_t surface_h = src_surface->h;
+
+	int *boxes_sizes = boxes_sizes_for_gauss(G_STD_DEVIATION, 
+														G_BOX_BLUR_NB);
+
+	SDL_Surface *blurred_surface = SDL_CreateRGBSurface (0, 
+		surface_w, surface_h, 32, 0, 0, 0, 0);
+
+	SDL_Surface *intermediate_surface = SDL_CreateRGBSurface (0, 
+		surface_w, surface_h, 32, 0, 0, 0, 0);
+
+	if (G_BOX_BLUR_NB > 0)
+		box_blur(src_surface, blurred_surface, boxes_sizes[0]);
+
+	for (int i = 2; i < G_BOX_BLUR_NB; i += 2)
+	{
+		box_blur(blurred_surface, intermediate_surface, boxes_sizes[i - 1]);
+		box_blur(intermediate_surface, blurred_surface, boxes_sizes[i]);
+	}
+
+	SDL_FreeSurface(intermediate_surface);
+
+	return blurred_surface;
+}
+
+double sauvola_binarisation(unsigned long long int **mean_ii, 
+							unsigned long long int **std_deviation_ii, 
+							int i, int j)
+{
 	int s_bin_size_pow_2 = S_BINARISATION_SIZE * S_BINARISATION_SIZE;
 
 	double mean = 0.0f;
@@ -275,9 +374,6 @@ double sauvola_binarisation(SDL_Surface *src_surface,
 	double threshold = 0.0f;
 
 	unsigned long long int squared_pixel_sum = 0;
-
-	//int src_surface_w = src_surface->w;
-	//int src_surface_h = src_surface->h;
 
 	int margin = S_BINARISATION_SIZE + 1;
 	int half_margin = margin / 2;
@@ -375,27 +471,11 @@ void image_process(char *path)
 	//******************G.Blur process*******************
 	//===================================================
 
-	// Transparency is not activated
-	SDL_Surface *blurred_surface = SDL_CreateRGBSurface (0, 
-		surf_width, surf_height, 32, 0, 0, 0, 0);
+	SDL_Surface *blurred_surface = gaussian_blur(surface);
 
 	if(blurred_surface == NULL)
 	{
-	    printf("Failed to create surface -> %s\n", SDL_GetError());
-	}
-
-	for(size_t i = 0; i < surf_width; i++)
-	{
-		for (size_t j = 0; j < surf_height;j++)
-		{
-			//pixel = get_pixel(blurred_surface, i, j);
-			//SDL_GetRGB(pixel, blurred_surface->format, &r, &g, &b);
-
-			gaussian_blur(surface, i, j, &r, &g, &b);
-
-			pixel = SDL_MapRGB(blurred_surface->format, r, g, b);
-			put_pixel(blurred_surface, i, j, pixel);
-		}
+	    errx(EXIT_FAILURE, "Failed to create blurred surface.");
 	}
 
 	SDL_FreeSurface(surface);
@@ -437,8 +517,7 @@ void image_process(char *path)
 			pixel = get_pixel(blurred_surface, i, j);
 			SDL_GetRGB(pixel, blurred_surface->format, &r, &g, &b);
 
-			threshold = sauvola_binarisation(blurred_surface, 
-							mean_ii, std_deviation_ii, i, j);
+			threshold = sauvola_binarisation(mean_ii, std_deviation_ii, i, j);
 
 			threshold = round(threshold);
 
