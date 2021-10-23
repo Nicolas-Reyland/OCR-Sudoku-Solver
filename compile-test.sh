@@ -12,7 +12,7 @@ for file in $(find src/{nn,utils} -type f -name "*.c")
 do
 	args+=("$file")
 done
-export src_path=tests/nn/loading-data/loading-data.c
+export src_path=extra/test.c
 if [ -n "$1" ]; then
 	src_path=$1
 	echo "custom src path: $src_path"
