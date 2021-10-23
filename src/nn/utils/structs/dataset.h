@@ -11,7 +11,7 @@ typedef struct nn_DataSet
     nn_Data* test;  //classical proportions 30% of whole data we got
 } nn_DataSet;
 
-nn_DataSet* _nn_createDataSet(nn_Data* trainData, nn_Data* testData);
+nn_DataSet* nn_createDataSet(nn_Data* trainData, nn_Data* testData);
 void _nn_freeDataSet(nn_DataSet* dataSet);
 
 

@@ -4,7 +4,7 @@
 
 double _convertStringToDouble(char* string);
 char defineShapeDescription(nn_ShapeDescription* description, FILE* file);
-char _readLineInFile(FILE* file, nn_ShapeDescription* description, size_t num_values, double* values);
+bool _readLineInFile(FILE* file, nn_ShapeDescription* description, size_t num_values, double* values);
 void verifyListCompleteness(iot_ll_node* node, size_t length);
 
 nn_Data* nn_DataLoadRaw(char* input_path, char* output_path, nn_ShapeDescription* description, bool verb_mode)
@@ -90,7 +90,7 @@ nn_Data* nn_DataLoadRaw(char* input_path, char* output_path, nn_ShapeDescription
 }
 
 
-char _readLineInFile(FILE* file, nn_ShapeDescription* description, size_t num_values, double* values)
+bool _readLineInFile(FILE* file, nn_ShapeDescription* description, size_t num_values, double* values)
 {
     // read the next line
     char* line_start = NULL;
