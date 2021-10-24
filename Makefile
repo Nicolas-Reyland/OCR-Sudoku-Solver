@@ -25,7 +25,7 @@ nn-model: nn-model-layers
 .PHONY: nn-model-layers
 nn-model-layers: nn-utils-misc
 	$(CC) $(CFLAGS) -c -o src/nn/model/layers/layer.o src/nn/model/layers/layer.c
-	$(CC) $(CFLAGS) -c -o src/nn/model/layers/node.o src/nn/model/layers/node.c
+	$(CC) $(CFLAGS) -c -o src/nn/model/layers/node/node.o src/nn/model/layers/node/node.c
 
 .PHONY: nn-functions_descriptors
 nn-functions_descriptors:
