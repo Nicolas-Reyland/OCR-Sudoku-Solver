@@ -2,6 +2,8 @@
 
 #include "mem-management.h"
 
+linked_list* GPL;
+
 bool memory_tracking_initialized = false;
 
 void initMemoryTracking(void)
