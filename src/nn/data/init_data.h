@@ -11,6 +11,7 @@
 #include "utils/verbosity/verbose.h"
 #include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
 
 //public functions
 nn_Data* nn_loadSingleDataInputOutput(char* input_path, char* output_path, nn_ShapeDescription* description, bool verb_mode);

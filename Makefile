@@ -84,12 +84,20 @@ src/gui/pixel_operations.o : src/gui/pixel_operations.c
 gui_clean :
 	rm src/gui/*.o src/gui/gui src/gui/grayscale.bmp src/gui/blurred_image.bmp src/gui/binarised_image.bmp src/gui/rotated_image.bmp
 
+
+# ------- Solver -------
+.PHONY: solver
+solver:
+	$(CC) $(CFLAGS) -o src/solver/main src/solver/{main,sources/{reader,solver,tester,writer}}.c
+
+
 # ------- Utils -------
 .PHONY: utils
 utils:
 	$(CC) $(CFLAGS) -c -o src/utils/mem/linked_list.o src/utils/mem/linked_list.c
 	$(CC) $(CFLAGS) -c -o src/utils/mem/mem-management.o src/utils/mem/mem-management.c
 	$(CC) $(CFLAGS) -c -o src/utils/verbosity/verbose.o src/utils/verbosity/verbose.c
+
 
 # ------- Test Framework ------- 
 .PHONY: test
@@ -100,7 +108,9 @@ test:
 clean-test:
 	@rm -rf /tmp/ocr-tests{,-perm}
 
+
 # ------- Misc Rules -------
 .PHONY: clean
 clean:
 	@./extra/make-clean.sh
+
