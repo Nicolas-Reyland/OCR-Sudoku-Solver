@@ -1,6 +1,7 @@
 # compiled binaries from various scripts
 test.out
 src/gui/gui
+src/solver/main
 
 # Prerequisites
 *.d
