@@ -35,7 +35,7 @@ nn_DataSet* nn_loadDataSet(char* data_dir_path, nn_ShapeDescription* description
 }
 
 char defineShapeDescription(nn_ShapeDescription* description, FILE* file);
-bool _readLineInFile(FILE* file, nn_ShapeDescription* description, size_t num_values, double* values);
+bool _readLineInFile(FILE* file, size_t num_values, double* values);
 void verifyListCompleteness(iot_ll_node* node, size_t length);
 
 nn_Data* nn_loadSingleDataInputOutput(char* input_path, char* output_path, nn_ShapeDescription* description, bool verb_mode)
@@ -84,7 +84,7 @@ nn_Data* nn_loadSingleDataInputOutput(char* input_path, char* output_path, nn_Sh
         //that are not used to 1, so that it doesn't break the malloc sizing lol
         double* input_values    = mem_calloc(input_size, sizeof(double));
         double* output_values   = mem_calloc(output_size, sizeof(double));
-        if (!_readLineInFile(input_file, description, input_size, input_values)) {
+        if (!_readLineInFile(input_file, input_size, input_values)) {
           mem_free(input_values);
           mem_free(output_values);
           break;
@@ -93,7 +93,7 @@ nn_Data* nn_loadSingleDataInputOutput(char* input_path, char* output_path, nn_Sh
         //we don't need to read the cursor of output_file
         //since normally it should have the same nb of lines than
         //input_file (for safety later, make a private function that test it)
-        if (!_readLineInFile(output_file, &output_description, output_size, output_values)) {
+        if (!_readLineInFile(output_file, output_size, output_values)) {
           // print before freeing, in case we have a problem with the mem_free
           // the error msg now gets printed anyways
           fprintf(stderr, "Not same number of lines in input file and output file. Exiting...\n");
@@ -121,7 +121,7 @@ nn_Data* nn_loadSingleDataInputOutput(char* input_path, char* output_path, nn_Sh
 }
 
 
-bool _readLineInFile(FILE* file, nn_ShapeDescription* description, size_t num_values, double* values)
+bool _readLineInFile(FILE* file, size_t num_values, double* values)
 {
     // read the next line
     char* line_start = NULL;
