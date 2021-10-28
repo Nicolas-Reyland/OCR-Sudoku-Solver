@@ -8,9 +8,6 @@
 #include <stdbool.h>
 #include "utils/verbosity/verbose.h"
 
-// global variables
-linked_list* GPL; // GPL : Global Pointer List
-
 // public functions
 void initMemoryTracking(void);
 void* mem_malloc(size_t size);

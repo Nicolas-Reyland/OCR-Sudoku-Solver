@@ -15,3 +15,10 @@ for bmp_img in $list
 do
 	rm -f $bmp_img
 done
+# specific binary files
+for file in $(echo "src/solver/main")
+do
+	if [ -e "$file" ]; then
+		rm -f "$file"
+	fi
+done
