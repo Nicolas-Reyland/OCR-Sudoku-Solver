@@ -3,8 +3,11 @@
 #include <math.h>
 #include <SDL2/SDL.h>
 #include "pixel_operations.h"
+#include "../utils/mem/linked_list.h"
 
 size_t segmentation(SDL_Surface* image, SDL_Surface* segmap);
+
+void rowssegmentation(SDL_Surface *image, SDL_Surface* segmap);
 
 size_t propagate(SDL_Surface *image, SDL_Surface* segmap, int segval, size_t x, size_t y);
 
@@ -21,10 +24,9 @@ void save_cases(SDL_Surface* image);
 SDL_Surface* reduce_res(SDL_Surface* image);
 
 
-
 void detect_grid(SDL_Surface* image, SDL_Surface* baseimage)
 {
-    SDL_Surface *segmap = SDL_CreateRGBSurface(0, image->w, image->h, 32, 0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
+    SDL_Surface *segmap = SDL_CreateRGBSurface(0, image->w, image->h, 32, 0xff000000, 0x00ff0000, 0x0000ff00, 0);
     size_t biggestObj = segmentation(image, segmap);
     colorimage(image, segmap);
     if(SDL_SaveBMP(image, "colorised.bmp") != 0)
@@ -78,6 +80,96 @@ size_t segmentation(SDL_Surface* image, SDL_Surface* segmap)
     printf("max pixels in an element = %lu\n", max);
     return labelmax;
 }
+
+/*
+
+void rowssegmentation(SDL_Surface *image, SDL_Surface* segmap)
+{
+    linked_list *linked = init_linked_list();
+    size_t segval = 1;
+    Uint32 p;
+    for (size_t x = 0; x < (size_t)image->w; x++)
+    {
+        for (size_t y = 0; y < (size_t)image->h; y++)
+        {
+            Uint8 color;
+            Uint32 pix = get_pixel(image, x, y);
+            SDL_GetRGB(pix, image->format, &color, &color, &color);
+            if(color == 255)
+            {
+                linked_list *neighbors = init_linked_list();
+                if(x > 0)
+                {
+                    p = get_pixel(segmap, x-1, y);
+                    if(p!=0)
+                    {
+                        neighbors->append_value(neighbors, p);
+                    }
+                }
+                if(y > 0)
+                {
+                    p = get_pixel(segmap, x, y-1);
+                    if(p!=0)
+                    {
+                        neighbors->append_value(neighbors, p);
+                    }
+                }
+                if(neighbors->length == 0)
+                {
+                    linked_list *l = init_linked_list();
+                    linked->append_value(linked, l);
+                    put_pixel(segmap, x, y, segval);
+                    segval+=1;
+                }
+                else
+                {
+                    p = neighbors->get_value_at(neighbors, 0);
+                    for (size_t i = 0; i < neighbors->length; i++)
+                    {
+                        Uint32 p1 = neighbors->get_value_at(neighbors, 0);
+                        if(p1 < p)
+                        {
+                            p = p1;
+                        }
+                    }
+                    put_pixel(segmap, x, y, p);
+                    for (size_t i = 0; i < neighbors->length; i++)
+                    {
+                        unite(linked->get_value_at(linked, i), neighbors);
+                        linked->insert_value_at(linked, neighbors->get_value_at(neighbors, i), 0);
+                    }
+                    
+                }
+            }
+        }
+    } 
+    for (size_t x = 0; x < image->w; x++)
+    {
+        for (size_t y = 0; y < image->h; y++)
+        {
+            p = get_pixel(segmap, x, y)
+            if(p != 0)
+            {
+                put_pixel(segmap, x, y, );
+            }
+        }
+        
+    }
+      
+}
+
+
+void unite(linked_list *l1, linked_list *l2)
+{
+    for (size_t i = 0; i < l2->lenght-1; i++)
+    {
+        if(l1->index_of(l1, l2->get_value_at(l2, i)) == -1)
+        {
+            l1->append_value(l1, l2->get_value_at(l2, i));
+        }
+    }
+}
+*/
 
 size_t propagate(SDL_Surface *image, SDL_Surface* segmap, int segval, size_t x, size_t y)
 {
