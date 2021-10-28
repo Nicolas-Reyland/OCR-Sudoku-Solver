@@ -11,11 +11,6 @@ CC := gcc
 all: nn gui solver # src/nn/nn.o src/gui/gui.o src/solver/solver.o
 	@echo "all rule called (nothing to do as of yet)"
 
-# ------- Solver -------
-.PHONY: solver
-solver:
-	$(CC) $(CFLAGS) -o src/solver/main src/solver/{main,sources/{reader,solver,tester,writer}}.c
-
 # ------- Neural Networks -------
 .PHONY: nn
 nn: utils nn-model nn-data nn-session nn-utils nn-functions_descriptors
@@ -86,12 +81,20 @@ src/gui/image_process.o : src/gui/image_process.c
 src/gui/pixel_operations.o : src/gui/pixel_operations.c
 	$(CC) -c $(CFLAGS_GUI) src/gui/pixel_operations.c -o src/gui/pixel_operations.o $(LDLIBS_GUI)
 
+
+# ------- Solver -------
+.PHONY: solver
+solver:
+	$(CC) $(CFLAGS) -o src/solver/main src/solver/{main,sources/{reader,solver,tester,writer}}.c
+
+
 # ------- Utils -------
 .PHONY: utils
 utils:
 	$(CC) $(CFLAGS) -c -o src/utils/mem/linked_list.o src/utils/mem/linked_list.c
 	$(CC) $(CFLAGS) -c -o src/utils/mem/mem-management.o src/utils/mem/mem-management.c
 	$(CC) $(CFLAGS) -c -o src/utils/verbosity/verbose.o src/utils/verbosity/verbose.c
+
 
 # ------- Test Framework ------- 
 .PHONY: test
@@ -102,7 +105,9 @@ test:
 clean-test:
 	@rm -rf /tmp/ocr-tests{,-perm}
 
+
 # ------- Misc Rules -------
 .PHONY: clean
 clean:
 	@./extra/make-clean.sh
+
