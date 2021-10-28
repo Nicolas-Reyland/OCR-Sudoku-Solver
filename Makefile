@@ -11,6 +11,11 @@ CC := gcc
 all: nn gui solver # src/nn/nn.o src/gui/gui.o src/solver/solver.o
 	@echo "all rule called (nothing to do as of yet)"
 
+# ------- Solver -------
+.PHONY: solver
+solver:
+	$(CC) $(CFLAGS) -o src/solver/main src/solver/{main,sources/{reader,solver,tester,writer}}.c
+
 # ------- Neural Networks -------
 .PHONY: nn
 nn: utils nn-model nn-data nn-session nn-utils nn-functions_descriptors
