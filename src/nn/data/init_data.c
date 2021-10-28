@@ -2,6 +2,10 @@
 
 #include "init_data.h"
 
+// declare get_line function here to prevent from a compilation warning
+ssize_t getline(char **restrict lineptr, size_t *restrict n,
+		FILE *restrict stream);
+
 nn_DataSet* nn_loadDataSet(char* data_dir_path, nn_ShapeDescription* description, bool verb_mode)
 {
   // alloc path strings
