@@ -1,4 +1,4 @@
-# -*-Makefile-*-
+#-*-Makefile-*-
 
 #target : dependencies
 #	action
@@ -17,18 +17,26 @@ LDLIBS = -lm `pkg-config --libs sdl2` -lSDL2_image
 
 all : main
 
-main : main.o detect_grid.o pixel_operations.o 
-	$(CC) $(CFLAGSNE) main.o detect_grid.o pixel_operations.o -o main $(LDLIBS)
+main : sources/main.o sources/detect_grid.o sources/pixel_operations.o ../utils/mem/linked_list.o sources/set.o
+	$(CC) $(CFLAGSNE) sources/main.o sources/detect_grid.o sources/pixel_operations.o ../utils/mem/linked_list.o sources/set.o -o main $(LDLIBS)
 
-main.o : main.c
-	$(CC) -c $(CFLAGSNE) main.c -o main.o $(LDLIBS)
+main.o : sources/main.c
+	$(CC) -c $(CFLAGSNE) sources/main.c -o sources/main.o $(LDLIBS)
 
-detect_grid.o : detect_grid.c
-	$(CC) -c $(CFLAGSNE) detect_grid.c -o detect_grid.o $(LDLIBS)
+sources/detect_grid.o : sources/detect_grid.c
+	$(CC) -c $(CFLAGSNE) sources/detect_grid.c -o sources/detect_grid.o $(LDLIBS)
 
-pixel_operations.o : pixel_operations.c
-	$(CC) -c $(CFLAGSNE) pixel_operations.c -o pixel_operations.o $(LDLIBS)
+sources/pixel_operations.o : sources/pixel_operations.c
+	$(CC) -c $(CFLAGSNE) sources/pixel_operations.c -o sources/pixel_operations.o $(LDLIBS)
+
+../utils/mem/link_list.o : ../utils/mem/link_list.c
+	$(CC) -c $(CFLAGSNE) ../utils/mem/link_list.c -o ../utils/mem/link_list.o $(LDLIBS)
+
+sources/set.o : sources/set.c
+	$(CC) -c $(CFLAGSNE) sources/set.c -o sources/set.o $(LDLIBS)
+
+
 
 clean :
-	rm *.o main *.bmp
+	rm cells/* sources/*.o main *.bmp ../utils/mem/*.o
 

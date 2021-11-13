@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include "detect_grid.h"
+#include "../headers/detect_grid.h"
 
 int main(int argc, char** argv)
 {
@@ -22,5 +22,7 @@ int main(int argc, char** argv)
         return 1;
     }	
     detect_grid(image, baseimage);
+    SDL_FreeSurface(image);
+    SDL_FreeSurface(baseimage);
     return 0;
 }
