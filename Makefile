@@ -25,7 +25,7 @@ nn-model: nn-model-layers
 .PHONY: nn-model-layers
 nn-model-layers: nn-utils-misc
 	$(CC) $(CFLAGS) -c -o src/nn/model/layers/layer.o src/nn/model/layers/layer.c
-	$(CC) $(CFLAGS) -c -o src/nn/model/layers/node.o src/nn/model/layers/node.c
+	$(CC) $(CFLAGS) -c -o src/nn/model/layers/node/node.o src/nn/model/layers/node/node.c
 
 .PHONY: nn-functions_descriptors
 nn-functions_descriptors:
@@ -69,8 +69,8 @@ nn-utils-functions-activations:
 
 
 # ------- GUI & Image Processing -------
-gui : utils src/gui/gui.o src/gui/image_process.o src/gui/pixel_operations.o
-	$(CC) $(CFLAGS_GUI) src/gui/gui.o src/gui/image_process.o src/gui/pixel_operations.o -o gui $(LDLIBS_GUI)
+gui : src/gui/gui.o src/gui/image_process.o src/gui/pixel_operations.o
+	$(CC) $(CFLAGS_GUI) src/gui/gui.o src/gui/image_process.o src/gui/pixel_operations.o -o src/gui/gui $(LDLIBS_GUI)
 
 src/gui/gui.o : src/gui/gui.c
 	$(CC) -c $(CFLAGS_GUI) src/gui/gui.c -o src/gui/gui.o $(LDLIBS_GUI)
@@ -82,7 +82,14 @@ src/gui/pixel_operations.o : src/gui/pixel_operations.c
 	$(CC) -c $(CFLAGS_GUI) src/gui/pixel_operations.c -o src/gui/pixel_operations.o $(LDLIBS_GUI)
 
 gui_clean :
-	rm gui.o image_process.o pixel_operations.o gui grayscale.bmp blurred_image.bmp binarised_image.bmp rotated_image.bmp
+	rm src/gui/*.o src/gui/gui src/gui/grayscale.bmp src/gui/blurred_image.bmp src/gui/binarised_image.bmp src/gui/rotated_image.bmp
+
+
+# ------- Solver -------
+.PHONY: solver
+solver:
+	$(CC) $(CFLAGS) -o src/solver/main src/solver/{main,sources/{reader,solver,tester,writer}}.c
+
 
 # ------- Utils -------
 .PHONY: utils
@@ -90,6 +97,7 @@ utils:
 	$(CC) $(CFLAGS) -c -o src/utils/mem/linked_list.o src/utils/mem/linked_list.c
 	$(CC) $(CFLAGS) -c -o src/utils/mem/mem-management.o src/utils/mem/mem-management.c
 	$(CC) $(CFLAGS) -c -o src/utils/verbosity/verbose.o src/utils/verbosity/verbose.c
+
 
 # ------- Test Framework ------- 
 .PHONY: test
@@ -100,7 +108,9 @@ test:
 clean-test:
 	@rm -rf /tmp/ocr-tests{,-perm}
 
+
 # ------- Misc Rules -------
 .PHONY: clean
 clean:
 	@./extra/make-clean.sh
+
