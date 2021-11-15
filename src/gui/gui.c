@@ -3,6 +3,7 @@
 #include <string.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include <gtk/gtk.h>
 #include "image_process.h"
 //#include "utils/mem/mem-management.h"
@@ -64,6 +65,8 @@ int main(int argc, char **argv)
     //GError *err = NULL;
 
     gtk_init(&argc, &argv);
+    init_sdl();
+    init_sdl_ttf();
 
     // Creates a GtkWindow
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -80,14 +83,14 @@ int main(int argc, char **argv)
     // Sets some border space around the edges of the window.
     gtk_container_set_border_width(GTK_CONTAINER(window), 15);
     
-    icon = create_pixbuf("gui_images/icon.jpg");
+    icon = create_pixbuf("gui_files/icon.jpg");
     gtk_window_set_icon(GTK_WINDOW(window), icon);
 
-    src_image_path = (char*)malloc((strlen("gui_images/no_image.png") + 1) * sizeof(char));
+    src_image_path = (char*)malloc((strlen("gui_files/no_image.png") + 1) * sizeof(char));
     //if (!src_image_path)
     //    exit(0);
     
-    src_image_path = strcpy(src_image_path, "gui_images/no_image.png");
+    src_image_path = strcpy(src_image_path, "gui_files/no_image.png");
 
     image = gui_load_image(src_image_path);
     image_process(src_image_path);
@@ -178,10 +181,31 @@ int main(int argc, char **argv)
 
     gtk_widget_show_all(window);
     
-    g_object_unref(icon);
+    //g_object_unref(icon);
     //g_object_unref(image_pixbuf);
 
-    gtk_main();    
+    /*
+    int **unsolved_grid = calloc(9, sizeof(int*));
+    int **solved_grid = calloc(9, sizeof(int*));
+
+    for (int i = 0; i < 9; i++)
+    {
+        unsolved_grid[i] = calloc(9, sizeof(int));
+        solved_grid[i] = calloc(9, sizeof(int));
+        
+        for (int j = 0; j < 9; j++)
+        {
+            unsolved_grid[i][j] = random() % 10;
+            solved_grid[i][j] = (random() % 9) + 1;
+        }
+    }
+
+    create_grids(unsolved_grid, solved_grid);
+    */
+
+    gtk_main();
+    TTF_Quit();
+    SDL_Quit();
 
     return 0;
 }

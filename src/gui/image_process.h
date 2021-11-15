@@ -5,11 +5,17 @@
 #define SAVED_IMG_NAME_G "grayscale.bmp"
 #define SAVED_IMG_NAME_BL "blurred_image.bmp"
 #define SAVED_IMG_NAME_BI "binarised_image.bmp"
+#define SAVED_IMG_NAME_DG "gui_files/dflt_grid.png"
+#define SAVED_IMG_NAME_UG "unsolved_grid.bmp"
+#define SAVED_IMG_NAME_SG "solved_grid.bmp"
+#define GRID_NUMBER_FONT "gui_files/arial_narrow_7.ttf"
 
 typedef enum { MEAN, 
 			STD_DEVIATION } II_TYPE;
 
 void init_sdl();
+
+void init_sdl_ttf();
 
 SDL_Surface* load_image(char *path);
 
@@ -33,5 +39,7 @@ double sauvola_binarisation(unsigned long long int **mean_ii,
 void image_process(char *path);
 
 void rotate_image(char *path, double angle);
+
+void create_grids(int **unsolved_sudoku, int **solved_sudoku);
 
 #endif

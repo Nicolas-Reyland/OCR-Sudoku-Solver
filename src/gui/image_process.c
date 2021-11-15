@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <gtk/gtk.h>
 #include <math.h>
 #include <err.h>
@@ -38,6 +39,12 @@ void init_sdl()
 {
 	if(SDL_Init(SDL_INIT_VIDEO != 0))
 		errx(1, "Failed to initialize SDL -> %s.\n", SDL_GetError());
+}
+
+void init_sdl_ttf()
+{
+	if(TTF_Init() != 0)
+		errx(1, "Failed to initialize SDL_TTF -> %s.\n", SDL_GetError());
 }
 
 SDL_Surface* load_image(char *path)
@@ -379,7 +386,6 @@ void image_process(char *path)
 	Uint8 r, g, b;
 	double threshold;
 
-	init_sdl();
 	surface = load_image(path);
 
 	size_t surf_width = surface->w;
@@ -503,7 +509,6 @@ void rotate_image(char *path, double angle)
 
 	angle = angle * 2 * PI / 360;
 
-	init_sdl();
 	src_surface = load_image(path);
 
 	int src_surf_w = src_surface->w;
@@ -604,4 +609,92 @@ void rotate_image(char *path, double angle)
 	SDL_SaveBMP(rotated_surface, SAVED_IMG_NAME_R);
 	SDL_FreeSurface(src_surface);
 	SDL_FreeSurface(rotated_surface);
+}
+
+void create_grids(int **unsolved_sudoku, int **solved_sudoku)
+{
+	SDL_Surface *dflt_grid = NULL;
+    SDL_Surface **given_numbers_surface = malloc(9 * sizeof(SDL_Surface*));
+    SDL_Surface **added_numbers_surface = malloc(9 * sizeof(SDL_Surface*));
+
+    char numbers[9][2] = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
+
+    TTF_Font *numbers_font = TTF_OpenFont(GRID_NUMBER_FONT, 35);
+
+    SDL_Rect position;
+
+    // given numbers -> black color
+    SDL_Color given_numbers_color = {.r = 0, .g = 0, .b = 0};
+
+    // added numbers -> green color
+	SDL_Color added_numbers_color = {.r = 0, .g = 154, .b = 23};
+    
+	int size = 9;
+
+	for(int i = 0; i < 9; i++)
+	{
+		given_numbers_surface[i] = TTF_RenderText_Blended(numbers_font, numbers[i], given_numbers_color);
+		added_numbers_surface[i] = TTF_RenderText_Blended(numbers_font, numbers[i], added_numbers_color);
+	}
+
+	dflt_grid = load_image(SAVED_IMG_NAME_DG);
+
+	for (int i = 0; i < size; i++)
+	{
+		for (int j = 0; j < size; j++)
+		{
+			int current_nb = unsolved_sudoku[i][j];
+
+			if (current_nb != 0)
+			{
+				// A constant has been added to the position due 
+				// to the white space generated in the font surface
+
+				position.x = (dflt_grid->w/18) * (1 + 2 * j) - 
+				(given_numbers_surface[current_nb - 1]->w - 
+				given_numbers_surface[current_nb - 1]->w / 4) / 2;
+    			
+    			position.y = (dflt_grid->h/18) * (1 + 2 * i) - 
+				(given_numbers_surface[current_nb - 1]->h - 
+				given_numbers_surface[current_nb - 1]->h / 3) / 2;
+
+    			SDL_BlitSurface(given_numbers_surface[current_nb - 1], NULL, dflt_grid, &position);
+			}
+		}
+	}
+
+	SDL_SaveBMP(dflt_grid, SAVED_IMG_NAME_UG);
+
+	for (int i = 0; i < size; i++)
+	{
+		for (int j = 0; j < size; j++)
+		{
+			int current_nb = solved_sudoku[i][j];
+
+			if (unsolved_sudoku[i][j] == 0)
+			{
+				// A constant has been added to the position due 
+				// to the white space generated in the font surface
+
+				position.x = (dflt_grid->w/18) * (1 + 2 * j) - 
+				(added_numbers_surface[current_nb - 1]->w - 
+				added_numbers_surface[current_nb - 1]->w / 4) / 2;
+    			
+    			position.y = (dflt_grid->h/18) * (1 + 2 * i) - 
+				(added_numbers_surface[current_nb - 1]->h - 
+				added_numbers_surface[current_nb - 1]->h / 3) / 2;
+
+    			SDL_BlitSurface(added_numbers_surface[current_nb - 1], NULL, dflt_grid, &position);
+			}
+		}
+	}
+
+	SDL_SaveBMP(dflt_grid, SAVED_IMG_NAME_SG);
+
+	SDL_FreeSurface(dflt_grid);
+	for (int i = 0; i < 9; i++)
+	{
+		SDL_FreeSurface(given_numbers_surface[i]);
+		SDL_FreeSurface(added_numbers_surface[i]);
+	}
 }
