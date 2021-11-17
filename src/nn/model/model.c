@@ -48,7 +48,7 @@ void _nn_Model_saveArchitectureFn(nn_Model* model, char* path)
     size_t x = model->layers[i]->shape.x,
            y = model->layers[i]->shape.y,
            z = model->layers[i]->shape.z;
-        
+
     fprintf(architecture_file,"%lu %lu %lu\n", x, y, z);
     fprintf(architecture_file,"%d\n",model->layers[i]->activation);
   }
@@ -147,17 +147,17 @@ nn_Model* _nn_Model_loadModelArchitecture(char* path)
 {
   FILE* file = fopen(path,"r+");
 
-  if (file == NULL) 
+  if (file == NULL)
   {
     printf("Fatal ERROR loadModelArchitecture: could not open file");
     exit(1);
   }
 
-  size_t size = 0; 
+  size_t size = 0;
   losses loss;
   optimizer opti;
-  fscanf(file,"%lu %d %d\n",&size, &loss, &opti);
-    
+  fscanf(file,"%lu %d %d\n", &size, (int*)&loss, (int*)&opti);
+
 
   nn_ShapeDescription shape_descriptions [size];
   activation activations [size];
@@ -166,11 +166,11 @@ nn_Model* _nn_Model_loadModelArchitecture(char* path)
     size_t x,y,z;
     fscanf(file,"%lu %lu %lu\n", &x, &y, &z);
     shape_descriptions[i] = createShapeDescription(x,y,z);
-    fscanf(file,"%d\n", &activations[i]);
+    fscanf(file,"%d\n", (int*)&activations[i]);
   }
 
   fclose(file);
-  
+
   return createModel(size, shape_descriptions, activations, loss, opti);
 
 }
@@ -184,36 +184,35 @@ void _nn_Model_modifyModel(char* path, nn_Model* model)
     printf("Fatal ERROR modifyModel: could not open file");
     exit(1);
   }
-  
+
   for (size_t i = 0; i < model->num_layers - 1; i++)
   {
     for(size_t j = 0; j < model->layers[i]->num_nodes;j++)
     {
       for(size_t k = 0; k < model->layers[i]->nodes[j]->num_weights; k++)
-        fscanf(file,"%lf ", &model->layers[i]->nodes[j]->weights[k]); 
-      
+        fscanf(file,"%lf ", &model->layers[i]->nodes[j]->weights[k]);
+
       fscanf(file,"\n%lf\n", &model->layers[i]->nodes[j]->bias);
     }
   }
   fclose(file);
 }
 
-nn_Model* loadModel(char* dirpath)
+nn_Model* nn_loadModel(char* dirpath)
 {
-  char arch_file[512];
-  char weight_file[512];
+	char arch_file[512];
+	char weight_file[512];
 
-  strcpy(arch_file, dirpath);
-  strcpy(weight_file, dirpath);
+	strcpy(arch_file, dirpath);
+	strcpy(weight_file, dirpath);
 
-  strcat(arch_file, "architecture.mdl");
-  strcat(weight_file, "weightsandbias.mdl");
+	strcat(arch_file, "architecture.mdl");
+	strcat(weight_file, "weightsandbias.mdl");
 
+	nn_Model* model = _nn_Model_loadModelArchitecture(arch_file);
+	_nn_Model_modifyModel(weight_file, model);
 
-  nn_Model* model = _nn_Model_loadModelArchitecture(arch_file);
-  _nn_Model_modifyModel(weight_file,model);
-  
-  return model;
+	return model;
 }
 
 
