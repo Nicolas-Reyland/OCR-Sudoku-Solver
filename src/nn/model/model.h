@@ -15,6 +15,7 @@ typedef struct nn_Model {
   optimizer optimizer;
   void (*printModelLayers)(struct nn_Model* model);
   void (*printModelLayersValues)(struct nn_Model* model);
+  void (*printModelArchitecture)(struct nn_Model* model);
   void (*saveArchitecture)(struct nn_Model* model, char*);
   void (*saveWeightsAndBias)(struct nn_Model* model, char*);
   void (*saveModel)(struct nn_Model* model, char*);

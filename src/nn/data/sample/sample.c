@@ -2,7 +2,7 @@
 
 #include "sample.h"
 
-void _nn_print(nn_Sample* sample)
+static void _nn_printSample(nn_Sample* sample)
 {
   for(size_t i = 0; i < sample->num_values;i++)
     printf("%f, ", sample->values[i]);
@@ -16,7 +16,7 @@ size_t num_values)
   sample->shape_description = description;
   sample->num_values         = num_values;
   sample->values            = values;
-  sample->print             = &_nn_print;
+  sample->print             = &_nn_printSample;
   return sample;
 }
 

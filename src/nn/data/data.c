@@ -35,7 +35,7 @@ nn_DataTuple _nn_dataSplitTrainTest(nn_Data* data, int splittingPercentage)
     return data_tuple;
 }
 
-void _nn_printData(nn_Data* data)
+static void _nn_printData(nn_Data* data)
 {
     iot_ll_node* node = data->data_collection->data
         ->head;

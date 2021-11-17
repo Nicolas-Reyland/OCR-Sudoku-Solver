@@ -1,37 +1,10 @@
 // model.c
 #include "model.h"
 
-void _nn_printModelLayers(nn_Model* model)
-{
-	nn_Layer* layer;
-	for (size_t index = 0; index < model->num_layers; index++) {
-		layer = model->layers[index];
-		printf("index: %ld\n", index);
-		nn_Node* node;
-		for (size_t i = 0; i < layer->num_nodes; i++) {
-			node = layer->nodes[i];
-			for (size_t j = 0; j < node->num_weights; j++) {
-				printf("layers[%ld]->nodes[%ld]->weights[%ld] = %lf\n", index, i, j, node->weights[j]);
-			}
-			printf("bias: %lf\n", node->bias);
-		}
-	}
-}
 
-void _nn_printModelLayersValues(nn_Model* model)
-{
-	nn_Layer* layer;
-	for (size_t index = 0; index < model->num_layers; index++) {
-		layer = model->layers[index];
-		printf("index: %ld\n", index);
-		nn_Node* node;
-		for (size_t i = 0; i < layer->num_nodes; i++) {
-			node = layer->nodes[i];
-			printf("layers[%ld]->nodes[%ld]->value = %lf\n", index, i, node->value);
-			printf("layers[%ld]->nodes[%ld]->raw_value = %lf\n", index, i, node->raw_value);
-		}
-	}
-}
+static void _nn_printModelLayers(nn_Model* model);
+static void _nn_printModelLayersValues(nn_Model* model);
+static void _nn_printModelArchitecture(nn_Model* model);
 
 void _nn_Model_saveArchitectureFn(nn_Model* model, char* path)
 {
@@ -64,7 +37,6 @@ void _nn_Model_saveWeightsAndBias(nn_Model* model, char* path)
     fprintf(stderr, "saveWeightsAndBias: %s, the file does not exist. Exiting...\n",path);
     exit(EXIT_FAILURE);
   }
-
 
   // weights and biases for all except last
   for(size_t i = 0; i < model->num_layers-1; i++)
@@ -132,6 +104,7 @@ nn_Model* createModel(size_t num_layers, nn_ShapeDescription model_architecture[
   // add functions to struct
   model->printModelLayers = &_nn_printModelLayers;
   model->printModelLayersValues = &_nn_printModelLayersValues;
+  model->printModelArchitecture = &_nn_printModelArchitecture;
   model->saveArchitecture = &_nn_Model_saveArchitectureFn;
   model->saveWeightsAndBias = &_nn_Model_saveWeightsAndBias;
   model->saveModel = &_nn_Model_saveModel;
@@ -226,6 +199,47 @@ nn_Model* nn_loadModel(char* dirpath)
 	_nn_Model_modifyModel(weight_file, model);
 
 	return model;
+}
+
+static void _nn_printModelLayers(nn_Model* model)
+{
+	nn_Layer* layer;
+	for (size_t index = 0; index < model->num_layers; index++) {
+		layer = model->layers[index];
+		printf("index: %ld\n", index);
+		nn_Node* node;
+		for (size_t i = 0; i < layer->num_nodes; i++) {
+			node = layer->nodes[i];
+			for (size_t j = 0; j < node->num_weights; j++) {
+				printf("layers[%ld]->nodes[%ld]->weights[%ld] = %lf\n", index, i, j, node->weights[j]);
+			}
+			printf("bias: %lf\n", node->bias);
+		}
+	}
+}
+
+static void _nn_printModelLayersValues(nn_Model* model)
+{
+	nn_Layer* layer;
+	for (size_t index = 0; index < model->num_layers; index++) {
+		layer = model->layers[index];
+		printf("index: %ld\n", index);
+		nn_Node* node;
+		for (size_t i = 0; i < layer->num_nodes; i++) {
+			node = layer->nodes[i];
+			printf("layers[%ld]->nodes[%ld]->value = %lf\n", index, i, node->value);
+			printf("layers[%ld]->nodes[%ld]->raw_value = %lf\n", index, i, node->raw_value);
+		}
+	}
+}
+
+static void _nn_printModelArchitecture(nn_Model* model)
+{
+	printf("Model architecture:\n * num layers: %lu\n", model->num_layers);
+	for (size_t i = 0; i < model->num_layers; i++) {
+		nn_ShapeDescription shape = model->layers[i]->shape;
+		printf(" - layer %lu : dims=%lu, x=%lu, y=%lu, z=%lu (%lu)\n", i, shape.dims, shape.x, shape.y, shape.z, shape.range);
+	}
 }
 
 
