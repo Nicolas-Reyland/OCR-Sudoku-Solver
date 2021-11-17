@@ -1,5 +1,5 @@
 # compiled binaries from various scripts
-test.out
+*.c.out
 src/gui/gui
 src/solver/main
 
