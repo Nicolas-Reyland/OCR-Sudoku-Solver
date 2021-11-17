@@ -15,11 +15,10 @@ int main()
 	initMemoryTracking();
 
 	// model architecture
-	nn_ShapeDescription model_architecture[4] = {
-		create2DShapeDescription(28, 28),
-		create2DShapeDescription(16, 16),
-		create1DShapeDescription(128),
-		create1DShapeDescription(9),
+	nn_ShapeDescription model_architecture[3] = {
+		create1DShapeDescription(2),
+		create1DShapeDescription(2),
+		create1DShapeDescription(1),
 	};
 	// activation functions
 	activation activations[2] = {
@@ -52,6 +51,8 @@ int main()
 	setVerbose(false);
 	session->train(session, model);
 	session->test(session, model);
+
+    _nn_printModelLayers(model);
 
 	// save model
 	model->saveModel(model, "save/xor/");

@@ -18,6 +18,8 @@ int main()
 	// malloc model
 	nn_Model* model = nn_loadModel("save/xor/");
 
+    _nn_printModelLayers(model);
+
 	// load the dataset
 	verbose("Loading dataset...");
 	nn_ShapeDescription shape = emptyShapeDescription();
