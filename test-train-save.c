@@ -36,6 +36,7 @@ int main()
 	// load the dataset
 	nn_ShapeDescription shape = emptyShapeDescription();
 	nn_DataSet* dataset = nn_loadDataSet("datas/xor/", &shape, true);
+    model->printModelArchitecture(model);
 
 	nn_Session* session = createSession(
 		dataset,
@@ -52,9 +53,12 @@ int main()
 	session->train(session, model);
 	session->test(session, model);
 
-    _nn_printModelLayers(model);
+    model->printModelLayersValues(model);
+    model->printModelArchitecture(model);
 
 	// save model
+	setVerbose(false);
+	verbose("Saving the model...");
 	model->saveModel(model, "save/xor/");
 
 	// free model
