@@ -14,7 +14,7 @@ do
 done
 export src_path=extra/test.c
 if [ -n "$1" ]; then
-	src_path=$1
+	src_path="$1"
 	echo "custom src path: $src_path"
 fi
-gcc -o "test.out" "$src_path" "${args[@]}" -Isrc $FLAGS -lm
+gcc -o "$(basename $src_path).out" "$src_path" "${args[@]}" -Isrc $FLAGS -lm
