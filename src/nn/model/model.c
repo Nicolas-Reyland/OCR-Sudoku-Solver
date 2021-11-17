@@ -66,9 +66,9 @@ void _nn_Model_saveWeightsAndBias(nn_Model* model, char* path)
   }
 
 
+  // weights and biases for all except last
   for(size_t i = 0; i < model->num_layers-1; i++)
   {
-
     for(size_t j = 0; j < model->layers[i]->num_nodes; j++)
     {
       for(size_t k = 0; k < model->layers[i]->nodes[j]->num_weights; k++)
@@ -78,6 +78,12 @@ void _nn_Model_saveWeightsAndBias(nn_Model* model, char* path)
       fprintf(wab_file,"\n%lf\n",model->layers[i]->nodes[j]->bias);
     }
   }
+  // last layer biases
+  nn_Layer* last_layer = model->layers[model->num_layers - 1];
+  for (size_t k = 0; k < last_layer->num_nodes; k++) {
+	  fprintf(wab_file,"\n%lf\n", last_layer->nodes[k]->bias);
+  }
+  // close the file
   fclose(wab_file);
 }
 
@@ -185,6 +191,7 @@ void _nn_Model_modifyModel(char* path, nn_Model* model)
     exit(1);
   }
 
+  // weights and biases for all except last
   for (size_t i = 0; i < model->num_layers - 1; i++)
   {
     for(size_t j = 0; j < model->layers[i]->num_nodes;j++)
@@ -195,6 +202,12 @@ void _nn_Model_modifyModel(char* path, nn_Model* model)
       fscanf(file,"\n%lf\n", &model->layers[i]->nodes[j]->bias);
     }
   }
+  // last layer biases
+  nn_Layer* last_layer = model->layers[model->num_layers - 1];
+  for (size_t k = 0; k < last_layer->num_nodes; k++) {
+	  fscanf(file,"\n%lf\n", &last_layer->nodes[k]->bias);
+  }
+  // close the file
   fclose(file);
 }
 
