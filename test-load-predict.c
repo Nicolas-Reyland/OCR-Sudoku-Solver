@@ -18,7 +18,7 @@ int main()
 	// malloc model
 	nn_Model* model = nn_loadModel("save/xor/");
 
-    model->printModelLayersValues(model);
+    model->printModelLayers(model);
     model->printModelArchitecture(model);
 
 	// load the dataset

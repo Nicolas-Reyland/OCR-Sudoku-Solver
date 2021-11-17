@@ -53,7 +53,7 @@ int main()
 	session->train(session, model);
 	session->test(session, model);
 
-    model->printModelLayersValues(model);
+    model->printModelLayers(model);
     model->printModelArchitecture(model);
 
 	// save model
