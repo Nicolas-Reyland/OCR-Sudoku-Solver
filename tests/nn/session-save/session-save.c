@@ -121,7 +121,7 @@ int main(int argc, char** argv)
 	freeModel(model);
 	//free session (and dataset)
 	freeSession(session);
-  model = loadModel(save_path);
+  model = nn_loadModel(save_path);
 
   model->printModelLayers(model);
 
