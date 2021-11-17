@@ -5,6 +5,7 @@
 
 typedef enum losses
 {
+	NO_LOSS, // for safety
 	CATEGORICALCROSSENTROPY,
 	BINARYCROSSENTROPY,
 	MEANSQUAREDERROR
@@ -12,7 +13,7 @@ typedef enum losses
 
 typedef enum activation
 {
-	NO_ACTIVATION, // e.g. for the input layer
+	NO_ACTIVATION, // for safety
 	SIGMOID,
 	RELU,
 	LEAKY_RELU,
@@ -22,6 +23,7 @@ typedef enum activation
 
 typedef enum optimizer
 {
+	NO_OPTIMIZER, // for safety
 	RMSPROP,
 	ADAM
 } optimizer;

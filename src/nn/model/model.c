@@ -237,9 +237,12 @@ static void _nn_printModelArchitecture(nn_Model* model)
 {
 	printf("Model architecture:\n * num layers: %lu\n", model->num_layers);
 	for (size_t i = 0; i < model->num_layers; i++) {
-		nn_ShapeDescription shape = model->layers[i]->shape;
+		nn_Layer *layer = model->layers[i];
+		nn_ShapeDescription shape = layer->shape;
 		printf(" - layer %lu : dims=%lu, x=%lu, y=%lu, z=%lu (%lu)\n", i, shape.dims, shape.x, shape.y, shape.z, shape.range);
+		printf("    -> activation=%d\n", (int)layer->activation);
 	}
+	printf(" * Loss function=%d\n", (int)model->loss);
 }
 
 

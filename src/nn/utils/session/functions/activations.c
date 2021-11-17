@@ -19,7 +19,7 @@ void _nn_activateLayer(nn_Layer* layer)
 			softmax(layer);
 			break;
 		case NO_ACTIVATION:
-			fprintf(stderr, "Tried to activate input layer values (input data)\n");
+			fprintf(stderr, "Tried to evaluate empty activation function (no activation defined)\n");
 			exit(EXIT_FAILURE);
 			break;
 		default:
@@ -64,7 +64,7 @@ void softmax(nn_Layer* layer)
 	double sum =0;
 	for(size_t i = 0; i < layer->num_nodes;i++)
 		sum += exp(layer->nodes[i]->raw_value);
-	
+
 	for(size_t i = 0; i< layer->num_nodes;i++)
 		layer->nodes[i]->value = _nn_softmax(sum, layer->nodes[i]->raw_value);
 }

@@ -10,9 +10,12 @@ double applyLosses(nn_Layer* layer, double *desired_output, losses losses)
 {
 	switch(losses)
 	{
+		case NO_LOSS:
+			fprintf(stderr, "Tried to evaluate empty loss function (no loss defined)\n");
+			exit(EXIT_FAILURE);
+			return NAN;
 		case CATEGORICALCROSSENTROPY:
 			return _nn_categoricalCrossEntropy(layer, desired_output);
-			break;
 		case BINARYCROSSENTROPY:
 			return _nn_binaryCrossEntropy(layer, desired_output);
 		case MEANSQUAREDERROR:
@@ -32,7 +35,7 @@ double _nn_binaryCrossEntropy(nn_Layer* layer, double* desired_output)
 	double sum = 0;
 	for(size_t i = 0; i < layer->num_nodes; i++)
 	{
-		sum += desired_output[i] * log(layer->nodes[i]->value) + 
+		sum += desired_output[i] * log(layer->nodes[i]->value) +
 		(1.0 - desired_output[i])* log(1 - layer->nodes[i]->value);
 	}
 	sum = sum * (1/layer->num_nodes);
@@ -56,7 +59,7 @@ double _nn_meanSquaredError(nn_Layer* layer, double* desired_output)
 	double sum = 0;
 	for(size_t i = 0; i < layer->num_nodes; i++)
 	{
-		sum += (desired_output[i] - layer->nodes[i]->value) * (desired_output[i] - layer->nodes[i]->value);  
+		sum += (desired_output[i] - layer->nodes[i]->value) * (desired_output[i] - layer->nodes[i]->value);
 	}
 	double mean_square_error = (1.0 / layer->num_nodes) * sum;
 	return mean_square_error;
