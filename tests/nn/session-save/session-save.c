@@ -35,8 +35,8 @@ int main(int argc, char** argv)
 	char* path_to_project = argv[1];
 	strcpy(input_path, path_to_project);
 	strcpy(output_path, path_to_project);
-	strcat(input_path, "/datas/xor/input.txt");
-	strcat(output_path, "/datas/xor/output.txt");
+	strcat(input_path, "/datas/xor/test.in");
+	strcat(output_path, "/datas/xor/test.out");
 
 	strcpy(save_path, path_to_project);
 	strcat(save_path, "/save/");
@@ -120,11 +120,12 @@ int main(int argc, char** argv)
 	// free model
 	freeModel(model);
 	//free session (and dataset)
-	freeSession(session);
     model = nn_loadModel(save_path);
 
     model->printModelLayers(model);
     model->printModelArchitecture(model);
+    session->test(session,model); 
+	freeSession(session);
     freeModel(model);
     setVerbose(false);
     free(GPL);
