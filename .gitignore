@@ -6,6 +6,9 @@ src/solver/main
 # Prerequisites
 *.d
 
+# xor model weights
+save/xor/weightsandbias.mdl
+
 # Object files
 *.o
 *.ko
