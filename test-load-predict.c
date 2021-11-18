@@ -28,7 +28,7 @@ int main()
 
 	nn_Session* session = createSession(
 		dataset,
-		10,
+		30,
 		0.1,
 		false,
 		false,
@@ -38,7 +38,7 @@ int main()
 	verbose("Session allocated");
 
 	setVerbose(false);
-	session->test(session, model);
+	session->test_one_hot(session, model);
 
 	// free model
 	freeModel(model);
