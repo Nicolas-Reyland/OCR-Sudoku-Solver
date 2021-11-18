@@ -15,40 +15,40 @@ int main()
 	initMemoryTracking();
 
 	// model architecture
-	nn_ShapeDescription model_architecture[3] = {
-		create1DShapeDescription(2),
-		create1DShapeDescription(2),
-		create1DShapeDescription(1),
+	nn_ShapeDescription model_architecture[] = {
+		create2DShapeDescription(28, 28),
+		create2DShapeDescription(16, 16),
+		create1DShapeDescription(128),
+		create1DShapeDescription(9),
 	};
 	// activation functions
-	activation activations[2] = {
-		RELU, SIGMOID
+	activation activations[] = {
+		SIGMOID, SIGMOID, SOFTMAX
 	};
 	// loss & optimizers
 	losses loss = CATEGORICALCROSSENTROPY;
 	optimizer optimizer = ADAM;
 
-	verbose("Allocating model...");
 	// malloc model
-	nn_Model* model = createModel(3, model_architecture, activations, loss, optimizer);
-	verbose("Model allocated");
+	nn_Model* model = createModel(4, model_architecture, activations, loss, optimizer);
+	verbose("Model created");
+	model->printModelArchitecture(model);
 
 	// load the dataset
 	nn_ShapeDescription shape = emptyShapeDescription();
-	nn_DataSet* dataset = nn_loadDataSet("datas/xor/", &shape, true);
+	nn_DataSet* dataset = nn_loadDataSet("datas/mnist/1k-", &shape, true);
 
 	nn_Session* session = createSession(
 		dataset,
 		10,
 		0.1,
 		false,
-		false,
+		true,
 		0.1
 	);
 
 	verbose("Session allocated");
 
-	setVerbose(false);
 	session->train(session, model);
 	session->test(session, model);
 
@@ -58,7 +58,7 @@ int main()
 	// save model
 	setVerbose(false);
 	verbose("Saving the model...");
-	model->saveModel(model, "save/xor/");
+	model->saveModel(model, "save/mnist/1k-");
 
 	// free model
 	freeModel(model);

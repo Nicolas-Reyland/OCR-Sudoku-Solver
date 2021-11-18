@@ -16,7 +16,7 @@ int main()
 
 	verbose("Loading model...");
 	// malloc model
-	nn_Model* model = nn_loadModel("save/xor/");
+	nn_Model* model = nn_loadModel("save/mnist/1k-");
 
     model->printModelLayers(model);
     model->printModelArchitecture(model);
@@ -24,7 +24,7 @@ int main()
 	// load the dataset
 	verbose("Loading dataset...");
 	nn_ShapeDescription shape = emptyShapeDescription();
-	nn_DataSet* dataset = nn_loadDataSet("datas/xor/", &shape, true);
+	nn_DataSet* dataset = nn_loadDataSet("datas/mnist/1k-", &shape, true);
 
 	nn_Session* session = createSession(
 		dataset,
