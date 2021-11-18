@@ -121,13 +121,13 @@ int main(int argc, char** argv)
 	freeModel(model);
 	//free session (and dataset)
 	freeSession(session);
-  model = nn_loadModel(save_path);
+    model = nn_loadModel(save_path);
 
-  model->printModelLayers(model);
-
-  freeModel(model);
-	setVerbose(false);
-	free(GPL);
+    model->printModelLayers(model);
+    model->printModelArchitecture(model);
+    freeModel(model);
+    setVerbose(false);
+    free(GPL);
 
 	return 0;
 }
