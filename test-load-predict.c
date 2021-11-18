@@ -37,7 +37,7 @@ int main()
 
 	verbose("Session allocated");
 
-	setVerbose(true);
+	setVerbose(false);
 	session->test(session, model);
 
 	// free model
