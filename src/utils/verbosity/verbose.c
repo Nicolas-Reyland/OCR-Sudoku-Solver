@@ -36,3 +36,8 @@ int verbose_no_endline(const char * restrict format, ...) {
 
     return ret;
 }
+
+void verbose_endline(void)
+{
+    printf("\n");
+}
