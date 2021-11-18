@@ -1,6 +1,6 @@
 #include "use_model.h"
 
-double* _nn_useModel(struct nn_Model* model, double* input)
+double* _nn_useModel(nn_Model* model, double* input)
 {
 	double* output = mem_malloc(sizeof(double)* model->layers[model->num_layers -1]->num_nodes);
 
