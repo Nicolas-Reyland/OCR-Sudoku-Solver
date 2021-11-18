@@ -61,7 +61,7 @@ void _nn_test(struct nn_Session* session, nn_Model* model)
 		session->dataset->test->data_collection->data);
 	size_t sample_size =session->dataset->test->data_collection->data->length;
 
-	shuffleArray(tuple_array,sample_size);
+	shuffleArray(tuple_array, sample_size);
 	for(size_t i = 0; i < sample_size; i++)
 	{
 		verbose("Testing Tuple:");
@@ -72,14 +72,67 @@ void _nn_test(struct nn_Session* session, nn_Model* model)
 		for(size_t j = 0; j < model->layers[model->num_layers - 1]->num_nodes; j++)
 			verbose_no_endline("%lf ",
 			model->layers[model->num_layers - 1]->nodes[j]->value);
-		verbose("");
+		verbose_endline();
 		//we calculate the loss function
 		double error = applyLosses(
-		model->layers[model->num_layers - 1],
-		tuple_array[i]->output->values,
-		model->loss);
+			model->layers[model->num_layers - 1],
+			tuple_array[i]->output->values,
+			model->loss);
 		verbose("Losses error = %f",error);
 	}
+}
+
+void _nn_test_one_hot(struct nn_Session* session, nn_Model* model)
+{
+	// TODO: add an average right prediction for each value of the one-hot values
+	verbose("Testing the model as one-hot");
+	size_t num_steps_verb = 100;
+
+	nn_InOutTuple** tuple_array = iot_linked_list_to_array(
+		session->dataset->test->data_collection->data);
+	size_t num_samples = session->dataset->test->data_collection->data->length;
+	double loss_sum = 0;
+	int num_right_predictions = 0;
+	nn_Layer* output_layer = model->layers[model->num_layers - 1];
+
+	for(size_t i = 0; i < num_samples; i++)
+	{
+		// verbosity
+		if (session->verb_mode && num_steps_verb++ % 100 == 0)
+			verbose(" test session run: %lf (%lu/%lu) \% done",
+				(double)num_steps_verb/num_samples,
+				num_steps_verb,
+				num_samples);
+		// model prediction
+		_nn_feedForward(model, tuple_array[i]->input->values);
+		// get maximised value by the model
+		size_t max_index = 0;
+		for(size_t j = 1; j < output_layer->num_nodes; j++)
+			if (output_layer->nodes[j]->value > output_layer->nodes[max_index]->value)
+				max_index = j;
+		// get index of hot value (1.0) in output values
+		size_t result_index = 0;
+		for (; result_index < tuple_array[i]->output->num_values; result_index++)
+			if (tuple_array[i]->output->values[result_index] == 1.0)
+				break;
+		// indices must be the same for the model to have rightly predicted
+		if (max_index == result_index)
+			num_right_predictions++;
+		// calculate the loss
+		double error = applyLosses(
+			model->layers[model->num_layers - 1],
+			tuple_array[i]->output->values,
+			model->loss);
+		// add the loss to a total (for later average loss calculation)
+		loss_sum += error;
+	}
+	// print averages
+	double avg_loss = loss_sum / num_samples;
+	double avg_right_predictions = num_right_predictions / num_samples;
+	// print averages
+	verbose(" test session run: finished");
+	verbose("Average loss is %lf", avg_loss);
+	verbose("Average of right predictions is %lf", avg_right_predictions);
 }
 
 nn_Session* createSession(nn_DataSet* dataset, unsigned int nb_epochs,
@@ -96,8 +149,9 @@ double learning_rate)
 
 	session->stop_on_loss_threshold_reached = stop_on_loss_threshold_reached;
 
-	session->train 	= &_nn_train;
-	session->test	= &_nn_test;
+	session->train			= &_nn_train;
+	session->test		 	= &_nn_test;
+	session->test_one_hot	= &_nn_test_one_hot;
 
 	return session;
 }

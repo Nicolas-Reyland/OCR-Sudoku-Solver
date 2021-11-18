@@ -22,6 +22,7 @@ struct nn_Session {
 	double learning_rate;
 	void (*train)(struct nn_Session* session, nn_Model* model);
 	void (*test)(struct nn_Session* session,nn_Model* model);
+	void (*test_one_hot)(struct nn_Session* session,nn_Model* model);
 };
 
 nn_Session* createSession(nn_DataSet* dataset, unsigned int nb_epochs,
