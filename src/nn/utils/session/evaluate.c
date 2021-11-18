@@ -72,9 +72,9 @@ void _nn_updateWeights(nn_Model* model, double learning_rate)
   for (size_t i = 0; i < num_layers - 1; i++) {
     for (size_t j = 0; j < layers[i]->num_nodes; j++) {
       for (size_t k = 0; k < layers[i+1]->num_nodes; k++) {
-        layers[i]->nodes[j]->weights[k] += learning_rate * layers[i]->nodes[j]->d_weights[k];
+        layers[i]->nodes[j]->weights[k] -= learning_rate * layers[i]->nodes[j]->d_weights[k];
       }
-      layers[i]->nodes[j]->bias += learning_rate * layers[i]->nodes[j]->d_bias;
+      layers[i]->nodes[j]->bias -= learning_rate * layers[i]->nodes[j]->d_bias;
     }
   }
 }
