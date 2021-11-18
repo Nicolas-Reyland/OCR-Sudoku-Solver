@@ -10,6 +10,7 @@
 
 #include "load_model.h"
 #include "save_model.h"
+#include "use_model.h"
 
 typedef struct nn_Model {
   size_t num_layers;
@@ -19,6 +20,7 @@ typedef struct nn_Model {
   void (*printModelLayers)(struct nn_Model* model);
   void (*printModelLayersValues)(struct nn_Model* model);
   void (*printModelArchitecture)(struct nn_Model* model);
+  double* (*use)(struct nn_Model* model, double*);
   void (*saveModel)(struct nn_Model* model, char*);
 } nn_Model;
 

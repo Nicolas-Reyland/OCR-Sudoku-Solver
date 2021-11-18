@@ -37,9 +37,10 @@ nn_Model* createModel(size_t num_layers, nn_ShapeDescription model_architecture[
   model->loss = loss;
   model->optimizer = optimizer;
   // add functions to struct
-  model->printModelLayers = &_nn_printModelLayers;
+  model->printModelLayers 		= &_nn_printModelLayers;
   model->printModelLayersValues = &_nn_printModelLayersValues;
   model->printModelArchitecture = &_nn_printModelArchitecture;
+  model->use					= &_nn_useModel;
   model->saveModel = &_nn_Model_saveModel;
   return model;
 }
