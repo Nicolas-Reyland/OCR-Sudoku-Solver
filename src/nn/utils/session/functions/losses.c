@@ -29,7 +29,6 @@ double applyLosses(nn_Layer* layer, double *desired_output, losses losses)
 	}
 }
 
-
 double _nn_binaryCrossEntropy(nn_Layer* layer, double* desired_output)
 {
 	double sum = 0;
@@ -64,5 +63,4 @@ double _nn_meanSquaredError(nn_Layer* layer, double* desired_output)
 	double mean_square_error = (1.0 / layer->num_nodes) * sum;
 	return mean_square_error;
 }
-
 

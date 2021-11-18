@@ -240,9 +240,9 @@ static void _nn_printModelArchitecture(nn_Model* model)
 		nn_Layer *layer = model->layers[i];
 		nn_ShapeDescription shape = layer->shape;
 		printf(" - layer %lu : dims=%lu, x=%lu, y=%lu, z=%lu (%lu)\n", i, shape.dims, shape.x, shape.y, shape.z, shape.range);
-		printf("    -> activation=%d\n", (int)layer->activation);
+		printf("    -> activation=%s\n", activation_str[layer->activation]);
 	}
-	printf(" * Loss function=%d\n", (int)model->loss);
+	printf(" * Loss function=%s\n", losses_str[model->loss]);
 }
 
 
