@@ -4,6 +4,9 @@
 
 void _nn_train(struct nn_Session* session, nn_Model* model)
 {
+	// TODO: make this an argument, in session or directly here
+	size_t nb_verb_step = 100;
+
 	nn_InOutTuple** tuple_array = iot_linked_list_to_array(
 		session->dataset->train->data_collection->data);
 	size_t sample_size =session->dataset->train->data_collection->data->length;
@@ -13,39 +16,43 @@ void _nn_train(struct nn_Session* session, nn_Model* model)
 	size_t epoch = 0;
 	while (epoch < session->nb_epochs && loss_threshold_condition)
 	{
-		if(session->verb_mode)
-		{
+		/*if(session->verb_mode)
+		{*/
 			verbose("Epoch number: %ld",epoch);
-		}
+		/*}*/
 		shuffleArray(tuple_array,sample_size);
 		size_t i = 0;
 		double loss_buffer = 0;
 		while(i < sample_size)
 		{
-			if(session->verb_mode)
+			/*if(session->verb_mode)
 			{
 				verbose("Training Tuple:");
 				tuple_array[i]->printTuple(tuple_array[i]);
-			}
+			}*/
 			_nn_feedForward(model,tuple_array[i]->input->values);
 
 			//we calculate the loss function
 			double error = applyLosses(
-			model->layers[model->num_layers - 1],
-			tuple_array[i]->output->values,
-			model->loss);
-			if(session->verb_mode)
-				verbose("Losses error = %f",error);
+				model->layers[model->num_layers - 1],
+				tuple_array[i]->output->values,
+				model->loss);
+			/*if(session->verb_mode)
+				verbose("Losses error = %f",error);*/
 			loss_buffer += error;
-			if(session->verb_mode)
+			/*if(session->verb_mode)
 			{
 				model->printModelLayers(model);
 				model->printModelLayersValues(model);
-			}
+			}*/
 
 			_nn_backPropagation(model, tuple_array[i]->output->values);
 			_nn_updateWeights(model, session->learning_rate);
 			i++;
+
+			if (session->verb_mode && i % nb_verb_step == 0) {
+				verbose("Losses error = %lf", error);
+			}
 		}
 
 		loss_buffer /= sample_size;

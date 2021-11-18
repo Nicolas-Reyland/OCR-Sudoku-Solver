@@ -48,6 +48,9 @@ double _nn_categoricalCrossEntropy(nn_Layer* layer, double* desired_output)
 	double sum = 0;
 	for(size_t i = 0; i < layer->num_nodes; i++)
 	{
+		/*if (layer->nodes[i]->value <= 0) {
+			printf("Value: %lf\n", layer->nodes[i]->value);
+		}*/
 		sum += desired_output[i] * log(layer->nodes[i]->value);
 	}
 	return -sum;
