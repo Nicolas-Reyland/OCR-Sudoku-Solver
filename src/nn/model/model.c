@@ -76,6 +76,9 @@ void _nn_Model_saveModel(nn_Model* model, char* dirpath)
 
 nn_Layer** _nn_createModelLayers(size_t num_layers, nn_ShapeDescription model_architecture[], activation activations[])
 {
+  for(size_t i = 0; i < num_layers - 1; i++)
+    verbose("activations[%d] = %d", i, activations[i]);
+  verbose("Value of activations[num_layers - 2] = activations[%d] = %d", num_layers - 2, activations[num_layers - 2]);
 	nn_Layer** const layers = mem_calloc(num_layers, sizeof(nn_Layer));
   // input & output layers
   layers[0] = _nn_createInputLayer(model_architecture[0], model_architecture[1]);
@@ -135,21 +138,26 @@ nn_Model* _nn_Model_loadModelArchitecture(char* path)
   size_t size = 0;
   losses loss;
   optimizer opti;
-  fscanf(file,"%lu %d %d\n", &size, (int*)&loss, (int*)&opti);
+  fscanf(file,"%lu %d %d\n\n", &size, (int*)&loss, (int*)&opti);
 
 
   nn_ShapeDescription shape_descriptions [size];
-  activation activations [size];
+  activation activations [size-1];
   for(size_t i = 0; i < size; i++)
   {
     size_t x,y,z;
+    int acti = 0;
     fscanf(file,"%lu %lu %lu\n", &x, &y, &z);
     shape_descriptions[i] = createShapeDescription(x,y,z);
-    fscanf(file,"%d\n", (int*)&activations[i]);
+
+    fscanf(file,"%d\n", &acti);
+    if(acti != 0) //if activation value is not "no_activation":
+        activations[i-1] = (activation)acti;
   }
 
   fclose(file);
-
+  for(size_t i = 0; i < size - 1; i++)
+    verbose("In Architecture Loading: activations[%d] = %d", i, activations[i]);
   return createModel(size, shape_descriptions, activations, loss, opti);
 
 }
