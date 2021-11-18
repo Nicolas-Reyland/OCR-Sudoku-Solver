@@ -36,7 +36,6 @@ int main()
 	// load the dataset
 	nn_ShapeDescription shape = emptyShapeDescription();
 	nn_DataSet* dataset = nn_loadDataSet("datas/xor/", &shape, true);
-    model->printModelArchitecture(model);
 
 	nn_Session* session = createSession(
 		dataset,
