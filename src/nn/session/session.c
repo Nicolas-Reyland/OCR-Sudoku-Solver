@@ -34,8 +34,8 @@ void _nn_train(struct nn_Session* session, nn_Model* model)
 			model->layers[model->num_layers - 1],
 			tuple_array[i]->output->values,
 			model->loss);
-			if(session->verb_mode)
-				verbose("Losses error = %f",error);
+			//if(session->verb_mode)
+			verbose("Losses error = %f",error);
 			loss_buffer += error;
 			if(session->verb_mode)
 			{
