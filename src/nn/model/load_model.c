@@ -1,6 +1,6 @@
 #include "load_model.h"
 
-nn_Model* _nn_Model_loadModelArchitecture(char* path)
+struct nn_Model* _nn_Model_loadModelArchitecture(char* path)
 {
   FILE* file = fopen(path,"r+");
 
@@ -37,7 +37,7 @@ nn_Model* _nn_Model_loadModelArchitecture(char* path)
 
 }
 
-void _nn_Model_modifyModel(char* path, nn_Model* model)
+void _nn_Model_modifyModel(char* path, struct nn_Model* model)
 {
   FILE* file = fopen(path,"r+");
 
@@ -67,7 +67,7 @@ void _nn_Model_modifyModel(char* path, nn_Model* model)
   fclose(file);
 }
 
-nn_Model* nn_loadModel(char* dirpath)
+struct nn_Model* nn_loadModel(char* dirpath)
 {
 	char arch_file[512];
 	char weight_file[512];
@@ -78,7 +78,7 @@ nn_Model* nn_loadModel(char* dirpath)
 	strcat(arch_file, "architecture.mdl");
 	strcat(weight_file, "weightsandbias.mdl");
 
-	nn_Model* model = _nn_Model_loadModelArchitecture(arch_file);
+	struct nn_Model* model = _nn_Model_loadModelArchitecture(arch_file);
 	_nn_Model_modifyModel(weight_file, model);
 
 	return model;

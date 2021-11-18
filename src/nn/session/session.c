@@ -34,8 +34,8 @@ void _nn_train(struct nn_Session* session, nn_Model* model)
 			model->layers[model->num_layers - 1],
 			tuple_array[i]->output->values,
 			model->loss);
-			//if(session->verb_mode)
-			verbose("Losses error = %f",error);
+			if(session->verb_mode)
+				verbose("Losses error = %f",error);
 			loss_buffer += error;
 			if(session->verb_mode)
 			{
@@ -47,6 +47,8 @@ void _nn_train(struct nn_Session* session, nn_Model* model)
 			_nn_updateWeights(model, session->learning_rate);
 			i++;
 		}
+
+		loss_buffer /= sample_size;
 		// we continue as long as we do not reached loss threshold
 		// or we continue as long as we have epochs to do
 		loss_threshold_condition =

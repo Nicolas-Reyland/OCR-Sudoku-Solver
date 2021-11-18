@@ -1,6 +1,6 @@
 #include "save_model.h"
 
-void _nn_Model_saveArchitectureFn(nn_Model* model, char* path)
+void _nn_Model_saveArchitectureFn(struct nn_Model* model, char* path)
 {
   FILE* architecture_file = fopen(path, "w+");
 
@@ -22,7 +22,7 @@ void _nn_Model_saveArchitectureFn(nn_Model* model, char* path)
   fclose(architecture_file);
 }
 
-void _nn_Model_saveWeightsAndBias(nn_Model* model, char* path)
+void _nn_Model_saveWeightsAndBias(struct nn_Model* model, char* path)
 {
   FILE* wab_file = fopen(path,"w+");
 
@@ -53,7 +53,7 @@ void _nn_Model_saveWeightsAndBias(nn_Model* model, char* path)
   fclose(wab_file);
 }
 
-void _nn_Model_saveModel(nn_Model* model, char* dirpath)
+void _nn_Model_saveModel(struct nn_Model* model, char* dirpath)
 {
   char arch_file[512];
   char weight_file[512];
