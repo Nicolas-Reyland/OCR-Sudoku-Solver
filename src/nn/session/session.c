@@ -13,14 +13,15 @@ void _nn_train(struct nn_Session* session, nn_Model* model)
 
 	bool loss_threshold_condition = true;
 
-	size_t epoch = 0;
-	while (epoch < session->nb_epochs && loss_threshold_condition)
+	// incrementing directly epoch : so the verbose does not have to add 1
+	// when printing (first epoch : 1, not 0)
+	for (size_t epoch = 0; epoch++ < session->nb_epochs && loss_threshold_condition;)
 	{
 		if(session->verb_mode)
 		{
-			verbose("Epoch number: %ld",epoch);
+			verbose("Epoch number: %ld", epoch);
 		}
-		shuffleArray(tuple_array,sample_size);
+		shuffleArray(tuple_array, sample_size);
 		size_t i = 0;
 		double loss_buffer = 0;
 		while(i < sample_size)
@@ -50,7 +51,6 @@ void _nn_train(struct nn_Session* session, nn_Model* model)
 		loss_threshold_condition =
 			!session->stop_on_loss_threshold_reached ||
 			loss_buffer > session->loss_threshold;
-		epoch++;
 	}
 	return;
 }
@@ -98,11 +98,14 @@ void _nn_test_one_hot(struct nn_Session* session, nn_Model* model)
 	for(size_t i = 0; i < num_samples; i++)
 	{
 		// verbosity
-		if (session->verb_mode && num_steps_verb++ % 100 == 0)
-			verbose(" test session run: %lf (%lu/%lu) \% done",
-				(double)num_steps_verb/num_samples,
-				num_steps_verb,
-				num_samples);
+		if (session->verb_mode) {
+			if (num_steps_verb % 100 == 0)
+				verbose(" test session run: %.4g\% (%lu/%lu) done",
+					100.0 * (double)num_steps_verb/num_samples,
+					num_steps_verb,
+					num_samples);
+			num_steps_verb++;
+		}
 		// model prediction
 		_nn_feedForward(model, tuple_array[i]->input->values);
 		// get maximised value by the model
@@ -113,7 +116,7 @@ void _nn_test_one_hot(struct nn_Session* session, nn_Model* model)
 		// get index of hot value (1.0) in output values
 		size_t result_index = 0;
 		for (; result_index < tuple_array[i]->output->num_values; result_index++)
-			if (tuple_array[i]->output->values[result_index] == 1.0)
+			if (tuple_array[i]->output->values[result_index]) // != 0
 				break;
 		// indices must be the same for the model to have rightly predicted
 		if (max_index == result_index)
@@ -127,12 +130,12 @@ void _nn_test_one_hot(struct nn_Session* session, nn_Model* model)
 		loss_sum += error;
 	}
 	// print averages
-	double avg_loss = loss_sum / num_samples;
-	double avg_right_predictions = num_right_predictions / num_samples;
+	double avg_loss = (double)loss_sum / (double)num_samples;
+	double avg_right_predictions = (double)num_right_predictions / (double)num_samples;
 	// print averages
 	verbose(" test session run: finished");
-	verbose("Average loss is %lf", avg_loss);
-	verbose("Average of right predictions is %lf", avg_right_predictions);
+	verbose("loss avg: %lf", avg_loss);
+	verbose("Right predictions avg: %lf%", 100.0 * avg_right_predictions);
 }
 
 nn_Session* createSession(nn_DataSet* dataset, unsigned int nb_epochs,
