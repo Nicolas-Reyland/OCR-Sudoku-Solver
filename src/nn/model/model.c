@@ -8,10 +8,7 @@ static void _nn_printModelArchitecture(nn_Model* model);
 
 nn_Layer** _nn_createModelLayers(size_t num_layers, nn_ShapeDescription model_architecture[], activation activations[])
 {
-  for(size_t i = 0; i < num_layers - 1; i++)
-    verbose("activations[%d] = %d", i, activations[i]);
-  verbose("Value of activations[num_layers - 2] = activations[%d] = %d", num_layers - 2, activations[num_layers - 2]);
-	nn_Layer** const layers = mem_calloc(num_layers, sizeof(nn_Layer));
+  nn_Layer** const layers = mem_calloc(num_layers, sizeof(nn_Layer));
   // input & output layers
   layers[0] = _nn_createInputLayer(model_architecture[0], model_architecture[1]);
   layers[num_layers - 1] = _nn_createOutputLayer(model_architecture[num_layers - 1], activations[num_layers - 2]);
