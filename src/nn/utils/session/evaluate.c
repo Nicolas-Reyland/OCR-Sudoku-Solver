@@ -79,17 +79,3 @@ void _nn_updateWeights(nn_Model* model, double learning_rate)
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-//

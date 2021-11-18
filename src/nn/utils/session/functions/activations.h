@@ -3,6 +3,8 @@
 #ifndef NN_ACTIVATIONS_H
 #define NN_ACTIVATIONS_H
 
+#define LEAKY_RELU_VALUE 0.01
+
 #include <math.h>
 #include "nn/model/layers/layer.h"
 #include "utils/verbosity/verbose.h"

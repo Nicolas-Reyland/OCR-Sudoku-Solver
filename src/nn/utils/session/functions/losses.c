@@ -25,7 +25,6 @@ double applyLosses(nn_Layer* layer, double *desired_output, losses losses)
 			 losses);
 			exit(EXIT_FAILURE);
 			break;
-
 	}
 }
 
