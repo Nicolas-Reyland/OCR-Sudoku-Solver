@@ -17,8 +17,6 @@ int main()
 	verbose("Loading model...");
 	// malloc model
 	nn_Model* model = nn_loadModel("save/mnist/1k-");
-
-    model->printModelLayers(model);
     model->printModelArchitecture(model);
 
 	// load the dataset
@@ -31,13 +29,12 @@ int main()
 		30,
 		0.1,
 		false,
-		false,
+		true,
 		0.1
 	);
 
 	verbose("Session allocated");
 
-	setVerbose(false);
 	session->test_one_hot(session, model);
 
 	// free model
