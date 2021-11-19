@@ -51,10 +51,12 @@ void _nn_dSoftmax(nn_Layer* layer)
 {
     // https://www.mldawn.com/back-propagation-with-cross-entropy-and-softmax/
     // https://datascience.stackexchange.com/questions/51677/derivation-of-backpropagation-for-softmax/51691#51691
-    // http://saitcelebi.com/tut/output/part2.html
+    // http://saitcelebi.com/tut/output/part2.html (c'est vers le bas -> control+f / F3)
+    /* Il est possible qu'on doive recoder une partie de la backpropagation ...
+     */
     for (size_t i = 0; i < layer->num_nodes; i++) {
         double a_i = layer->nodes[i]->raw_value;
-        layer->nodes[i]->d_raw_value = a_i * (-a_i);
+        layer->nodes[i]->d_raw_value = a_i * (1 - a_i);
         if (isnan(layer->nodes[i]->d_raw_value)) {
             verbose("isnan: %lf | %lf", layer->nodes[i]->d_raw_value, a_i);
             exit(EXIT_FAILURE);

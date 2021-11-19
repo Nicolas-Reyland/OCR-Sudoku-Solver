@@ -9,6 +9,5 @@
 #include "nn/functions_descriptors/functions_descriptors_enums.h"
 
 void _nn_derivativeLayerActivation(nn_Layer* layer);
-//double _nn_derivativeActivation(double x, activation activation);
 
 #endif
