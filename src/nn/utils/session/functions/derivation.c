@@ -2,83 +2,74 @@
 #include "derivation.h"
 
 
-double dSigmoid(double x);
-double dRelu(double x);
-double dLeakyRelu(double x);
-double dtan_h(double x);
-void dSoftmax(nn_Layer* layer);
+void _nn_dSoftmax(nn_Layer* layer);
+void _nn_mapScalarFunction(nn_Layer* layer, double (*scalar_fn)(double));
 
+double _nn_dSigmoid(double x);
+double _nn_dRelu(double x);
+double _nn_dLeakyRelu(double x);
+double _nn_dtan_h(double x);
+
+/* Derivative Activation */
 void _nn_derivativeLayerActivation(nn_Layer* layer)
 {
-    //double (monoid*)(double);
+    double (*scalar_fn)(double) = NULL;
     switch(layer->activation)
     {
         case SIGMOID:
-            for (size_t i = 0; i < layer->num_nodes; i++)
-                layer->nodes[i]->d_raw_value = dSigmoid(layer->nodes[i]->raw_value);
+            scalar_fn = &_nn_dSigmoid;
             break;
         case RELU:
-            for (size_t i = 0; i < layer->num_nodes; i++)
-                layer->nodes[i]->d_raw_value = dRelu(layer->nodes[i]->raw_value);
+            scalar_fn = &_nn_dRelu;
             break;
         case LEAKY_RELU:
-            for (size_t i = 0; i < layer->num_nodes; i++)
-                layer->nodes[i]->d_raw_value = dLeakyRelu(layer->nodes[i]->raw_value);
+            scalar_fn = &_nn_dLeakyRelu;
             break;
         case TANH:
-            for (size_t i = 0; i < layer->num_nodes; i++)
-                layer->nodes[i]->d_raw_value = dtan_h(layer->nodes[i]->raw_value);
+            scalar_fn = &_nn_dtan_h;
             break;
         case SOFTMAX:
             // difficult case
-            dSoftmax(layer);
-            break;
+            _nn_dSoftmax(layer);
+            return;
         default:
             fprintf(stderr,
                 "derivativeActivation: Unrecognised activation function: %s\n",
                 activation_str[layer->activation]);
-                exit(EXIT_FAILURE);
-            break;
+            exit(EXIT_FAILURE);
+            return;
     }
+    // scalar function application
+    if (scalar_fn == NULL) {
+        fprintf(stderr, "Scalar function is NULL\n");
+        exit(EXIT_FAILURE);
+    }
+    _nn_mapScalarFunction(layer, scalar_fn);
 }
 
-/* Derivative Activation */
-double _nn_derivativeActivation(double x, activation activation)
+void _nn_dSoftmax(nn_Layer* layer)
 {
-    return 1.0;
-
-    // TODO: remove this function
-    double output;
-    switch(activation)
-    {
-        case SIGMOID:
-            return dSigmoid(x);
-        case RELU:
-            return dRelu(x);
-        case LEAKY_RELU:
-            return dLeakyRelu(x);
-        case TANH:
-            return dtan_h(x);
-        case SOFTMAX:
-            // returning 1.0 so it has no impact (x * derivative = x * 1.0 = x)
-            return 1.0;
-        default:
-            fprintf(stderr,
-                "derivativeActivation: Unrecognised activation function: %d\n",
-                activation);
-                exit(EXIT_FAILURE);
-            break;
+    // https://www.mldawn.com/back-propagation-with-cross-entropy-and-softmax/
+    // https://datascience.stackexchange.com/questions/51677/derivation-of-backpropagation-for-softmax/51691#51691
+    // http://saitcelebi.com/tut/output/part2.html
+    for (size_t i = 0; i < layer->num_nodes; i++) {
+        double a_i = layer->nodes[i]->raw_value;
+        layer->nodes[i]->d_raw_value = a_i * (-a_i);
+        if (isnan(layer->nodes[i]->d_raw_value)) {
+            verbose("isnan: %lf | %lf", layer->nodes[i]->d_raw_value, a_i);
+            exit(EXIT_FAILURE);
+        }
     }
-    return output;
 }
 
-void dSoftmax(nn_Layer* layer)
+
+void _nn_mapScalarFunction(nn_Layer* layer, double (*scalar_fn)(double))
 {
     for (size_t i = 0; i < layer->num_nodes; i++)
-        layer->nodes[i]->d_raw_value = 1.0;
+        layer->nodes[i]->d_raw_value = scalar_fn(layer->nodes[i]->raw_value);
 }
 
-double dSigmoid(double x)
+double _nn_dSigmoid(double x)
 {
     // the 'x' is already the output of a sigmoid function
     // and we don't want to calculate d_sigmoid(sigmoid(x)), but
@@ -86,17 +77,17 @@ double dSigmoid(double x)
     return _nn_sigmoid(x) * (1.0 - _nn_sigmoid(x));
 }
 
-double dRelu(double x)
+double _nn_dRelu(double x)
 {
     return x < 0 ? 0 : 1;
 }
 
-double dLeakyRelu(double x)
+double _nn_dLeakyRelu(double x)
 {
     return x < 0 ? 0 : LEAKY_RELU_VALUE;
 }
 
-double dtan_h(double x)
+double _nn_dtan_h(double x)
 {
     double y = tanh(x);
     return 1 - y * y;

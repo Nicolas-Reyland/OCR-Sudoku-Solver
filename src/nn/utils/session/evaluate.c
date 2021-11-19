@@ -53,15 +53,18 @@ void _nn_backPropagation(nn_Model* model, double* desired_output)
     for (size_t i = num_layers - 2; i > 0; i--) {
         _nn_derivativeLayerActivation(layers[i]);
         for (size_t j = 0; j < layers[i]->num_nodes; j++) {
-        layers[i]->nodes[j]->d_raw_value *= layers[i]->nodes[j]->d_value;// * _nn_derivativeActivation(layers[i]->nodes[j]->raw_value, layers[i]->activation);
+            if (isnan(layers[i]->nodes[j]->d_raw_value)) {
+                verbose("r_raw_value is nan");
+                exit(EXIT_FAILURE);}
+            layers[i]->nodes[j]->d_raw_value *= layers[i]->nodes[j]->d_value;// * _nn_derivativeActivation(layers[i]->nodes[j]->raw_value, layers[i]->activation);
 
-        for (size_t k = 0; k < layers[i-1]->num_nodes; k++) {
-            layers[i-1]->nodes[k]->d_weights[j] = layers[i]->nodes[j]->d_raw_value * layers[i-1]->nodes[k]->value;
-            if (i > 1)
-                layers[i-1]->nodes[k]->d_value = layers[i-1]->nodes[k]->weights[j] * layers[i]->nodes[j]->d_raw_value;
-        }
+            for (size_t k = 0; k < layers[i-1]->num_nodes; k++) {
+                layers[i-1]->nodes[k]->d_weights[j] = layers[i]->nodes[j]->d_raw_value * layers[i-1]->nodes[k]->value;
+                if (i > 1)
+                    layers[i-1]->nodes[k]->d_value = layers[i-1]->nodes[k]->weights[j] * layers[i]->nodes[j]->d_raw_value;
+            }
 
-        layers[i]->nodes[j]->d_bias = layers[i]->nodes[j]->d_raw_value;
+            layers[i]->nodes[j]->d_bias = layers[i]->nodes[j]->d_raw_value;
         }
     }
 }
