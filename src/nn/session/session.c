@@ -13,11 +13,13 @@ void _nn_train(struct nn_Session* session, nn_Model* model)
 
 	bool loss_threshold_condition = true;
 
+	verbose("Training for %lu epochs", session->nb_epochs);
+
 	// incrementing directly epoch : so the verbose does not have to add 1
 	// when printing (first epoch : 1, not 0)
 	for (size_t epoch = 0; epoch++ < session->nb_epochs && loss_threshold_condition;)
 	{
-		if(session->verb_mode)
+		if (session->verb_mode)
 		{
 			verbose("Epoch number: %ld", epoch);
 		}
@@ -41,7 +43,7 @@ void _nn_train(struct nn_Session* session, nn_Model* model)
 			i++;
 
 			if (session->verb_mode && i % nb_verb_step == 0) {
-				verbose("Losses error = %lf", error);
+				verbose(" train session run: %.2f%c  done (loss: %lf)", 100.0 * (double)i/sample_size, '%', error);
 			}
 		}
 
@@ -107,12 +109,13 @@ void _nn_test_one_hot(struct nn_Session* session, nn_Model* model)
 			num_steps_verb++;
 		}
 		// model prediction
-		_nn_feedForward(model, tuple_array[i]->input->values);
+		double* output_values = _nn_useModel(model, tuple_array[i]->input->values);
 		// get maximised value by the model
 		size_t max_index = 0;
 		for(size_t j = 1; j < output_layer->num_nodes; j++)
-			if (output_layer->nodes[j]->value > output_layer->nodes[max_index]->value)
+			if (output_values[j] > output_values[max_index])
 				max_index = j;
+		mem_free(output_values);
 		// get index of hot value (1.0) in output values
 		size_t result_index = 0;
 		for (; result_index < tuple_array[i]->output->num_values; result_index++)
@@ -134,7 +137,7 @@ void _nn_test_one_hot(struct nn_Session* session, nn_Model* model)
 	double avg_right_predictions = (double)num_right_predictions / (double)num_samples;
 	// print averages
 	verbose(" test session run: finished");
-	verbose("loss avg: %lf", avg_loss);
+	verbose("Loss avg: %lf", avg_loss);
 	verbose("Right predictions avg: %lf%", 100.0 * avg_right_predictions);
 }
 
