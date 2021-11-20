@@ -17,7 +17,7 @@ int main(int argc, char** argv)
 	// model architecture
 	nn_ShapeDescription model_architecture[4] = {
 		create2DShapeDescription(28, 28),
-		create2DShapeDescription(14, 14),
+		create2DShapeDescription(16, 16),
 		create1DShapeDescription(128),
 		create1DShapeDescription(9),
 	};
