@@ -21,7 +21,6 @@ void _nn_freeDataCollection(nn_DataCollection* collection)
     }
     for (size_t i = 0; i < collection->num_tuples; i++) {
         _nn_freeInOutTuple(collection->iot_array[i]);
-        mem_free(collection->iot_array[i]);
     }
     mem_free(collection);
 }

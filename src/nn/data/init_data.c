@@ -79,7 +79,7 @@ nn_Data* nn_loadSingleDataInputOutput(char* input_path, char* output_path, nn_Sh
 	if (verb_string != NULL)
 		data_load_bar = createProgressBar(verb_string, 0, num_tuples, 100);
 	else
-		data_load_bar = createProgressBar("", 0, num_tuples, 100);
+		data_load_bar = createProgressBar(NULL, 0, num_tuples, 100);
 
     size_t  next_verbose_print = 100,
 			next_verbose_print_step = num_tuples / 100;
