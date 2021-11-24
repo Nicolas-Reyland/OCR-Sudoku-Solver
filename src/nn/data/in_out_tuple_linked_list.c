@@ -165,6 +165,7 @@ iot_ll_node* iot_linked_list_append_value(iot_linked_list *list, nn_InOutTuple* 
 		iot_ll_node* tail = helper;
 		tail->next = _iot_linked_list_new_node();
 		tail->next->value = value;
+		list->length++;
 		return tail->next;
 	}
 
