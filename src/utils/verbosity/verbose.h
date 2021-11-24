@@ -11,7 +11,7 @@
 #include <stdbool.h>
 #include <stdarg.h>
 
-// bool VERBOSE;
+extern bool VERBOSE;
 
 int verbose(const char * restrict, ...);
 int verbose_no_endline(const char * restrict, ...);
