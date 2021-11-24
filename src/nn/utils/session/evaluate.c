@@ -54,7 +54,7 @@ void _nn_backPropagation(nn_Model* model, double* desired_output)
         _nn_derivativeLayerActivation(layers[i]);
         for (size_t j = 0; j < layers[i]->num_nodes; j++) {
             if (isnan(layers[i]->nodes[j]->d_raw_value)) {
-                verbose("r_raw_value is nan");
+                verbose("d_raw_value is nan");
                 exit(EXIT_FAILURE);}
             layers[i]->nodes[j]->d_raw_value *= layers[i]->nodes[j]->d_value;// * _nn_derivativeActivation(layers[i]->nodes[j]->raw_value, layers[i]->activation);
 
