@@ -276,7 +276,7 @@ void _nn_test_one_hot(struct nn_Session* session, nn_Model* model)
 	// print averages
 	verbose(" test session run: finished");
 	verbose("Loss avg: %lf", avg_loss);
-	verbose("Right predictions avg: %lf%", 100.0 * avg_right_predictions);
+	verbose("Right predictions avg: %.2f%c", 100.0 * avg_right_predictions, '%');
 }
 
 nn_Session* createSession(nn_DataSet* dataset, unsigned int nb_epochs,
