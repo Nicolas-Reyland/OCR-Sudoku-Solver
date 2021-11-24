@@ -27,7 +27,8 @@ int main(int argc, char** argv)
 		input_path,
 		output_path,
 		&description,
-		false
+		false,
+		NULL
 	);
 	printf("created data.\n");
 	data->printData(data);
