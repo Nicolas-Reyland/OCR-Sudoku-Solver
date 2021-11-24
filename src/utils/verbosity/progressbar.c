@@ -10,6 +10,8 @@ printf("\033[XD"); // Move left X column;
 printf("\033[2J"); // Clear screen
 */
 
+bool PROGRESS_BAR_STATUS = true;
+
 ProgressBar createProgressBar(const char* name, size_t start, size_t end, size_t width)
 {
     ProgressBar bar = {

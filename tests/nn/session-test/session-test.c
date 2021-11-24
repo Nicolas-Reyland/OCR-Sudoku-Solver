@@ -1,10 +1,9 @@
 // session-test.c
 
-#define NO_PROGRESSBAR
-
 #include "nn/nn.h"
 #include "utils/mem/mem-management.h"
 #include "utils/verbosity/verbose.h"
+
 
 extern linked_list* GPL;
 extern bool _nn_random_init_done;
@@ -22,6 +21,8 @@ void oneLearningStep(nn_Model* model, double* input, double* output, double lear
 
 int main(int argc, char** argv)
 {
+	PROGRESS_BAR_STATUS = false;
+
 	setVerbose(true);
 	srand( 1234567890 );
 	_nn_random_init_done = true;
