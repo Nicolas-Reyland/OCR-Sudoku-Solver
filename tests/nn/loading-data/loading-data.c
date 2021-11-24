@@ -34,7 +34,7 @@ int main(int argc, char** argv)
 	data->printData(data);
 
 	//free data
-	_nn_freeData(data,true);
+	_nn_freeData(data);
 
 	// free model
 	//freeModel(model);
