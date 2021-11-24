@@ -76,7 +76,7 @@ void _nn_dSoftmax(nn_Layer* layer)
     for (size_t i = 0; i < N /* R1 */; i++) {
         for (size_t j = 0; j < N /* R2 */; j++) {
             //verbose("jacobian value: %lf", jacobian_matrix[N * j + i]);
-            layer->nodes[j]->d_raw_value += jacobian_matrix[N * j + i] * layer->nodes[i]->value;
+            layer->nodes[j]->d_raw_value += jacobian_matrix[N * j + i] * layer->nodes[i]->raw_value;
         }
     }
 
