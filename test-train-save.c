@@ -40,16 +40,16 @@ int main()
 
 	nn_Session* session = createSession(
 		dataset,
-		2,
+		10,
 		0.1,
 		false,
 		true,
-		0.1
+		0.05
 	);
 
 	verbose("Session allocated");
 
-	session->train(session, model);
+	session->train_one_hot(session, model);
 	session->test_one_hot(session, model);
 
     //model->printModelLayers(model);
