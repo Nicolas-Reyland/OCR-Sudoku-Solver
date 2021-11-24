@@ -8,6 +8,7 @@
 #include "nn/utils/misc/randomness.h"
 #include "nn/utils/session/evaluate.h"
 #include "utils/verbosity/verbose.h"
+#include "utils/verbosity/progressbar.h"
 #include <stdbool.h>
 #include <stdlib.h>
 
