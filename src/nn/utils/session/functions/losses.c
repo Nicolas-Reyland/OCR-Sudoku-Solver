@@ -50,9 +50,9 @@ double _nn_categoricalCrossEntropy(nn_Layer* layer, double* desired_output)
 		/*if (layer->nodes[i]->value <= 0) {
 			printf("Value: %lf\n", layer->nodes[i]->value);
 		}*/
-		if (layer->nodes[i]->value < 0)
+		if (layer->nodes[i]->value <= 0)
 		{
-			printf("FATAL ERROR CCE: injected value in log cannot be negative.");
+			fprintf(stderr, "FATAL ERROR CCE: injected value in log cannot be negative or zero: %lf", layer->nodes[i]->value);
 			exit(EXIT_FAILURE);
 		}
 		sum += desired_output[i] * log(layer->nodes[i]->value);

@@ -56,24 +56,27 @@ void _nn_dSoftmax(nn_Layer* layer)
      */
     // N: the number of perceptrons(nodes) in the current layer
     size_t N = layer->num_nodes;
+    // reset the layer nodes d_raw_value's to zero
+    for (size_t i = 0; i < N; i++)
+        layer->nodes[i]->d_raw_value = 0;
     // allocate memory on the heap for the jacobian matrix associated with the softmax function
     double* jacobian_matrix = malloc(N * N * sizeof(double));
     // fill the jacobian matrix
     for (size_t i = 0; i < N; i++)
         for (size_t j = 0; j < N; j++)
             if (i == j)
-                jacobian_matrix[i * N + j] = layer->nodes[i]->raw_value * (1 - layer->nodes[i]->raw_value);
+                jacobian_matrix[i * N + j] = layer->nodes[i]->value * (1 - layer->nodes[i]->value);
             else
-                jacobian_matrix[i * N + j] = -layer->nodes[i]->raw_value * layer->nodes[j]->raw_value;
+                jacobian_matrix[i * N + j] = -layer->nodes[i]->value * layer->nodes[j]->value;
     // multiply the jacobian matrix of softmax to the layer nodes :
     // the layer is treated as a vector, and it's nodes are treated as
     // the scalars composing this vector
     // So say J is the jacobian matrix and u is the vector associated to the layer,
     // then 'v = J x u' and 'x' is the matrix multiplication sign
     for (size_t i = 0; i < N /* R1 */; i++) {
-        layer->nodes[i]->d_raw_value = 0;
         for (size_t j = 0; j < N /* R2 */; j++) {
-            layer->nodes[i]->d_raw_value += layer->nodes[j]->raw_value * jacobian_matrix[i * N + j];
+            //verbose("jacobian value: %lf", jacobian_matrix[N * j + i]);
+            layer->nodes[j]->d_raw_value += jacobian_matrix[N * j + i] * layer->nodes[i]->value;
         }
     }
 
