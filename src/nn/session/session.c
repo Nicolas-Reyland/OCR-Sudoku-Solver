@@ -2,10 +2,92 @@
 
 #include "session.h"
 
+
 void _nn_train(struct nn_Session* session, nn_Model* model)
 {
 	// // TODO: make this an argument, in session or directly here
 	// size_t nb_verb_step = 100;
+	size_t verb_update_step = 10;
+
+	nn_InOutTuple** tuple_array = iot_linked_list_to_array(
+		session->dataset->train->data_collection->data);
+	size_t sample_size =session->dataset->train->data_collection->data->length;
+
+	bool loss_threshold_condition = true;
+
+	verbose("Training for %lu epochs", session->nb_epochs);
+
+	// incrementing directly epoch : so the verbose does not have to add 1
+	// when printing (first epoch : 1, not 0)
+	for (size_t epoch = 0; epoch++ < session->nb_epochs && loss_threshold_condition;)
+	{
+
+		if (session->verb_mode)
+		{
+			verbose("Epoch number: %ld", epoch);
+		}
+
+		ProgressBar training_bar = createProgressBar(
+			"Training",
+			0,
+			sample_size,
+			100
+		);
+
+		shuffleArray(tuple_array, sample_size);
+		size_t i = 0;
+		double loss_buffer = 0;
+		while(i < sample_size)
+		{
+			// update the progress bar if necessary
+			if (i % verb_update_step == 0)
+				updateProgressBar(&training_bar, i);
+
+			// feed forward the input at index 'i'
+			_nn_feedForward(model, tuple_array[i]->input->values);
+
+			//we calculate the loss function
+			double error = applyLosses(
+				model->layers[model->num_layers - 1],
+				tuple_array[i]->output->values,
+				model->loss);
+
+			loss_buffer += error;
+
+			_nn_backPropagation(model, tuple_array[i]->output->values);
+			_nn_updateWeights(model, session->learning_rate);
+
+			/*if (error2 >= error) {
+				verbose("ERROR2 >= ERROR !!!! NOT NORMAL");
+				exit(EXIT_FAILURE);
+			}*/
+
+			i++;
+
+			// if (session->verb_mode && i % nb_verb_step == 0) {
+			// 	verbose(" train session run: %.2f%c  done (loss: %lf)", 100.0 * (double)i/sample_size, '%', error);
+			// }
+		}
+
+		endProgressBar(&training_bar);
+
+		loss_buffer /= sample_size;
+		// we continue as long as we do not reached loss threshold
+		// or we continue as long as we have epochs to do
+		loss_threshold_condition =
+			!session->stop_on_loss_threshold_reached ||
+			loss_buffer > session->loss_threshold;
+
+		verbose("Epoch finished with:\n - avg loss: %lf\n", loss_buffer);
+	}
+	return;
+}
+
+void _nn_train_one_hot(struct nn_Session* session, nn_Model* model)
+{
+	// // TODO: make this an argument, in session or directly here
+	// size_t nb_verb_step = 100;
+	size_t verb_update_step = 10;
 
 	nn_InOutTuple** tuple_array = iot_linked_list_to_array(
 		session->dataset->train->data_collection->data);
@@ -38,8 +120,12 @@ void _nn_train(struct nn_Session* session, nn_Model* model)
 		int num_right_predictions = 0;
 		while(i < sample_size)
 		{
+			// update the progress bar if necessary
+			if (i % verb_update_step == 0)
+				updateProgressBar(&training_bar, i);
+
+			// feed forward the input at index 'i'
 			_nn_feedForward(model, tuple_array[i]->input->values);
-			updateProgressBar(&training_bar, i);
 
 			//we calculate the loss function
 			double error = applyLosses(
@@ -53,15 +139,11 @@ void _nn_train(struct nn_Session* session, nn_Model* model)
 
 			nn_Layer* output_layer = model->layers[model->num_layers - 1];
 
-			// model prediction
-			double* output_values = _nn_useModel(model, tuple_array[i]->input->values);
-
 			// get maximised value by the model
 			size_t max_index = 0;
 			for(size_t j = 1; j < output_layer->num_nodes; j++)
-				if (output_values[j] > output_values[max_index])
+				if (output_layer->nodes[j]->value > output_layer->nodes[max_index]->value)
 					max_index = j;
-			mem_free(output_values);
 			// get index of hot value (1.0) in output values
 			size_t result_index = 0;
 			for (; result_index < tuple_array[i]->output->num_values; result_index++)
@@ -77,8 +159,8 @@ void _nn_train(struct nn_Session* session, nn_Model* model)
 
 			/*for (int x = 0; x < 20; x++) {
 				_nn_feedForward(model, tuple_array[i]->input->values);*/
-				_nn_backPropagation(model, tuple_array[i]->output->values);
-				_nn_updateWeights(model, session->learning_rate);
+			_nn_backPropagation(model, tuple_array[i]->output->values);
+			_nn_updateWeights(model, session->learning_rate);
 			//}
 
 			//
@@ -215,9 +297,10 @@ double learning_rate)
 
 	session->stop_on_loss_threshold_reached = stop_on_loss_threshold_reached;
 
-	session->train			= &_nn_train;
-	session->test		 	= &_nn_test;
-	session->test_one_hot	= &_nn_test_one_hot;
+	session->train				= &_nn_train;
+	session->train_one_hot		= &_nn_train_one_hot;
+	session->test		 		= &_nn_test;
+	session->test_one_hot		= &_nn_test_one_hot;
 
 	return session;
 }
