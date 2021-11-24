@@ -1,4 +1,6 @@
-	// session-test.c
+// session-test.c
+
+#define NO_PROGRESSBAR
 
 #include "nn/nn.h"
 #include "utils/mem/mem-management.h"
@@ -84,32 +86,32 @@ int main(int argc, char** argv)
 	nn_Model* model = createModel(3, model_architecture, activations, loss, optimizer);
 
 	double weights[3][2] = {
-    { 0.840188, 0.394383 },
-    { 0.783099, 0.798440 },
-    { 0.911647, 0.335223 },
-  };
+	    { 0.840188, 0.394383 },
+	    { 0.783099, 0.798440 },
+	    { 0.911647, 0.335223 },
+	};
 
-  double bias[3] = {
-    0.197551,
-    0.768230,
-    0.277775,
-  };
+	double bias[3] = {
+	0.197551,
+	0.768230,
+	0.277775,
+	};
 
-  // Initialize the weights
-  model->layers[0]->nodes[0]->weights[0] = weights[0][0];
-  model->layers[0]->nodes[0]->weights[1] = weights[0][1];
-  model->layers[0]->nodes[1]->weights[0] = weights[1][0];
-  model->layers[0]->nodes[1]->weights[1] = weights[1][1];
-  model->layers[1]->nodes[0]->weights[0] = weights[2][0];
-  model->layers[1]->nodes[1]->weights[0] = weights[2][1];
+	// Initialize the weights
+	model->layers[0]->nodes[0]->weights[0] = weights[0][0];
+	model->layers[0]->nodes[0]->weights[1] = weights[0][1];
+	model->layers[0]->nodes[1]->weights[0] = weights[1][0];
+	model->layers[0]->nodes[1]->weights[1] = weights[1][1];
+	model->layers[1]->nodes[0]->weights[0] = weights[2][0];
+	model->layers[1]->nodes[1]->weights[0] = weights[2][1];
 
-  // Initialize the bias
-  model->layers[1]->nodes[0]->bias = bias[0];
-  model->layers[1]->nodes[1]->bias = bias[1];
-  model->layers[2]->nodes[0]->bias = bias[2];
+	// Initialize the bias
+	model->layers[1]->nodes[0]->bias = bias[0];
+	model->layers[1]->nodes[1]->bias = bias[1];
+	model->layers[2]->nodes[0]->bias = bias[2];
 
 	nn_Session* session = createSession(dataset, 20000, 0.0000001, false, false, 0.15);
-	setVerbose(true);
+	setVerbose(false);
 	session->train(session, model);
 	session->test(session, model);
 	model->printModelLayers(model);

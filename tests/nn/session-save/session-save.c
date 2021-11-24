@@ -1,4 +1,6 @@
-	// session-test.c
+// session-test.c
+
+#define PROGRESSBAR_DISABLED 1
 
 #include "nn/nn.h"
 #include "utils/mem/mem-management.h"
