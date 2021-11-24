@@ -22,7 +22,7 @@ ProgressBar createProgressBar(const char* name, size_t start, size_t end, size_t
         .drawn = 0,
         .percentage = 0.0,
     };
-    if (name == NULL)
+    if (name == NULL || !PROGRESS_BAR_STATUS)
         return bar;
 
     printf("%s : [", name);
@@ -37,6 +37,9 @@ ProgressBar createProgressBar(const char* name, size_t start, size_t end, size_t
 
 void updateProgressBar(ProgressBar* bar, size_t state)
 {
+    if (!PROGRESS_BAR_STATUS)
+        return;
+
     float new_percentage = (float)state/(float)bar->range;
     size_t should_drawn = new_percentage * (float)bar->width;
     if (should_drawn != bar->drawn) {
@@ -63,7 +66,7 @@ void updateProgressBar(ProgressBar* bar, size_t state)
 
 void endProgressBar(ProgressBar* bar)
 {
-    if (bar->name == NULL)
+    if (bar->name == NULL || !PROGRESS_BAR_STATUS)
         return;
     // go to beginning of the line
     printf("\r%s : [", bar->name);
