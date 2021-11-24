@@ -36,7 +36,7 @@ int main()
 
 	// load the dataset
 	nn_ShapeDescription shape = emptyShapeDescription();
-	nn_DataSet* dataset = nn_loadDataSet("datas/mnist/1k-", &shape, true);
+	nn_DataSet* dataset = nn_loadDataSet("datas/mnist/5k-", &shape, true);
 
 	nn_Session* session = createSession(
 		dataset,
@@ -58,7 +58,7 @@ int main()
 	// save model
 	setVerbose(false);
 	verbose("Saving the model...");
-	model->saveModel(model, "save/mnist/1k-");
+	model->saveModel(model, "save/mnist/5k-");
 
 	// free model
 	freeModel(model);
