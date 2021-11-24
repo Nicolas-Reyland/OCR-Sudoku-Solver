@@ -41,7 +41,7 @@ void _nn_derivativeLayerActivation(nn_Layer* layer)
     }
     // scalar function application
     if (scalar_fn == NULL) {
-        fprintf(stderr, "Scalar function is NULL\n");
+        err_verbose("Scalar function is NULL\n");
         exit(EXIT_FAILURE);
     }
     _nn_mapScalarFunction(layer, scalar_fn);

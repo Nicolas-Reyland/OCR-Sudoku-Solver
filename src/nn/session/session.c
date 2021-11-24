@@ -9,9 +9,8 @@ void _nn_train(struct nn_Session* session, nn_Model* model)
 	// size_t nb_verb_step = 100;
 	size_t verb_update_step = 10;
 
-	nn_InOutTuple** tuple_array = iot_linked_list_to_array(
-		session->dataset->train->data_collection->data);
-	size_t sample_size =session->dataset->train->data_collection->data->length;
+	nn_InOutTuple** tuple_array = session->dataset->train->data_collection->iot_array;
+	size_t sample_size =session->dataset->train->data_collection->num_tuples;
 
 	bool loss_threshold_condition = true;
 
@@ -89,9 +88,8 @@ void _nn_train_one_hot(struct nn_Session* session, nn_Model* model)
 	// size_t nb_verb_step = 100;
 	size_t verb_update_step = 10;
 
-	nn_InOutTuple** tuple_array = iot_linked_list_to_array(
-		session->dataset->train->data_collection->data);
-	size_t sample_size =session->dataset->train->data_collection->data->length;
+	nn_InOutTuple** tuple_array = session->dataset->train->data_collection->iot_array;
+	size_t sample_size =session->dataset->train->data_collection->num_tuples;
 
 	bool loss_threshold_condition = true;
 
@@ -201,9 +199,8 @@ void _nn_train_one_hot(struct nn_Session* session, nn_Model* model)
 
 void _nn_test(struct nn_Session* session, nn_Model* model)
 {
-	nn_InOutTuple** tuple_array = iot_linked_list_to_array(
-		session->dataset->test->data_collection->data);
-	size_t sample_size =session->dataset->test->data_collection->data->length;
+	nn_InOutTuple** tuple_array = session->dataset->train->data_collection->iot_array;
+	size_t sample_size =session->dataset->test->data_collection->num_tuples;
 
 	shuffleArray(tuple_array, sample_size);
 	for(size_t i = 0; i < sample_size; i++)
@@ -232,9 +229,8 @@ void _nn_test_one_hot(struct nn_Session* session, nn_Model* model)
 	verbose("Testing the model as one-hot");
 	size_t num_steps_verb = 100;
 
-	nn_InOutTuple** tuple_array = iot_linked_list_to_array(
-		session->dataset->test->data_collection->data);
-	size_t num_samples = session->dataset->test->data_collection->data->length;
+	nn_InOutTuple** tuple_array = session->dataset->train->data_collection->iot_array;
+	size_t num_samples = session->dataset->test->data_collection->num_tuples;
 	double loss_sum = 0;
 	int num_right_predictions = 0;
 	nn_Layer* output_layer = model->layers[model->num_layers - 1];

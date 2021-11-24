@@ -23,6 +23,20 @@ int verbose(const char * restrict format, ...) {
     return ret;
 }
 
+int err_verbose(const char * restrict format, ...) {
+    if ( !VERBOSE ) {
+        return 0;
+    }
+
+    va_list args;
+    va_start(args, format);
+    int ret = vfprintf(stderr, format, args);
+    fprintf(stderr, "\n");
+    va_end(args);
+
+    return ret;
+}
+
 // maybe force the flushing of the stdout stream ?
 int verbose_no_endline(const char * restrict format, ...) {
     if ( !VERBOSE ) {
