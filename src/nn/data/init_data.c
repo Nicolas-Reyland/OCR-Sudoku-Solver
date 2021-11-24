@@ -60,7 +60,7 @@ nn_Data* nn_loadSingleDataInputOutput(char* input_path, char* output_path, nn_Sh
     nn_ShapeDescription output_description = emptyShapeDescription();
 
 	size_t num_tuples = 0;
-    char cursorInput =  defineShapeDescription(description, &num_tuples, input_file);
+    defineShapeDescription(description, &num_tuples, input_file);
 	size_t num_tuples_output = 0;
     defineShapeDescription(&output_description, &num_tuples_output, output_file);
 	if (num_tuples != num_tuples_output) {
