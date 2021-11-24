@@ -65,15 +65,26 @@ void _nn_dSoftmax(nn_Layer* layer)
                 jacobian_matrix[i * N + j] = layer->nodes[i]->raw_value * (1 - layer->nodes[i]->raw_value);
             else
                 jacobian_matrix[i * N + j] = -layer->nodes[i]->raw_value * layer->nodes[j]->raw_value;
-
-    for (size_t i = 0; i < layer->num_nodes; i++) {
-        double a_i = layer->nodes[i]->raw_value;
-        layer->nodes[i]->d_raw_value = a_i * (1 - a_i);
-        if (isnan(layer->nodes[i]->d_raw_value)) {
-            verbose("isnan: %lf | %lf", layer->nodes[i]->d_raw_value, a_i);
-            exit(EXIT_FAILURE);
+    // multiply the jacobian matrix of softmax to the layer nodes :
+    // the layer is treated as a vector, and it's nodes are treated as
+    // the scalars composing this vector
+    // So say J is the jacobian matrix and u is the vector associated to the layer,
+    // then 'v = J x u' and 'x' is the matrix multiplication sign
+    for (size_t i = 0; i < N /* R1 */; i++) {
+        layer->nodes[i]->d_raw_value = 0;
+        for (int j = 0; j < N /* R2 */; j++) {
+            layer->nodes[i]->d_raw_value += layer->nodes[k]->raw_value * jacobian_matrix[i][k];
         }
     }
+
+    // for (size_t i = 0; i < layer->num_nodes; i++) {
+    //     double a_i = layer->nodes[i]->raw_value;
+    //     layer->nodes[i]->d_raw_value = a_i * (1 - a_i);
+    //     if (isnan(layer->nodes[i]->d_raw_value)) {
+    //         verbose("isnan: %lf | %lf", layer->nodes[i]->d_raw_value, a_i);
+    //         exit(EXIT_FAILURE);
+    //     }
+    // }
 }
 
 
