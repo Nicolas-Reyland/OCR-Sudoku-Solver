@@ -22,6 +22,6 @@ typedef struct nn_DataTuple
 } nn_DataTuple;
 
 nn_Data* _nn_createData(nn_DataCollection* collection);
-void _nn_freeData(nn_Data* data, bool free_value);
+void _nn_freeData(nn_Data* data);
 
 #endif

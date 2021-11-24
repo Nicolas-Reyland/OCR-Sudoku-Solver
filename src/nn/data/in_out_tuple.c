@@ -13,7 +13,7 @@ static void _nn_printTuple(nn_InOutTuple* tuple)
     tuple->output->print(tuple->output);
 }
 
-nn_InOutTuple* createInOutTuple(nn_Sample* input, nn_Sample* output)
+nn_InOutTuple* _nn_createInOutTuple(nn_Sample* input, nn_Sample* output)
 {
     nn_InOutTuple* tuple = mem_malloc(sizeof(nn_InOutTuple));
 
@@ -23,7 +23,7 @@ nn_InOutTuple* createInOutTuple(nn_Sample* input, nn_Sample* output)
     return tuple;
 }
 
-void freeInOutTuple(nn_InOutTuple* tuple)
+void _nn_freeInOutTuple(nn_InOutTuple* tuple)
 {
     if(tuple == NULL)
     {

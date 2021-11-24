@@ -8,50 +8,45 @@
 /// <Summary/>
 nn_DataTuple _nn_dataSplitTrainTest(nn_Data* data, int splittingPercentage)
 {
-    iot_linked_list* list_to_split = data->data_collection->data;
+    nn_InOutTuple** array_to_split = data->data_collection->iot_array;
 
-    iot_linked_list* data1   = init_iot_linked_list();
-    iot_linked_list* data2   = init_iot_linked_list();
+    size_t total_size      = data->data_collection->num_tuples;
+    size_t split_nb        =  total_size / splittingPercentage;
+    size_t after_split_nb  = total_size - split_nb;
 
-    int total_size      = data->data_collection->data->length;
-    int split_nb        =  total_size / splittingPercentage;
+    nn_InOutTuple** before_split = mem_malloc(split_nb * sizeof(nn_InOutTuple*));
+    nn_InOutTuple** after_split  = mem_malloc(after_split_nb * sizeof(nn_InOutTuple*));
 
-    for(int i = 0; i < split_nb; i++)
+    for(size_t i = 0; i < split_nb; i++)
     {
-        // TODO: use the helper pointer
-        data1->append_value(data1,((iot_ll_node*)list_to_split->get_value_at(list_to_split,i))->value, NULL);
+        before_split[i] = array_to_split[i];
     }
-    for (int i = split_nb; i < total_size; i++)
+    for (size_t i = split_nb; i < total_size; i++)
     {
-        data2->append_value(data2,((iot_ll_node*)list_to_split->get_value_at(list_to_split,i))->value, NULL);
+        after_split[i - split_nb] = array_to_split[i];
     }
 
     // add data to tuple struct at creation (and stop gcc from complaining)
     nn_DataTuple data_tuple = {
-        .data1 = _nn_createData(_nn_loadDataCollection(data1)),
-        .data2 = _nn_createData(_nn_loadDataCollection(data2))
+        .data1 = _nn_createData(_nn_loadDataCollection(before_split, split_nb)),
+        .data2 = _nn_createData(_nn_loadDataCollection(after_split, after_split_nb))
     };
 
-    _nn_freeData(data,false);
     return data_tuple;
 }
 
 static void _nn_printData(nn_Data* data)
 {
-    iot_ll_node* node = data->data_collection->data
-        ->head;
-    for(size_t i = 0; i < (size_t)data->data_collection->data->length;i++)
+    for(size_t i = 0; i < data->data_collection->num_tuples; i++)
     {
-        nn_InOutTuple* tuple = node->value;
+        nn_InOutTuple* tuple = data->data_collection->iot_array[i];
         if(tuple == NULL)
         {
-            fprintf(stderr, "tuple is not defined, exiting...");
+            err_verbose("tuple is not defined, exiting...");
             exit(EXIT_FAILURE);
         }
         printf("%ld/\n",(i+1));
         tuple->printTuple(tuple);
-
-        node = node->next;
     }
 }
 
@@ -72,13 +67,13 @@ nn_Data* _nn_createData(nn_DataCollection* collection)
 /// <Summary>
 /// Delete the data from memory
 /// <Summary/>
-void _nn_freeData(nn_Data* data,bool free_value)
+void _nn_freeData(nn_Data* data)
 {
     if(data == NULL)
     {
         verbose("freeData: data is null.");
         exit(EXIT_FAILURE);
     }
-    _nn_freeDataCollection(data->data_collection,free_value);
+    _nn_freeDataCollection(data->data_collection);
     mem_free(data);
 }

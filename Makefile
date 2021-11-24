@@ -97,9 +97,10 @@ utils:
 	$(CC) $(CFLAGS) -c -o src/utils/mem/linked_list.o src/utils/mem/linked_list.c
 	$(CC) $(CFLAGS) -c -o src/utils/mem/mem-management.o src/utils/mem/mem-management.c
 	$(CC) $(CFLAGS) -c -o src/utils/verbosity/verbose.o src/utils/verbosity/verbose.c
+	$(CC) $(CFLAGS) -c -o src/utils/verbosity/progressbar.o src/utils/verbosity/progressbar.c
 
 
-# ------- Test Framework ------- 
+# ------- Test Framework -------
 .PHONY: test
 test:
 	@./extra/run-tests

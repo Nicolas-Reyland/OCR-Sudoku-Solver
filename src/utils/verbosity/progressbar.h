@@ -3,6 +3,12 @@
 #ifndef UTILS_VERBOSITY_PROGRESSBAR_H
 #define UTILS_VERBOSITY_PROGRESSBAR_H
 
+#ifndef NO_PROGRESSBAR
+#define PROGRESS_BAR_STATUS 0
+#else
+#define PROGRESS_BAR_STATUS 1
+#endif
+
 #include "verbose.h"
 
 #define PROGRESSBAR_PASSED '='

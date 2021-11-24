@@ -1,4 +1,6 @@
-	// session-test.c
+// session-test.c
+
+#define PROGRESSBAR_DISABLED 1
 
 #include "nn/nn.h"
 #include "utils/mem/mem-management.h"
@@ -51,14 +53,16 @@ int main(int argc, char** argv)
 		input_path,
 		output_path,
 		&train_description,
-		false
+		false,
+		NULL
 	);
 	verbose("Created train data");
 	test = nn_loadSingleDataInputOutput(
 		input_path,
 		output_path,
 		&test_description,
-		false
+		false,
+		NULL
 	);
 	verbose("Created test data");
 
@@ -124,7 +128,7 @@ int main(int argc, char** argv)
 
     model->printModelLayers(model);
     model->printModelArchitecture(model);
-    session->test(session,model); 
+    session->test(session,model);
 	freeSession(session);
     freeModel(model);
     setVerbose(false);

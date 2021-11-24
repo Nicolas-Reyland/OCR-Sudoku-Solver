@@ -11,7 +11,7 @@ double applyLosses(nn_Layer* layer, double *desired_output, losses losses)
 	switch(losses)
 	{
 		case NO_LOSS:
-			fprintf(stderr, "Tried to evaluate empty loss function (no loss defined)\n");
+			err_verbose("Tried to evaluate empty loss function (no loss defined)\n");
 			exit(EXIT_FAILURE);
 			return NAN;
 		case CATEGORICALCROSSENTROPY:
@@ -21,7 +21,7 @@ double applyLosses(nn_Layer* layer, double *desired_output, losses losses)
 		case MEANSQUAREDERROR:
 			return _nn_meanSquaredError(layer,desired_output);
 		default:
-			fprintf(stderr, "ApplyLosses: unrecognized losses function: %d\n",
+			err_verbose("ApplyLosses: unrecognized losses function: %d\n",
 			 losses);
 			exit(EXIT_FAILURE);
 			break;
@@ -52,7 +52,7 @@ double _nn_categoricalCrossEntropy(nn_Layer* layer, double* desired_output)
 		}*/
 		if (layer->nodes[i]->value <= 0)
 		{
-			fprintf(stderr, "FATAL ERROR CCE: injected value in log cannot be negative or zero: %lf", layer->nodes[i]->value);
+			err_verbose("FATAL ERROR CCE: injected value in log cannot be negative or zero: %lf", layer->nodes[i]->value);
 			exit(EXIT_FAILURE);
 		}
 		sum += desired_output[i] * log(layer->nodes[i]->value);
