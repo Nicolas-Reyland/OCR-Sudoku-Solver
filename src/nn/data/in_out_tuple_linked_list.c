@@ -35,7 +35,7 @@ void free_iot_linked_list(iot_linked_list* list, bool free_value)
         exit(EXIT_FAILURE);
     }
 	_free_iot_linked_list_node(list->head,free_value);
-	
+
 	free(list);
 }
 
@@ -49,7 +49,7 @@ void _free_iot_linked_list_node(iot_ll_node* node, bool free_value)
     }
 	if(free_value)
 	{
-		freeInOutTuple(node->value); 
+		freeInOutTuple(node->value);
 	}
 	if (node->next != NULL) _free_iot_linked_list_node(node->next,free_value);
 	free(node);
@@ -158,13 +158,24 @@ void iot_linked_list_insert_value_at(iot_linked_list *list, int index, nn_InOutT
 }
 
 // append value
-void iot_linked_list_append_value(iot_linked_list *list, nn_InOutTuple* value)
+iot_ll_node* iot_linked_list_append_value(iot_linked_list *list, nn_InOutTuple* value, iot_ll_node* helper)
 {
+	// Getting helped here (for iterated appending)
+	if (helper != NULL) {
+		iot_ll_node* tail = helper;
+		tail->next = _iot_linked_list_new_node();
+		tail->next->value = value;
+		return tail->next;
+	}
+
+	// No help :'(
+	iot_ll_node* corresponing_node = NULL;
 	// add to empty list
 	if (list->length == 0)
 	{
 		list->head = _iot_linked_list_new_node();
 		list->head->value = value;
+		corresponing_node = list->head;
 	}
 	// add to tail of the list
 	else
@@ -172,10 +183,13 @@ void iot_linked_list_append_value(iot_linked_list *list, nn_InOutTuple* value)
 		iot_ll_node *tail = _iot_linked_list_get_node_at(list, list->length - 1);
 		tail->next = _iot_linked_list_new_node();
 		tail->next->value = value;
+		corresponing_node = tail->next;
 	}
 
 	// increment list length
 	list->length++;
+
+	return corresponing_node;
 }
 
 // remove value at index

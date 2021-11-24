@@ -74,6 +74,7 @@ nn_Data* nn_loadSingleDataInputOutput(char* input_path, char* output_path, nn_Sh
     size_t lines_read = 0;
     // Same Note as lines_read
     size_t next_verbose_print = 100;
+	iot_ll_node* helper = NULL;
 
     do
     {
@@ -113,9 +114,9 @@ nn_Data* nn_loadSingleDataInputOutput(char* input_path, char* output_path, nn_Sh
         nn_Sample* output   = createSample(*description,output_values,
             output_description.range);
 
-        nn_InOutTuple* tuple = createInOutTuple(input,output);
-        data_list->append_value(data_list,tuple);
-        verifyListCompleteness(data_list->head,data_list->length);
+        nn_InOutTuple* tuple = createInOutTuple(input, output);
+        helper = data_list->append_value(data_list, tuple, helper);
+        // verifyListCompleteness(data_list->head,data_list->length);
     } while (cursorInput != EOF);
 
     fclose(input_file);

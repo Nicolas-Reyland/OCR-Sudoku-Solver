@@ -40,7 +40,7 @@ struct iot_linked_list
 	// methods
 	nn_InOutTuple* (*get_value_at)(iot_linked_list*, int index);
 	void (*insert_value_at)(iot_linked_list*, int index, nn_InOutTuple* value);
-	void (*append_value)(iot_linked_list*, nn_InOutTuple*);
+	iot_ll_node* (*append_value)(iot_linked_list*, nn_InOutTuple*, iot_ll_node* helper);
 	nn_InOutTuple* (*remove_value_at)(iot_linked_list*, int index);
 	int (*index_of)(iot_linked_list*, nn_InOutTuple* value);
 };
@@ -82,7 +82,7 @@ nn_InOutTuple* iot_linked_list_get_value_at(iot_linked_list *list, int index);
 void iot_linked_list_insert_value_at(iot_linked_list *list, int index, nn_InOutTuple* value);
 
 // append value
-void iot_linked_list_append_value(iot_linked_list *list, nn_InOutTuple* value);
+iot_ll_node* iot_linked_list_append_value(iot_linked_list *list, nn_InOutTuple* value, iot_ll_node* helper);
 
 // remove value at index
 nn_InOutTuple* iot_linked_list_remove_value_at(iot_linked_list *list, int index);

@@ -18,11 +18,12 @@ nn_DataTuple _nn_dataSplitTrainTest(nn_Data* data, int splittingPercentage)
 
     for(int i = 0; i < split_nb; i++)
     {
-        data1->append_value(data1,((iot_ll_node*)list_to_split->get_value_at(list_to_split,i))->value);
+        // TODO: use the helper pointer
+        data1->append_value(data1,((iot_ll_node*)list_to_split->get_value_at(list_to_split,i))->value, NULL);
     }
     for (int i = split_nb; i < total_size; i++)
     {
-        data2->append_value(data2,((iot_ll_node*)list_to_split->get_value_at(list_to_split,i))->value);
+        data2->append_value(data2,((iot_ll_node*)list_to_split->get_value_at(list_to_split,i))->value, NULL);
     }
 
     // add data to tuple struct at creation (and stop gcc from complaining)
