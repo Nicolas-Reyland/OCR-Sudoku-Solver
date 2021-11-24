@@ -54,6 +54,18 @@ void _nn_dSoftmax(nn_Layer* layer)
     // http://saitcelebi.com/tut/output/part2.html (c'est vers le bas -> control+f / F3)
     /* Il est possible qu'on doive recoder une partie de la backpropagation ...
      */
+    // N: the number of perceptrons(nodes) in the current layer
+    size_t N = layer->num_nodes;
+    // allocate memory on the heap for the jacobian matrix associated with the softmax function
+    double** jacobian_matrix = malloc(N * N * sizeof(double))
+    // fill the jacobian matrix
+    for (size_t i = 0; i < N; i++)
+        for (size_t j = 0; j < N; j++)
+            if (i == j)
+                jacobian_matrix[i * N + j] = layer->nodes[i]->raw_value * (1 - layer->nodes[i]->raw_value);
+            else
+                jacobian_matrix[i * N + j] = -layer->nodes[i]->raw_value * layer->nodes[j]->raw_value;
+
     for (size_t i = 0; i < layer->num_nodes; i++) {
         double a_i = layer->nodes[i]->raw_value;
         layer->nodes[i]->d_raw_value = a_i * (1 - a_i);
