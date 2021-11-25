@@ -16,24 +16,24 @@ int main()
 
 	verbose("Loading model...");
 	// malloc model
-	nn_Model* model = nn_loadModel("save/mnist/1k-");
+	nn_Model* model = nn_loadModel("save/mnist/5k-");
     model->printModelArchitecture(model);
 
 	// load the dataset
 	verbose("Loading dataset...");
 	nn_ShapeDescription shape = emptyShapeDescription();
-	nn_DataSet* dataset = nn_loadDataSet("datas/mnist/1k-", &shape, true);
+	nn_DataSet* dataset = nn_loadTestOnlyDataSet("datas/mnist/", &shape, true);
 
 	nn_Session* session = createSession(
 		dataset,
-		30,
+		0,
 		0.1,
 		false,
 		true,
 		0.1
 	);
 
-	verbose("Session allocated");
+	verbose("Session created");
 
 	session->test_one_hot(session, model);
 

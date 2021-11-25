@@ -23,7 +23,7 @@ int main()
 	};
 	// activation functions
 	activation activations[] = {
-		SIGMOID, SIGMOID, SOFTMAX
+		RELU, SIGMOID, SOFTMAX
 	};
 	// loss & optimizers
 	losses loss = CATEGORICALCROSSENTROPY;
@@ -36,18 +36,18 @@ int main()
 
 	// load the dataset
 	nn_ShapeDescription shape = emptyShapeDescription();
-	nn_DataSet* dataset = nn_loadDataSet("datas/mnist/5k-", &shape, true);
+	nn_DataSet* dataset = nn_loadDataSet("datas/mnist/", &shape, true);
 
 	nn_Session* session = createSession(
 		dataset,
-		10,
+		15,
 		0.1,
 		false,
 		true,
 		0.05
 	);
 
-	verbose("Session allocated");
+	verbose("Session created");
 
 	session->train_one_hot(session, model);
 	session->test_one_hot(session, model);
@@ -56,9 +56,9 @@ int main()
     model->printModelArchitecture(model);
 
 	// save model
-	setVerbose(false);
+	setVerbose(true);
 	verbose("Saving the model...");
-	model->saveModel(model, "save/mnist/5k-");
+	model->saveModel(model, "save/mnist/");
 
 	// free model
 	freeModel(model);
