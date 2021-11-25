@@ -8,34 +8,57 @@ ssize_t getline(char **restrict lineptr, size_t *restrict n,
 
 nn_DataSet* nn_loadDataSet(char* data_dir_path, nn_ShapeDescription* description, bool verb_mode)
 {
-  // alloc path strings
-  char train_input_path[255];
-  char test_input_path[255];
-  char train_output_path[255];
-  char test_output_path[255];
-  // concat paths
-  strcpy(train_input_path, data_dir_path);
-  strcat(train_input_path, "train.in");
-  //
-  strcpy(train_output_path, data_dir_path);
-  strcat(train_output_path, "train.out");
-  //
-  strcpy(test_input_path, data_dir_path);
-  strcat(test_input_path, "test.in");
-  //
-  strcpy(test_output_path, data_dir_path);
-  strcat(test_output_path, "train.out");
-  //
-  verbose("train inputs:  %s", train_input_path);
-  verbose("train outputs: %s", train_output_path);
-  verbose("test inputs:   %s", test_input_path);
-  verbose("test outputs:  %s", test_output_path);
-  // load the paths
-  nn_Data* train_data = nn_loadSingleDataInputOutput(train_input_path, train_output_path, description, verb_mode, "Loading 'Train' dataset");
-  nn_Data* test_data = nn_loadSingleDataInputOutput(test_input_path, test_output_path, description, verb_mode, "Loading 'Test' dataset");
-  // create the dataset
-  nn_DataSet* dataset = nn_createDataSet(train_data, test_data);
-  return dataset;
+	// alloc path strings
+	char train_input_path[255];
+	char test_input_path[255];
+	char train_output_path[255];
+	char test_output_path[255];
+	// concat paths
+	strcpy(train_input_path, data_dir_path);
+	strcat(train_input_path, "train.in");
+	//
+	strcpy(train_output_path, data_dir_path);
+	strcat(train_output_path, "train.out");
+	//
+	strcpy(test_input_path, data_dir_path);
+	strcat(test_input_path, "test.in");
+	//
+	strcpy(test_output_path, data_dir_path);
+	strcat(test_output_path, "test.out");
+	//
+	verbose("train inputs:  %s", train_input_path);
+	verbose("train outputs: %s", train_output_path);
+	verbose("test inputs:   %s", test_input_path);
+	verbose("test outputs:  %s", test_output_path);
+	// load the paths
+	nn_Data* train_data = nn_loadSingleDataInputOutput(train_input_path, train_output_path, description, verb_mode, "Loading 'Train' dataset");
+	nn_Data* test_data = nn_loadSingleDataInputOutput(test_input_path, test_output_path, description, verb_mode, "Loading 'Test' dataset");
+	// create the dataset
+	nn_DataSet* dataset = nn_createDataSet(train_data, test_data);
+	return dataset;
+}
+
+nn_DataSet* nn_loadTestOnlyDataSet(char* data_dir_path, nn_ShapeDescription* description, bool verb_mode)
+{
+	verbose("/!\\ Warning: only loading the test dataset");
+	// alloc path strings
+	char test_input_path[255];
+	char test_output_path[255];
+	// concat paths
+	strcpy(test_input_path, data_dir_path);
+	strcat(test_input_path, "test.in");
+	//
+	strcpy(test_output_path, data_dir_path);
+	strcat(test_output_path, "test.out");
+	//
+	verbose("test inputs:   %s", test_input_path);
+	verbose("test outputs:  %s", test_output_path);
+	// load the paths
+	nn_Data* train_data = NULL;
+	nn_Data* test_data = nn_loadSingleDataInputOutput(test_input_path, test_output_path, description, verb_mode, "Loading 'Test' dataset");
+	// create the dataset
+	nn_DataSet* dataset = nn_createDataSet(train_data, test_data);
+	return dataset;
 }
 
 char defineShapeDescription(nn_ShapeDescription* description, size_t* num_tuples, FILE* file);
@@ -62,7 +85,7 @@ nn_Data* nn_loadSingleDataInputOutput(char* input_path, char* output_path, nn_Sh
 	size_t num_tuples_output = 0;
     defineShapeDescription(&output_description, &num_tuples_output, output_file);
 	if (num_tuples != num_tuples_output) {
-		err_verbose_exit("Not same amount of data described in input/output");
+		err_verbose_exit("Not same amount of data described in input/output: %lu != %lu", num_tuples, num_tuples_output);
 	}
 
 	// allocate memory for input output tuples
@@ -74,9 +97,9 @@ nn_Data* nn_loadSingleDataInputOutput(char* input_path, char* output_path, nn_Sh
 	// Progress bar
 	ProgressBar data_load_bar;
 	if (verb_string != NULL)
-		data_load_bar = createProgressBar(verb_string, 0, num_tuples, 100);
+		data_load_bar = createProgressBar(verb_string, 0, num_tuples, DEFAULT_PROGRESSBAR_WIDTH);
 	else
-		data_load_bar = createProgressBar(NULL, 0, num_tuples, 100);
+		data_load_bar = createProgressBar(NULL, 0, num_tuples, DEFAULT_PROGRESSBAR_WIDTH);
 
     size_t  next_verbose_print = 100,
 			next_verbose_print_step = num_tuples / 100;

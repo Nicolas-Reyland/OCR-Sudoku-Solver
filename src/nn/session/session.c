@@ -30,7 +30,7 @@ void _nn_train(struct nn_Session* session, nn_Model* model)
 			"Training",
 			0,
 			sample_size,
-			100
+			DEFAULT_PROGRESSBAR_WIDTH
 		);
 
 		shuffleArray(tuple_array, sample_size);
@@ -104,7 +104,7 @@ void _nn_train_one_hot(struct nn_Session* session, nn_Model* model)
 			"Training",
 			0,
 			sample_size,
-			100
+			DEFAULT_PROGRESSBAR_WIDTH
 		);
 
 		shuffleArray(tuple_array, sample_size);
@@ -182,14 +182,14 @@ void _nn_train_one_hot(struct nn_Session* session, nn_Model* model)
 			!session->stop_on_loss_threshold_reached ||
 			loss_buffer > session->loss_threshold;
 
-		verbose("Epoch finished with:\n - avg loss: %lf\n - avg right: %.2f%c\n", loss_buffer, 100.0 * (double)num_right_predictions/sample_size, '%');
+		verbose("Epoch finished with:\n - avg loss: %lf\n - avg right: %.2f %c\n", loss_buffer, 100.0 * (double)num_right_predictions/sample_size, '%');
 	}
 	return;
 }
 
 void _nn_test(struct nn_Session* session, nn_Model* model)
 {
-	nn_InOutTuple** tuple_array = session->dataset->train->data_collection->iot_array;
+	nn_InOutTuple** tuple_array = session->dataset->test->data_collection->iot_array;
 	size_t sample_size =session->dataset->test->data_collection->num_tuples;
 
 	shuffleArray(tuple_array, sample_size);
@@ -215,25 +215,34 @@ void _nn_test(struct nn_Session* session, nn_Model* model)
 
 void _nn_test_one_hot(struct nn_Session* session, nn_Model* model)
 {
-	// TODO: add an average right prediction for each value of the one-hot values
-	verbose("Testing the model as one-hot");
+	// TODO: add an average right prediction for each individual
+	// value of the one-hot values
+	// verbose("Testing the model as one-hot");
 	size_t num_steps_verb = 100;
 
-	nn_InOutTuple** tuple_array = session->dataset->train->data_collection->iot_array;
+	nn_InOutTuple** tuple_array = session->dataset->test->data_collection->iot_array;
 	size_t num_samples = session->dataset->test->data_collection->num_tuples;
 	double loss_sum = 0;
 	int num_right_predictions = 0;
 	nn_Layer* output_layer = model->layers[model->num_layers - 1];
+
+	ProgressBar testing_bar = createProgressBar(
+		"Testing (one-hot)",
+		0,
+		num_samples,
+		DEFAULT_PROGRESSBAR_WIDTH
+	);
 
 	for(size_t i = 0; i < num_samples; i++)
 	{
 		// verbosity
 		if (session->verb_mode) {
 			if (num_steps_verb % 100 == 0)
-				verbose(" test session run: %.4g\% (%lu/%lu) done",
+				updateProgressBar(&testing_bar, i);
+				/*verbose(" test session run: %.4g\% (%lu/%lu) done",
 					100.0 * (double)num_steps_verb/num_samples,
 					num_steps_verb,
-					num_samples);
+					num_samples);*/
 			num_steps_verb++;
 		}
 		// model prediction
@@ -260,13 +269,14 @@ void _nn_test_one_hot(struct nn_Session* session, nn_Model* model)
 		// add the loss to a total (for later average loss calculation)
 		loss_sum += error;
 	}
+	endProgressBar(&testing_bar);
 	// print averages
 	double avg_loss = (double)loss_sum / (double)num_samples;
 	double avg_right_predictions = (double)num_right_predictions / (double)num_samples;
 	// print averages
-	verbose(" test session run: finished");
-	verbose("Loss avg: %lf", avg_loss);
-	verbose("Right predictions avg: %.2f%c", 100.0 * avg_right_predictions, '%');
+	verbose("Testing finished with:");
+	verbose(" - avg loss: %lf", avg_loss);
+	verbose(" - avg right: %.2f %c", 100.0 * avg_right_predictions, '%');
 }
 
 nn_Session* createSession(nn_DataSet* dataset, unsigned int nb_epochs,
