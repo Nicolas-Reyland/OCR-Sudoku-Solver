@@ -10,6 +10,7 @@
 #include <stdbool.h>
 #include <stdbool.h>
 #include <stdarg.h>
+#include <stdlib.h>
 
 extern bool VERBOSE;
 

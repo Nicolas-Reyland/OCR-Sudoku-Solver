@@ -27,8 +27,7 @@ void _nn_freeInOutTuple(nn_InOutTuple* tuple)
 {
     if(tuple == NULL)
     {
-        verbose("freeInOutTuple: tuple is null.");
-        exit(EXIT_FAILURE);
+        err_verbose_exit("freeInOutTuple: tuple is null.");
     }
     freeSample(tuple->input);
     freeSample(tuple->output);

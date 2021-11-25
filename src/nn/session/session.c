@@ -56,11 +56,6 @@ void _nn_train(struct nn_Session* session, nn_Model* model)
 			_nn_backPropagation(model, tuple_array[i]->output->values);
 			_nn_updateWeights(model, session->learning_rate);
 
-			/*if (error2 >= error) {
-				verbose("ERROR2 >= ERROR !!!! NOT NORMAL");
-				exit(EXIT_FAILURE);
-			}*/
-
 			i++;
 
 			// if (session->verb_mode && i % nb_verb_step == 0) {
@@ -169,11 +164,6 @@ void _nn_train_one_hot(struct nn_Session* session, nn_Model* model)
 				model->loss);*/
 
 			//verbose("loss: %lf > %lf", error, error2);
-
-			/*if (error2 >= error) {
-				verbose("ERROR2 >= ERROR !!!! NOT NORMAL");
-				exit(EXIT_FAILURE);
-			}*/
 
 			i++;
 

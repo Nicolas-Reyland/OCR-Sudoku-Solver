@@ -6,13 +6,12 @@ double _nn_binaryCrossEntropy(nn_Layer* layer, double* desired_output);
 double _nn_categoricalCrossEntropy(nn_Layer* layer, double* desired_output);
 double _nn_meanSquaredError(nn_Layer* layer, double* desired_output);
 
-double applyLosses(nn_Layer* layer, double *desired_output, losses losses)
+double applyLosses(nn_Layer* layer, double *desired_output, losses loss)
 {
-	switch(losses)
+	switch(loss)
 	{
 		case NO_LOSS:
-			err_verbose("Tried to evaluate empty loss function (no loss defined)\n");
-			exit(EXIT_FAILURE);
+			err_verbose_exit("Tried to evaluate empty loss function (no loss defined)\n");
 			return NAN;
 		case CATEGORICALCROSSENTROPY:
 			return _nn_categoricalCrossEntropy(layer, desired_output);
@@ -21,11 +20,11 @@ double applyLosses(nn_Layer* layer, double *desired_output, losses losses)
 		case MEANSQUAREDERROR:
 			return _nn_meanSquaredError(layer,desired_output);
 		default:
-			err_verbose("ApplyLosses: unrecognized losses function: %d\n",
-			 losses);
-			exit(EXIT_FAILURE);
 			break;
 	}
+	err_verbose_exit("ApplyLosses: unrecognized losses function: %s\n",
+		losses_str[loss]);
+	return NAN;
 }
 
 double _nn_binaryCrossEntropy(nn_Layer* layer, double* desired_output)
@@ -39,6 +38,7 @@ double _nn_binaryCrossEntropy(nn_Layer* layer, double* desired_output)
 	sum = sum * (1/layer->num_nodes);
 	return - sum;
 }
+
 /*
 * Apply categoricalCrossEntropy to output Layer
 */
@@ -50,10 +50,19 @@ double _nn_categoricalCrossEntropy(nn_Layer* layer, double* desired_output)
 		/*if (layer->nodes[i]->value <= 0) {
 			printf("Value: %lf\n", layer->nodes[i]->value);
 		}*/
-		if (layer->nodes[i]->value <= 0)
+		if (layer->nodes[i]->value == 0)
 		{
-			err_verbose("FATAL ERROR CCE: injected value in log cannot be negative or zero: %lf", layer->nodes[i]->value);
-			exit(EXIT_FAILURE);
+			if (desired_output[i] == 0.0) {
+				// the desired output is zero, so it's 0 * log(x)
+				// thus, we can simply say that it's zero. And go on with our
+				// loss calculation
+				continue;
+			} else {
+				// the desired output is (somewhat) 'hot'
+				sum += -INFINITY;
+			}
+		} else if (layer->nodes[i]->value < 0) {
+			err_verbose_exit("FATAL ERROR CCE: injected value in log cannot be negative or zero: %lf", layer->nodes[i]->value);
 		}
 		sum += desired_output[i] * log(layer->nodes[i]->value);
 	}

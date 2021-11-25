@@ -42,8 +42,7 @@ static void _nn_printData(nn_Data* data)
         nn_InOutTuple* tuple = data->data_collection->iot_array[i];
         if(tuple == NULL)
         {
-            err_verbose("tuple is not defined, exiting...");
-            exit(EXIT_FAILURE);
+            err_verbose_exit("tuple is not defined, exiting...");
         }
         printf("%ld/\n",(i+1));
         tuple->printTuple(tuple);
@@ -71,8 +70,7 @@ void _nn_freeData(nn_Data* data)
 {
     if(data == NULL)
     {
-        verbose("freeData: data is null.");
-        exit(EXIT_FAILURE);
+        err_verbose_exit("freeData: data is null.");
     }
     _nn_freeDataCollection(data->data_collection);
     mem_free(data);

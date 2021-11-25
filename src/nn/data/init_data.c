@@ -48,13 +48,11 @@ nn_Data* nn_loadSingleDataInputOutput(char* input_path, char* output_path, nn_Sh
 
     if (input_file == NULL)
     {
-        err_verbose("ERROR 404: \"%s\", the file does not exist. Exiting...\n", input_path);
-        exit(EXIT_FAILURE);
+        err_verbose_exit("ERROR 404: \"%s\", the file does not exist. Exiting...\n", input_path);
     }
     if (output_file == NULL)
     {
-        err_verbose("ERROR 404: \"%s\", the file does not exist. Exiting...\n", output_path);
-        exit(EXIT_FAILURE);
+        err_verbose_exit("ERROR 404: \"%s\", the file does not exist. Exiting...\n", output_path);
     }
 
     nn_ShapeDescription output_description = emptyShapeDescription();
@@ -64,8 +62,7 @@ nn_Data* nn_loadSingleDataInputOutput(char* input_path, char* output_path, nn_Sh
 	size_t num_tuples_output = 0;
     defineShapeDescription(&output_description, &num_tuples_output, output_file);
 	if (num_tuples != num_tuples_output) {
-		err_verbose("Not same amount of data described in input/output");
-		exit(EXIT_FAILURE);
+		err_verbose_exit("Not same amount of data described in input/output");
 	}
 
 	// allocate memory for input output tuples
@@ -110,10 +107,9 @@ nn_Data* nn_loadSingleDataInputOutput(char* input_path, char* output_path, nn_Sh
         if (!_readLineInFile(output_file, output_data_size, output_values)) {
           // print before freeing, in case we have a problem with the mem_free
           // the error msg now gets printed anyways
-          err_verbose("Not same number of lines in input file and output file. Exiting...");
           mem_free(input_values);
           mem_free(output_values);
-          exit(EXIT_FAILURE);
+          err_verbose_exit("Not same number of lines in input file and output file. Exiting...");
           return NULL;
         }
 
@@ -165,8 +161,7 @@ bool _readLineInFile(FILE* file, size_t num_values, double* values)
         // verify allocation of values[j]
         if(&values[i] == NULL)
         {
-            verbose("Getting segfault because values[%ld] does not exist.", i);
-            exit(EXIT_FAILURE);
+            err_verbose_exit("Getting segfault because values[%ld] does not exist.", i);
         }
         // parse next double
         value = strtod(line_start, &read_end);
@@ -196,8 +191,7 @@ char defineShapeDescription(nn_ShapeDescription* description, size_t* num_tuples
     description->range = description->x * description->y * description->z;
     // veriify that the line was well matched
     if (matched_values != 5) {
-      err_verbose("Could not match all the values of the (first) description line. Values matched: %d\n", matched_values);
-      exit(EXIT_FAILURE);
+    	err_verbose_exit("Could not match all the values of the (first) description line. Values matched: %d\n", matched_values);
     }
     char cursor = fgetc(file);
     while(cursor != '\n')

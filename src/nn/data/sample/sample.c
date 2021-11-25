@@ -22,16 +22,14 @@ size_t num_values)
 
 void freeSample(nn_Sample* sample)
 {
-  if(sample == NULL)
-  {
-      verbose("freeSample: sample is null.");
-      exit(EXIT_FAILURE);
-  }
-  if(sample->values == NULL)
-  {
-      verbose("freeSample: values array is null.");
-      exit(EXIT_FAILURE);
-  }
-  mem_free(sample->values);
-  mem_free(sample);
+    if(sample == NULL)
+    {
+      err_verbose_exit("freeSample: sample is null.");
+    }
+    if(sample->values == NULL)
+    {
+      err_verbose_exit("freeSample: values array is null.");
+    }
+    mem_free(sample->values);
+    mem_free(sample);
 }

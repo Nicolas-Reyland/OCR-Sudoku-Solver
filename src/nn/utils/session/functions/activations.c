@@ -23,12 +23,10 @@ void _nn_activateLayer(nn_Layer* layer)
 			tan_h(layer);
 			break;
 		case NO_ACTIVATION:
-			err_verbose("Tried to evaluate empty activation function (no activation defined)\n");
-			exit(EXIT_FAILURE);
+			err_verbose_exit("Tried to evaluate empty activation function (no activation defined)\n");
 			break;
 		default:
-			err_verbose("Unrecognised activation function: %d\n", layer->activation);
-			exit(EXIT_FAILURE);
+			err_verbose_exit("Unrecognised activation function: %d\n", layer->activation);
 			break;
 	}
 }
