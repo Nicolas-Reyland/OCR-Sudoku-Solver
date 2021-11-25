@@ -27,10 +27,11 @@ static const float g_blur_kernel_5[7] =
 
 #define G_BLUR_KERNEL_SIZE 7
 
+//#define S_BINARISATION_SIZE 61
 #define S_BINARISATION_SIZE 61
 
 // K takes a value from the interval [0.2, 0.5]
-#define K_BINARISATION 0.3f
+long double K_BINARISATION = 0.2f;
 
 // R is the max value of the standard deviation of an image in grayscale
 #define R 128
@@ -308,16 +309,17 @@ SDL_Surface* gaussian_blur(SDL_Surface *src_surface)
 	return blurred_surface;
 }
 
-double sauvola_binarisation(unsigned long long int **mean_ii, 
+long double sauvola_binarisation(unsigned long long int **mean_ii, 
 							unsigned long long int **std_deviation_ii, 
 							int i, int j)
 {
 	int s_bin_size_pow_2 = S_BINARISATION_SIZE * S_BINARISATION_SIZE;
 
-	double mean = 0.0f;
-	double std_deviation = 0.0f;
-	double threshold = 0.0f;
+	long double mean = 0.0f;
+	long double std_deviation = 0.0f;
+	long double threshold = 0.0f;
 
+	unsigned long long int pixel_sum = 0;
 	unsigned long long int squared_pixel_sum = 0;
 
 	int margin = S_BINARISATION_SIZE + 1;
@@ -336,7 +338,7 @@ double sauvola_binarisation(unsigned long long int **mean_ii,
 	//--------------------------------Mean--------------------------------
 
 	unsigned long long int top_left_ii_val = 
-		mean_ii[ii_x + i - half_bin_size - 1][ii_y + j - half_bin_size - 1];
+	mean_ii[ii_x + i - half_bin_size - 1][ii_y + j - half_bin_size - 1];
 
 	unsigned long long int top_right_ii_val = 
 	mean_ii[ii_x + i + half_bin_size][ii_y + j - half_bin_size - 1];
@@ -347,10 +349,10 @@ double sauvola_binarisation(unsigned long long int **mean_ii,
 	unsigned long long int bottom_left_ii_val = 
 	mean_ii[ii_x + i - half_bin_size - 1][ii_y + j + half_bin_size];
 
-	mean = bottom_right_ii_val - bottom_left_ii_val 
+	pixel_sum = bottom_right_ii_val - bottom_left_ii_val 
 			- top_right_ii_val + top_left_ii_val;
 
-	mean /= s_bin_size_pow_2;
+	mean = (long double)pixel_sum / (long double)s_bin_size_pow_2;
 
 	//-------------------------Standard Deviation-------------------------
 
@@ -369,22 +371,36 @@ double sauvola_binarisation(unsigned long long int **mean_ii,
 	squared_pixel_sum = bottom_right_ii_val - bottom_left_ii_val 
 			- top_right_ii_val + top_left_ii_val;
 
-	std_deviation = squared_pixel_sum - (mean * mean * s_bin_size_pow_2);
-	std_deviation /= s_bin_size_pow_2;
-	std_deviation = sqrt(std_deviation);
+	/*
+	std_deviation = ((long double)squared_pixel_sum) - (mean * mean * ((long double)s_bin_size_pow_2));
+	if (std_deviation < 0)
+		errx(1, "NEGATIVE VALUE (OLD)\n");
+	std_deviation /= (long double)s_bin_size_pow_2;
+	std_deviation = sqrtl(std_deviation);
+	*/
 
-	threshold = mean * (1 + K_BINARISATION * ((std_deviation / R) - 1));
+	///*
+	std_deviation = ((long double)squared_pixel_sum / (long double)s_bin_size_pow_2) - (mean * mean);
+	std_deviation = sqrtl(std_deviation);
+	//*/
+
+	threshold = mean * (1 + (long double)K_BINARISATION * ((std_deviation / (long double)R) - 1));
 	//threshold = mean * ((1 + K_BINARISATION * std_deviation)/(R - 1));
 
 	return threshold;
 }
 
-void image_process(char *path)
+void image_process(char *path, int is_bright)
 {
 	SDL_Surface *surface = NULL;
 	Uint32 pixel;
 	Uint8 r, g, b;
-	double threshold;
+	long double threshold;
+
+	if (is_bright)
+		K_BINARISATION = 0.025f;
+	else
+		K_BINARISATION = 0.2f;
 
 	surface = load_image(path);
 
@@ -462,7 +478,8 @@ void image_process(char *path)
 
 			threshold = sauvola_binarisation(mean_ii, std_deviation_ii, i, j);
 
-			threshold = round(threshold);
+			threshold = roundl(threshold);
+			//printf("%Lf\n", threshold);
 
 			//r = r >= threshold;
 			//r = r * 255;

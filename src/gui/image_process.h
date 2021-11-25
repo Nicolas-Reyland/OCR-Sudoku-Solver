@@ -32,11 +32,11 @@ void grayscale(Uint8 *r, Uint8 *g, Uint8 *b);
 
 SDL_Surface* gaussian_blur(SDL_Surface *src_surface);
 
-double sauvola_binarisation(unsigned long long int **mean_ii, 
+long double sauvola_binarisation(unsigned long long int **mean_ii, 
 							unsigned long long int **std_deviation_ii, 
 							int i, int j);
 
-void image_process(char *path);
+void image_process(char *path, int is_bright);
 
 void rotate_image(char *path, double angle);
 
