@@ -17,8 +17,8 @@ LDLIBS = -lm `pkg-config --libs sdl2` -lSDL2_image -lSDL2_gfx
 
 all : main
 
-main : sources/main.o sources/detect_grid.o sources/grid_utils.o sources/segmentation.o sources/pixel_operations.o ../utils/mem/linked_list.o sources/set.o sources/tuple.o
-	$(CC) $(CFLAGSNE) sources/main.o sources/detect_grid.o sources/grid_utils.o sources/segmentation.o sources/pixel_operations.o ../utils/mem/linked_list.o sources/set.o sources/tuple.o -o main $(LDLIBS)
+main : sources/main.o sources/detect_grid.o sources/grid_utils.o sources/segmentation.o sources/pixel_operations.o ../utils/mem/linked_list.o sources/set.o sources/tuple.o sources/heapsort.o
+	$(CC) $(CFLAGSNE) sources/main.o sources/detect_grid.o sources/grid_utils.o sources/segmentation.o sources/pixel_operations.o ../utils/mem/linked_list.o sources/set.o sources/tuple.o sources/heapsort.o -o main $(LDLIBS)
 
 main.o : sources/main.c
 	$(CC) -c $(CFLAGSNE) sources/main.c -o sources/main.o $(LDLIBS)
@@ -28,9 +28,9 @@ sources/detect_grid.o : sources/detect_grid.c
 
 sources/grid_utils.o : sources/grid_utils.c
 	$(CC) -c $(CFLAGSNE) sources/grid_utils.c -o sources/grid_utils.o $(LDLIBS)
-	
+
 sources/segmentation.o : sources/segmentation.c
-	$(CC) -c $(CFLAGSNE) sources/segmentation.c -o sources/segmentation.o $(LDLIBS)		
+	$(CC) -c $(CFLAGSNE) sources/segmentation.c -o sources/segmentation.o $(LDLIBS)
 
 sources/pixel_operations.o : sources/pixel_operations.c
 	$(CC) -c $(CFLAGSNE) sources/pixel_operations.c -o sources/pixel_operations.o $(LDLIBS)
@@ -44,8 +44,16 @@ sources/set.o : sources/set.c
 sources/tuple.o : sources/tuple.c
 	$(CC) -c $(CFLAGSNE) sources/tuple.c -o sources/tuple.o $(LDLIBS)
 
+sources/heapsort.o : sources/heapsort.c
+	$(CC) -c $(CFLAGSNE) sources/heapsort.c -o sources/heapsort.o $(LDLIBS)
+
+#sources/matrix.o : sources/matrix.c
+#	$(CC) -c $(CFLAGSNE) sources/matrix.c -o sources/matrix.o $(LDLIBS)
+
+#sources/homography.o : sources/homography.c
+#	$(CC) -c $(CFLAGSNE) sources/homography.c -o sources/homography.o $(LDLIBS)
+
 
 
 clean :
 	rm cells/* sources/*.o main *.bmp ../utils/mem/*.o
-

@@ -3,6 +3,12 @@
 
 #include <stdlib.h>
 
+typedef struct CCTuple
+{
+    size_t nb_pixels;
+    size_t label;
+}CCTuple;
+
 typedef struct Tuple
 {
     size_t num_values;

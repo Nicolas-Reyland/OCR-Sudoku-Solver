@@ -1,12 +1,10 @@
 #include "../headers/segmentation.h"
 
-
-Tuple* twopassSegmentation(SDL_Surface *image, SDL_Surface* segmap)
+CCTuple* twopassSegmentation(SDL_Surface *image, SDL_Surface* segmap, size_t *segval)
 {
     linked_list *linked = init_linked_list();
     set* s = init_set(NULL, 0);
     linked->append_value(linked, s);
-    size_t segval = 1;
     Uint32 p;
     Uint32 p1,p2;
     for (size_t x = 0; x < (size_t)image->w; x++)
@@ -40,10 +38,10 @@ Tuple* twopassSegmentation(SDL_Surface *image, SDL_Surface* segmap)
                 }
                 if(length == 0)
                 {
-                    s = init_set(NULL, segval);
+                    s = init_set(NULL, *segval);
                     linked->append_value(linked, s);
-                    put_pixel(segmap, x, y, segval);
-                    segval+=1;
+                    put_pixel(segmap, x, y, *segval);
+                    *segval+=1;
                 }
                 else if (length == 1)
                 {
@@ -74,7 +72,7 @@ Tuple* twopassSegmentation(SDL_Surface *image, SDL_Surface* segmap)
                             if (s1->value < s2->value)
                             {
                                 s2->parent = s1;
-                            }                                
+                            }
                             else
                             {
                                 s1->parent = s2;
@@ -86,10 +84,12 @@ Tuple* twopassSegmentation(SDL_Surface *image, SDL_Surface* segmap)
             }
         }
     }
-    size_t histo[segval];
-    for (size_t i = 0; i < segval; i++)
+
+    CCTuple *histo = malloc(sizeof(CCTuple)*(*segval));
+    for (size_t i = 0; i < *segval; i++)
     {
-        histo[i] = 0;   
+        CCTuple t = {.nb_pixels = 0, .label = i};
+        histo[i] = t;
     }
     for (size_t x = 0; x < (size_t)image->w; x++)
     {
@@ -100,27 +100,19 @@ Tuple* twopassSegmentation(SDL_Surface *image, SDL_Surface* segmap)
             {
                 s = linked->get_value_at(linked, p);
                 s = get_root(s);
-                histo[s->value] += 1;
+                histo[s->value].nb_pixels += 1;
                 put_pixel(segmap, x, y, s->value);
             }
         }
     }
-    size_t maxindex = 0;
-    for (size_t i = 0; i < segval; i++)
-    {
-        if (histo[maxindex] < histo[i])
-        {
-            maxindex = i;
-        }
-    }
+
+    heapSort(histo, *segval);
+
     for (int i = 0; i < linked->length; i++)
     {
         free(linked->get_value_at(linked, i));
     }
+
     free_linked_list(linked);
-    size_t* val = malloc(sizeof(size_t)*2);
-    val[0] = maxindex;
-    val[1] = histo[maxindex];
-    Tuple* tuple = createTuple(val, 2);
-    return tuple;
+    return histo;
 }

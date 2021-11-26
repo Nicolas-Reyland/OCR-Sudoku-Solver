@@ -12,5 +12,6 @@
 #include "tuple.h"
 
 void detect_grid(const char* file);
+size_t findgrid(CCTuple *histo, size_t** coords);
 
 #endif
