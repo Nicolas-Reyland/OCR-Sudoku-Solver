@@ -8,6 +8,7 @@
 #include "nn/utils/misc/randomness.h"
 #include "nn/utils/session/evaluate.h"
 #include "utils/verbosity/verbose.h"
+#include "utils/verbosity/progressbar.h"
 #include <stdbool.h>
 #include <stdlib.h>
 
@@ -21,7 +22,9 @@ struct nn_Session {
 	bool verb_mode;
 	double learning_rate;
 	void (*train)(struct nn_Session* session, nn_Model* model);
+	void (*train_one_hot)(struct nn_Session* session, nn_Model* model);
 	void (*test)(struct nn_Session* session,nn_Model* model);
+	void (*test_one_hot)(struct nn_Session* session,nn_Model* model);
 };
 
 nn_Session* createSession(nn_DataSet* dataset, unsigned int nb_epochs,

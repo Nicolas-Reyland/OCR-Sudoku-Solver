@@ -2,20 +2,18 @@
 
 #include "in_out_tuple.h"
 
-void _nn_printTuple(nn_InOutTuple* tuple)
+static void _nn_printTuple(nn_InOutTuple* tuple)
 {
     verbose("number of input values: %ld", tuple->input->num_values);
     verbose("number of output values: %ld", tuple->output->num_values);
 
     verbose("Input:");
     tuple->input->print(tuple->input);
-    
     verbose("Output expected:");
     tuple->output->print(tuple->output);
 }
 
-
-nn_InOutTuple* createInOutTuple(nn_Sample* input, nn_Sample* output)
+nn_InOutTuple* _nn_createInOutTuple(nn_Sample* input, nn_Sample* output)
 {
     nn_InOutTuple* tuple = mem_malloc(sizeof(nn_InOutTuple));
 
@@ -25,12 +23,11 @@ nn_InOutTuple* createInOutTuple(nn_Sample* input, nn_Sample* output)
     return tuple;
 }
 
-void freeInOutTuple(nn_InOutTuple* tuple)
+void _nn_freeInOutTuple(nn_InOutTuple* tuple)
 {
     if(tuple == NULL)
     {
-        verbose("freeInOutTuple: tuple is null.");
-        exit(EXIT_FAILURE);
+        err_verbose_exit("freeInOutTuple: tuple is null.");
     }
     freeSample(tuple->input);
     freeSample(tuple->output);

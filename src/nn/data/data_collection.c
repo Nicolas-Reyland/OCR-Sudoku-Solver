@@ -2,22 +2,24 @@
 
 #include "data_collection.h"
 
-nn_DataCollection* _nn_loadDataCollection(iot_linked_list* data)
+nn_DataCollection* _nn_loadDataCollection(nn_InOutTuple** iot_array, size_t num_tuples)
 {
     nn_DataCollection* data_collection = mem_malloc(sizeof(nn_DataCollection));
-    data_collection->data = data;
+    data_collection->iot_array = iot_array;
+    data_collection->num_tuples = num_tuples;
 
     return data_collection;
 }
 
 
-void _nn_freeDataCollection(nn_DataCollection* collection, bool free_value)
+void _nn_freeDataCollection(nn_DataCollection* collection)
 {
     if(collection == NULL)
     {
-        verbose("freeDataCollection: collection is null.");
-        exit(EXIT_FAILURE);
+        err_verbose_exit("freeDataCollection: collection is null.\n");
     }
-    free_iot_linked_list(collection->data,free_value);
+    for (size_t i = 0; i < collection->num_tuples; i++) {
+        _nn_freeInOutTuple(collection->iot_array[i]);
+    }
     mem_free(collection);
 }

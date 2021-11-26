@@ -34,12 +34,6 @@ int main(int argc, char** argv)
 	nn_Model* model = createModel(3, model_architecture, activations, loss, optimizer);
 	verbose("Model allocated");
 	nn_ShapeDescription shape = emptyShapeDescription();
-	/*verbose("Reading the training data ...");
-	nn_Data* data_train = nn_loadSingleDataInputOutput("datas/mnist/train-first-19000.in", "datas/mnist/train-first-19000.out", &shape, true);
-	verbose("Reading the testing data ...");
-	nn_Data* data_test = nn_loadSingleDataInputOutput("datas/mnist/test.in", "datas/mnist/test.out", &shape, true);
-	verbose("Data read.");
-	nn_DataSet* dataset = nn_createDataSet(data_train, data_test);*/
 
 	nn_DataSet* dataset = nn_loadDataSet("datas/mnist/", &shape, true);
 

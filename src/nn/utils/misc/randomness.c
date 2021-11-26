@@ -19,8 +19,7 @@ void initRandom()
 void _nn_assertRandomInitialization(void)
 {
   if (!_nn_random_init_done) {
-    fprintf(stderr, "Randomness has not been initalized. Exiting (this is an assertion).\n");
-    exit(EXIT_FAILURE);
+    err_verbose_exit("Randomness has not been initalized. Exiting (this is an assertion).\n");
   }
 }
 

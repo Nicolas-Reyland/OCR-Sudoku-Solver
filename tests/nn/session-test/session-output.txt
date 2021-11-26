@@ -7,46 +7,18 @@ Done allocating nodes
 Allocating hidden layer ...
 Done allocating nodes
 layers are allocated.
-Testing Tuple:
-number of input values: 2
-number of output values: 1
-Input:
-0.000000, 1.000000, 
-Output expected:
-1.000000, 
-Result:
-1.000000 
-Losses error = 0.000000
-Testing Tuple:
-number of input values: 2
-number of output values: 1
-Input:
 1.000000, 1.000000, 
-Output expected:
 0.000000, 
-Result:
-0.000000 
-Losses error = 0.000000
-Testing Tuple:
-number of input values: 2
-number of output values: 1
-Input:
-0.000000, 0.000000, 
-Output expected:
-0.000000, 
-Result:
-0.000000 
-Losses error = 0.000000
-Testing Tuple:
-number of input values: 2
-number of output values: 1
-Input:
+
 1.000000, 0.000000, 
-Output expected:
 1.000000, 
-Result:
-1.000000 
-Losses error = 0.000000
+
+0.000000, 1.000000, 
+1.000000, 
+
+0.000000, 0.000000, 
+0.000000, 
+
 index: 0
 layers[0]->nodes[0]->weights[0] = 3.881428
 layers[0]->nodes[0]->weights[1] = 1.251794
@@ -61,15 +33,3 @@ layers[1]->nodes[1]->weights[0] = -4.218809
 bias: -1.443649
 index: 2
 bias: 0.277775
-Saving weights...
-Saved weights !
-freeing layer 0
-freeing layer ...
-layer has been freed
-freeing layer 1
-freeing layer ...
-layer has been freed
-freeing layer 2
-freeing layer ...
-layer has been freed
-freed model layers
