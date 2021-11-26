@@ -182,7 +182,8 @@ void _nn_train_one_hot(struct nn_Session* session, nn_Model* model)
 			!session->stop_on_loss_threshold_reached ||
 			loss_buffer > session->loss_threshold;
 
-		verbose("Epoch finished with:\n - avg loss: %lf\n - avg right: %.2f %c\n", loss_buffer, 100.0 * (double)num_right_predictions/sample_size, '%');
+		if (session->verb_mode)
+			verbose("Epoch finished with:\n - avg loss: %lf\n - avg right: %.2f %c\n", loss_buffer, 100.0 * (double)num_right_predictions/sample_size, '%');
 	}
 	return;
 }
