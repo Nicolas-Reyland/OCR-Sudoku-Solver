@@ -17,20 +17,24 @@ int main()
 	// model architecture
 	nn_ShapeDescription model_architecture[] = {
 		create2DShapeDescription(28, 28),
-		create2DShapeDescription(16, 16),
-		create1DShapeDescription(128),
+		create1DShapeDescription(800),
 		create1DShapeDescription(9),
 	};
+	const size_t num_layers = sizeof(model_architecture) / sizeof(nn_ShapeDescription);
+	const size_t num_activations = num_layers - 1;
 	// activation functions
 	activation activations[] = {
-		RELU, SIGMOID, SOFTMAX
+		SIGMOID, SOFTMAX
 	};
+	if (sizeof(activations) != num_activations * sizeof(activation)) {
+		err_verbose_exit("Sync your number of activations and layers !");
+	}
 	// loss & optimizers
 	losses loss = CATEGORICALCROSSENTROPY;
 	optimizer optimizer = ADAM;
 
 	// malloc model
-	nn_Model* model = createModel(4, model_architecture, activations, loss, optimizer);
+	nn_Model* model = createModel(num_layers, model_architecture, activations, loss, optimizer);
 	verbose("Model created");
 	model->printModelArchitecture(model);
 
@@ -58,7 +62,7 @@ int main()
 	// save model
 	setVerbose(true);
 	verbose("Saving the model...");
-	model->saveModel(model, "save/mnist/");
+	model->saveModel(model, "save/mnist/800-");
 
 	// free model
 	freeModel(model);
