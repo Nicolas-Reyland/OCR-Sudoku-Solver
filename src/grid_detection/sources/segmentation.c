@@ -106,7 +106,9 @@ CCTuple* twopassSegmentation(SDL_Surface *image, SDL_Surface* segmap, size_t *se
         }
     }
 
+    printf("STARTED\n");
     heapSort(histo, *segval);
+    printf("FINISHED\n");
 
     for (int i = 0; i < linked->length; i++)
     {

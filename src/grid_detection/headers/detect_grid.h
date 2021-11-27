@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <err.h>
 #include <math.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -12,6 +13,7 @@
 #include "tuple.h"
 
 void detect_grid(const char* file);
-size_t findgrid(CCTuple *histo, size_t** coords);
+size_t findgrid(CCTuple *histo, size_t histo_size, size_t* coords[], SDL_Surface** surf[]);
+int get_distance(int X1, int Y1, int X2, int Y2);
 
 #endif
