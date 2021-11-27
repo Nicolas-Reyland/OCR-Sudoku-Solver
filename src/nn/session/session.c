@@ -90,8 +90,8 @@ void _nn_train_one_hot(struct nn_Session* session, nn_Model* model)
 
 	verbose("Training for %lu epochs", session->nb_epochs);
 
-	Logger loss_logger = createLogger("avg-loss.log");
-	Logger right_logger = createLogger("avg-right.log");
+	Logger loss_logger = createLogger(session->loss_log_file);
+	Logger right_logger = createLogger(session->right_log_file);
 
 	// incrementing directly epoch : so the verbose does not have to add 1
 	// when printing (first epoch : 1, not 0)
@@ -291,7 +291,7 @@ void _nn_test_one_hot(struct nn_Session* session, nn_Model* model)
 
 nn_Session* createSession(nn_DataSet* dataset, unsigned int nb_epochs,
 double loss_threshold, bool stop_on_loss_threshold_reached, bool verbose,
-double learning_rate)
+double learning_rate, const char* loss_log_file, const char* right_log_file)
 {
 	nn_Session* session = mem_malloc(sizeof(nn_Session));
 
@@ -302,6 +302,9 @@ double learning_rate)
 	session->learning_rate		= learning_rate;
 
 	session->stop_on_loss_threshold_reached = stop_on_loss_threshold_reached;
+
+	session->loss_log_file = loss_log_file;
+	session->right_log_file = right_log_file;
 
 	session->train				= &_nn_train;
 	session->train_one_hot		= &_nn_train_one_hot;

@@ -14,7 +14,6 @@
 #include <stdlib.h>
 
 typedef struct nn_Session nn_Session;
-
 struct nn_Session {
 	nn_DataSet* dataset;
 	unsigned int nb_epochs;
@@ -22,6 +21,8 @@ struct nn_Session {
 	bool stop_on_loss_threshold_reached;
 	bool verb_mode;
 	double learning_rate;
+	const char* loss_log_file;
+	const char* right_log_file;
 	void (*train)(struct nn_Session* session, nn_Model* model);
 	void (*train_one_hot)(struct nn_Session* session, nn_Model* model);
 	void (*test)(struct nn_Session* session,nn_Model* model);
@@ -29,7 +30,8 @@ struct nn_Session {
 };
 
 nn_Session* createSession(nn_DataSet* dataset, unsigned int nb_epochs,
-double loss_threshold, bool stop_on_loss_threshold_reached, bool verbose, double learning_rate);
+double loss_threshold, bool stop_on_loss_threshold_reached, bool verbose,
+double learning_rate, const char* loss_log_file, const char* right_log_file);
 void freeSession(nn_Session* session);
 
 
