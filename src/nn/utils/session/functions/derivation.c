@@ -85,10 +85,21 @@ void _nn_dSoftmax(nn_Layer* layer)
         exponentials[i] = exp(layer->nodes[i]->raw_value);
         sum += exponentials[i];
     }
+    if (sum == 0) {
+        verbose("\nWarning: sum is null in softmax. Adding 1e-3 for stability\n");
+        sum = 1e-3;
+    }
     double sum_squared = sum * sum;
     // calculate derivative values
     for (size_t i = 0; i < N; i++) {
         layer->nodes[i]->d_raw_value = exponentials[i] * (sum - exponentials[i]) / sum_squared;
+        if (isnan(layer->nodes[i]->d_raw_value)) {
+            verbose("isnan in dsoftmax: exp[i] = %lf, sum = %lf, sum_squared = %lf",
+                exponentials[i],
+                sum,
+                sum_squared
+            );
+        }
     }
     mem_free(exponentials);
 }
