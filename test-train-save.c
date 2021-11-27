@@ -17,7 +17,7 @@ int main()
 	// model architecture
 	nn_ShapeDescription model_architecture[] = {
 		create2DShapeDescription(28, 28),
-		create1DShapeDescription(800),
+		create1DShapeDescription(200),
 		create1DShapeDescription(9),
 	};
 	const size_t num_layers = sizeof(model_architecture) / sizeof(nn_ShapeDescription);
@@ -44,11 +44,13 @@ int main()
 
 	nn_Session* session = createSession(
 		dataset,
-		10,
+		5,
 		0.1,
 		false,
 		true,
-		0.05
+		0.05,
+		"avg-loss.log",
+		"avg-right.log"
 	);
 
 	verbose("Session created");
