@@ -90,6 +90,9 @@ void _nn_train_one_hot(struct nn_Session* session, nn_Model* model)
 
 	verbose("Training for %lu epochs", session->nb_epochs);
 
+	Logger loss_logger = createLogger("avg-loss.log");
+	Logger right_logger = createLogger("avg-right.log");
+
 	// incrementing directly epoch : so the verbose does not have to add 1
 	// when printing (first epoch : 1, not 0)
 	for (size_t epoch = 0; epoch++ < session->nb_epochs && loss_threshold_condition;)
@@ -108,14 +111,18 @@ void _nn_train_one_hot(struct nn_Session* session, nn_Model* model)
 		);
 
 		shuffleArray(tuple_array, sample_size);
-		size_t i = 0;
 		double loss_buffer = 0;
 		int num_right_predictions = 0;
-		while(i < sample_size)
+		for (size_t i = 0; i < sample_size; i++)
 		{
 			// update the progress bar if necessary
-			if (i % verb_update_step == 0)
+			if (i % verb_update_step == 0) {
 				updateProgressBar(&training_bar, i);
+				if (i != 0) {
+					updateLogger(&loss_logger, loss_buffer / (double)i);
+					updateLogger(&right_logger, (double)num_right_predictions / (double)i);
+				}
+			}
 
 			// feed forward the input at index 'i'
 			_nn_feedForward(model, tuple_array[i]->input->values);
@@ -165,8 +172,6 @@ void _nn_train_one_hot(struct nn_Session* session, nn_Model* model)
 
 			//verbose("loss: %lf > %lf", error, error2);
 
-			i++;
-
 			// if (session->verb_mode && i % nb_verb_step == 0) {
 			// 	verbose(" train session run: %.2f%c  done (loss: %lf)", 100.0 * (double)i/sample_size, '%', error);
 			// 	verbose(" precentage of right predictions: %.2f%c", 100.0 * (double)num_right_predictions/i, '%');
@@ -185,6 +190,10 @@ void _nn_train_one_hot(struct nn_Session* session, nn_Model* model)
 		if (session->verb_mode)
 			verbose("Epoch finished with:\n - avg loss: %lf\n - avg right: %.2f %c\n", loss_buffer, 100.0 * (double)num_right_predictions/sample_size, '%');
 	}
+
+	endLogger(&loss_logger);
+	endLogger(&right_logger);
+
 	return;
 }
 
