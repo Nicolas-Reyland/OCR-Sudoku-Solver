@@ -1,3 +1,6 @@
+#ifndef HOMOGRAPHY_H
+#define HOMOGRAPHY_H
+
 #include <stdlib.h>
 #include <math.h>
 #include <SDL2/SDL.h>
@@ -5,6 +8,8 @@
 #include "tuple.h"
 #include "matrix.h"
 
-Tuple* findhomography(Tuple src, size_t size);
+Matrix* findhomography(double *src, double size);
 
-SDL_Surface* transformimage(Tuple *transform, SDL_Surface *image, size_t size);
+SDL_Surface* transformimage(Matrix *transform, SDL_Surface *image, double size);
+
+#endif

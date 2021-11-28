@@ -8,7 +8,7 @@ CC = gcc
 # options for pre-processor (-I, -include, -D ... )
 CPPFLAGS =
 # main compilation options
-CFLAGSNE = -fsanitize=address -g -Wall -Wextra -std=c99 -O1 `pkg-config --cflags sdl2` -I..
+CFLAGSNE = -Wall -Wextra -std=c99 -O1 `pkg-config --cflags sdl2` -I..
 CFLAGS = -Wall -Wextra -Werror -std=c99 -O1 `pkg-config --cflags sdl2`
 # Linker options (probably always empty)
 LDFLAGS =
@@ -17,8 +17,8 @@ LDLIBS = -lm `pkg-config --libs sdl2` -lSDL2_image -lSDL2_gfx
 
 all : main
 
-main : sources/main.o sources/detect_grid.o sources/grid_utils.o sources/segmentation.o sources/pixel_operations.o ../utils/mem/linked_list.o sources/set.o sources/tuple.o sources/heapsort.o
-	$(CC) $(CFLAGSNE) sources/main.o sources/detect_grid.o sources/grid_utils.o sources/segmentation.o sources/pixel_operations.o ../utils/mem/linked_list.o sources/set.o sources/tuple.o sources/heapsort.o -o main $(LDLIBS)
+main : sources/main.o sources/detect_grid.o sources/grid_utils.o sources/segmentation.o sources/pixel_operations.o ../utils/mem/linked_list.o sources/set.o sources/tuple.o sources/heapsort.o sources/matrix.o sources/homography.o
+	$(CC) $(CFLAGSNE) sources/main.o sources/detect_grid.o sources/grid_utils.o sources/segmentation.o sources/pixel_operations.o ../utils/mem/linked_list.o sources/set.o sources/tuple.o sources/heapsort.o sources/matrix.o sources/homography.o -o main $(LDLIBS)
 
 main.o : sources/main.c
 	$(CC) -c $(CFLAGSNE) sources/main.c -o sources/main.o $(LDLIBS)
@@ -47,11 +47,11 @@ sources/tuple.o : sources/tuple.c
 sources/heapsort.o : sources/heapsort.c
 	$(CC) -c $(CFLAGSNE) sources/heapsort.c -o sources/heapsort.o $(LDLIBS)
 
-#sources/matrix.o : sources/matrix.c
-#	$(CC) -c $(CFLAGSNE) sources/matrix.c -o sources/matrix.o $(LDLIBS)
+sources/matrix.o : sources/matrix.c
+	$(CC) -c $(CFLAGSNE) sources/matrix.c -o sources/matrix.o $(LDLIBS)
 
-#sources/homography.o : sources/homography.c
-#	$(CC) -c $(CFLAGSNE) sources/homography.c -o sources/homography.o $(LDLIBS)
+sources/homography.o : sources/homography.c
+	$(CC) -c $(CFLAGSNE) sources/homography.c -o sources/homography.o $(LDLIBS)
 
 
 

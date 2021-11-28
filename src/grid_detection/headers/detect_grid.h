@@ -11,6 +11,7 @@
 #include "grid_utils.h"
 #include "segmentation.h"
 #include "tuple.h"
+#include "homography.h"
 
 void detect_grid(const char* file);
 size_t findgrid(CCTuple *histo, size_t histo_size, size_t* coords[], SDL_Surface** surf[]);

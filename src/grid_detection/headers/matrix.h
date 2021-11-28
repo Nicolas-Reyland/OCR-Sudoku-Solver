@@ -1,20 +1,32 @@
-# include <stdlib.h>
-# include <stdio.h>
+#ifndef MATRIX_H
+#define MATRIX_H
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <err.h>
 
 typedef struct Matrix{
-    size_t h;
-    size_t w;
-    size_t *values;
+    int h;
+    int w;
+    double *values;
 } Matrix;
 
-Matrix* init_Matrix(size_t height, size_t width);
+Matrix* init_matrix(int height, int width);
 
-void matrix_setvalue(Matrix *M, size_t i, size_t j, size_t value);
+void free_matrix(Matrix *M);
 
-size_t matrix_getvalue(Matrix *M, size_t i, size_t j);
+void matrix_setvalue(Matrix *M, int i, int j, double value);
+
+double matrix_getvalue(Matrix *M, int i, int j);
+
+Matrix* copy_matrix(Matrix *M);
 
 Matrix* matrix_multiply(Matrix *M1, Matrix *M2);
 
 Matrix* matrix_transpose(Matrix *M);
 
 Matrix* matrix_invert(Matrix *M);
+
+void print_matrix(Matrix *M);
+
+#endif

@@ -1,99 +1,178 @@
 #include "../headers/matrix.h"
 
-Matrix* init_Matrix(size_t height, size_t width)
+Matrix* init_matrix(int height, int width)
 {
     Matrix *M = malloc(sizeof(Matrix));
     M->h = height;
     M->w = width;
-    M->values = calloc(height*width ,sizeof(size_t));
+    M->values = calloc(height*width, sizeof(double));
 
     return M;
 }
 
-void matrix_setvalue(Matrix *M, size_t i, size_t j, size_t value)
+void free_matrix(Matrix *M)
 {
-    if (i > M->h || j > M->w)
-    {
-        printf("setvalue: wrong index i or j");
-        return;
-    }
-    M->values[i*M->w + j] = value;
+    free(M->values);
+    M->values = NULL;
+    free(M);
+    M = NULL;
 }
 
-size_t matrix_getvalue(Matrix *M, size_t i, size_t j)
+void matrix_setvalue(Matrix *M, int i, int j, double value)
 {
-    if (i > M->h || j > M->w)
+    if(M == NULL)
+        printf("Error: Cannot set matrix value -> empty matrix given.\n");
+    else if((i >= 0 && i < M->h) && (j >= 0 && j < M->w))
+        M->values[i*M->w + j] = value;
+    else
     {
-        printf("getvalue: wrong index i or j");
+        printf("Error: Cannot set matrix value -> index out of bound.\n");
+    }
+}
+
+double matrix_getvalue(Matrix *M, int i, int j)
+{
+    if (M == NULL)
+    {
+        printf("Error: Cannot get matrix value -> empty matrix given.\n");
         return 0;
     }
-    return M->values[i*M->w + j];
+    if((i >= 0 && i < M->h) && (j >= 0 && j < M->w))
+    {
+        return M->values[i*M->w + j];
+    }
+    else
+    {
+        printf("Error: Cannot get matrix value -> index out of bound.\n");
+        return 0;
+    }
+}
+
+Matrix* copy_matrix(Matrix *M)
+{
+    Matrix *C = init_matrix(M->h, M->w);
+    for (int i = 0; i < M->h; i++)
+    {
+        for (int j = 0; j < M->w; j++)
+        {
+            matrix_setvalue(C, i, j, matrix_getvalue(M, i, j));
+        }
+    }
+
+    return C;
 }
 
 Matrix* matrix_multiply(Matrix *M1, Matrix *M2)
 {
-    if (M1->w != M2->h || M1->h != M2->w)
+    if(M1 == NULL || M2 == NULL)
     {
-        printf("matrix_multiply: wrong size");
-        return init_Matrix(0,0);
+        printf("Error: Cannot multiply the matrices -> empty matrix given.\n");
+        return NULL;
     }
-    Matrix *new = init_Matrix(M1->h, M2->w);
-    for (size_t i = 0; i < M1->h; i++)
+    if (M1->w == M2->h)
     {
-        for (size_t j = 0; j < M1->w; j++)
+        Matrix *MR = init_matrix(M1->h, M2->w);
+
+        for (int i = 0; i < M1->h; i++)
         {
-            matrix_setvalue(new, i, j, matrix_getvalue(M1, i, j) * matrix_getvalue(M2, j, i));
+            for (int j = 0; j < M2->w; j++)
+            {
+                double sum = 0;
+                for(int k = 0; k < M1->w; k++)
+                    sum += matrix_getvalue(M1, i, k) * matrix_getvalue(M2, k, j);
+
+                matrix_setvalue(MR, i, j, sum);
+            }
         }
+
+        return MR;
     }
-    return new;
+    else
+    {
+        printf("Error: Cannot multiply the matrices -> wrong size.\n");
+        return NULL;
+    }
+    
 }
 
 Matrix* matrix_transpose(Matrix *M)
 {
-    Matrix *new = init_Matrix(M->w, M->h);
-    for (size_t i = 0; i < M->h; i++)
+    if(M == NULL)
     {
-        for (size_t j = 0; j < M->w; j++)
+        printf("Error: Cannot transpose the matrix -> empty matrix given.\n");
+        return NULL;
+    }
+
+    Matrix *MR = init_matrix(M->w, M->h);
+    for (int i = 0; i < MR->h; i++)
+    {
+        for (int j = 0; j < MR->w; j++)
         {
-            matrix_setvalue(new, j, i, matrix_getvalue(M, i, j));
+            matrix_setvalue(MR, i, j, matrix_getvalue(M, j, i));
         }
     }
-    return new;
-}
-
-size_t matrix_determinant(Matrix *M)
-{
-    if (M->h != M->w)
-    {
-        printf("matrix_determinant: not squared matrix");
-        return 0;
-    }
-    size_t size = M->w;
-    size_t D = 0;
-
-    if (size == 1)
-    {
-        return matrix_getvalue(M, 0, 0);
-    }
-
-    int sign = 1;
-    Matrix *C = init_Matrix(size, size);
-
-    for (size_t j = 0; j < M->w; j++)
-    {
-        matrix_cofactor(M, C, 0, j, size);
-        D += sign * matrix_getvalue(M, 0, j) * matrix_determinant(C);
-    }
-
-    return D;
+    return MR;
 }
 
 Matrix* matrix_invert(Matrix *M)
 {
-    if (M->h != M->w)
+    if(M == NULL)
     {
-        printf("matrix_invert: not squared matrix");
-        return init_Matrix(0, 0);
+        printf("Error: Cannot invert matrix -> empty matrix given.\n");
+        return NULL;
+    }
+    if (M->h == M->w)
+    {
+        double i, j, k;
+
+        Matrix *C = copy_matrix(M);
+        Matrix *MR = init_matrix(M->h, M->h);
+
+        for(int i = 0; i < M->h; i++)
+            matrix_setvalue(MR, i, i, 1);
+
+        for(k = 0; k < M->h; k++)
+        {
+            double temp = matrix_getvalue(C, k, k);
+            for(j = 0; j < M->h; j++)
+            {
+                matrix_setvalue(C, k, j, matrix_getvalue(C, k, j) / temp);
+                matrix_setvalue(MR, k, j, matrix_getvalue(MR, k, j) / temp);
+            }
+
+            for(i = 0; i < M->h; i++)
+            {
+                temp = matrix_getvalue(C, i, k);
+                for(j = 0; j < M->h; j++)
+                {
+                    if(i == k)
+                        break;
+
+                    matrix_setvalue(C, i, j, matrix_getvalue(C, i, j) - matrix_getvalue(C, k, j) * temp);
+                    matrix_setvalue(MR, i, j, matrix_getvalue(MR, i, j) - matrix_getvalue(MR, k, j) * temp);
+                }
+            }
+        }
+
+        free_matrix(C);
+        return MR;
+    }
+    else
+    {
+        printf("Error: Cannot invert matrix -> non squared matrix given.\n");
+        return NULL;
     }
 
+}
+
+void print_matrix(Matrix *M)
+{
+    for (int i = 0; i < M->h; i++)
+    {
+        for (int j = 0; j < M->w; j++)
+        {
+            printf("%lf\t", matrix_getvalue(M, i, j));
+        }
+        printf("\n");
+    }
 }
