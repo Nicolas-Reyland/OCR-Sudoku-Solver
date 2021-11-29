@@ -7,7 +7,8 @@ LDLIBS_NN = -lm
 LDLIBS_GUI = -lm `pkg-config --libs sdl2` -lSDL2_image -lSDL2_ttf `pkg-config --libs gtk+-3.0`
 CC := gcc
 
-SOURCES := $(shell find src/{nn,utils} -name '*.c')
+# use recursive assignment (=) for this, not simple assignment (:=)
+SOURCES = $(shell find src/{nn,utils} -name '*.c')
 
 .PHONY: all
 all: nn gui solver # src/nn/nn.o src/gui/gui.o src/solver/solver.o
@@ -103,11 +104,20 @@ solver:
 
 # ------- Utils -------
 .PHONY: utils
-utils:
+utils: utils-verbosity utils-converter-cell
 	$(CC) $(CFLAGS) -c -o src/utils/mem/linked_list.o src/utils/mem/linked_list.c
 	$(CC) $(CFLAGS) -c -o src/utils/mem/mem-management.o src/utils/mem/mem-management.c
+
+.PHONY: utils-verbosity
+utils-verbosity:
 	$(CC) $(CFLAGS) -c -o src/utils/verbosity/verbose.o src/utils/verbosity/verbose.c
 	$(CC) $(CFLAGS) -c -o src/utils/verbosity/progressbar.o src/utils/verbosity/progressbar.c
+
+.PHONY:
+utils-converter-cell:
+	$(CC) $(CFLAGS) $(CFLAGS_GUI) -c -o src/utils/converter/converter.o src/utils/converter/converter.c $(LDLIBS_GUI)
+	$(CC) $(CFLAGS) $(CFLAGS_GUI) -c -o src/utils/converter/sdl_operations.o src/utils/converter/sdl_operations.c $(LDLIBS_GUI)
+	$(CC) $(CFLAGS) -c -o src/utils/cell/cell.o src/utils/cell/cell.c
 
 
 # ------- Test Framework -------

@@ -1,10 +1,12 @@
+// converter.c
+
 #include "converter.h"
 
 void __converter(char* filepath, double* converted_cell);
 
 void converter(char* path, double** converted_cells, Cell** cells_position)
 {
-	// I don't actually init sdl because I assume 
+	// I don't actually init sdl because I assume
 	// it has already been initialized by grid_description
 	DIR* directory;
 	unsigned int index = 0;
@@ -12,16 +14,20 @@ void converter(char* path, double** converted_cells, Cell** cells_position)
 	struct dirent *dir;
 	if (directory == NULL)
 		errx(1, "CONVERTER Error: There is no directory.");
-	printf("Reading directory at path: %s\n", path);
+	verbose("Reading directory at path: %s\n", path);
 	while((dir = readdir(directory)) != NULL)
 	{
-		printf("index: %3d ", index);
+		verbose("index: %3d ", index);
+
+		// see convert.h : line 12 (cannot compile without this)
+		err_verbose_exit("Crashing here manually because DT_REG is not defined.\nPlease define it in converter.h or include a file that defines it.");
+
 		if (dir->d_type == DT_REG)
 		{
 			//getting path for file
 			char* buffer = calloc(1000, sizeof(char));
 			sprintf(buffer, "%s/%s",path, dir->d_name);
-			printf("%s\n", buffer);
+			verbose("%s\n", buffer);
 
 			//converting...
 			//allocatting memory to the double array
@@ -41,15 +47,15 @@ void converter(char* path, double** converted_cells, Cell** cells_position)
 
 			//freeing the string buffer
 			free(buffer);
-			
+
 		}
 		else
 		{
 			//symlinks are filtered
-			printf("Not a file: %s\n", dir->d_name);
+			verbose("Not a file: %s\n", dir->d_name);
 		}
 
-		
+
 		index++;
 	}
 	closedir(directory);

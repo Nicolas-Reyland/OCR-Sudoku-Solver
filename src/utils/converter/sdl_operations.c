@@ -1,5 +1,6 @@
-#include "sdl_operations.h"
+// sdl_operations.c
 
+#include "sdl_operations.h"
 
 SDL_Surface* cv_load_image(char *path)
 {
@@ -9,7 +10,7 @@ SDL_Surface* cv_load_image(char *path)
      // If it fails, die with an error message.
     img = IMG_Load(path);
     if (!img)
-        errx(3, "can't load %s: %s", path, IMG_GetError());
+		errx(3, "can't load %s: %s", path, IMG_GetError());
 
 	return img;
 }

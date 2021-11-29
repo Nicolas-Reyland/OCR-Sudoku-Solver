@@ -1,5 +1,5 @@
-#ifndef CELL_H
-#define CELL_H
+#ifndef UTILS_CELL_H
+#define UTILS_CELL_H
 
 typedef struct Cell
 {

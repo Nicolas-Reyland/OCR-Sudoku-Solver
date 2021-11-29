@@ -1,8 +1,10 @@
+// sdl_operations.h
+
 #ifndef SDL_OPERATIONS_H
 #define SDL_OPERATIONS_H
 
 #include <SDL2/SDL.h>
-#include <SDL/SDL_image.h>
+#include <SDL2/SDL_image.h>
 #include <stdlib.h>
 #include <err.h>
 
