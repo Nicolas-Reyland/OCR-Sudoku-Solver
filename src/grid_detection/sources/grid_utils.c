@@ -225,6 +225,7 @@ SDL_Surface* cut_image(SDL_Surface* image, size_t top, size_t bottom, size_t lef
 
 void save_cells(SDL_Surface* image)
 {
+
     size_t w = (size_t)image->w;
     size_t h = (size_t)image->h;
     for (size_t x = 0; x < 9; x++)
@@ -233,14 +234,29 @@ void save_cells(SDL_Surface* image)
         {
             SDL_Surface* cell = cut_image(image, y*h/9, (size_t)y*h/9+h/9, x*w/9, (size_t)x*w/9+w/9);
             SDL_Surface* cellsegmap = SDL_CreateRGBSurface(0, w/9+1, h/9+1, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0);
-            size_t segval = 1;
-            CCTuple *histo = twopassSegmentation(cell, cellsegmap, &segval);
-            if (histo[segval-1].nb_pixels > ((w/9+1)*(h/9+1))/25)
+            
+            size_t limit = (h/9*w/9)/60;
+
+            size_t X = 0;
+            size_t size = 0;
+            do
+            {
+                size = propagate(cell, cellsegmap, 1, w/18+X, h/18);
+                size_t size2 = propagate(cell, cellsegmap, 1, w/18-X, h/18);
+                if (size2 > size)
+                {
+                    size = size2;
+                }
+                put_pixel(image, x*h/9+h/18+X, y*h/9+h/18, SDL_MapRGB(image->format, 255, 0, 0));
+                put_pixel(image, x*h/9+h/18-X, y*h/9+h/18, SDL_MapRGB(image->format, 255, 0, 0));
+                X++;
+            } while (size < limit && X < w/36);
+
+            if (size > limit)
             {
                 SDL_Surface* emptycell = SDL_CreateRGBSurface(0, 28, 28, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0);
-                size_t num = histo[segval-1].label;
                 size_t top, right, left, bottom;
-                find_extremity_coordinates(cellsegmap, num, &top, &right, &left, &bottom);
+                find_extremity_coordinates(cellsegmap, 1, &top, &right, &left, &bottom);
                 SDL_Surface* croppedcell = cut_image(cell, top, bottom, left, right);
 
                 int max = (int) ceil((double)(croppedcell->w)/(double)22);
@@ -263,7 +279,6 @@ void save_cells(SDL_Surface* image)
                 }
                 SDL_FreeSurface(emptycell);
             }
-            free(histo);
             SDL_FreeSurface(cell);
             SDL_FreeSurface(cellsegmap);
         }

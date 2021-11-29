@@ -10,4 +10,6 @@
 
 CCTuple* twopassSegmentation(SDL_Surface *image, SDL_Surface* segmap, size_t *segval);
 
+size_t propagate(SDL_Surface *image, SDL_Surface* segmap, int segval, size_t x, size_t y);
+
 #endif

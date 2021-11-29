@@ -116,3 +116,34 @@ CCTuple* twopassSegmentation(SDL_Surface *image, SDL_Surface* segmap, size_t *se
     free_linked_list(linked);
     return histo;
 }
+
+size_t propagate(SDL_Surface *image, SDL_Surface* segmap, int segval, size_t x, size_t y)
+{
+    size_t n = 0;
+    Uint8 color;
+    Uint32 pix = get_pixel(image, x, y);
+    SDL_GetRGB(pix, image->format, &color, &color, &color);
+    Uint32 p = get_pixel(segmap, x, y);
+    if(p != 0 || color == 0)
+    {
+        return 0;
+    }
+    put_pixel(segmap, x, y, segval);
+    if(y > 0)
+    {
+        n += propagate(image, segmap, segval, x, y-1);
+    }
+    if(x > 0)
+    {
+        n += propagate(image, segmap, segval, x-1, y);
+    }
+    if(x < (size_t)image->w-1)
+    {
+        n += propagate(image, segmap, segval, x+1, y);
+    }
+    if(y < (size_t)image->h-1)
+    {
+        n += propagate(image, segmap, segval, x, y+1);
+    }
+    return 1 + n;
+}
