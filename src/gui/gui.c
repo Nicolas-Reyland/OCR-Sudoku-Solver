@@ -6,7 +6,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <gtk/gtk.h>
 #include "image_process.h"
-//#include "utils/mem/mem-management.h"
+#include "nn/nn.h"
 
 #define WINDOW_WIDTH 1024
 #define WINDOW_HEIGHT 768
@@ -27,6 +27,12 @@ void display_solution_grid(GtkWidget *widget, gpointer user_data);
 
 int main(int argc, char **argv)
 {
+    // init Neural Network & Co.
+	initRandom();
+	initMemoryTracking();
+	nn_Model* model = nn_loadModel("save/mnist/");
+
+
     // Window
     GtkWidget *window = NULL;
 
@@ -66,13 +72,13 @@ int main(int argc, char **argv)
 
     // Variables that help display an image
     GtkWidget** widget_pointers[8] ={
-                                    &window, 
-                                    &frame, 
+                                    &window,
+                                    &frame,
                                     &image,
                                     &rotate_img_entry,
-                                    &solve_sudoku_button, 
-                                    &solution_button, 
-                                    &apply_rotation_button, 
+                                    &solve_sudoku_button,
+                                    &solution_button,
+                                    &apply_rotation_button,
                                     &brightness_check};
 
     // Errors
@@ -84,26 +90,26 @@ int main(int argc, char **argv)
 
     // Creates a GtkWindow
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    
+
     // Sets window title
     gtk_window_set_title(GTK_WINDOW(window), "OCR Sudoku solver");
-    
+
     // Sets window default size
     gtk_window_set_default_size(GTK_WINDOW(window), WINDOW_WIDTH, WINDOW_HEIGHT);
 
     // Sets window position
     gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
-    
+
     // Sets some border space around the edges of the window.
     gtk_container_set_border_width(GTK_CONTAINER(window), 15);
-    
+
     icon = create_pixbuf("gui_files/icon.jpg");
     gtk_window_set_icon(GTK_WINDOW(window), icon);
 
     src_image_path = (char*)malloc((strlen("gui_files/no_image.png") + 1) * sizeof(char));
     //if (!src_image_path)
     //    exit(0);
-    
+
     src_image_path = strcpy(src_image_path, "gui_files/no_image.png");
 
     image = gui_load_image(src_image_path);
@@ -125,9 +131,9 @@ int main(int argc, char **argv)
     frame = gtk_frame_new("Loaded Image");
     gtk_frame_set_label_align (GTK_FRAME(frame), 0.5, 1.0);
     //g_object_set(frame, "margin", 25, NULL);
-    
+
     //
-    gtk_widget_set_size_request(frame, round(IMAGE_MAX_WIDTH * 1.1), 
+    gtk_widget_set_size_request(frame, round(IMAGE_MAX_WIDTH * 1.1),
                                     round(IMAGE_MAX_HEIGHT * 1.1));
     //
 
@@ -142,7 +148,7 @@ int main(int argc, char **argv)
     gtk_widget_set_sensitive(apply_rotation_button, FALSE);
 
     solve_sudoku_button = gtk_button_new_with_label("Solve Sudoku");
-    gtk_widget_set_tooltip_text(solve_sudoku_button, 
+    gtk_widget_set_tooltip_text(solve_sudoku_button,
         "Launches the whole program and displays the non resolved grid");
     gtk_widget_set_sensitive(solve_sudoku_button, FALSE);
 
@@ -202,9 +208,9 @@ int main(int argc, char **argv)
     gtk_box_pack_end(GTK_BOX(bottom_buttons_box), binarised_img_button, TRUE, FALSE, 0);
 
     // Sets the action of the right buttons
-    g_signal_connect(load_img_button, "clicked", 
+    g_signal_connect(load_img_button, "clicked",
                     G_CALLBACK(open_dialog), widget_pointers);
-    g_signal_connect(apply_rotation_button, "clicked", 
+    g_signal_connect(apply_rotation_button, "clicked",
                     G_CALLBACK(display_rotated_image), widget_pointers);
 
     g_signal_connect(solve_sudoku_button, "clicked", G_CALLBACK(launch_process), widget_pointers);
@@ -218,7 +224,7 @@ int main(int argc, char **argv)
     g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
     gtk_widget_show_all(window);
-    
+
     //g_object_unref(icon);
     //g_object_unref(image_pixbuf);
 
@@ -229,7 +235,7 @@ int main(int argc, char **argv)
     {
         unsolved_grid[i] = calloc(9, sizeof(int));
         solved_grid[i] = calloc(9, sizeof(int));
-        
+
         for (int j = 0; j < 9; j++)
         {
             unsolved_grid[i][j] = random() % 10;
@@ -246,7 +252,7 @@ int main(int argc, char **argv)
     test_pixbuf = create_pixbuf("sudoku_images_test/sudoku_test_6.jpeg");
     // Handle errors
 
-    test_pixbuf = gdk_pixbuf_scale_simple(test_pixbuf, 
+    test_pixbuf = gdk_pixbuf_scale_simple(test_pixbuf,
            gdk_pixbuf_get_width(test_pixbuf) * 6, gdk_pixbuf_get_height(test_pixbuf) * 6, GDK_INTERP_BILINEAR);
 
     gdk_pixbuf_save(test_pixbuf, "resized_image.png", "png", &test_error, NULL);
@@ -292,7 +298,7 @@ GdkPixbuf* resize_pixbuf(GdkPixbuf *pixbuf)
             height *= 0.9;
         }
 
-        resized_pixbuf = gdk_pixbuf_scale_simple(pixbuf, 
+        resized_pixbuf = gdk_pixbuf_scale_simple(pixbuf,
             width, height, GDK_INTERP_BILINEAR);
 
         // Clears a reference to the pixbuf object
@@ -335,7 +341,7 @@ void open_dialog(GtkWidget *widget, gpointer user_data)
     GtkWidget **apply_rotation_button = widget_pointers[6];
 
     GtkWidget *button = widget;
-    
+
     GdkPixbuf *loaded_img_pixbuf = NULL;
     GtkWidget *dialog = NULL;
     GtkFileFilter *dialog_filter = NULL;
@@ -353,15 +359,15 @@ void open_dialog(GtkWidget *widget, gpointer user_data)
         printf("THE IMAGE POINTER IS NULL\n");
     //
 
-    dialog = gtk_file_chooser_dialog_new("Load an image", 
-        GTK_WINDOW(*window), GTK_FILE_CHOOSER_ACTION_OPEN, 
+    dialog = gtk_file_chooser_dialog_new("Load an image",
+        GTK_WINDOW(*window), GTK_FILE_CHOOSER_ACTION_OPEN,
                                     ("_Cancel"),
                                     GTK_RESPONSE_CANCEL,
                                     ("_Load"),
                                     GTK_RESPONSE_OK,
                                     NULL);
 
-    
+
     // Dialog filter
     dialog_filter = gtk_file_filter_new();
     gtk_file_filter_set_name(dialog_filter, "Images");
@@ -379,16 +385,16 @@ void open_dialog(GtkWidget *widget, gpointer user_data)
 
     gtk_widget_show_all(dialog);
     gint response = gtk_dialog_run(GTK_DIALOG(dialog));
-    
+
     if (response == GTK_RESPONSE_OK)
     {
         gchar *filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
         loaded_img_pixbuf = create_pixbuf(filename);
-        
+
         if (loaded_img_pixbuf)
         {
             // Finalizes the previous widget (image) and removes
-            // it from the container 
+            // it from the container
             gtk_widget_destroy(*image);
 
             free(src_image_path);
@@ -404,7 +410,7 @@ void open_dialog(GtkWidget *widget, gpointer user_data)
             gtk_widget_set_sensitive(*solution_button, FALSE);
             gtk_widget_set_sensitive(*apply_rotation_button, TRUE);
             gtk_widget_set_sensitive(*solve_sudoku_button, TRUE);
-            
+
             gtk_widget_show_all(*window);
         }
     }
@@ -557,7 +563,7 @@ void display_solution_grid(GtkWidget *widget, gpointer user_data)
     GtkWidget **image = widget_pointers[2];
 
     gtk_widget_destroy(*image);
-    
+
     *image = gui_load_image(SAVED_IMG_NAME_SG);
     gtk_container_add(GTK_CONTAINER(*frame), *image);
 

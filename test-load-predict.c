@@ -4,8 +4,6 @@
 #include "utils/mem/mem-management.h"
 #include "utils/verbosity/verbose.h"
 
-extern linked_list* GPL;
-
 int main()
 {
 	setVerbose(true);

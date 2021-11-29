@@ -8,6 +8,8 @@
 #include <stdbool.h>
 #include "utils/verbosity/verbose.h"
 
+extern linked_list* GPL;
+
 // public functions
 void initMemoryTracking(void);
 void* mem_malloc(size_t size);
