@@ -43,7 +43,9 @@ int main(int argc, char** argv)
 		0.1,
 		false,
 		false,
-		0.1
+		0.1,
+		NULL,
+		NULL
 	);
 
 	verbose("Session allocated");

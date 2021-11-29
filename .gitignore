@@ -9,6 +9,9 @@ src/solver/main
 # xor model weights
 save/xor/weightsandbias.mdl
 
+# log files
+*.log
+
 # Object files
 *.o
 *.ko

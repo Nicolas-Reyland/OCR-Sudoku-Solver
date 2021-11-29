@@ -30,7 +30,9 @@ int main()
 		0.1,
 		false,
 		true,
-		0.1
+		0.1,
+		NULL,
+		NULL
 	);
 
 	verbose("Session created");

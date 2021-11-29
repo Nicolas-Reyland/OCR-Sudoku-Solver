@@ -90,6 +90,9 @@ void _nn_train_one_hot(struct nn_Session* session, nn_Model* model)
 
 	verbose("Training for %lu epochs", session->nb_epochs);
 
+	Logger loss_logger = createLogger(session->loss_log_file);
+	Logger right_logger = createLogger(session->right_log_file);
+
 	// incrementing directly epoch : so the verbose does not have to add 1
 	// when printing (first epoch : 1, not 0)
 	for (size_t epoch = 0; epoch++ < session->nb_epochs && loss_threshold_condition;)
@@ -108,14 +111,18 @@ void _nn_train_one_hot(struct nn_Session* session, nn_Model* model)
 		);
 
 		shuffleArray(tuple_array, sample_size);
-		size_t i = 0;
 		double loss_buffer = 0;
 		int num_right_predictions = 0;
-		while(i < sample_size)
+		for (size_t i = 0; i < sample_size; i++)
 		{
 			// update the progress bar if necessary
-			if (i % verb_update_step == 0)
+			if (i % verb_update_step == 0) {
 				updateProgressBar(&training_bar, i);
+				if (i != 0) {
+					updateLogger(&loss_logger, loss_buffer / (double)i);
+					updateLogger(&right_logger, (double)num_right_predictions / (double)i);
+				}
+			}
 
 			// feed forward the input at index 'i'
 			_nn_feedForward(model, tuple_array[i]->input->values);
@@ -165,8 +172,6 @@ void _nn_train_one_hot(struct nn_Session* session, nn_Model* model)
 
 			//verbose("loss: %lf > %lf", error, error2);
 
-			i++;
-
 			// if (session->verb_mode && i % nb_verb_step == 0) {
 			// 	verbose(" train session run: %.2f%c  done (loss: %lf)", 100.0 * (double)i/sample_size, '%', error);
 			// 	verbose(" precentage of right predictions: %.2f%c", 100.0 * (double)num_right_predictions/i, '%');
@@ -182,8 +187,13 @@ void _nn_train_one_hot(struct nn_Session* session, nn_Model* model)
 			!session->stop_on_loss_threshold_reached ||
 			loss_buffer > session->loss_threshold;
 
-		verbose("Epoch finished with:\n - avg loss: %lf\n - avg right: %.2f %c\n", loss_buffer, 100.0 * (double)num_right_predictions/sample_size, '%');
+		if (session->verb_mode)
+			verbose("Epoch finished with:\n - avg loss: %lf\n - avg right: %.2f %c\n", loss_buffer, 100.0 * (double)num_right_predictions/sample_size, '%');
 	}
+
+	endLogger(&loss_logger);
+	endLogger(&right_logger);
+
 	return;
 }
 
@@ -281,7 +291,7 @@ void _nn_test_one_hot(struct nn_Session* session, nn_Model* model)
 
 nn_Session* createSession(nn_DataSet* dataset, unsigned int nb_epochs,
 double loss_threshold, bool stop_on_loss_threshold_reached, bool verbose,
-double learning_rate)
+double learning_rate, const char* loss_log_file, const char* right_log_file)
 {
 	nn_Session* session = mem_malloc(sizeof(nn_Session));
 
@@ -292,6 +302,9 @@ double learning_rate)
 	session->learning_rate		= learning_rate;
 
 	session->stop_on_loss_threshold_reached = stop_on_loss_threshold_reached;
+
+	session->loss_log_file = loss_log_file;
+	session->right_log_file = right_log_file;
 
 	session->train				= &_nn_train;
 	session->train_one_hot		= &_nn_train_one_hot;

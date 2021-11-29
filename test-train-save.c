@@ -17,7 +17,7 @@ int main()
 	// model architecture
 	nn_ShapeDescription model_architecture[] = {
 		create2DShapeDescription(28, 28),
-		create1DShapeDescription(800),
+		create1DShapeDescription(200),
 		create1DShapeDescription(9),
 	};
 	const size_t num_layers = sizeof(model_architecture) / sizeof(nn_ShapeDescription);
@@ -40,15 +40,17 @@ int main()
 
 	// load the dataset
 	nn_ShapeDescription shape = emptyShapeDescription();
-	nn_DataSet* dataset = nn_loadDataSet("datas/mnist/", &shape, true);
+	nn_DataSet* dataset = nn_loadDataSet("datas/mnist/1k-", &shape, true);
 
 	nn_Session* session = createSession(
 		dataset,
-		15,
+		5,
 		0.1,
 		false,
 		true,
-		0.05
+		0.05,
+		"avg-loss.log",
+		"avg-right.log"
 	);
 
 	verbose("Session created");
@@ -62,7 +64,7 @@ int main()
 	// save model
 	setVerbose(true);
 	verbose("Saving the model...");
-	model->saveModel(model, "save/mnist/800-");
+	model->saveModel(model, "save/mnist/1k-800-");
 
 	// free model
 	freeModel(model);
