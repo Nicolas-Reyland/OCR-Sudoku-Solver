@@ -6,7 +6,8 @@
 #include <SDL2/SDL_ttf.h>
 #include <gtk/gtk.h>
 #include "image_process.h"
-#include "nn/nn.h"
+#include "detect_grid.h"
+#include "nn.h"
 
 #define WINDOW_WIDTH 1024
 #define WINDOW_HEIGHT 768
@@ -28,9 +29,9 @@ void display_solution_grid(GtkWidget *widget, gpointer user_data);
 int main(int argc, char **argv)
 {
     // init Neural Network & Co.
-	initRandom();
-	initMemoryTracking();
-	nn_Model* model = nn_loadModel("save/mnist/");
+    initRandom();
+    initMemoryTracking();
+    nn_Model* model = nn_loadModel("save/mnist/");
 
 
     // Window
@@ -248,13 +249,10 @@ int main(int argc, char **argv)
     /*
     GdkPixbuf *test_pixbuf = NULL;
     GError* test_error = NULL;
-
     test_pixbuf = create_pixbuf("sudoku_images_test/sudoku_test_6.jpeg");
     // Handle errors
-
     test_pixbuf = gdk_pixbuf_scale_simple(test_pixbuf,
            gdk_pixbuf_get_width(test_pixbuf) * 6, gdk_pixbuf_get_height(test_pixbuf) * 6, GDK_INTERP_BILINEAR);
-
     gdk_pixbuf_save(test_pixbuf, "resized_image.png", "png", &test_error, NULL);
     */
 
@@ -337,7 +335,7 @@ void open_dialog(GtkWidget *widget, gpointer user_data)
     GtkWidget **frame = widget_pointers[1];
     GtkWidget **image = widget_pointers[2];
     GtkWidget **solve_sudoku_button = widget_pointers[4];
-    GtkWidget **solution_button = widget_pointers[5];
+    //GtkWidget **solution_button = widget_pointers[5];
     GtkWidget **apply_rotation_button = widget_pointers[6];
 
     GtkWidget *button = widget;
@@ -407,7 +405,7 @@ void open_dialog(GtkWidget *widget, gpointer user_data)
             gtk_container_add(GTK_CONTAINER(*frame), *image);
             //gtk_box_pack_start(GTK_BOX(*top_box), *image, TRUE, FALSE, 0);
 
-            gtk_widget_set_sensitive(*solution_button, FALSE);
+            //gtk_widget_set_sensitive(*solution_button, FALSE);
             gtk_widget_set_sensitive(*apply_rotation_button, TRUE);
             gtk_widget_set_sensitive(*solve_sudoku_button, TRUE);
 
@@ -536,7 +534,23 @@ void launch_process(GtkWidget *widget, gpointer user_data)
     GtkWidget **apply_rotation_button = widget_pointers[6];
     GtkWidget **brightness_check = widget_pointers[7];
 
+    //===================================================
+    //***************Image treatment part****************
+    //===================================================
+
+    printf("Started image treatment part.\n");
     image_process(src_image_path, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(*brightness_check)));
+    printf("Finished image treatment part.\n");
+
+    //===================================================
+    //***************Grid detection part*****************
+    //===================================================
+
+    printf("Started grid detection part.\n");
+    SDL_Surface* binarised_image = IMG_Load(SAVED_IMG_NAME_BI);
+    SDL_Surface* binarised_baseimage = IMG_Load(SAVED_IMG_NAME_BI);
+    detect_grid(binarised_image, binarised_baseimage);
+    printf("Finished grid detection part.\n");
 
     // Verify if the process has succeeded
     gtk_widget_set_sensitive(*apply_rotation_button, FALSE);
