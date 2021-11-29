@@ -4,7 +4,7 @@
 #define UTILS_VERBOSITY_VERBOSE_H
 
 #define _GNU_SOURCE
-#define _POSIX_C_SOURCE 200809L
+// #define _POSIX_C_SOURCE 200809L
 
 #include <stdio.h>
 #include <stdbool.h>
