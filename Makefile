@@ -4,7 +4,7 @@ SHELL := /bin/bash
 CFLAGS := -std=c99 -O1 -Wall -Wextra -Isrc
 CFLAGS_GUI := -Wall -Wextra -std=c99 -O1 `pkg-config --cflags sdl2` `pkg-config --cflags gtk+-3.0` -Isrc
 LDLIBS_NN = -lm
-LDLIBS_GUI = -lm `pkg-config --libs sdl2` -lSDL2_image `pkg-config --libs gtk+-3.0`
+LDLIBS_GUI = -lm `pkg-config --libs sdl2` -lSDL2_image -lSDL2_ttf `pkg-config --libs gtk+-3.0`
 CC := gcc
 
 SOURCES := $(shell find src/{nn,utils} -name '*.c')
@@ -80,16 +80,16 @@ nn-utils-session-functions:
 
 # ------- GUI & Image Processing -------
 gui : src/gui/gui.o src/gui/image_process.o src/gui/pixel_operations.o
-	$(CC) $(CFLAGS_GUI) -o src/gui/gui src/gui/gui.o src/gui/image_process.o src/gui/pixel_operations.o $(SOURCES) $(LDLIBS_GUI) $(LDLIBS_NN)
+	$(CC) $(CFLAGS) $(CFLAGS_GUI) -o src/gui/gui src/gui/gui.o src/gui/image_process.o src/gui/pixel_operations.o $(SOURCES) $(LDLIBS_GUI) $(LDLIBS_NN)
 
 src/gui/gui.o : src/gui/gui.c
-	$(CC) -c $(CFLAGS_GUI) src/gui/gui.c -o src/gui/gui.o $(LDLIBS_GUI)
+	$(CC) $(CFLAGS) $(CFLAGS_GUI) -c src/gui/gui.c -o src/gui/gui.o $(LDLIBS_GUI)
 
 src/gui/image_process.o : src/gui/image_process.c
-	$(CC) -c $(CFLAGS_GUI) src/gui/image_process.c -o src/gui/image_process.o $(LDLIBS_GUI)
+	$(CC) $(CFLAGS) $(CFLAGS_GUI) -c src/gui/image_process.c -o src/gui/image_process.o $(LDLIBS_GUI)
 
 src/gui/pixel_operations.o : src/gui/pixel_operations.c
-	$(CC) -c $(CFLAGS_GUI) src/gui/pixel_operations.c -o src/gui/pixel_operations.o $(LDLIBS_GUI)
+	$(CC) $(CFLAGS) $(CFLAGS_GUI) -c src/gui/pixel_operations.c -o src/gui/pixel_operations.o $(LDLIBS_GUI)
 
 gui_clean :
 	rm src/gui/*.o src/gui/gui src/gui/grayscale.bmp src/gui/blurred_image.bmp src/gui/binarised_image.bmp src/gui/rotated_image.bmp
