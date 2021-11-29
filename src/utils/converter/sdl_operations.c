@@ -1,13 +1,7 @@
 #include "sdl_operations.h"
 
-void init_sdl()
-{
-    // If it fails, die with an error message.
-	if(SDL_Init(SDL_INIT_VIDEO) == -1)
-        errx(1,"Could not initialize SDL: %s.\n", SDL_GetError());
-}
 
-SDL_Surface* load_image(char *path)
+SDL_Surface* cv_load_image(char *path)
 {
 	SDL_Surface *img;
 
@@ -28,7 +22,7 @@ Uint8* pixel_ref(SDL_Surface *surf, unsigned x, unsigned y)
     return (Uint8*)surf->pixels + y * surf->pitch + x * bpp;
 }
 
-Uint32 get_pixel(SDL_Surface *surface, unsigned x, unsigned y)
+Uint32 cv_get_pixel(SDL_Surface *surface, unsigned x, unsigned y)
 {
     Uint8 *p = pixel_ref(surface, x, y);
 

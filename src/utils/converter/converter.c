@@ -58,14 +58,14 @@ void converter(char* path, double** converted_cells, Cell** cells_position)
 //converting image into a double array
 void __converter(char* filepath, double* converted_cell)
 {
-	SDL_Surface* image_surface = load_image(filepath);
+	SDL_Surface* image_surface = cv_load_image(filepath);
 
 	Uint32 pixel;
 	for (int i = 0; i < image_surface->w; i++)
 	{
 		for (int j = 0; j < image_surface->h; j++)
 		{
-			pixel = get_pixel(image_surface,i,j);
+			pixel = cv_get_pixel(image_surface,i,j);
             Uint8 r, g, b;
             SDL_GetRGB(pixel, image_surface->format, &r, &g, &b);
 
