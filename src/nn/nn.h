@@ -3,11 +3,11 @@
 #ifndef NN_NN_H
 #define NN_NN_H
 
-#include "model/model.h"
+#include "model/load_model.h"
 #include "data/init_data.h"
 #include "session/session.h"
-#include "functions_descriptors/functions_descriptors_enums.h"
-#include "utils/structs/shape_description.h"
+#include "utils/mem/mem-management.h"
+#include "utils/misc/randomness.h"
 
 void nn_init(void);
 
