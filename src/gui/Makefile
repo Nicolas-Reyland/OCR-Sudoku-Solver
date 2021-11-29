@@ -13,7 +13,7 @@ CFLAGS = -Wall -Wextra -Werror -std=c99 -O1 `pkg-config --cflags sdl2` `pkg-conf
 # Linker options (probably always empty)
 LDFLAGS =
 # libs and path for linker
-LDLIBS = -lm `pkg-config --libs sdl2` -lSDL2_image `pkg-config --libs gtk+-3.0`
+LDLIBS = -lm `pkg-config --libs sdl2` -lSDL2_image -lSDL2_ttf `pkg-config --libs gtk+-3.0`
 
 all : gui
 
@@ -30,4 +30,4 @@ pixel_operations.o : pixel_operations.c
 	$(CC) -c $(CFLAGSNE) pixel_operations.c -o pixel_operations.o $(LDLIBS)
 
 clean :
-	rm *.o gui grayscale.bmp blurred_image.bmp binarised_image.bmp rotated_image.bmp
+	rm *.o gui grayscale.bmp blurred_image.bmp binarised_image.bmp rotated_image.bmp solved_grid.bmp unsolved_grid.bmp
