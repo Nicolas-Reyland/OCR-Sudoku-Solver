@@ -6,6 +6,7 @@
 #include <dirent.h>
 #include <string.h>
 #include "utils/verbosity/verbose.h"
+#include "utils/mem/mem-management.h"
 #include "sdl_operations.h"
 #include "utils/cell/cell.h"
 

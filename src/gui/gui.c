@@ -8,6 +8,7 @@
 #include "image_process.h"
 #include "nn/nn.h"
 #include "grid_detection/headers/detect_grid.h"
+#include "utils/mem/mem-management.h"
 
 #include "utils/converter/converter.h"
 #include "solver/headers/solver.h"
@@ -569,9 +570,7 @@ void launch_process(GtkWidget *widget, gpointer user_data)
     //===================================================
 
     printf("Started grid detection part.\n");
-    SDL_Surface* binarised_image = IMG_Load(SAVED_IMG_NAME_BI);
-    SDL_Surface* binarised_baseimage = IMG_Load(SAVED_IMG_NAME_BI);
-    detect_grid(binarised_image, binarised_baseimage);
+    detect_grid(SAVED_IMG_NAME_BI);
     printf("Finished grid detection part.\n");
 
     //===================================================

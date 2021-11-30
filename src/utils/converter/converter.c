@@ -64,7 +64,6 @@ void converter(char* path, double** converted_cells, Cell** cells_position)
 unsigned int count_files(char* path)
 {
 	DIR* directory;
-	unsigned int index = 0;
 	directory = opendir(path);
 	struct dirent *dir;
 	if (directory == NULL)

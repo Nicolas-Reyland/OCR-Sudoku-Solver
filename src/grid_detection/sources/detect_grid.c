@@ -8,21 +8,21 @@ void detect_grid(const char* file)
     size_t top, right, left, bottom;
     size_t topleftX, topleftY, toprightX, toprightY, bottomleftX, bottomleftY, bottomrightX, bottomrightY;
 
-    SDL_Surface *croppedimage = NULL, 
+    SDL_Surface *croppedimage = NULL,
                 *croppedsegmap = NULL;
 
     size_t *coords[] = {
         &top,
         &right,
-        &left, 
-        &bottom, 
-        &topleftX, 
-        &topleftY, 
-        &toprightX, 
-        &toprightY, 
-        &bottomleftX, 
-        &bottomleftY, 
-        &bottomrightX, 
+        &left,
+        &bottom,
+        &topleftX,
+        &topleftY,
+        &toprightX,
+        &toprightY,
+        &bottomleftX,
+        &bottomleftY,
+        &bottomrightX,
         &bottomrightY
     };
 
@@ -30,18 +30,18 @@ void detect_grid(const char* file)
         &image,
         &segmap,
         &croppedimage,
-        &croppedsegmap  
+        &croppedsegmap
     };
 
     size_t histo_size = 1;
     CCTuple *histo = twopassSegmentation(image, segmap, &histo_size);
 
     size_t gridval = findgrid(histo, histo_size, coords, surf);
-    
+
     free(histo);
 
     remove_grid(croppedimage, croppedsegmap, gridval, 1);
-    
+
     SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(croppedimage);
 
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
@@ -49,10 +49,10 @@ void detect_grid(const char* file)
     SDL_RenderDrawLine(renderer, topleftX, topleftY, bottomleftX, bottomleftY);
     SDL_RenderDrawLine(renderer, toprightX, toprightY, bottomrightX, bottomrightY);
     SDL_RenderDrawLine(renderer, bottomleftX, bottomleftY, bottomrightX, bottomrightY);
-    
+
     SDL_DestroyRenderer(renderer);
 
-    double size = fmax(croppedimage->h, croppedimage->w)+10;  
+    double size = fmax(croppedimage->h, croppedimage->w)+10;
 
     double *val = malloc(sizeof(double)*8);
 
@@ -78,12 +78,12 @@ void detect_grid(const char* file)
     free_matrix(transform);
 
     save_cells(transformedimage);
-    
+
     if(SDL_SaveBMP(transformedimage, "result.bmp") != 0)
     {
         printf("SDL_SaveBMP failed: %s\n", SDL_GetError());
     }
-    
+
     SDL_FreeSurface(transformedimage);
     SDL_FreeSurface(croppedimage);
     SDL_FreeSurface(croppedsegmap);
@@ -95,15 +95,15 @@ size_t findgrid(CCTuple *histo, size_t histo_size, size_t* coords[], SDL_Surface
 {
     size_t  *top = coords[0],
             *right = coords[1],
-            *left = coords[2], 
-            *bottom = coords[3], 
-            *topleftX = coords[4], 
-            *topleftY = coords[5], 
-            *toprightX = coords[6], 
-            *toprightY = coords[7], 
-            *bottomleftX = coords[8], 
-            *bottomleftY = coords[9], 
-            *bottomrightX = coords[10], 
+            *left = coords[2],
+            *bottom = coords[3],
+            *topleftX = coords[4],
+            *topleftY = coords[5],
+            *toprightX = coords[6],
+            *toprightY = coords[7],
+            *bottomleftX = coords[8],
+            *bottomleftY = coords[9],
+            *bottomrightX = coords[10],
             *bottomrightY = coords[11];
 
     SDL_Surface **image = surf[0],
@@ -113,7 +113,7 @@ size_t findgrid(CCTuple *histo, size_t histo_size, size_t* coords[], SDL_Surface
 
     size_t i = histo_size - 1;
     int condition = 0;
-    
+
     do
     {
         SDL_FreeSurface(*croppedimage);
@@ -126,7 +126,7 @@ size_t findgrid(CCTuple *histo, size_t histo_size, size_t* coords[], SDL_Surface
         *croppedimage = cut_image(*image, *top, *bottom, *left, *right);
         *croppedsegmap = cut_segmap(*segmap, *top, *bottom, *left, *right);
         find_corner_coordinates(*croppedsegmap, current_label, topleftX, topleftY, toprightX, toprightY, bottomleftX, bottomleftY, bottomrightX, bottomrightY);
-        
+
         // Get the four distances
         int d_top = get_distance((int)*topleftX, (int)*topleftY, (int)*toprightX, (int)*toprightY);
         int d_right = get_distance((int)*toprightX, (int)*toprightY, (int)*bottomrightX, (int)*bottomrightY);
@@ -150,7 +150,7 @@ size_t findgrid(CCTuple *histo, size_t histo_size, size_t* coords[], SDL_Surface
     {
         errx(1, "Error: no grid is found in the given image.");
     }
-    
+
     printf("LABEL -> %zu\n", histo[i+1].label);
     printf("NB PIXELS -> %zu\n", histo[i+1].nb_pixels);
 
