@@ -35,4 +35,4 @@ $(EXEC) : $(OBJ)
 all : $(EXEC)
 
 clean :
-	rm *.o $(EXEC) *.bmp ../grid_detection/*.o cases/
+	./extra/make-clean.sh
