@@ -11,13 +11,11 @@ EXEC = gui
 SRC = $(wildcard *.c) $(wildcard ../grid_detection/*.c)
 # all object files
 OBJ = $(SRC:.c=.o)
-# all directories for headers
-SDIR = -I ../grid_detection -I ../nn -I ./headers
 # options for pre-processor (-I, -include, -D ... )
 CPPFLAGS =
 # main compilation options
-CFLAGSNE = -Wall -Wextra -std=c99 -O1 `pkg-config --cflags sdl2` `pkg-config --cflags gtk+-3.0` $(SDIR)
-CFLAGS = -Wall -Wextra -Werror -std=c99 -O1 `pkg-config --cflags sdl2` `pkg-config --cflags gtk+-3.0` $(SDIR)
+CFLAGSNE = -Wall -Wextra -std=c99 -O1 `pkg-config --cflags sdl2` `pkg-config --cflags gtk+-3.0` -I..
+CFLAGS = -Wall -Wextra -Werror -std=c99 -O1 `pkg-config --cflags sdl2` `pkg-config --cflags gtk+-3.0`
 # Linker options (probably always empty)
 LDFLAGS =
 # libs and path for linker

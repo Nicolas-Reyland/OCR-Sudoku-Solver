@@ -6,11 +6,11 @@
 #include <SDL2/SDL_ttf.h>
 #include <gtk/gtk.h>
 #include "image_process.h"
-#include "detect_grid.h"
-#include "nn.h"
+#include "nn/nn.h"
+#include "grid_detection/headers/detect_grid.h"
 
-#include "converter.h"
-#include "solver.h"
+#include "utils/converter/converter.h"
+#include "solver/headers/solver.h"
 
 
 #define WINDOW_WIDTH 1024
