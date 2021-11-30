@@ -25,17 +25,17 @@ void converter(char* path, double** converted_cells, Cell** cells_position)
 		if (dir->d_type == DT_REG)
 		{
 			//getting path for file
-			char* buffer = calloc(1000, sizeof(char));
+			char* buffer = mem_calloc(1000, sizeof(char));
 			sprintf(buffer, "%s/%s",path, dir->d_name);
 			verbose("%s\n", buffer);
 
 			//converting...
 			//allocatting memory to the double array
-			converted_cells[index] = calloc(IMG_SIZE, sizeof(double));
+			converted_cells[index] = mem_calloc(IMG_SIZE, sizeof(double));
 			__converter(buffer, converted_cells[index]);
 
 			// parsing cell name into a struct
-			Cell* cell = malloc(sizeof(Cell));
+			Cell* cell = mem_malloc(sizeof(Cell));
 			int x=0, y = 0;
 
 			sscanf(dir->d_name, "cell_%d_%d", &x, &y);
@@ -46,7 +46,7 @@ void converter(char* path, double** converted_cells, Cell** cells_position)
 			cells_position[index] = cell;
 
 			//freeing the string buffer
-			free(buffer);
+			mem_free(buffer);
 
 		}
 		else
@@ -60,6 +60,28 @@ void converter(char* path, double** converted_cells, Cell** cells_position)
 	}
 	closedir(directory);
 }
+
+unsigned int count_files(char* path)
+{
+	DIR* directory;
+	unsigned int index = 0;
+	directory = opendir(path);
+	struct dirent *dir;
+	if (directory == NULL)
+		errx(1, "CONVERTER Error: There is no directory.");
+	verbose("Reading directory at path: %s\n", path);
+
+	unsigned int counter = 0;
+
+	while((dir = readdir(directory)) != NULL)
+	{
+		if (dir->d_type == DT_REG)
+			counter++;
+	}
+	return counter;
+}
+
+
 
 //converting image into a double array
 void __converter(char* filepath, double* converted_cell)

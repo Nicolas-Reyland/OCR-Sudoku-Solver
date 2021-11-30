@@ -14,4 +14,6 @@
 
 void converter(char* path, double** converted_cells, Cell** cells_position);
 
+unsigned int count_files(char* path);
+
 #endif
