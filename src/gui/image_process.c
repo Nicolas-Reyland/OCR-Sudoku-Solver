@@ -6,8 +6,8 @@
 #include <gtk/gtk.h>
 #include <math.h>
 #include <err.h>
-#include "image_process.h"
-#include "pixel_operations.h"
+#include "gui/image_process.h"
+#include "grid_detection/headers/pixel_operations.h"
 
 #define PI 3.14159265358979323846
 

@@ -5,7 +5,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <gtk/gtk.h>
-#include "image_process.h"
+#include "gui/image_process.h"
 #include "nn/nn.h"
 #include "grid_detection/headers/detect_grid.h"
 #include "utils/mem/mem-management.h"

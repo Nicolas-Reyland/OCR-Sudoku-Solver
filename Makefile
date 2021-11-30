@@ -17,7 +17,7 @@ OBJ = $(SRC:.c=.o)
 CPPFLAGS =
 # main compilation options
 CFLAGSNE = -Wall -Wextra -std=c99 -O1 `pkg-config --cflags sdl2` `pkg-config --cflags gtk+-3.0` -Isrc
-CFLAGS = -Wall -Wextra -Werror -std=c99 -O1 `pkg-config --cflags sdl2` `pkg-config --cflags gtk+-3.0`
+CFLAGS = -Wall -Wextra -Werror -std=c99 -O1 `pkg-config --cflags sdl2` `pkg-config --cflags gtk+-3.0` -Isrc
 # Linker options (probably always empty)
 LDFLAGS =
 # libs and path for linker
