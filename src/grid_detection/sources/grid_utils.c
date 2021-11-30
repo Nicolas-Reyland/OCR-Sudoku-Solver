@@ -226,6 +226,10 @@ SDL_Surface* cut_image(SDL_Surface* image, size_t top, size_t bottom, size_t lef
 void save_cells(SDL_Surface* image)
 {
 
+    char folder_name[] = "cells/";
+    remove_dir(folder_name);
+    mkdir(folder_name, S_IRWXU);
+
     size_t w = (size_t)image->w;
     size_t h = (size_t)image->h;
     for (size_t x = 0; x < 9; x++)
@@ -247,8 +251,6 @@ void save_cells(SDL_Surface* image)
                 {
                     size = size2;
                 }
-                put_pixel(image, x*h/9+h/18+X, y*h/9+h/18, SDL_MapRGB(image->format, 255, 0, 0));
-                put_pixel(image, x*h/9+h/18-X, y*h/9+h/18, SDL_MapRGB(image->format, 255, 0, 0));
                 X++;
             } while (size < limit && X < w/36);
 
@@ -298,4 +300,28 @@ void copy_symbol(SDL_Surface* output, SDL_Surface* input, size_t left, size_t to
         }
     }
     
+}
+
+int remove_dir(const char *folder_name)
+{
+    DIR *folder = opendir(folder_name);
+    int folder_name_len = strlen(folder_name);
+    
+    if (folder != NULL)
+    {
+        struct dirent* entity;
+        entity = readdir(folder);
+        while(entity != NULL)
+        {
+            char path[folder_name_len + strlen(entity->d_name) + 1];
+            strcpy(path, folder_name);
+            strcat(path, entity->d_name);
+
+            remove(path);
+
+            entity = readdir(folder);
+        }
+    }
+    closedir(folder);
+    return 0;
 }

@@ -6,6 +6,10 @@
 #include <math.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL2_rotozoom.h>
+#include <dirent.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <string.h>
 #include "pixel_operations.h"
 #include "segmentation.h"
 #include "grid_utils.h"
@@ -29,5 +33,7 @@ void save_cells(SDL_Surface* image);
 SDL_Surface* reduce_res(SDL_Surface* image);
 
 void copy_symbol(SDL_Surface* output, SDL_Surface* input, size_t left, size_t top);
-                    
+
+int remove_dir(const char *folder_name);
+
 #endif
