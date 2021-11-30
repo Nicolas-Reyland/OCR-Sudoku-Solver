@@ -8,6 +8,7 @@
 #include "session/session.h"
 #include "utils/mem/mem-management.h"
 #include "utils/misc/randomness.h"
+#include "utils/misc/tonumber.h"
 
 void nn_init(void);
 
