@@ -25,6 +25,7 @@
 #define PATH "./cells"
 
 char *src_image_path = NULL;
+nn_Model *number_prediction_model = NULL;
 
 GdkPixbuf* create_pixbuf(const gchar *filename);
 GdkPixbuf* resize_pixbuf(GdkPixbuf *pixbuf);
@@ -41,6 +42,7 @@ int main(int argc, char **argv)
     initRandom();
     initMemoryTracking();
     nn_Model* model = nn_loadModel("save/mnist/");
+	number_prediction_model = model;
 
 
     // Window
@@ -238,22 +240,19 @@ int main(int argc, char **argv)
     //g_object_unref(icon);
     //g_object_unref(image_pixbuf);
 
-    int **unsolved_grid = malloc(SUDOKU_GRID_SIZE, sizeof(int*));
-    int **solved_grid = malloc(SUDOKU_GRID_SIZE, sizeof(int*));
+    int unsolved_grid[SUDOKU_GRID_SIZE][SUDOKU_GRID_SIZE] = {0};
+    int solved_grid[SUDOKU_GRID_SIZE][SUDOKU_GRID_SIZE] = {0};
 
     for (int i = 0; i < SUDOKU_GRID_SIZE; i++)
     {
-        unsolved_grid[i] = calloc(SUDOKU_GRID_SIZE, sizeof(int));
-        solved_grid[i] = calloc(SUDOKU_GRID_SIZE, sizeof(int));
-
         for (int j = 0; j < SUDOKU_GRID_SIZE; j++)
         {
-            unsolved_grid[i][j] = random() % 10;
-            solved_grid[i][j] = (random() % 9) + 1;
+            unsolved_grid[i][j] = rand() % 10;
+            solved_grid[i][j] = (rand() % 9) + 1;
         }
     }
 
-    create_grids(unsolved_grid, solved_grid);
+    create_grids((int**)unsolved_grid, (int**)solved_grid);
 
     /*
     GdkPixbuf *test_pixbuf = NULL;
@@ -531,8 +530,22 @@ void display_rotated_image(GtkWidget *widget, gpointer user_data)
 
 }
 
+int predictionToNumber(double* prediction)
+{
+	int max_index = 0;
+	for (int i = 1; i < 9; i++) {
+		if (prediction[i] > prediction[max_index]) {
+			max_index = i;
+		}
+	}
+
+	// mapping from 0-8 to 1-9 with this +1
+	return max_index + 1;
+}
+
 void launch_process(GtkWidget *widget, gpointer user_data)
 {
+	nn_Model* model = number_prediction_model;
     GtkWidget ***widget_pointers = user_data;
     GtkWidget *solve_sudoku_button = widget;
 
@@ -565,19 +578,13 @@ void launch_process(GtkWidget *widget, gpointer user_data)
     //********************OCR part***********************
     //===================================================
 
-    int **unsolved_grid = malloc(SUDOKU_GRID_SIZE, sizeof(int*));
-    int **solved_grid = malloc(SUDOKU_GRID_SIZE, sizeof(int*));
+    int unsolved_grid[SUDOKU_GRID_SIZE][SUDOKU_GRID_SIZE] = {0};
+    int solved_grid[SUDOKU_GRID_SIZE][SUDOKU_GRID_SIZE] = {0};
 
-    for(int i = 0; i < SUDOKU_GRID_SIZE, i++)
-    {
-        unsolved_grid[i] = calloc(SUDOKU_GRID_SIZE, sizeof(int));
-        solved_grid[i] = calloc(SUDOKU_GRID_SIZE, sizeof(int));
-    }
-
-        unsigned int nb_cells;
+    unsigned int nb_cells;
 
     //count the number of cells to process
-    nb_cells = count_files(PATH, OUTPUT_SIZE);
+    nb_cells = count_files(PATH); // , OUTPUT_SIZE);
 
 
     // initialize the arrays that we will use in order to
@@ -590,9 +597,9 @@ void launch_process(GtkWidget *widget, gpointer user_data)
 
     // fills the matrix with the number we will guess
     // through the neural network
-    for(int k = 0; k < nb_cells; k++)
+    for(unsigned int k = 0; k < nb_cells; k++)
     {
-        double* result = model->use(value_array);
+        double* prediction = model->use(model, value_array[k]);
 
         int x, y;
         x = positions_array[k]->x;
@@ -600,8 +607,8 @@ void launch_process(GtkWidget *widget, gpointer user_data)
 
         // convert the double array into an integer
         // and stores it at the right place of the matrix
-        unsolved_grid[y][x] = toNumber(result);
-        mem_free(result);
+        unsolved_grid[y][x] = predictionToNumber(prediction);
+        mem_free(prediction);
     }
 
     for(int i = 0; i < SIZE; i++)
@@ -616,7 +623,7 @@ void launch_process(GtkWidget *widget, gpointer user_data)
     solver(solved_grid);
 
     //free the content of the arrays that we don't use anymore
-    for(int k = 0; k < nb_cells; k++)
+    for(unsigned int k = 0; k < nb_cells; k++)
     {
         mem_free(value_array[k]);
         mem_free(positions_array[k]);
@@ -632,16 +639,7 @@ void launch_process(GtkWidget *widget, gpointer user_data)
 
 
     // Unsolved and solved image building
-    create_grids(unsolved_grid, solved_grid);
-
-    for (int i = 0; i < SUDOKU_GRID_SIZE; i++)
-    {
-        free(unsolved_grid[i]);
-        free(solved_grid[i]);
-    }
-
-    free(unsolved_grid);
-    free(solved_grid);
+    create_grids((int**)unsolved_grid, (int**)solved_grid);
 
     // Verify if the process has succeeded
     gtk_widget_set_sensitive(*apply_rotation_button, FALSE);
