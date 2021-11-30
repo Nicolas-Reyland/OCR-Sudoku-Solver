@@ -15,6 +15,8 @@
 #define IMAGE_MAX_WIDTH 800
 #define IMAGE_MAX_HEIGHT 600
 
+#define SUDOKU_GRID_SIZE 9
+
 char *src_image_path = NULL;
 
 GdkPixbuf* create_pixbuf(const gchar *filename);
@@ -229,15 +231,15 @@ int main(int argc, char **argv)
     //g_object_unref(icon);
     //g_object_unref(image_pixbuf);
 
-    int **unsolved_grid = calloc(9, sizeof(int*));
-    int **solved_grid = calloc(9, sizeof(int*));
+    int **unsolved_grid = malloc(SUDOKU_GRID_SIZE, sizeof(int*));
+    int **solved_grid = malloc(SUDOKU_GRID_SIZE, sizeof(int*));
 
-    for (int i = 0; i < 9; i++)
+    for (int i = 0; i < SUDOKU_GRID_SIZE; i++)
     {
-        unsolved_grid[i] = calloc(9, sizeof(int));
-        solved_grid[i] = calloc(9, sizeof(int));
+        unsolved_grid[i] = calloc(SUDOKU_GRID_SIZE, sizeof(int));
+        solved_grid[i] = calloc(SUDOKU_GRID_SIZE, sizeof(int));
 
-        for (int j = 0; j < 9; j++)
+        for (int j = 0; j < SUDOKU_GRID_SIZE; j++)
         {
             unsolved_grid[i][j] = random() % 10;
             solved_grid[i][j] = (random() % 9) + 1;
@@ -551,6 +553,38 @@ void launch_process(GtkWidget *widget, gpointer user_data)
     SDL_Surface* binarised_baseimage = IMG_Load(SAVED_IMG_NAME_BI);
     detect_grid(binarised_image, binarised_baseimage);
     printf("Finished grid detection part.\n");
+
+    //===================================================
+    //********************OCR part***********************
+    //===================================================
+
+    int **unsolved_grid = malloc(SUDOKU_GRID_SIZE, sizeof(int*));
+    int **solved_grid = malloc(SUDOKU_GRID_SIZE, sizeof(int*));
+
+    for(int i = 0; i < SUDOKU_GRID_SIZE, i++)
+    {
+        unsolved_grid[i] = calloc(SUDOKU_GRID_SIZE, sizeof(int));
+        solved_grid[i] = calloc(SUDOKU_GRID_SIZE, sizeof(int));
+    }
+
+    //===================================================
+    //****************Sudoku solver part*****************
+    //===================================================
+
+    
+
+
+    // Unsolved and solved image building
+    create_grids(unsolved_grid, solved_grid);
+
+    for (int i = 0; i < SUDOKU_GRID_SIZE; i++)
+    {
+        free(unsolved_grid[i]);
+        free(solved_grid[i]);
+    }
+
+    free(unsolved_grid);
+    free(solved_grid);
 
     // Verify if the process has succeeded
     gtk_widget_set_sensitive(*apply_rotation_button, FALSE);
