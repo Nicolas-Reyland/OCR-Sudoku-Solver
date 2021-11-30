@@ -119,11 +119,11 @@ int main(int argc, char **argv)
     icon = create_pixbuf("gui_files/icon.jpg");
     gtk_window_set_icon(GTK_WINDOW(window), icon);
 
-    src_image_path = (char*)malloc((strlen("gui_files/no_image.png") + 1) * sizeof(char));
+    src_image_path = (char*)malloc((strlen("src/gui/gui_files/no_image.png") + 1) * sizeof(char));
     //if (!src_image_path)
     //    exit(0);
 
-    src_image_path = strcpy(src_image_path, "gui_files/no_image.png");
+    src_image_path = strcpy(src_image_path, "src/gui/gui_files/no_image.png");
 
     image = gui_load_image(src_image_path);
     //image_process(src_image_path);
@@ -240,20 +240,6 @@ int main(int argc, char **argv)
 
     //g_object_unref(icon);
     //g_object_unref(image_pixbuf);
-
-    int unsolved_grid[SUDOKU_GRID_SIZE][SUDOKU_GRID_SIZE] = {0};
-    int solved_grid[SUDOKU_GRID_SIZE][SUDOKU_GRID_SIZE] = {0};
-
-    for (int i = 0; i < SUDOKU_GRID_SIZE; i++)
-    {
-        for (int j = 0; j < SUDOKU_GRID_SIZE; j++)
-        {
-            unsolved_grid[i][j] = rand() % 10;
-            solved_grid[i][j] = (rand() % 9) + 1;
-        }
-    }
-
-    create_grids((int**)unsolved_grid, (int**)solved_grid);
 
     /*
     GdkPixbuf *test_pixbuf = NULL;

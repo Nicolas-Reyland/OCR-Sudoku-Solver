@@ -5,10 +5,10 @@
 #define SAVED_IMG_NAME_G "grayscale.bmp"
 #define SAVED_IMG_NAME_BL "blurred_image.bmp"
 #define SAVED_IMG_NAME_BI "binarised_image.bmp"
-#define SAVED_IMG_NAME_DG "gui_files/dflt_grid.png"
+#define SAVED_IMG_NAME_DG "src/gui/gui_files/dflt_grid.png"
 #define SAVED_IMG_NAME_UG "unsolved_grid.bmp"
 #define SAVED_IMG_NAME_SG "solved_grid.bmp"
-#define GRID_NUMBER_FONT "gui_files/arial_narrow_7.ttf"
+#define GRID_NUMBER_FONT "src/gui/gui_files/arial_narrow_7.ttf"
 
 typedef enum { MEAN, 
 			STD_DEVIATION } II_TYPE;

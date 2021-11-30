@@ -634,7 +634,7 @@ void create_grids(int **unsolved_sudoku, int **solved_sudoku)
     SDL_Surface **given_numbers_surface = malloc(9 * sizeof(SDL_Surface*));
     SDL_Surface **added_numbers_surface = malloc(9 * sizeof(SDL_Surface*));
 
-    char numbers[9][2] = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
+    char numbers[9][5] = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
     TTF_Font *numbers_font = TTF_OpenFont(GRID_NUMBER_FONT, 35);
 
@@ -714,4 +714,7 @@ void create_grids(int **unsolved_sudoku, int **solved_sudoku)
 		SDL_FreeSurface(given_numbers_surface[i]);
 		SDL_FreeSurface(added_numbers_surface[i]);
 	}
+
+	free(given_numbers_surface);
+	free(added_numbers_surface);
 }
