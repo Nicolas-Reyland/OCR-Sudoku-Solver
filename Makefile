@@ -2,7 +2,7 @@
 
 #target : dependencies
 #	action
-
+SHELL := /bin/bash
 # Setting the compiler and the default linker program
 CC = gcc
 # exec
