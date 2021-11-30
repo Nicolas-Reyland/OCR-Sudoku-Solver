@@ -20,6 +20,7 @@
 #define IMAGE_MAX_HEIGHT 600
 
 #define SUDOKU_GRID_SIZE 9
+#define OUTPUT_SIZE 9
 
 #define PATH "./cells"
 
@@ -573,14 +574,10 @@ void launch_process(GtkWidget *widget, gpointer user_data)
         solved_grid[i] = calloc(SUDOKU_GRID_SIZE, sizeof(int));
     }
 
-    //===================================================
-    //****************Sudoku solver part*****************
-    //===================================================
-
-    unsigned int nb_cells;
+        unsigned int nb_cells;
 
     //count the number of cells to process
-    nb_cells = count_files(PATH);
+    nb_cells = count_files(PATH, OUTPUT_SIZE);
 
 
     // initialize the arrays that we will use in order to
@@ -610,6 +607,10 @@ void launch_process(GtkWidget *widget, gpointer user_data)
     for(int i = 0; i < SIZE; i++)
         for(int j = 0; j < SIZE; j++)
             solved_grid[i][j] = unsolved_grid[i][j];
+
+    //===================================================
+    //****************Sudoku solver part*****************
+    //===================================================
 
     //solve the new matrix
     solver(solved_grid);
