@@ -9,6 +9,10 @@
 #include "detect_grid.h"
 #include "nn.h"
 
+#include "converter.h"
+#include "solver.h"
+
+
 #define WINDOW_WIDTH 1024
 #define WINDOW_HEIGHT 768
 
@@ -16,6 +20,8 @@
 #define IMAGE_MAX_HEIGHT 600
 
 #define SUDOKU_GRID_SIZE 9
+
+#define PATH "./cells"
 
 char *src_image_path = NULL;
 
@@ -571,7 +577,57 @@ void launch_process(GtkWidget *widget, gpointer user_data)
     //****************Sudoku solver part*****************
     //===================================================
 
-    
+    unsigned int nb_cells;
+
+    //count the number of cells to process
+    nb_cells = count_files(PATH);
+
+
+    // initialize the arrays that we will use in order to
+    // fill a matrix
+    double** value_array = mem_calloc(nb_cells, sizeof(double*));
+    Cell** positions_array = mem_calloc(nb_cells, sizeof(Cell*));
+
+    //convert the cells img into a double array with their position
+    converter(PATH, value_array, positions_array);
+
+    // fills the matrix with the number we will guess
+    // through the neural network
+    for(int k = 0; k < nb_cells; k++)
+    {
+        double* result = model->use(value_array);
+
+        int x, y;
+        x = positions_array[k]->x;
+        y = positions_array[k]->y;
+
+        // convert the double array into an integer
+        // and stores it at the right place of the matrix
+        unsolved_grid[y][x] = toNumber(result);
+        mem_free(result);
+    }
+
+    for(int i = 0; i < SIZE; i++)
+        for(int j = 0; j < SIZE; j++)
+            solved_grid[i][j] = unsolved_grid[i][j];
+
+    //solve the new matrix
+    solver(solved_grid);
+
+    //free the content of the arrays that we don't use anymore
+    for(int k = 0; k < nb_cells; k++)
+    {
+        mem_free(value_array[k]);
+        mem_free(positions_array[k]);
+    }
+
+    //free the arrays
+    mem_free(value_array);
+    mem_free(positions_array);
+
+    // the matrix that are outputed of this step are
+    // unsolved_grid: the matrix that represents the sudoku grid before it is solved
+    // solved_grid  : the matrix that represents the sudoku grid after it has been solved
 
 
     // Unsolved and solved image building
