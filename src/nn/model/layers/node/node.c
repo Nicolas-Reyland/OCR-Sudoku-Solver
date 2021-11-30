@@ -20,7 +20,7 @@ nn_Node* _nn_createNode(size_t num_weights, bool init_bias)
   // init bias
   double bias;
   if (init_bias) {
-    bias = getNormalizedRandomDouble();
+    bias = getNormalizedRandomDouble();// / 10; // start with a small bias value (-.1 < x < .1)
   } else {
     bias = NAN;
   }

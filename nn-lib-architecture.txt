@@ -9,7 +9,7 @@ Model :
     - ($void) save // save_architecture & save_weights_and_bias
     - ($void) saveArchitecture
     - ($void) saveWeightsAndBias
-  ($void) loadModel
+  ($void) nn_loadModel
   Layers :
     Layer *
       - (bool) is_output

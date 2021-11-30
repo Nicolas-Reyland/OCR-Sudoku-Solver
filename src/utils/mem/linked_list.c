@@ -1,7 +1,5 @@
 /* linked_list Implementation */
 #include "linked_list.h"
-#include "utils/verbosity/verbose.h"
-#include <errno.h>
 
 // init function
 linked_list* init_linked_list()
