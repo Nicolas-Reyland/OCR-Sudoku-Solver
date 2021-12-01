@@ -13,7 +13,7 @@
 #define DT_REG 8
 #define IMG_SIZE 784
 
-void converter(char* path, double** converted_cells, Cell** cells_position);
+void converter(char* path, double** converted_cells, Cell* cells_position);
 
 unsigned int count_files(char* path);
 

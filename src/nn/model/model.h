@@ -8,7 +8,6 @@
 #include "nn/functions_descriptors/functions_descriptors_enums.h"
 #include "utils/mem/mem-management.h"
 
-
 typedef struct nn_Model {
   size_t num_layers;
   nn_Layer** layers;

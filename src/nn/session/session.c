@@ -289,6 +289,11 @@ void _nn_test_one_hot(struct nn_Session* session, nn_Model* model)
 	verbose(" - avg right: %.2f %c", 100.0 * avg_right_predictions, '%');
 }
 
+nn_Session* createTestSession(nn_DataSet* dataset, bool verbose)
+{
+	return createSession(dataset, 0, 0.0, false, verbose, 0.0, NULL, NULL);
+}
+
 nn_Session* createSession(nn_DataSet* dataset, unsigned int nb_epochs,
 double loss_threshold, bool stop_on_loss_threshold_reached, bool verbose,
 double learning_rate, const char* loss_log_file, const char* right_log_file)
