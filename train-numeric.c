@@ -47,7 +47,7 @@ int main()
     // session
 	nn_Session* session = createSession(
 		dataset,
-		5,
+		10,
 		0.1,
 		false,
 		true,
@@ -67,7 +67,7 @@ int main()
 	// save model
 	setVerbose(true);
 	verbose("Saving the model...");
-	model->saveModel(model, "save/numeric-");
+	model->saveModel(model, "save/numeric-softmax-");
 
 	// free model
 	freeModel(model);

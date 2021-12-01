@@ -22,3 +22,5 @@ do
 		rm -f "$file"
 	fi
 done
+# Grid detection
+

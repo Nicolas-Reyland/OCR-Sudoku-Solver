@@ -14,7 +14,7 @@ void _nn_train(struct nn_Session* session, nn_Model* model)
 
 	bool loss_threshold_condition = true;
 
-	verbose("Training for %lu epochs", session->nb_epochs);
+	verbose(" - Training for %lu epochs -", session->nb_epochs);
 
 	// incrementing directly epoch : so the verbose does not have to add 1
 	// when printing (first epoch : 1, not 0)

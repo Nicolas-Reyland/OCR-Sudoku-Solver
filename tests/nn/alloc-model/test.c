@@ -6,13 +6,13 @@
 
 #define NUM_LAYERS 3
 
-extern linked_list* GPL;
-
 int main(int argc, char** argv)
 {
 	if (argc > 1 && argv[1][0]) {
 		setVerbose(false);
 	}
+
+	PROGRESS_BAR_STATUS = false;
 
 	// init random
 	initRandom();
