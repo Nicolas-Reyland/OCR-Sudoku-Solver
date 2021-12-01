@@ -30,6 +30,7 @@ void free_linked_list(linked_list* list)
 void _free_linked_list_node(ll_node* node)
 {
 	if (node->next != NULL) _free_linked_list_node(node->next);
+	free(node->value);
 	free(node);
 }
 
