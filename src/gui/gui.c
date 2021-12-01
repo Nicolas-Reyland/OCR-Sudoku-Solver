@@ -581,8 +581,15 @@ void adjust_image(GtkWidget *widget, gpointer user_data)
     gtk_widget_destroy(*image);
 
     free(src_image_path);
-    src_image_path = (char*)malloc((strlen(SAVED_IMG_NAME_AI) + 1) * sizeof(char));
+    free(original_image_path);
+
+    int filename_length = strlen(SAVED_IMG_NAME_AI);
+
+    src_image_path = (char*)malloc((filename_length + 1) * sizeof(char));
     src_image_path = strcpy(src_image_path, SAVED_IMG_NAME_AI);
+
+    original_image_path = (char*)malloc((filename_length + 1) * sizeof(char));
+    original_image_path = strcpy(original_image_path, SAVED_IMG_NAME_AI);
 
     *image = gui_load_image(SAVED_IMG_NAME_AI);
 
@@ -709,7 +716,7 @@ void launch_process(GtkWidget *widget, gpointer user_data)
     // unsolved_grid: the matrix that represents the sudoku grid before it is solved
     // solved_grid  : the matrix that represents the sudoku grid after it has been solved
 
-
+    printf("");
     // Unsolved and solved image building
     create_grids((int**)unsolved_grid, (int**)solved_grid);
 
