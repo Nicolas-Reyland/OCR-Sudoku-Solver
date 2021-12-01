@@ -33,3 +33,12 @@ all : $(EXEC)
 
 clean :
 	./extra/make-clean.sh
+
+# ------- Test Framework -------
+.PHONY: test
+test:
+	@./extra/run-tests
+
+.PHONY: clean-test
+clean-test:
+	@rm -rf /tmp/ocr-tests{,-perm}
