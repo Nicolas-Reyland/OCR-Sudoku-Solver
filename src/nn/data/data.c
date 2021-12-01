@@ -6,12 +6,12 @@
 /// Splits a data struct into two data struct, based on a splitting percentage
 /// Then frees the current data, in order to not have memory leaks
 /// <Summary/>
-nn_DataTuple _nn_dataSplitTrainTest(nn_Data* data, int splittingPercentage)
+nn_DataTuple _nn_dataSplitTrainTest(nn_Data* data, double test_proportion)
 {
     nn_InOutTuple** array_to_split = data->data_collection->iot_array;
 
     size_t total_size      = data->data_collection->num_tuples;
-    size_t split_nb        =  total_size / splittingPercentage;
+    size_t split_nb        = (size_t) ((double)total_size * (1.0 - test_proportion));
     size_t after_split_nb  = total_size - split_nb;
 
     nn_InOutTuple** before_split = mem_malloc(split_nb * sizeof(nn_InOutTuple*));

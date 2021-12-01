@@ -40,7 +40,7 @@ int main()
 
 	// load the dataset
 	nn_ShapeDescription shape = emptyShapeDescription();
-	nn_DataSet* dataset = nn_loadDataSet("datas/mnist/1k-", &shape, true);
+	nn_DataSet* dataset = nn_loadDataSet("datas/numeric-", &shape, true);
 
 	nn_Session* session = createSession(
 		dataset,
@@ -64,7 +64,7 @@ int main()
 	// save model
 	setVerbose(true);
 	verbose("Saving the model...");
-	model->saveModel(model, "save/mnist/1k-800-");
+	model->saveModel(model, "save/numeric-");
 
 	// free model
 	freeModel(model);

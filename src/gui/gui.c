@@ -9,8 +9,9 @@
 #include "nn/nn.h"
 #include "grid_detection/headers/detect_grid.h"
 #include "utils/mem/mem-management.h"
+#include "utils/misc/tonumber.h"
 
-#include "utils/converter/converter.h"
+#include "converter/converter.h"
 #include "solver/headers/solver.h"
 
 

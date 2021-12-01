@@ -11,7 +11,7 @@ typedef struct nn_DataTuple nn_DataTuple;
 typedef struct nn_Data //needs to be defined as a pointer please
 {
     nn_DataCollection* data_collection;
-    nn_DataTuple (*splitTrainTest) (struct nn_Data*, int);
+    nn_DataTuple (*splitTrainTest) (struct nn_Data*, double);
 	void (*printData)(struct nn_Data*);
 } nn_Data;
 
