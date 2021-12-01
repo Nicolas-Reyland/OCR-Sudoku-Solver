@@ -2,38 +2,35 @@
 
 nn_Model* _nn_Model_loadModelArchitecture(char* path)
 {
-  FILE* file = fopen(path,"r+");
+    FILE* file = fopen(path,"r+");
 
-  if (file == NULL)
-  {
-    printf("Fatal ERROR loadModelArchitecture: could not open file");
-    exit(1);
-  }
+    if (file == NULL)
+    {
+        printf("Fatal ERROR loadModelArchitecture: could not open file");
+        exit(1);
+    }
 
-  size_t size = 0;
-  losses loss;
-  optimizer opti;
-  fscanf(file,"%lu %d %d\n\n", &size, (int*)&loss, (int*)&opti);
+    size_t size = 0;
+    losses loss;
+    optimizer opti;
+    fscanf(file,"%lu %d %d\n\n", &size, (int*)&loss, (int*)&opti);
 
+    nn_ShapeDescription shape_descriptions [size];
+    activation activations [size-1];
+    for(size_t i = 0; i < size; i++)
+    {
+        size_t x,y,z;
+        int acti = 0;
+        fscanf(file,"%lu %lu %lu\n", &x, &y, &z);
+        shape_descriptions[i] = createShapeDescription(x,y,z);
 
-  nn_ShapeDescription shape_descriptions [size];
-  activation activations [size-1];
-  for(size_t i = 0; i < size; i++)
-  {
-    size_t x,y,z;
-    int acti = 0;
-    fscanf(file,"%lu %lu %lu\n", &x, &y, &z);
-    shape_descriptions[i] = createShapeDescription(x,y,z);
+        fscanf(file,"%d\n", &acti);
+        if(acti != 0) // if activation value is not "no_activation":
+            activations[i-1] = (activation)acti;
+    }
 
-    fscanf(file,"%d\n", &acti);
-    if(acti != 0) //if activation value is not "no_activation":
-        activations[i-1] = (activation)acti;
-  }
-
-  fclose(file);
-  for(size_t i = 0; i < size - 1; i++)
-    verbose("In Architecture Loading: activations[%d] = %d", i, activations[i]);
-  return createModel(size, shape_descriptions, activations, loss, opti);
+    fclose(file);
+    return createModel(size, shape_descriptions, activations, loss, opti);
 
 }
 
