@@ -8,6 +8,7 @@
 #define SAVED_IMG_NAME_DG "src/gui/gui_files/dflt_grid.png"
 #define SAVED_IMG_NAME_UG "unsolved_grid.bmp"
 #define SAVED_IMG_NAME_SG "solved_grid.bmp"
+#define SAVED_IMG_NAME_AI "adjusted_image.bmp" // AI = Adjusted Image
 #define GRID_NUMBER_FONT "src/gui/gui_files/arial_narrow_7.ttf"
 
 typedef enum { MEAN, 

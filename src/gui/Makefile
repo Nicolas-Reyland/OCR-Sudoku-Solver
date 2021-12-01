@@ -14,8 +14,8 @@ OBJ = $(SRC:.c=.o)
 # options for pre-processor (-I, -include, -D ... )
 CPPFLAGS =
 # main compilation options
-CFLAGSNE = -Wall -Wextra -std=c99 -O1 `pkg-config --cflags sdl2` `pkg-config --cflags gtk+-3.0` -I..
-CFLAGS = -Wall -Wextra -Werror -std=c99 -O1 `pkg-config --cflags sdl2` `pkg-config --cflags gtk+-3.0`
+CFLAGSNE = -Wall -Wextra -std=c99 -O1 `pkg-config --cflags sdl2` `pkg-config --cflags gtk+-3.0` -I ../ -I ../grid_detection/headers
+CFLAGS = -Wall -Wextra -Werror -std=c99 -O1 `pkg-config --cflags sdl2` `pkg-config --cflags gtk+-3.0` -I ../ -I ../grid_detection/headers
 # Linker options (probably always empty)
 LDFLAGS =
 # libs and path for linker
