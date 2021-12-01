@@ -42,13 +42,11 @@ void display_solution_grid(GtkWidget *widget, gpointer user_data);
 
 int main(int argc, char **argv)
 {
-    /* init Neural Network & Co.
+    // init Neural Network & Co.
     initRandom();
     initMemoryTracking();
     nn_Model* model = nn_loadModel("save/mnist/");
 	number_prediction_model = model;
-    */
-
 
     // Window
     GtkWidget *window = NULL;
@@ -636,7 +634,7 @@ void launch_process(GtkWidget *widget, gpointer user_data)
         SDL_FreeSurface(adjusted_image);
     }
     else
-        
+
     save_cells(SAVED_IMG_NAME_AI);
     printf("Finished grid detection part.\n");
 
