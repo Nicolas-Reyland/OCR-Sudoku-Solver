@@ -1,5 +1,7 @@
 #include "../headers/grid_utils.h"
 
+#define PATH "cells/"
+
 void colorizeimage(SDL_Surface *image, SDL_Surface* segmap)
 {
     Uint8 r,g,b;
@@ -226,7 +228,7 @@ SDL_Surface* cut_image(SDL_Surface* image, size_t top, size_t bottom, size_t lef
 void save_cells(const char* file)
 {
     SDL_Surface *image = IMG_Load(file);
-    char folder_name[] = "cells/";
+    char folder_name[] = PATH;
     remove_dir(folder_name);
     mkdir(folder_name, S_IRWXU);
 
@@ -274,7 +276,7 @@ void save_cells(const char* file)
                 SDL_FreeSurface(shrinkedcroppedcell);
 
                 char name[255];
-                sprintf(name,"cells/cell_%lu_%lu",x,y);
+                sprintf(name,"%scell_%lu_%lu", PATH, x, y);
                 if(SDL_SaveBMP(emptycell, name) != 0)
                 {
                     printf("SDL_SaveBMP failed: %s\n", SDL_GetError());

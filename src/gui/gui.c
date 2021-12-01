@@ -24,7 +24,7 @@
 #define SUDOKU_GRID_SIZE 9
 #define OUTPUT_SIZE 9
 
-#define PATH "./cells/"
+#define PATH "cells/"
 
 char *src_image_path = NULL;
 int is_adjusted = 0;
@@ -633,7 +633,6 @@ void launch_process(GtkWidget *widget, gpointer user_data)
         SDL_SaveBMP(adjusted_image, SAVED_IMG_NAME_AI);
         SDL_FreeSurface(adjusted_image);
     }
-    else
 
     save_cells(SAVED_IMG_NAME_AI);
     printf("Finished grid detection part.\n");
