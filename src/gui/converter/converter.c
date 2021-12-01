@@ -4,7 +4,7 @@
 
 void __converter(char* filepath, double* converted_cell);
 
-void converter(char* path, double** converted_cells, Cell** cells_position)
+void converter(char* path, double** converted_cells, Cell* cells_position)
 {
 	verbose("Reading directory at path: %s\n", path);
 	// I don't actually init sdl because I assume
@@ -23,9 +23,11 @@ void converter(char* path, double** converted_cells, Cell** cells_position)
 		if (dir->d_type == DT_REG)
 		{
 			//getting path for file
-			char* buffer = mem_calloc(1000, sizeof(char));
-			sprintf(buffer, "%s%s",path, dir->d_name);
-			verbose("%s\n", buffer);
+			char buffer[1000];
+			strcpy(buffer, path);
+			strcat(buffer, dir->d_name);
+			verbose("%s", buffer);
+			verbose_endline();
 
 			//converting...
 			//allocatting memory to the double array
@@ -33,24 +35,15 @@ void converter(char* path, double** converted_cells, Cell** cells_position)
 			__converter(buffer, converted_cells[index]);
 
 			// parsing cell name into a struct
-			Cell* cell = mem_malloc(sizeof(Cell));
-			int x=0, y = 0;
-
-			sscanf(dir->d_name, "cell_%d_%d", &x, &y);
-
-			cell->x = x;
-			cell->y = y;
-
+			Cell cell = {0, 0};
+			sscanf(dir->d_name, "cell_%d_%d", &cell.x, &cell.y);
 			cells_position[index] = cell;
-
-			//freeing the string buffer
-			mem_free(buffer);
-
 		}
 		else
 		{
 			//symlinks are filtered
 			verbose("Not a file: %s\n", dir->d_name);
+			index--;
 		}
 
 		if (++index == num_files)

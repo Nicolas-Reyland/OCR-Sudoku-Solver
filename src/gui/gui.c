@@ -47,7 +47,7 @@ int main(int argc, char **argv)
     // init Neural Network & Co.
     initRandom();
     initMemoryTracking();
-    nn_Model* model = nn_loadModel("save/mnist/");
+    nn_Model* model = nn_loadModel("save/numerical-");
 	number_prediction_model = model;
 
     // Window
@@ -669,7 +669,7 @@ void launch_process(GtkWidget *widget, gpointer user_data)
     // initialize the arrays that we will use in order to
     // fill a matrix
     double** value_array = mem_calloc(nb_cells, sizeof(double*));
-    Cell** positions_array = mem_calloc(nb_cells, sizeof(Cell*));
+    Cell* positions_array = mem_calloc(nb_cells, sizeof(Cell));
 
     //convert the cells img into a double array with their position
     converter(PATH, value_array, positions_array);
@@ -678,17 +678,20 @@ void launch_process(GtkWidget *widget, gpointer user_data)
     // through the neural network
     for(unsigned int k = 0; k < nb_cells; k++)
     {
+        verbose("predicting %lu/%lu ...", k, nb_cells);
         double* prediction = model->use(model, value_array[k]);
+        setVerbose(true);
 
-        int x, y;
-        x = positions_array[k]->x;
-        y = positions_array[k]->y;
+        int x = positions_array[k].x,
+            y = positions_array[k].y;
 
         // convert the double array into an integer
         // and stores it at the right place of the matrix
         unsolved_grid[y][x] = predictionToNumber(prediction);
         mem_free(prediction);
     }
+
+    verbose("done predicting");
 
     for(int i = 0; i < SIZE; i++)
         for(int j = 0; j < SIZE; j++)
@@ -703,10 +706,7 @@ void launch_process(GtkWidget *widget, gpointer user_data)
 
     //free the content of the arrays that we don't use anymore
     for(unsigned int k = 0; k < nb_cells; k++)
-    {
         mem_free(value_array[k]);
-        mem_free(positions_array[k]);
-    }
 
     //free the arrays
     mem_free(value_array);
