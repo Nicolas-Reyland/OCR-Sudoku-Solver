@@ -13,6 +13,7 @@ void converter(char* path, double** converted_cells, Cell** cells_position)
 	unsigned int index = 0;
 	directory = opendir(path);
 	struct dirent *dir;
+	unsigned int num_files = count_files(path);
 	if (directory == NULL)
 		errx(1, "CONVERTER Error: There is no directory.");
 	while((dir = readdir(directory)) != NULL)
@@ -23,7 +24,7 @@ void converter(char* path, double** converted_cells, Cell** cells_position)
 		{
 			//getting path for file
 			char* buffer = mem_calloc(1000, sizeof(char));
-			sprintf(buffer, "%s/%s",path, dir->d_name);
+			sprintf(buffer, "%s%s",path, dir->d_name);
 			verbose("%s\n", buffer);
 
 			//converting...
@@ -52,8 +53,8 @@ void converter(char* path, double** converted_cells, Cell** cells_position)
 			verbose("Not a file: %s\n", dir->d_name);
 		}
 
-
-		index++;
+		if (++index == num_files)
+			break;
 	}
 	closedir(directory);
 }
