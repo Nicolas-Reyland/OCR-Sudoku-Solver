@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <SDL2/SDL2_rotozoom.h>
 #include <dirent.h>
 #include <unistd.h>
@@ -28,7 +29,7 @@ SDL_Surface* cut_segmap(SDL_Surface* image, size_t top, size_t bottom, size_t le
 
 SDL_Surface* cut_image(SDL_Surface* image, size_t top, size_t bottom, size_t left, size_t right);
 
-void save_cells(SDL_Surface* image);
+void save_cells(const char* file);
 
 SDL_Surface* reduce_res(SDL_Surface* image);
 

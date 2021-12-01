@@ -13,7 +13,7 @@
 #include "tuple.h"
 #include "homography.h"
 
-void detect_grid(const char* file);
+SDL_Surface* detect_grid(const char* file);
 size_t findgrid(CCTuple *histo, size_t histo_size, size_t* coords[], SDL_Surface** surf[]);
 int get_distance(int X1, int Y1, int X2, int Y2);
 

@@ -36,6 +36,7 @@ GtkWidget* gui_load_image(const gchar *filename);
 void open_dialog(GtkWidget *widget, gpointer user_data);
 void display_img_process_steps(GtkWidget *widget, gpointer user_data);
 void display_rotated_image(GtkWidget *widget, gpointer user_data);
+void adjust_image(GtkWidget *widget, gpointer user_data);
 void launch_process(GtkWidget *widget, gpointer user_data);
 void display_solution_grid(GtkWidget *widget, gpointer user_data);
 
@@ -241,8 +242,8 @@ int main(int argc, char **argv)
     // Sets the action of the right buttons
     g_signal_connect(load_img_button, "clicked",
                     G_CALLBACK(open_dialog), widget_pointers);
-    //g_signal_connect(adjust_img_button, "clicked",
-    //                G_CALLBACK(), widget_pointers);
+    g_signal_connect(adjust_img_button, "clicked",
+                    G_CALLBACK(adjust_image), widget_pointers);
     g_signal_connect(apply_rotation_button, "clicked",
                     G_CALLBACK(display_rotated_image), widget_pointers);
 
@@ -552,11 +553,16 @@ void adjust_image(GtkWidget *widget, gpointer user_data)
     GtkWidget **frame = widget_pointers[1];
     GtkWidget **image = widget_pointers[2];
     GtkWidget **solve_sudoku_button = widget_pointers[4];
+    GtkWidget **brightness_check = widget_pointers[7];
 
     GtkWidget *adjust_img_button = widget;
 
+    printf("Started image treatment part.\n");
+    image_process(src_image_path, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(*brightness_check)));
+    printf("Finished image treatment part.\n");
+
     // Adjust the image
-    SDL_Surface *adjusted_image = detect_grid(src_image_path);
+    SDL_Surface *adjusted_image = detect_grid(SAVED_IMG_NAME_BI);
 
     // Save the adjusted image
     SDL_SaveBMP(adjusted_image, SAVED_IMG_NAME_AI);

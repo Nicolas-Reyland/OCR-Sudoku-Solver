@@ -1,6 +1,6 @@
 #include "../headers/detect_grid.h"
 
-void detect_grid(const char* file)
+SDL_Surface* detect_grid(const char* file)
 {
     SDL_Surface *image = IMG_Load(file);
     SDL_Surface *segmap = SDL_CreateRGBSurface(0, image->w, image->h, 32, 0xff000000, 0x00ff0000, 0x0000ff00, 0);
@@ -40,17 +40,7 @@ void detect_grid(const char* file)
 
     free(histo);
 
-    remove_grid(croppedimage, croppedsegmap, gridval, 1);
-
-    SDL_Renderer *renderer = SDL_CreateSoftwareRenderer(croppedimage);
-
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-    SDL_RenderDrawLine(renderer, topleftX, topleftY, toprightX, toprightY);
-    SDL_RenderDrawLine(renderer, topleftX, topleftY, bottomleftX, bottomleftY);
-    SDL_RenderDrawLine(renderer, toprightX, toprightY, bottomrightX, bottomrightY);
-    SDL_RenderDrawLine(renderer, bottomleftX, bottomleftY, bottomrightX, bottomrightY);
-
-    SDL_DestroyRenderer(renderer);
+    //remove_grid(croppedimage, croppedsegmap, gridval, 1);
 
     double size = fmax(croppedimage->h, croppedimage->w)+10;
 
@@ -67,28 +57,17 @@ void detect_grid(const char* file)
 
     Matrix *transform = findhomography(val, size);
 
-    if(SDL_SaveBMP(croppedimage, "before.bmp") != 0)
-    {
-        printf("SDL_SaveBMP failed: %s\n", SDL_GetError());
-    }
-
     SDL_Surface *transformedimage = transformimage(transform, croppedimage, size);
 
     free(val);
     free_matrix(transform);
 
-    save_cells(transformedimage);
-
-    if(SDL_SaveBMP(transformedimage, "result.bmp") != 0)
-    {
-        printf("SDL_SaveBMP failed: %s\n", SDL_GetError());
-    }
-
-    SDL_FreeSurface(transformedimage);
     SDL_FreeSurface(croppedimage);
     SDL_FreeSurface(croppedsegmap);
     SDL_FreeSurface(segmap);
     SDL_FreeSurface(image);
+
+    return transformedimage;
 }
 
 size_t findgrid(CCTuple *histo, size_t histo_size, size_t* coords[], SDL_Surface** surf[])
@@ -133,8 +112,13 @@ size_t findgrid(CCTuple *histo, size_t histo_size, size_t* coords[], SDL_Surface
         int d_bottom = get_distance((int)*bottomrightX, (int)*bottomrightY, (int)*bottomleftX, (int)*bottomleftY);
         int d_left = get_distance((int)*bottomleftX, (int)*bottomleftY, (int)*topleftX, (int)*topleftY);
 
+        printf("top -> %d\n", d_top);
+        printf("right -> %d\n", d_right);
+        printf("bottom -> %d\n", d_bottom);
+        printf("left -> %d\n", d_left);
+
         // Check if component is a potential grid
-        int error_margin = 2*d_top / 9;
+        int error_margin = d_top / 9;
 
         if (!((d_right < (d_top - error_margin) || d_right > (d_top + error_margin)) ||
             (d_bottom < (d_top - error_margin) || d_bottom > (d_top + error_margin)) ||
@@ -144,7 +128,7 @@ size_t findgrid(CCTuple *histo, size_t histo_size, size_t* coords[], SDL_Surface
         }
         i -= 1;
 
-    } while (i > 0 && condition == 0 && histo[i].nb_pixels > (size_t)(*image)->h*(*image)->w/250);
+    } while (i > 0 && condition == 0 && histo[i].nb_pixels > (size_t)(*image)->h*(*image)->w/300);
 
     if(condition == 0 && i == 0)
     {

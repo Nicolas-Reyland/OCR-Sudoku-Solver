@@ -223,9 +223,9 @@ SDL_Surface* cut_image(SDL_Surface* image, size_t top, size_t bottom, size_t lef
 }
 
 
-void save_cells(SDL_Surface* image)
+void save_cells(const char* file)
 {
-
+    SDL_Surface *image = IMG_Load(file);
     char folder_name[] = "cells/";
     remove_dir(folder_name);
     mkdir(folder_name, S_IRWXU);
@@ -236,7 +236,7 @@ void save_cells(SDL_Surface* image)
     {
         for (size_t y = 0; y < 9; y++)
         {
-            SDL_Surface* cell = cut_image(image, y*h/9, (size_t)y*h/9+h/9, x*w/9, (size_t)x*w/9+w/9);
+            SDL_Surface* cell = cut_image(image, y*h/9, (size_t)y*h/9+h/9 -1, x*w/9, (size_t)x*w/9+w/9 -1);
             SDL_Surface* cellsegmap = SDL_CreateRGBSurface(0, w/9+1, h/9+1, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0);
             
             size_t limit = (h/9*w/9)/60;
