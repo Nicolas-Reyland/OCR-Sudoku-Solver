@@ -26,7 +26,7 @@ done
 rm -rf cells/
 
 # GUI
-rm -f {{adjusted,binarised,blurred}_image,grayscale}.bmp
+rm -f {{adjusted,binarised,blurred,rotated}_image,grayscale}.bmp
 
 # Main
 rm -f main
