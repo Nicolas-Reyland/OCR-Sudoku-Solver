@@ -83,11 +83,14 @@ void _nn_dSoftmax(nn_Layer* layer)
     double sum = 0;
     for (size_t i = 0; i < N; i++) {
         exponentials[i] = exp(layer->nodes[i]->raw_value);
+        if (layer->nodes[i]->raw_value < -10e3) {
+            err_verbose_exit("WTF: %lu", layer->nodes[i]->raw_value);
+        }
         sum += exponentials[i];
     }
-    if (sum == 0) {
-        verbose("\nWarning: sum is null in softmax. Adding 1e-3 for stability\n");
-        sum = 1e-3;
+    if (sum < 10e-17) {
+        // verbose("\nWarning: sum is null in softmax. Adding 1e-3 for stability\n");
+        // exp(z_i) * sigma(expt(z_j!=i)) / sigma(expt(z_j)^2
     }
     double sum_squared = sum * sum;
     // calculate derivative values

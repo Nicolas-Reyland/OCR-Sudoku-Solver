@@ -17,14 +17,14 @@ int main()
 	// model architecture
 	nn_ShapeDescription model_architecture[] = {
 		create2DShapeDescription(28, 28),
-		create1DShapeDescription(128),
+		create1DShapeDescription(200),
 		create1DShapeDescription(9),
 	};
 	const size_t num_layers = sizeof(model_architecture) / sizeof(nn_ShapeDescription);
 	const size_t num_activations = num_layers - 1;
 	// activation functions
 	activation activations[] = {
-		SIGMOID, SOFTMAX
+		TANH, SOFTMAX
 	};
 	if (sizeof(activations) != num_activations * sizeof(activation)) {
 		err_verbose_exit("Sync your number of activations and layers !");
@@ -51,7 +51,7 @@ int main()
 		0.1,
 		false,
 		true,
-		0.05,
+		0.01,
 		"avg-loss.log",
 		"avg-right.log"
 	);
@@ -67,7 +67,7 @@ int main()
 	// save model
 	setVerbose(true);
 	verbose("Saving the model...");
-	model->saveModel(model, "save/numeric-softmax-");
+	model->saveModel(model, "save/numeric-tanh-sigmoid-200-");
 
 	// free model
 	freeModel(model);
