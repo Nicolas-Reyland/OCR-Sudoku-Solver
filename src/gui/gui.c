@@ -27,7 +27,9 @@
 #define PATH "cells/"
 
 char *src_image_path = NULL;
+char *original_image_path = NULL;
 int is_adjusted = 0;
+
 nn_Model *number_prediction_model = NULL;
 
 GdkPixbuf* create_pixbuf(const gchar *filename);
@@ -411,8 +413,16 @@ void open_dialog(GtkWidget *widget, gpointer user_data)
             gtk_widget_destroy(*image);
 
             free(src_image_path);
-            src_image_path = (char*)malloc((strlen(filename) + 1) * sizeof(char));
+            free(original_image_path);
+
+            int filename_length = strlen(filename);
+
+            src_image_path = (char*)malloc((filename_length + 1) * sizeof(char));
             src_image_path = strcpy(src_image_path, filename);
+            
+            original_image_path = (char*)malloc((filename_length + 1) * sizeof(char));
+            original_image_path = strcpy(original_image_path, filename);
+
             is_adjusted = 0;
 
             *image = gui_load_image(filename);
@@ -518,7 +528,7 @@ void display_rotated_image(GtkWidget *widget, gpointer user_data)
     if (strlen(angle) > 0 && *endPtr == '\0')
     {
         value = fmod(value, 360.0);
-        rotate_image(src_image_path, value);
+        rotate_image(original_image_path, value);
 
         if (create_pixbuf(SAVED_IMG_NAME_R))
         {

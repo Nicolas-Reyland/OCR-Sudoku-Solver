@@ -534,8 +534,8 @@ void rotate_image(char *path, double angle)
 	int half_src_surf_w = src_surf_w / 2;
 	int half_src_surf_h = src_surf_h / 2;
 
-	int rot_surf_edge = (int)sqrt(src_surf_w * src_surf_w + 
-							src_surf_h * src_surf_h) + 1;
+	int rot_surf_edge = (int)sqrt(src_surf_w * src_surf_w 
+			+ src_surf_h * src_surf_h) + 1;
 
 	// Transparency is not activated
 	// Creation of a white surface
