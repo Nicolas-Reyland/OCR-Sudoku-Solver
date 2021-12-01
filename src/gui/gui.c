@@ -47,7 +47,7 @@ int main(int argc, char **argv)
     // init Neural Network & Co.
     initRandom();
     initMemoryTracking();
-    nn_Model* model = nn_loadModel("save/numerical-");
+    nn_Model* model = nn_loadModel("save/numeric-");
 	number_prediction_model = model;
 
     // Window
@@ -419,7 +419,7 @@ void open_dialog(GtkWidget *widget, gpointer user_data)
 
             src_image_path = (char*)malloc((filename_length + 1) * sizeof(char));
             src_image_path = strcpy(src_image_path, filename);
-            
+
             original_image_path = (char*)malloc((filename_length + 1) * sizeof(char));
             original_image_path = strcpy(original_image_path, filename);
 
