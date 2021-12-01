@@ -254,7 +254,7 @@ void save_cells(const char* file)
                     size = size2;
                 }
                 X++;
-            } while (size < limit && X < w/36);
+            } while (size < limit/3 && X < w/36);
 
             if (size > limit)
             {

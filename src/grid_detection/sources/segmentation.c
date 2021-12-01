@@ -108,11 +108,6 @@ CCTuple* twopassSegmentation(SDL_Surface *image, SDL_Surface* segmap, size_t *se
 
     heapSort(histo, *segval);
 
-    for (int i = 0; i < linked->length; i++)
-    {
-        free(linked->get_value_at(linked, i));
-    }
-
     free_linked_list(linked);
     return histo;
 }
