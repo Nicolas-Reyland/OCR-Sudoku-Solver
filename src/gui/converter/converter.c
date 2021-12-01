@@ -6,6 +6,7 @@ void __converter(char* filepath, double* converted_cell);
 
 void converter(char* path, double** converted_cells, Cell** cells_position)
 {
+	verbose("Reading directory at path: %s\n", path);
 	// I don't actually init sdl because I assume
 	// it has already been initialized by grid_description
 	DIR* directory;
@@ -14,13 +15,9 @@ void converter(char* path, double** converted_cells, Cell** cells_position)
 	struct dirent *dir;
 	if (directory == NULL)
 		errx(1, "CONVERTER Error: There is no directory.");
-	verbose("Reading directory at path: %s\n", path);
 	while((dir = readdir(directory)) != NULL)
 	{
 		verbose("index: %3d ", index);
-
-		// see convert.h : line 12 (cannot compile without this)
-		err_verbose_exit("Crashing here manually because DT_REG is not defined.\nPlease define it in converter.h or include a file that defines it.");
 
 		if (dir->d_type == DT_REG)
 		{
@@ -63,14 +60,15 @@ void converter(char* path, double** converted_cells, Cell** cells_position)
 
 unsigned int count_files(char* path)
 {
-	DIR* directory;
-	directory = opendir(path);
-	struct dirent *dir;
-	if (directory == NULL)
-		errx(1, "CONVERTER Error: There is no directory.");
 	verbose("Reading directory at path: %s\n", path);
 
+	DIR* directory;
+	directory = opendir(path);
+	if (directory == NULL)
+		errx(1, "CONVERTER Error: There is no directory.");
+
 	unsigned int counter = 0;
+	struct dirent *dir;
 
 	while((dir = readdir(directory)) != NULL)
 	{
