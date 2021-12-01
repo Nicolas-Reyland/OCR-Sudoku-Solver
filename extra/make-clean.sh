@@ -23,6 +23,7 @@ do
 	fi
 done
 # Grid detection
+rm -rf cells/
 
 # GUI
 rm -f {{adjusted,binarised,blurred}_image,grayscale}.bmp
