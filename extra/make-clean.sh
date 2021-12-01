@@ -24,3 +24,8 @@ do
 done
 # Grid detection
 
+# GUI
+rm -f {{adjusted,binarised,blurred}_image,grayscale}.bmp
+
+# Main
+rm -f main
