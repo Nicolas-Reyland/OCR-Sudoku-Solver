@@ -27,7 +27,7 @@ int main(int argc, char** argv)
 	// nn_Data* data = nn_loadSingleDataInputOutput("datas/numeric-data.in", "datas/numeric-data.out", &shape, true, "Loading numeric data");
     // nn_DataTuple data_tuple = data->splitTrainTest(data, 0.3);
     // nn_DataSet* dataset = nn_createDataSet(data_tuple.data1, data_tuple.data2);
-	nn_DataSet* dataset = nn_loadTestOnlyDataSet("datas/numeric-", &shape, true);
+	nn_DataSet* dataset = nn_loadTestOnlyDataSet("datas/numeric-1k-", &shape, true);
 
 	nn_Session* session = createTestSession(
 		dataset, true
