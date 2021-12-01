@@ -95,6 +95,21 @@ SDL_Surface* transformimage(Matrix *transform, SDL_Surface *image, double size)
         double sx = floor((a * (double)x + sxPre1)/(g * (double)x + sxPre2));
         double sy = floor((d * (double)x + syPre1)/(g * (double)x + syPre2));
 
+        // Clamp values
+        if (sx < 0)
+          sx = 0;
+
+        if (sy < 0)
+          sy = 0;
+
+        if (sx > (double)image->w - 1)
+          sx = (double)image->w - 1;
+
+        if (sy > (double)image->h - 1)
+          sy = (double)image->h - 1;
+
+        // printf("(sx, sy) = (%lf, %lf)\n", sx, sy);
+
         Uint32 pix = get_pixel(image, (unsigned int)sx, (unsigned int)sy);
         Uint8 color;
         SDL_GetRGB(pix, image->format, &color, &color, &color);

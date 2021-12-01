@@ -24,7 +24,7 @@
 #define SUDOKU_GRID_SIZE 9
 #define OUTPUT_SIZE 9
 
-#define PATH "./cells"
+#define PATH "./cells/"
 
 char *src_image_path = NULL;
 int is_adjusted = 0;
@@ -42,12 +42,11 @@ void display_solution_grid(GtkWidget *widget, gpointer user_data);
 
 int main(int argc, char **argv)
 {
-    /* init Neural Network & Co.
+    // init Neural Network & Co.
     initRandom();
     initMemoryTracking();
     nn_Model* model = nn_loadModel("save/mnist/");
 	number_prediction_model = model;
-    */
 
 
     // Window
@@ -123,7 +122,7 @@ int main(int argc, char **argv)
     // Sets some border space around the edges of the window.
     gtk_container_set_border_width(GTK_CONTAINER(window), 15);
 
-    icon = create_pixbuf("gui_files/icon.jpg");
+    icon = create_pixbuf("src/gui/gui_files/icon.jpg");
     gtk_window_set_icon(GTK_WINDOW(window), icon);
 
     src_image_path = (char*)malloc((strlen("src/gui/gui_files/no_image.png") + 1) * sizeof(char));
@@ -651,7 +650,6 @@ void launch_process(GtkWidget *widget, gpointer user_data)
 
     //count the number of cells to process
     nb_cells = count_files(PATH); // , OUTPUT_SIZE);
-
 
     // initialize the arrays that we will use in order to
     // fill a matrix

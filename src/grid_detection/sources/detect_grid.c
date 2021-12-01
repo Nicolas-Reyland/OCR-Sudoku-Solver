@@ -40,9 +40,9 @@ SDL_Surface* detect_grid(const char* file)
 
     free(histo);
 
-    //remove_grid(croppedimage, croppedsegmap, gridval, 1);
+    remove_grid(croppedimage, croppedsegmap, gridval, 1);
 
-    double size = fmax(croppedimage->h, croppedimage->w)+10;
+    double size = fmax(croppedimage->h, croppedimage->w);
 
     double *val = malloc(sizeof(double)*8);
 
@@ -111,11 +111,6 @@ size_t findgrid(CCTuple *histo, size_t histo_size, size_t* coords[], SDL_Surface
         int d_right = get_distance((int)*toprightX, (int)*toprightY, (int)*bottomrightX, (int)*bottomrightY);
         int d_bottom = get_distance((int)*bottomrightX, (int)*bottomrightY, (int)*bottomleftX, (int)*bottomleftY);
         int d_left = get_distance((int)*bottomleftX, (int)*bottomleftY, (int)*topleftX, (int)*topleftY);
-
-        printf("top -> %d\n", d_top);
-        printf("right -> %d\n", d_right);
-        printf("bottom -> %d\n", d_bottom);
-        printf("left -> %d\n", d_left);
 
         // Check if component is a potential grid
         int error_margin = d_top / 9;
