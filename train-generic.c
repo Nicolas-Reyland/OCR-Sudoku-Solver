@@ -15,6 +15,9 @@ int main(int argc, char** argv)
 	char* hidden_layer_size_str = argv[1];
 	char* second_activation_str = argv[2];
 	char* data_prefix = argv[3];
+	char data_path[255];
+	strcpy(data_path, "datas/");
+	strcat(data_path, data_prefix);
 
 	size_t hidden_layer_size = (size_t)atoi(hidden_layer_size_str);
 	activation second_activation;
@@ -56,15 +59,14 @@ int main(int argc, char** argv)
 
 	// malloc model
 	nn_Model* model = createModel(num_layers, model_architecture, activations, loss, optimizer);
-	verbose("Model created");
 	model->printModelArchitecture(model);
 
 	// load the dataset (~from scratch~)
 	nn_ShapeDescription shape = emptyShapeDescription();
 	char data_in_path[255];
 	char data_out_path[255];
-	strcpy(data_in_path, data_prefix);
-	strcpy(data_out_path, data_prefix);
+	strcpy(data_in_path, data_path);
+	strcpy(data_out_path, data_path);
 	strcat(data_in_path, "-data.in");
 	strcat(data_out_path, "-data.out");
 	nn_Data* data = nn_loadSingleDataInputOutput(data_in_path, data_out_path, &shape, true, "Loading data");
@@ -72,6 +74,26 @@ int main(int argc, char** argv)
     nn_DataSet* dataset = nn_createDataSet(data_tuple.data1, data_tuple.data2);
 
     // session
+	sprintf(save_model_str, "save/%s-%s-%s-", data_prefix, second_activation_str, hidden_layer_size_str);
+	char avg_loss_log_path[255];
+	char avg_right_log_path[255];
+	strcpy(avg_loss_log_path, "avg-loss-");
+	strcpy(avg_right_log_path, "avg-right-");
+	//
+	strcat(avg_loss_log_path, data_prefix);
+	strcat(avg_loss_log_path, "-");
+	strcat(avg_loss_log_path, second_activation_str);
+	strcat(avg_loss_log_path, "-");
+	strcat(avg_loss_log_path, hidden_layer_size_str);
+	//
+	strcat(avg_right_log_path, data_prefix);
+	strcat(avg_right_log_path, "-");
+	strcat(avg_right_log_path, second_activation_str);
+	strcat(avg_right_log_path, "-");
+	strcat(avg_right_log_path, hidden_layer_size_str);
+	//
+	strcat(avg_loss_log_path, ".log");
+	strcat(avg_right_log_path, ".log");
 	nn_Session* session = createSession(
 		dataset,
 		10,
@@ -79,8 +101,8 @@ int main(int argc, char** argv)
 		false,
 		true,
 		0.1,
-		"avg-loss.log",
-		"avg-right.log"
+		avg_loss_log_path,
+		avg_right_log_path
 	);
 
 	verbose("Session created");
@@ -93,19 +115,15 @@ int main(int argc, char** argv)
 
 	// save model
 	setVerbose(true);
-	verbose("Saving the model...");
 	model->saveModel(model, save_model_str);
+	verbose("Saved as: %s", save_model_str);
 
 	// free model
 	freeModel(model);
 	// free session
 	freeSession(session);
 
-	verbose("Model freed.");
-
 	free(GPL);
-
-	verbose("Saved as: %s", save_model_str);
 
 	return 0;
 }

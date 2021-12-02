@@ -88,7 +88,7 @@ void _nn_train_one_hot(struct nn_Session* session, nn_Model* model)
 
 	bool loss_threshold_condition = true;
 
-	verbose("Training for %lu epochs", session->nb_epochs);
+	verbose(" * Training for %lu epochs on %lu samples *", session->nb_epochs, sample_size);
 
 	Logger loss_logger = createLogger(session->loss_log_file);
 	Logger right_logger = createLogger(session->right_log_file);
@@ -97,11 +97,8 @@ void _nn_train_one_hot(struct nn_Session* session, nn_Model* model)
 	// when printing (first epoch : 1, not 0)
 	for (size_t epoch = 0; epoch++ < session->nb_epochs && loss_threshold_condition;)
 	{
-
 		if (session->verb_mode)
-		{
-			verbose("Epoch number: %ld", epoch);
-		}
+			verbose(" * Doing epoch %lu/%lu", epoch, session->nb_epochs);
 
 		ProgressBar training_bar = createProgressBar(
 			"Training",
@@ -127,15 +124,13 @@ void _nn_train_one_hot(struct nn_Session* session, nn_Model* model)
 			// feed forward the input at index 'i'
 			_nn_feedForward(model, tuple_array[i]->input->values);
 
-			//we calculate the loss function
+			// we calculate the loss
 			double error = applyLosses(
 				model->layers[model->num_layers - 1],
 				tuple_array[i]->output->values,
 				model->loss);
 
 			loss_buffer += error;
-
-			// DEBUGGING: START
 
 			nn_Layer* output_layer = model->layers[model->num_layers - 1];
 
@@ -152,30 +147,9 @@ void _nn_train_one_hot(struct nn_Session* session, nn_Model* model)
 			// indices must be the same for the model to have rightly predicted
 			if (max_index == result_index)
 				num_right_predictions++;
-			// else
-			// 	verbose("0     prediction: %lu", result_index);
 
-			// DEBUGGING: END
-
-			/*for (int x = 0; x < 20; x++) {
-				_nn_feedForward(model, tuple_array[i]->input->values);*/
 			_nn_backPropagation(model, tuple_array[i]->output->values);
 			_nn_updateWeights(model, session->learning_rate);
-			//}
-
-			//
-
-			/*double error2 = applyLosses(
-				model->layers[model->num_layers - 1],
-				tuple_array[i]->output->values,
-				model->loss);*/
-
-			//verbose("loss: %lf > %lf", error, error2);
-
-			// if (session->verb_mode && i % nb_verb_step == 0) {
-			// 	verbose(" train session run: %.2f%c  done (loss: %lf)", 100.0 * (double)i/sample_size, '%', error);
-			// 	verbose(" precentage of right predictions: %.2f%c", 100.0 * (double)num_right_predictions/i, '%');
-			// }
 		}
 
 		endProgressBar(&training_bar);
