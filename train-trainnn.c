@@ -41,8 +41,8 @@ int main()
 	// load the dataset (~from scratch~)
 	nn_ShapeDescription shape = emptyShapeDescription();
 	nn_Data* data = nn_loadSingleDataInputOutput("src/grid_detection/trainnn-data.in", "src/grid_detection/trainnn-data.out", &shape, true, "Loading numeric data");
-    nn_DataTuple data_tuple = data->splitTrainTest(data, 0.3);
-    nn_DataSet* dataset = nn_createDataSet(data_tuple.data1, data_tuple.data2);
+//    nn_DataTuple data_tuple = data->splitTrainTest(data, 0.3);
+    nn_DataSet* dataset = nn_createDataSet(data, data);
 
     // session
 	nn_Session* session = createSession(
