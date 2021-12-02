@@ -566,19 +566,33 @@ void adjust_image(GtkWidget *widget, gpointer user_data)
 
     GtkWidget *adjust_img_button = widget;
 
-    printf("Started image treatment part.\n");
-    image_process(src_image_path, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(*brightness_check)));
-    printf("Finished image treatment part.\n");
+    if(is_adjusted == 0)
+    {
+        printf("Started image treatment part.\n");
+        image_process(src_image_path, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(*brightness_check)));
+        printf("Finished image treatment part.\n");
 
-    printf("Started the grid detection part.\n");
-    // Adjust the image
-    SDL_Surface *adjusted_image = detect_grid(SAVED_IMG_NAME_BI);
+        printf("Started the grid detection part.\n");
+        // Adjust the image
+        SDL_Surface *adjusted_image = detect_grid(SAVED_IMG_NAME_BI);
 
-    // Save the adjusted image
-    SDL_SaveBMP(adjusted_image, SAVED_IMG_NAME_AI);
-    is_adjusted = 1;
-    SDL_FreeSurface(adjusted_image);
+        // Save the adjusted image
+        SDL_SaveBMP(adjusted_image, SAVED_IMG_NAME_AI);
+        is_adjusted = 1;
+        SDL_FreeSurface(adjusted_image);
+    }
+    else
+    {
+        printf("Started the grid detection part.\n");
+        // Adjust the image
+        SDL_Surface *adjusted_image = detect_grid(SAVED_IMG_NAME_R);
 
+        // Save the adjusted image
+        SDL_SaveBMP(adjusted_image, SAVED_IMG_NAME_AI);
+        SDL_FreeSurface(adjusted_image);
+        printf("Finished the grid detection part.\n");
+    }
+    
     // Display the adjusted image
     gtk_widget_destroy(*image);
 

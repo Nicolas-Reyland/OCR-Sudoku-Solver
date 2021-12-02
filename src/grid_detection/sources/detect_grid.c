@@ -115,6 +115,11 @@ size_t findgrid(CCTuple *histo, size_t histo_size, size_t* coords[], SDL_Surface
         // Check if component is a potential grid
         int error_margin = d_top / 9;
 
+        printf("%d\n", d_top);
+        printf("%d\n", d_right);
+        printf("%d\n", d_bottom);
+        printf("%d\n", d_left);
+
         if (!((d_right < (d_top - error_margin) || d_right > (d_top + error_margin)) ||
             (d_bottom < (d_top - error_margin) || d_bottom > (d_top + error_margin)) ||
             (d_left < (d_top - error_margin) || d_left > (d_top + error_margin))))
@@ -125,9 +130,12 @@ size_t findgrid(CCTuple *histo, size_t histo_size, size_t* coords[], SDL_Surface
 
     } while (i > 0 && condition == 0 && histo[i].nb_pixels > (size_t)(*image)->h*(*image)->w/300);
 
-    if(condition == 0 && i == 0)
+    if(condition == 0)
     {
-        errx(1, "Error: no grid is found in the given image.");
+        if(i == 0)
+            errx(1, "Error: no grid is found in the given image.");
+        else
+            return histo[histo_size - 1].label;
     }
 
     printf("LABEL -> %zu\n", histo[i+1].label);
