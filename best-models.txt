@@ -1,0 +1,7 @@
+84.04%	noisy+nn-sigmoid-sigmoid-128-
+82.98%	numeric-
+75.53%	numeric-sigmoid-64-
+69.15%	numeric-softmax-800-
+67.02%	numeric-softmax-800-
+62.77%	numeric-tanh-sigmoid-200-
+
