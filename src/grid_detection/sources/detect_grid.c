@@ -94,7 +94,6 @@ size_t findgrid(CCTuple *histo, size_t histo_size, size_t* coords[], SDL_Surface
     size_t best_index = i;
 
     size_t limit = (size_t)(*image)->h*(*image)->w/250;
-    //int d_top, d_right;
     size_t area_max = 0;
     
     size_t best_coords[8] = {0};

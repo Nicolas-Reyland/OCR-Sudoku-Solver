@@ -265,17 +265,39 @@ void save_cells(const char* file)
                 find_extremity_coordinates(cellsegmap, segval-1, &top, &right, &left, &bottom);
                 SDL_Surface* croppedcell = cut_image(cell, top, bottom, left, right);
 
-                int max = (int) ceil((double)(croppedcell->w)/(double)22);
-                if (((int) ceil((double)(croppedcell->h)/(double)22)) > max)
+                int max = croppedcell->w;
+                if (croppedcell->h > max)
                 {
-                    max = (int) ceil((double)(croppedcell->h)/(double)24);
+                    max = croppedcell->h;
                 }
 
-                SDL_Surface* shrinkedcroppedcell = shrinkSurface(croppedcell, max, max);
+                SDL_Surface* inter = SDL_CreateRGBSurface(0, max, max, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0);
+                copy_symbol(inter, croppedcell, (max-croppedcell->w)/2, (max-croppedcell->h)/2);
+
+                char name[255];
+                sprintf(name,"%scell_%lu_%lu", PATH, x, y);
+                
+                if(SDL_SaveBMP(inter, name) != 0)
+                {
+                    printf("SDL_SaveBMP failed: %s\n", SDL_GetError());
+                }
+
+                GdkPixbuf *pixbuf = gdk_pixbuf_new_from_file (name, NULL);
+                if (pixbuf == NULL) 
+                {
+                    printf("Failed to resize image\n");
+                }
+
+                GdkPixbuf *new = gdk_pixbuf_scale_simple(pixbuf, 22, 22, GDK_INTERP_BILINEAR);
+
+                gdk_pixbuf_save (new, name, "jpeg", NULL, "quality", "100", NULL);
+
+                SDL_Surface* shrinkedcroppedcell = IMG_Load(name);
 
                 copy_symbol(emptycell, shrinkedcroppedcell, (28-shrinkedcroppedcell->w)/2, (28-shrinkedcroppedcell->h)/2);
                 SDL_FreeSurface(croppedcell);
                 SDL_FreeSurface(shrinkedcroppedcell);
+
                 /*
                 for (size_t x = 0; x < 28; x++)
                 {
@@ -295,12 +317,12 @@ void save_cells(const char* file)
                     }
                 }
                 */
-                char name[255];
-                sprintf(name,"%scell_%lu_%lu", PATH, x, y);
+
                 if(SDL_SaveBMP(emptycell, name) != 0)
                 {
                     printf("SDL_SaveBMP failed: %s\n", SDL_GetError());
                 }
+                
                 SDL_FreeSurface(emptycell);
             }
             SDL_FreeSurface(cell);
