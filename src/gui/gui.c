@@ -47,7 +47,7 @@ int main(int argc, char **argv)
     // init Neural Network & Co.
     initRandom();
     initMemoryTracking();
-    nn_Model* model = nn_loadModel("save/numeric-sigmoid-64-");
+    nn_Model* model = nn_loadModel("save/artisanal-");
 	number_prediction_model = model;
 
     // Window
@@ -514,7 +514,7 @@ void display_rotated_image(GtkWidget *widget, gpointer user_data)
     GtkWidget **frame = widget_pointers[1];
     GtkWidget **image = widget_pointers[2];
     GtkWidget **rotate_img_entry = widget_pointers[3];
-    GtkWidget **adjust_img_button = widget_pointers[8];
+    //GtkWidget **adjust_img_button = widget_pointers[8];
 
     GtkWidget *apply_button = widget;
 
@@ -544,8 +544,6 @@ void display_rotated_image(GtkWidget *widget, gpointer user_data)
             is_rotated = 1;
             gtk_container_add(GTK_CONTAINER(*frame), *image);
             //gtk_box_pack_start(GTK_BOX(*frame), *image, TRUE, FALSE, 0);
-
-            gtk_widget_set_sensitive(*adjust_img_button, TRUE);
 
             gtk_widget_show_all(*window);
         }
@@ -623,6 +621,7 @@ int predictionToNumber(double* prediction)
 	for (int i = 1; i < 9; i++) {
 		if (prediction[i] > prediction[max_index]) {
 			max_index = i;
+            verbose("Updated max_index to: %d", max_index);
 		}
 	}
 
@@ -650,14 +649,15 @@ void launch_process(GtkWidget *widget, gpointer user_data)
 
     if(is_adjusted == 1)
     {
+        printf("Started grid detection part.\n");
         if (is_rotated == 1)
         {
-            printf("Started grid detection part.\n");
-            SDL_Surface *adjusted_image = detect_grid(src_image_path);
-            SDL_SaveBMP(adjusted_image, SAVED_IMG_NAME_AI);
-            SDL_FreeSurface(adjusted_image);
+            save_cells(SAVED_IMG_NAME_R);
         }
-        save_cells(SAVED_IMG_NAME_AI);
+        else
+        {
+            save_cells(SAVED_IMG_NAME_AI);
+        }
         printf("Finished grid detection part.\n");
     }
     else
@@ -711,6 +711,10 @@ void launch_process(GtkWidget *widget, gpointer user_data)
     {
         verbose("predicting %lu/%lu ...", k + 1, nb_cells);
         double* prediction = model->use(model, value_array[k]);
+
+        for (size_t i = 0; i < 9; i++)
+            verbose("prediction[%lu] = %f",i + 1, prediction[i]);
+
         setVerbose(true);
 
         int x = positions_array[k].x,
@@ -718,7 +722,9 @@ void launch_process(GtkWidget *widget, gpointer user_data)
 
         // convert the double array into an integer
         // and stores it at the right place of the matrix
-        unsolved_grid[y][x] = predictionToNumber(prediction);
+        unsolved_grid[y][x] = toNumber(prediction, 9);
+
+        verbose("predicted a %d", unsolved_grid[y][x]);
         mem_free(prediction);
     }
 

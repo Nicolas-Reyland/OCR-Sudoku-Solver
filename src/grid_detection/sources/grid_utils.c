@@ -276,7 +276,7 @@ void save_cells(const char* file)
                 copy_symbol(emptycell, shrinkedcroppedcell, (28-shrinkedcroppedcell->w)/2, (28-shrinkedcroppedcell->h)/2);
                 SDL_FreeSurface(croppedcell);
                 SDL_FreeSurface(shrinkedcroppedcell);
-
+                /*
                 for (size_t x = 0; x < 28; x++)
                 {
                     for (size_t y = 0; y < 28; y++)
@@ -294,7 +294,7 @@ void save_cells(const char* file)
                         }
                     }
                 }
-
+                */
                 char name[255];
                 sprintf(name,"%scell_%lu_%lu", PATH, x, y);
                 if(SDL_SaveBMP(emptycell, name) != 0)

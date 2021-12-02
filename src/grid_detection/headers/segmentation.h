@@ -1,5 +1,5 @@
-#ifndef SEGEMNETATION_H
-#define SEGEMENTATION_H
+#ifndef SEGMENTATION_H
+#define SEGMENTATION_H
 
 #include <SDL2/SDL.h>
 #include "pixel_operations.h"
