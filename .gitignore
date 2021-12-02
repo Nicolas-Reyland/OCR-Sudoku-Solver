@@ -7,6 +7,10 @@ main
 # Prerequisites
 *.d
 
+# Ignored datasets bc they are too large
+all-extern-data.in
+noisy+nn-data.in
+
 # xor model weights
 save/xor/weightsandbias.mdl
 
