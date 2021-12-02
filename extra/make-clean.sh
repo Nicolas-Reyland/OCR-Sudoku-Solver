@@ -27,6 +27,7 @@ rm -rf cells/
 
 # GUI
 rm -f {{adjusted,binarised,blurred,rotated}_image,grayscale}.bmp
+rm -f {,un}solved_grid.bmp
 
 # Main
 rm -f main
