@@ -2,9 +2,9 @@
 
 CCTuple* twopassSegmentation(SDL_Surface *image, SDL_Surface* segmap, size_t *segval)
 {
-    linked_list *linked = init_linked_list();
     set* s = init_set(NULL, 0);
-    linked->append_value(linked, s);
+    size_t linked_size = 5000;
+    set** linked = malloc(sizeof(set)*linked_size);
     Uint32 p;
     Uint32 p1,p2;
     for (size_t x = 0; x < (size_t)image->w; x++)
@@ -17,13 +17,13 @@ CCTuple* twopassSegmentation(SDL_Surface *image, SDL_Surface* segmap, size_t *se
             size_t length = 0;
             if(color == 255)
             {
-                int b[2] = {0,0};
+                int b = 0;
                 if(x > 0)
                 {
                     p1 = get_pixel(segmap, x-1, y);
                     if(p1!=0)
                     {
-                        b[0] = 1;
+                        b = 1;
                         length+=1;
                     }
                 }
@@ -32,20 +32,24 @@ CCTuple* twopassSegmentation(SDL_Surface *image, SDL_Surface* segmap, size_t *se
                     p2 = get_pixel(segmap, x, y-1);
                     if(p2!=0)
                     {
-                        b[1] = 1;
                         length+=1;
                     }
                 }
                 if(length == 0)
                 {
+                    if (*(segval)+1 == linked_size)
+                    {
+                        linked_size = linked_size + 5000;
+                        linked = realloc(linked, sizeof(set)*linked_size);
+                    }
                     s = init_set(NULL, *segval);
-                    linked->append_value(linked, s);
+                    linked[(int)*segval] = s;
                     put_pixel(segmap, x, y, *segval);
                     *segval+=1;
                 }
                 else if (length == 1)
                 {
-                    if (b[0])
+                    if (b)
                     {
                         put_pixel(segmap, x, y, (size_t)p1);
                     }
@@ -63,8 +67,8 @@ CCTuple* twopassSegmentation(SDL_Surface *image, SDL_Surface* segmap, size_t *se
                         {
                             p = p2;
                         }
-                        set* s1 = linked->get_value_at(linked, (int)p1);
-                        set* s2 = linked->get_value_at(linked, (int)p2);
+                        set* s1 = linked[p1];
+                        set* s2 = linked[p2];
                         s1 = get_root(s1);
                         s2 = get_root(s2);
                         if (s1->value != s2->value)
@@ -91,6 +95,7 @@ CCTuple* twopassSegmentation(SDL_Surface *image, SDL_Surface* segmap, size_t *se
         CCTuple t = {.nb_pixels = 0, .label = i};
         histo[i] = t;
     }
+
     for (size_t x = 0; x < (size_t)image->w; x++)
     {
         for (size_t y = 0; y < (size_t)image->h; y++)
@@ -98,7 +103,7 @@ CCTuple* twopassSegmentation(SDL_Surface *image, SDL_Surface* segmap, size_t *se
             p = get_pixel(segmap, x, y);
             if(p != 0)
             {
-                s = linked->get_value_at(linked, p);
+                s = linked[p];
                 s = get_root(s);
                 histo[s->value].nb_pixels += 1;
                 put_pixel(segmap, x, y, s->value);
@@ -108,7 +113,7 @@ CCTuple* twopassSegmentation(SDL_Surface *image, SDL_Surface* segmap, size_t *se
 
     heapSort(histo, *segval);
 
-    free_linked_list(linked);
+    free(linked);
     return histo;
 }
 
