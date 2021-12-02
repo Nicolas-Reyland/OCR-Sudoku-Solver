@@ -11,6 +11,8 @@
 #define SAVED_IMG_NAME_AI "adjusted_image.bmp" // AI = Adjusted Image
 #define GRID_NUMBER_FONT "src/gui/gui_files/arial_narrow_7.ttf"
 
+#define SUDOKU_GRID_SIZE 9
+
 typedef enum { MEAN, 
 			STD_DEVIATION } II_TYPE;
 
@@ -41,6 +43,7 @@ void image_process(char *path, int is_bright);
 
 void rotate_image(char *path, double angle);
 
-void create_grids(int **unsolved_sudoku, int **solved_sudoku);
+void create_grids(int unsolved_sudoku[SUDOKU_GRID_SIZE][SUDOKU_GRID_SIZE],
+				int solved_sudoku[SUDOKU_GRID_SIZE][SUDOKU_GRID_SIZE]);
 
 #endif

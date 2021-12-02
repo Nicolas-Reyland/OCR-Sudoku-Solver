@@ -398,7 +398,7 @@ void image_process(char *path, int is_bright)
 	long double threshold;
 
 	if (is_bright)
-		K_BINARISATION = 0.025f;
+		K_BINARISATION = 0.01f;
 	else
 		K_BINARISATION = 0.2f;
 
@@ -628,13 +628,14 @@ void rotate_image(char *path, double angle)
 	SDL_FreeSurface(rotated_surface);
 }
 
-void create_grids(int **unsolved_sudoku, int **solved_sudoku)
+void create_grids(int unsolved_sudoku[SUDOKU_GRID_SIZE][SUDOKU_GRID_SIZE],
+				int solved_sudoku[SUDOKU_GRID_SIZE][SUDOKU_GRID_SIZE])
 {
 	SDL_Surface *dflt_grid = NULL;
-    SDL_Surface **given_numbers_surface = malloc(9 * sizeof(SDL_Surface*));
-    SDL_Surface **added_numbers_surface = malloc(9 * sizeof(SDL_Surface*));
+    SDL_Surface **given_numbers_surface = malloc(SUDOKU_GRID_SIZE * sizeof(SDL_Surface*));
+    SDL_Surface **added_numbers_surface = malloc(SUDOKU_GRID_SIZE * sizeof(SDL_Surface*));
 
-    char numbers[9][5] = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
+    char numbers[SUDOKU_GRID_SIZE][5] = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
     TTF_Font *numbers_font = TTF_OpenFont(GRID_NUMBER_FONT, 35);
 
@@ -645,10 +646,8 @@ void create_grids(int **unsolved_sudoku, int **solved_sudoku)
 
     // added numbers -> green color
 	SDL_Color added_numbers_color = {.r = 0, .g = 154, .b = 23};
-    
-	int size = 9;
 
-	for(int i = 0; i < 9; i++)
+	for(int i = 0; i < SUDOKU_GRID_SIZE; i++)
 	{
 		given_numbers_surface[i] = TTF_RenderText_Blended(numbers_font, numbers[i], given_numbers_color);
 		added_numbers_surface[i] = TTF_RenderText_Blended(numbers_font, numbers[i], added_numbers_color);
@@ -656,11 +655,12 @@ void create_grids(int **unsolved_sudoku, int **solved_sudoku)
 
 	dflt_grid = load_image(SAVED_IMG_NAME_DG);
 
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < SUDOKU_GRID_SIZE; i++)
 	{
-		for (int j = 0; j < size; j++)
+		for (int j = 0; j < SUDOKU_GRID_SIZE; j++)
 		{
 			int current_nb = unsolved_sudoku[i][j];
+			//printf("%d\n", current_nb);
 
 			if (current_nb != 0)
 			{
@@ -682,11 +682,12 @@ void create_grids(int **unsolved_sudoku, int **solved_sudoku)
 
 	SDL_SaveBMP(dflt_grid, SAVED_IMG_NAME_UG);
 
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < SUDOKU_GRID_SIZE; i++)
 	{
-		for (int j = 0; j < size; j++)
+		for (int j = 0; j < SUDOKU_GRID_SIZE; j++)
 		{
 			int current_nb = solved_sudoku[i][j];
+			//printf("%d\n", current_nb);
 
 			if (unsolved_sudoku[i][j] == 0)
 			{
@@ -694,14 +695,14 @@ void create_grids(int **unsolved_sudoku, int **solved_sudoku)
 				// to the white space generated in the font surface
 
 				position.x = (dflt_grid->w/18) * (1 + 2 * j) - 
-				(added_numbers_surface[current_nb - 1]->w - 
-				added_numbers_surface[current_nb - 1]->w / 4) / 2;
+				(added_numbers_surface[abs(current_nb - 1)]->w - 
+				added_numbers_surface[abs(current_nb - 1)]->w / 4) / 2;
     			
     			position.y = (dflt_grid->h/18) * (1 + 2 * i) - 
-				(added_numbers_surface[current_nb - 1]->h - 
-				added_numbers_surface[current_nb - 1]->h / 3) / 2;
+				(added_numbers_surface[abs(current_nb - 1)]->h - 
+				added_numbers_surface[abs(current_nb - 1)]->h / 3) / 2;
 
-    			SDL_BlitSurface(added_numbers_surface[current_nb - 1], NULL, dflt_grid, &position);
+    			SDL_BlitSurface(added_numbers_surface[abs(current_nb - 1)], NULL, dflt_grid, &position);
 			}
 		}
 	}
@@ -709,7 +710,7 @@ void create_grids(int **unsolved_sudoku, int **solved_sudoku)
 	SDL_SaveBMP(dflt_grid, SAVED_IMG_NAME_SG);
 
 	SDL_FreeSurface(dflt_grid);
-	for (int i = 0; i < 9; i++)
+	for (int i = 0; i < SUDOKU_GRID_SIZE; i++)
 	{
 		SDL_FreeSurface(given_numbers_surface[i]);
 		SDL_FreeSurface(added_numbers_surface[i]);

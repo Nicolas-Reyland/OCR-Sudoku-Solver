@@ -21,7 +21,6 @@
 #define IMAGE_MAX_WIDTH 800
 #define IMAGE_MAX_HEIGHT 600
 
-#define SUDOKU_GRID_SIZE 9
 #define OUTPUT_SIZE 9
 
 #define PATH "cells/"
@@ -29,6 +28,7 @@
 char *src_image_path = NULL;
 char *original_image_path = NULL;
 int is_adjusted = 0;
+int is_rotated = 0;
 
 nn_Model *number_prediction_model = NULL;
 
@@ -424,6 +424,7 @@ void open_dialog(GtkWidget *widget, gpointer user_data)
             original_image_path = strcpy(original_image_path, filename);
 
             is_adjusted = 0;
+            is_rotated = 0;
 
             *image = gui_load_image(filename);
             //image_process(filename);
@@ -540,7 +541,7 @@ void display_rotated_image(GtkWidget *widget, gpointer user_data)
 
             *image = gui_load_image(SAVED_IMG_NAME_R);
             //image_process(SAVED_IMG_NAME_R);
-
+            is_rotated = 1;
             gtk_container_add(GTK_CONTAINER(*frame), *image);
             //gtk_box_pack_start(GTK_BOX(*frame), *image, TRUE, FALSE, 0);
 
@@ -569,6 +570,7 @@ void adjust_image(GtkWidget *widget, gpointer user_data)
     image_process(src_image_path, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(*brightness_check)));
     printf("Finished image treatment part.\n");
 
+    printf("Started the grid detection part.\n");
     // Adjust the image
     SDL_Surface *adjusted_image = detect_grid(SAVED_IMG_NAME_BI);
 
@@ -629,30 +631,34 @@ void launch_process(GtkWidget *widget, gpointer user_data)
     GtkWidget **adjust_img_button = widget_pointers[8];
 
     //===================================================
-    //***************Image treatment part****************
+    //***************Grid detection part*****************
     //===================================================
 
-    if (is_adjusted == 0)
+    if(is_adjusted == 1)
+    {
+        if (is_rotated == 1)
+        {
+            printf("Started grid detection part.\n");
+            SDL_Surface *adjusted_image = detect_grid(src_image_path);
+            SDL_SaveBMP(adjusted_image, SAVED_IMG_NAME_AI);
+            SDL_FreeSurface(adjusted_image);
+        }
+        save_cells(SAVED_IMG_NAME_AI);
+        printf("Finished grid detection part.\n");
+    }
+    else
     {
         printf("Started image treatment part.\n");
         image_process(src_image_path, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(*brightness_check)));
         printf("Finished image treatment part.\n");
-    }
 
-    //===================================================
-    //***************Grid detection part*****************
-    //===================================================
-
-    printf("Started grid detection part.\n");
-    if (is_adjusted == 0)
-    {
+        printf("Started grid detection part.\n");
         SDL_Surface *adjusted_image = detect_grid(SAVED_IMG_NAME_BI);
         SDL_SaveBMP(adjusted_image, SAVED_IMG_NAME_AI);
         SDL_FreeSurface(adjusted_image);
+        save_cells(SAVED_IMG_NAME_AI);
+        printf("Finished grid detection part.\n");
     }
-
-    save_cells(SAVED_IMG_NAME_AI);
-    printf("Finished grid detection part.\n");
 
     //===================================================
     //********************OCR part***********************
@@ -660,6 +666,17 @@ void launch_process(GtkWidget *widget, gpointer user_data)
 
     int unsolved_grid[SUDOKU_GRID_SIZE][SUDOKU_GRID_SIZE] = {0};
     int solved_grid[SUDOKU_GRID_SIZE][SUDOKU_GRID_SIZE] = {0};
+
+    /*
+    int **unsolved_grid = malloc(SUDOKU_GRID_SIZE * sizeof(int*));
+    int **solved_grid = malloc(SUDOKU_GRID_SIZE * sizeof(int*));
+
+    for (int i = 0; i < SUDOKU_GRID_SIZE; i++)
+    {
+        unsolved_grid[i] = calloc(SUDOKU_GRID_SIZE, sizeof(int));
+        solved_grid[i] = calloc(SUDOKU_GRID_SIZE, sizeof(int));
+    }
+    */
 
     unsigned int nb_cells;
 
@@ -716,9 +733,8 @@ void launch_process(GtkWidget *widget, gpointer user_data)
     // unsolved_grid: the matrix that represents the sudoku grid before it is solved
     // solved_grid  : the matrix that represents the sudoku grid after it has been solved
 
-    printf("");
     // Unsolved and solved image building
-    create_grids((int**)unsolved_grid, (int**)solved_grid);
+    create_grids(unsolved_grid, solved_grid);
 
     // Verify if the process has succeeded
     gtk_widget_set_sensitive(*apply_rotation_button, FALSE);
@@ -733,6 +749,16 @@ void launch_process(GtkWidget *widget, gpointer user_data)
     gtk_container_add(GTK_CONTAINER(*frame), *image);
 
     gtk_widget_show_all(*window);
+
+    /*
+    for (int i = 0; i < SUDOKU_GRID_SIZE; i++)
+    {
+        free(unsolved_grid[i]);
+        free(solved_grid[i]);
+    }
+    free(unsolved_grid);
+    free(solved_grid);
+    */
 }
 
 void display_solution_grid(GtkWidget *widget, gpointer user_data)
