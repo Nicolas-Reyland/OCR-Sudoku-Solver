@@ -105,5 +105,7 @@ int main(int argc, char** argv)
 
 	free(GPL);
 
+	verbose("Saved as: %s", save_model_str);
+
 	return 0;
 }

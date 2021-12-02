@@ -70,7 +70,8 @@ void _nn_freeData(nn_Data* data)
 {
     if(data == NULL)
     {
-        err_verbose_exit("freeData: data is null.");
+        err_verbose("freeData: data is null.");
+        return;
     }
     _nn_freeDataCollection(data->data_collection);
     mem_free(data);

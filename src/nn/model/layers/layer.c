@@ -20,7 +20,6 @@ nn_Layer* _nn_createLayerWrapped(nn_ShapeDescription layer_shape, nn_ShapeDescri
       }
     }
   }
-  verbose("Done allocating nodes");
   // malloc struct
   nn_Layer* layer = mem_malloc(sizeof(nn_Layer));
   layer->shape = layer_shape;
@@ -47,12 +46,10 @@ nn_Layer* _nn_createOutputLayer(nn_ShapeDescription layer_shape, activation acti
 
 void _nn_freeLayer(nn_Layer* layer)
 {
-  verbose("freeing layer ...");
   for (size_t i = 0; i < layer->shape.range; i++) {
     nn_Node* node = layer->nodes[i];
     _nn_freeNode(node);
   }
-  verbose("layer has been freed");
   mem_free(layer->nodes);
 }
 

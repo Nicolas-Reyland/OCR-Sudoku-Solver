@@ -24,12 +24,9 @@ int verbose(const char * restrict format, ...) {
 }
 
 int err_verbose(const char * restrict format, ...) {
-    if ( !VERBOSE ) {
-        return 0;
-    }
-
     va_list args;
     va_start(args, format);
+    fprintf(stderr, "ERROR: ");
     int ret = vfprintf(stderr, format, args);
     fprintf(stderr, "\n");
     va_end(args);
@@ -38,12 +35,9 @@ int err_verbose(const char * restrict format, ...) {
 }
 
 int err_verbose_exit(const char * restrict format, ...) {
-    if ( !VERBOSE ) {
-        return 0;
-    }
-
     va_list args;
     va_start(args, format);
+    fprintf(stderr, "ERROR: ");
     int ret = vfprintf(stderr, format, args);
     fprintf(stderr, "\n");
     va_end(args);

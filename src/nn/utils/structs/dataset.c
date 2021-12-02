@@ -15,17 +15,10 @@ void _nn_freeDataSet(nn_DataSet* data_set)
 
 	if(data_set == NULL)
     {
-        err_verbose_exit("freeDataSet: dataSet is null.");
+        err_verbose("freeDataSet: dataSet is null.");
+		return;
     }
-	verbose("Freeing test data...");
 	_nn_freeData(data_set->test);
-	verbose("Test data freed !");
-
-	verbose("Freeing train data...");
 	_nn_freeData(data_set->train);
-	verbose("Train data freed !");
-
-	verbose("Freeing dataset...");
 	mem_free(data_set);
-	verbose("Dataset freed !");
 }

@@ -235,6 +235,8 @@ void _nn_test_one_hot(struct nn_Session* session, nn_Model* model)
 	double loss_sum = 0;
 	int num_right_predictions = 0;
 	nn_Layer* output_layer = model->layers[model->num_layers - 1];
+	int* num_right_predictions_specific = mem_calloc(output_layer->num_nodes, sizeof(int));
+	int* num_total_predictions_specific = mem_calloc(output_layer->num_nodes, sizeof(int));
 
 	ProgressBar testing_bar = createProgressBar(
 		"Testing (one-hot)",
@@ -269,8 +271,11 @@ void _nn_test_one_hot(struct nn_Session* session, nn_Model* model)
 			if (tuple_array[i]->output->values[result_index]) // != 0
 				break;
 		// indices must be the same for the model to have rightly predicted
-		if (max_index == result_index)
+		if (max_index == result_index) {
 			num_right_predictions++;
+			num_right_predictions_specific[result_index]++;
+		}
+		num_total_predictions_specific[result_index]++;
 		// calculate the loss
 		double error = applyLosses(
 			model->layers[model->num_layers - 1],
@@ -287,6 +292,13 @@ void _nn_test_one_hot(struct nn_Session* session, nn_Model* model)
 	verbose("Testing finished with:");
 	verbose(" - avg loss: %lf", avg_loss);
 	verbose(" - avg right: %.2f %c", 100.0 * avg_right_predictions, '%');
+	verbose("Specific right predictions:");
+	for (size_t i = 0; i < output_layer->num_nodes; i++) {
+		int nrs = num_right_predictions_specific[i];
+		int nts = num_total_predictions_specific[i];
+		double avg_right_specific = (double)nrs / (double)nts;
+		verbose(" * %lu : %.2f%c", i + 1, 100.0 * avg_right_specific, '%');
+	}
 }
 
 nn_Session* createTestSession(nn_DataSet* dataset, bool verbose)

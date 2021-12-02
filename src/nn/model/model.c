@@ -45,11 +45,9 @@ nn_Model* createModel(size_t num_layers, nn_ShapeDescription model_architecture[
 void freeModel(nn_Model* model)
 {
   for (size_t i = 0; i < model->num_layers; i++) {
-    verbose("freeing layer %ld", i);
     _nn_freeLayer(model->layers[i]);
   }
   mem_free(model->layers);
-  verbose("freed model layers");
   mem_free(model);
 }
 
