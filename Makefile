@@ -21,7 +21,7 @@ CFLAGS = -Wall -Wextra -Werror -std=c99 -O1 `pkg-config --cflags sdl2` `pkg-conf
 # Linker options (probably always empty)
 LDFLAGS =
 # libs and path for linker
-LDLIBS = -lm `pkg-config --libs sdl2` -lSDL2_image -lSDL2_ttf `pkg-config --libs gtk+-3.0` -lSDL2_gfx
+LDLIBS = -lm `pkg-config --libs sdl2` -lSDL2_image -lSDL2_ttf `pkg-config --libs gtk+-3.0`
 
 %.o : %.c
 	$(CC) -c $(CFLAGSNE) $< -o $@ $(LDLIBS)

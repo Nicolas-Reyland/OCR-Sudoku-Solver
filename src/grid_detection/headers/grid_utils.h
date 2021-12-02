@@ -8,7 +8,6 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <SDL2/SDL2_rotozoom.h>
 #include <dirent.h>
 #include <unistd.h>
 #include <sys/stat.h>
