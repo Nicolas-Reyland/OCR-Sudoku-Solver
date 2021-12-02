@@ -2,6 +2,7 @@
 *.c.out
 src/gui/gui
 src/solver/main
+main
 
 # Prerequisites
 *.d

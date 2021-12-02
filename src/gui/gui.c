@@ -47,7 +47,7 @@ int main(int argc, char **argv)
     // init Neural Network & Co.
     initRandom();
     initMemoryTracking();
-    nn_Model* model = nn_loadModel("save/numeric-");
+    nn_Model* model = nn_loadModel("save/numeric-sigmoid-64-");
 	number_prediction_model = model;
 
     // Window
@@ -695,7 +695,7 @@ void launch_process(GtkWidget *widget, gpointer user_data)
     // through the neural network
     for(unsigned int k = 0; k < nb_cells; k++)
     {
-        verbose("predicting %lu/%lu ...", k, nb_cells);
+        verbose("predicting %lu/%lu ...", k + 1, nb_cells);
         double* prediction = model->use(model, value_array[k]);
         setVerbose(true);
 
@@ -718,8 +718,24 @@ void launch_process(GtkWidget *widget, gpointer user_data)
     //****************Sudoku solver part*****************
     //===================================================
 
+    verbose("unsolved grid");
+    for (size_t i = 0; i < SIZE; i++) {
+        for (size_t j = 0; j < SIZE; j++) {
+            verbose_no_endline("%lu ", unsolved_grid[i][j]);
+        }
+        verbose_endline();
+    }
+
     //solve the new matrix
     solver(solved_grid);
+
+    verbose("solved grid");
+    for (size_t i = 0; i < SIZE; i++) {
+        for (size_t j = 0; j < SIZE; j++) {
+            verbose_no_endline("%lu ", solved_grid[i][j]);
+        }
+        verbose_endline();
+    }
 
     //free the content of the arrays that we don't use anymore
     for(unsigned int k = 0; k < nb_cells; k++)

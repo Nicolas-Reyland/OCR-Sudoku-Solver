@@ -245,22 +245,24 @@ void save_cells(const char* file)
 
             size_t X = 0;
             size_t size = 0;
+            size_t segval = 1;
             do
             {
-                size = propagate(cell, cellsegmap, 1, w/18+X, h/18);
+                size = propagate(cell, cellsegmap, segval, w/18+X, h/18);
                 size_t size2 = propagate(cell, cellsegmap, 1, w/18-X, h/18);
                 if (size2 > size)
                 {
                     size = size2;
                 }
                 X++;
+                segval++;
             } while (size < limit/3 && X < w/36);
 
             if (size > limit)
             {
                 SDL_Surface* emptycell = SDL_CreateRGBSurface(0, 28, 28, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0);
                 size_t top, right, left, bottom;
-                find_extremity_coordinates(cellsegmap, 1, &top, &right, &left, &bottom);
+                find_extremity_coordinates(cellsegmap, segval-1, &top, &right, &left, &bottom);
                 SDL_Surface* croppedcell = cut_image(cell, top, bottom, left, right);
 
                 int max = (int) ceil((double)(croppedcell->w)/(double)22);
@@ -274,6 +276,24 @@ void save_cells(const char* file)
                 copy_symbol(emptycell, shrinkedcroppedcell, (28-shrinkedcroppedcell->w)/2, (28-shrinkedcroppedcell->h)/2);
                 SDL_FreeSurface(croppedcell);
                 SDL_FreeSurface(shrinkedcroppedcell);
+
+                for (size_t x = 0; x < 28; x++)
+                {
+                    for (size_t y = 0; y < 28; y++)
+                    {
+                        Uint32 pix = get_pixel(emptycell, x, y);
+                        Uint8 color;
+                        SDL_GetRGB(pix, emptycell->format, &color, &color, &color);
+                        if (color < 128)
+                        {
+                            put_pixel(emptycell, x, y, SDL_MapRGB(emptycell->format, 0, 0, 0));
+                        }
+                        else
+                        {
+                            put_pixel(emptycell, x, y, SDL_MapRGB(emptycell->format, 255, 255, 255));
+                        }
+                    }
+                }
 
                 char name[255];
                 sprintf(name,"%scell_%lu_%lu", PATH, x, y);
