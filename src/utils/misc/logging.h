@@ -5,7 +5,7 @@
 
 #include <stdlib.h>
 #include <stdbool.h>
-#include "utils/verbosity/nn_verbose.h"
+#include "utils/verbosity/verbose.h"
 
 extern bool LOGGING_ENABLED;
 

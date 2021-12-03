@@ -1,6 +1,6 @@
 // nn_verbose.c
 
-#include "nn_verbose.h"
+#include "verbose.h"
 
 bool VERBOSE = true;
 

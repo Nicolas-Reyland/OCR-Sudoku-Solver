@@ -2,7 +2,7 @@
 
 #include "nn/nn.h"
 #include "utils/mem/mem-management.h"
-#include "utils/verbosity/nn_verbose.h"
+#include "utils/verbosity/verbose.h"
 
 #define NUM_LAYERS 3
 

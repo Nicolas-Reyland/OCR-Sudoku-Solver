@@ -3,7 +3,7 @@
 #ifndef UTILS_VERBOSITY_PROGRESSBAR_H
 #define UTILS_VERBOSITY_PROGRESSBAR_H
 
-#include "nn_verbose.h"
+#include "verbose.h"
 
 #define PROGRESSBAR_PASSED '='
 #define PROGRESSBAR_REMAIN '-'
