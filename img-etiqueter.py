@@ -37,6 +37,11 @@ if __name__ == "__main__":
     parser.add_argument('--start', help="You know, you can't have different images that have the same name, so basically it set the minimum of the y value in the name '[number]_y'")
     args = parser.parse_args()
     files = os.listdir(args.src)
+    
+    if args.src == None or args.start == None:
+        print("usage: python3 img-etiqueter.py --src=[folder] --start=int")
+        exit()
+    
     H = [int(args.start)] * 10
 
     for file in files:
