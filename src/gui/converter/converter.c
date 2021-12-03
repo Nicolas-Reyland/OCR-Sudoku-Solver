@@ -89,8 +89,7 @@ void __converter(char* filepath, double* converted_cell)
             SDL_GetRGB(pixel, image_surface->format, &r, &g, &b);
 
 			double value = (double)r / 255;
-
-			converted_cell[i * 28 + j] = value;
+			converted_cell[j * 28 + i] = value;
 		}
 	}
 	SDL_FreeSurface(image_surface);
