@@ -43,6 +43,7 @@ void display_rotated_image(GtkWidget *widget, gpointer user_data);
 void adjust_image(GtkWidget *widget, gpointer user_data);
 void launch_process(GtkWidget *widget, gpointer user_data);
 void display_solution_grid(GtkWidget *widget, gpointer user_data);
+void save_solution(GtkWidget *widget);
 
 int main(int argc, char **argv)
 {
@@ -78,6 +79,7 @@ int main(int argc, char **argv)
     GtkWidget *apply_rotation_button = NULL;
     GtkWidget *solve_sudoku_button = NULL;
     GtkWidget *solution_button = NULL;
+    GtkWidget *save_solution_button = NULL;
     GtkWidget *grayscale_img_button = NULL;
     GtkWidget *blurred_img_button = NULL;
     GtkWidget *binarised_img_button = NULL;
@@ -92,7 +94,7 @@ int main(int argc, char **argv)
     GtkWidget *hseparator = NULL;
 
     // Variables that help display an image
-    GtkWidget** widget_pointers[9] ={
+    GtkWidget** widget_pointers[10] ={
                                     &window,
                                     &frame,
                                     &image,
@@ -101,7 +103,8 @@ int main(int argc, char **argv)
                                     &solution_button,
                                     &apply_rotation_button,
                                     &normalization_check,
-                                    &adjust_img_button};
+                                    &adjust_img_button,
+                                    &save_solution_button};
 
     // Errors
     //GError *err = NULL;
@@ -183,6 +186,10 @@ int main(int argc, char **argv)
     gtk_widget_set_tooltip_text(solution_button, "Displays the resolved grid");
     gtk_widget_set_sensitive(solution_button, FALSE);
 
+    save_solution_button = gtk_button_new_with_label("Save solution");
+    gtk_widget_set_tooltip_text(save_solution_button, "Saves the resolved grid");
+    gtk_widget_set_sensitive(save_solution_button, FALSE);
+
     grayscale_img_button = gtk_button_new_with_label("Grayscale image");
     gtk_widget_set_tooltip_text(grayscale_img_button, "Displays the grayscale image");
 
@@ -222,19 +229,21 @@ int main(int argc, char **argv)
 
     // Sets the load image button and the adjust image button to the 'top_right_box'
     gtk_box_pack_start(GTK_BOX(top_right_box), load_img_button, TRUE, FALSE, 5);
-    gtk_box_pack_start(GTK_BOX(top_right_box), adjust_img_button, TRUE, FALSE, 5);
+    gtk_box_pack_start(GTK_BOX(top_right_box), normalization_check, TRUE, FALSE, 5);
 
     //gtk_box_set_center_widget(GTK_BOX(top_right_box), load_img_button);
     //gtk_box_set_center_widget(GTK_BOX(top_right_box), adjust_img_button);
 
     // Sets the apply rotation entry and the rotation button to the 'rotation_wigets_box'
-    gtk_box_pack_start(GTK_BOX(rotation_wigets_box), normalization_check, FALSE, FALSE, 10);
+    gtk_box_pack_start(GTK_BOX(rotation_wigets_box), adjust_img_button, FALSE, FALSE, 10);
     gtk_box_pack_start(GTK_BOX(rotation_wigets_box), rotate_img_entry, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(rotation_wigets_box), apply_rotation_button, FALSE, FALSE, 5);
 
     // Sets the solution buttons position in the 'solution_buttons_box'
-    gtk_box_pack_start(GTK_BOX(solution_buttons_box), solve_sudoku_button, TRUE, FALSE, 5);
-    gtk_box_pack_end(GTK_BOX(solution_buttons_box), solution_button, TRUE, FALSE, 5);
+    gtk_box_pack_start(GTK_BOX(solution_buttons_box), solve_sudoku_button, TRUE, FALSE, 0);
+    gtk_box_set_center_widget(GTK_BOX(solution_buttons_box), solution_button);
+    //gtk_box_pack_end(GTK_BOX(solution_buttons_box), solution_button, TRUE, FALSE, 5);
+    gtk_box_pack_end(GTK_BOX(solution_buttons_box), save_solution_button, TRUE, FALSE, 0);
 
     // Sets the bottom buttons position in the 'bottom_buttons_box'
     gtk_box_pack_start(GTK_BOX(bottom_buttons_box), grayscale_img_button, TRUE, FALSE, 0);
@@ -251,6 +260,7 @@ int main(int argc, char **argv)
 
     g_signal_connect(solve_sudoku_button, "clicked", G_CALLBACK(launch_process), widget_pointers);
     g_signal_connect(solution_button, "clicked", G_CALLBACK(display_solution_grid), widget_pointers);
+    g_signal_connect(save_solution_button, "clicked", G_CALLBACK(save_solution), NULL);
 
     // Sets the action of the bottom buttons
     g_signal_connect(grayscale_img_button, "clicked", G_CALLBACK(display_img_process_steps), widget_pointers);
@@ -356,6 +366,7 @@ void open_dialog(GtkWidget *widget, gpointer user_data)
     GtkWidget **solution_button = widget_pointers[5];
     GtkWidget **apply_rotation_button = widget_pointers[6];
     GtkWidget **adjust_img_button = widget_pointers[8];
+    GtkWidget **save_solution_button = widget_pointers[9];
 
     GtkWidget *button = widget;
 
@@ -439,6 +450,7 @@ void open_dialog(GtkWidget *widget, gpointer user_data)
             gtk_widget_set_sensitive(*adjust_img_button, TRUE);
             gtk_widget_set_sensitive(*solve_sudoku_button, TRUE);
             gtk_widget_set_sensitive(*solution_button, FALSE);
+            gtk_widget_set_sensitive(*save_solution_button, FALSE);
 
             gtk_widget_show_all(*window);
         }
@@ -653,6 +665,7 @@ void launch_process(GtkWidget *widget, gpointer user_data)
     GtkWidget **apply_rotation_button = widget_pointers[6];
     GtkWidget **normalization_check = widget_pointers[7];
     GtkWidget **adjust_img_button = widget_pointers[8];
+    GtkWidget **save_solution_button = widget_pointers[9];
 
     //===================================================
     //***************Grid detection part*****************
@@ -781,6 +794,7 @@ void launch_process(GtkWidget *widget, gpointer user_data)
     gtk_widget_set_sensitive(solve_sudoku_button, FALSE);
     gtk_widget_set_sensitive(*adjust_img_button, FALSE);
     gtk_widget_set_sensitive(*solution_button, TRUE);
+    gtk_widget_set_sensitive(*save_solution_button, TRUE);
     //
 
     gtk_widget_destroy(*image);
@@ -817,4 +831,13 @@ void display_solution_grid(GtkWidget *widget, gpointer user_data)
     gtk_container_add(GTK_CONTAINER(*frame), *image);
 
     gtk_widget_show_all(*window);
+}
+
+void save_solution(GtkWidget *widget)
+{
+    // Deactivates the save solution button
+    gtk_widget_set_sensitive(widget, FALSE);
+
+    SDL_Surface *solved_grid = load_image(SAVED_IMG_NAME_SG);
+    IMG_SavePNG(solved_grid, SAVED_IMG_NAME_SGP);
 }
