@@ -353,7 +353,7 @@ void open_dialog(GtkWidget *widget, gpointer user_data)
     GtkWidget **frame = widget_pointers[1];
     GtkWidget **image = widget_pointers[2];
     GtkWidget **solve_sudoku_button = widget_pointers[4];
-    //GtkWidget **solution_button = widget_pointers[5];
+    GtkWidget **solution_button = widget_pointers[5];
     GtkWidget **apply_rotation_button = widget_pointers[6];
     GtkWidget **adjust_img_button = widget_pointers[8];
 
@@ -438,6 +438,7 @@ void open_dialog(GtkWidget *widget, gpointer user_data)
             gtk_widget_set_sensitive(*apply_rotation_button, TRUE);
             gtk_widget_set_sensitive(*adjust_img_button, TRUE);
             gtk_widget_set_sensitive(*solve_sudoku_button, TRUE);
+            gtk_widget_set_sensitive(*solution_button, FALSE);
 
             gtk_widget_show_all(*window);
         }
