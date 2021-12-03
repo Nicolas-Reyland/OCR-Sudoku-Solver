@@ -11,7 +11,7 @@ extern bool _nn_random_init_done;
 int main(int argc, char** argv)
 {
 	setVerbose(true);
-	initMemoryTracking();
+	nn_initMemoryTracking();
 
 	// get path to project as arg
 	char input_path[255], output_path[255];

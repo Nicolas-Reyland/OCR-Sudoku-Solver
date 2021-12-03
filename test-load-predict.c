@@ -9,8 +9,8 @@ int main()
 	setVerbose(true);
 
 	// init random
-	initRandom();
-	initMemoryTracking();
+	nn_initRandom();
+	nn_initMemoryTracking();
 
 	verbose("Loading model...");
 	// malloc model

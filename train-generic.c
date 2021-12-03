@@ -35,8 +35,8 @@ int main(int argc, char** argv)
 	verbose("Will be saved as: %s", save_model_str);
 
 	// init random
-	initRandom();
-	initMemoryTracking();
+	nn_initRandom();
+	nn_initMemoryTracking();
 
 	// model architecture
 	nn_ShapeDescription model_architecture[] = {

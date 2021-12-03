@@ -6,7 +6,7 @@ linked_list* GPL;
 
 bool memory_tracking_initialized = false;
 
-void initMemoryTracking(void)
+void nn_initMemoryTracking(void)
 {
 	memory_tracking_initialized = true;
 	GPL = init_linked_list();

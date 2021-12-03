@@ -15,8 +15,8 @@ int main(int argc, char** argv)
 	PROGRESS_BAR_STATUS = false;
 
 	// init random
-	initRandom();
-	initMemoryTracking();
+	nn_initRandom();
+	nn_initMemoryTracking();
 	// model architecture
 	nn_ShapeDescription model_architecture[NUM_LAYERS] = {
 		createShapeDescription(3, 3, 3), // { .dims = 3, .x = 3, .y = 3, .z = 3 },

@@ -13,8 +13,8 @@ int main(int argc, char** argv)
 	char* model_path = argv[1];
 
 	// init random
-	initRandom();
-	initMemoryTracking();
+	nn_initRandom();
+	nn_initMemoryTracking();
 
 	verbose("Loading model...");
 	// malloc model

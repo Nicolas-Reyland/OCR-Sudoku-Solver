@@ -72,10 +72,10 @@ int main(int argc, char** argv)
 {
 	setVerbose(false);
 	// init random
-	// initRandom(); // NOT initializing random this ways
+	// nn_initRandom(); // NOT initializing random this ways
 	// custom random init
-	initRandom(); // overwriting weights anyway
-	initMemoryTracking();
+	nn_initRandom(); // overwriting weights anyway
+	nn_initMemoryTracking();
 
 	// model architecture
 	nn_ShapeDescription model_architecture[3] = {

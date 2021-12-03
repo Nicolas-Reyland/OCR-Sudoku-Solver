@@ -27,7 +27,7 @@ int main(int argc, char** argv)
 	srand( 1234567890 );
 	_nn_random_init_done = true;
 	printf("Next random integer is: %d\n", rand());
-	initMemoryTracking();
+	nn_initMemoryTracking();
 
 	// get path to project as arg
 	char input_path[255], output_path[255], save_path[512];

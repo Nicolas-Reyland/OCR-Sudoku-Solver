@@ -11,8 +11,8 @@ int main(int argc, char** argv)
 	setVerbose(true);
 
 	// init random
-	initRandom();
-	initMemoryTracking();
+	nn_initRandom();
+	nn_initMemoryTracking();
 
 	// model architecture
 	nn_ShapeDescription model_architecture[4] = {

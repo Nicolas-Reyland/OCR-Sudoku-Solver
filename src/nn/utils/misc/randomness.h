@@ -13,7 +13,7 @@
 static const double D_RAND_MAX = RAND_MAX;
 static const double RAND_MAX_DIV_BY_2 = RAND_MAX / 2;
 
-void initRandom();
+void nn_initRandom();
 void _nn_assertRandomInitialization();
 double getRandomDouble(double min_value, double max_value);
 double getNormalizedPositiveRandomDouble();

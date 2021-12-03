@@ -12,12 +12,12 @@ int main()
 	setVerbose(false);
 
 	// init random
-	// initRandom(); // NOT initializing random this ways
+	// nn_initRandom(); // NOT initializing random this ways
 	// custom random init
 	srand( 1234567890 );
 	_nn_random_init_done = true;
 	printf("Next random integer is: %d\n", rand());
-	initMemoryTracking();
+	nn_initMemoryTracking();
 	// model architecture
 	nn_ShapeDescription model_architecture[3] = {
 		create1DShapeDescription(3),
