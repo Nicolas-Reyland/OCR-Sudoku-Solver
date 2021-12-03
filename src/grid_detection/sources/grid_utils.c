@@ -234,35 +234,84 @@ void save_cells(const char* file)
 
     size_t w = (size_t)image->w;
     size_t h = (size_t)image->h;
-    for (size_t x = 0; x < 9; x++)
-    {
-        for (size_t y = 0; y < 9; y++)
+
+    size_t left_bound, right_bound, top_bound, bottom_bound;
+
+    for (size_t x = 0; x < 9; x++) //first for
+    {   
+
+        size_t mid_cell_x;
+
+        if (x > 0)
         {
-            SDL_Surface* cell = cut_image(image, y*h/9, (size_t)y*h/9+h/9 -1, x*w/9, (size_t)x*w/9+w/9 -1);
-            SDL_Surface* cellsegmap = SDL_CreateRGBSurface(0, w/9+1, h/9+1, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0);
-            
+            left_bound = x*w/9 - w/45;
+            mid_cell_x = w/18 + w/45;
+            if (x < 8)
+            {
+                right_bound = x*w/9+w/9-1 + w/45;
+            }
+            else
+            {
+                right_bound = x*w/9+w/9-1;
+            }
+        }
+        else
+        {
+            left_bound = x*w/9;
+            mid_cell_x = w/18;
+            right_bound = x*w/9+w/9-1 + w/45;
+        }
+
+        for (size_t y = 0; y < 9; y++) //second for
+        {
+            size_t mid_cell_y;
+
+            if (y > 0)
+            {
+                top_bound = y*h/9 - h/45;
+                mid_cell_y = h/18 + h/45;
+                if (y < 8)
+                {
+                    bottom_bound = y*h/9+h/9-1 + h/45;
+                }
+                else
+                {
+                    bottom_bound = y*h/9+h/9-1;
+                }
+            }
+            else
+            {
+                top_bound = y*h/9;
+                mid_cell_y = h/18;
+                bottom_bound = y*h/9+h/9-1 + h/45;
+            }
+
+            SDL_Surface* cell = cut_image(image, top_bound, bottom_bound, left_bound, right_bound);
+            SDL_Surface* cellsegmap = SDL_CreateRGBSurface(0, right_bound-left_bound+1, bottom_bound-top_bound+1, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0);
+
             size_t limit = (h/9*w/9)/60;
 
             size_t X = 0;
             size_t size = 0;
-            size_t segval = 1;
+            size_t segval = 0;
             do
             {
-                size = propagate(cell, cellsegmap, segval, w/18+X, h/18);
-                size_t size2 = propagate(cell, cellsegmap, 1, w/18-X, h/18);
+                segval++;
+                size = propagate(cell, cellsegmap, segval, mid_cell_x + X, mid_cell_y);
+                size_t size2 = propagate(cell, cellsegmap, segval, mid_cell_x - X, mid_cell_y);
                 if (size2 > size)
                 {
                     size = size2;
                 }
                 X++;
-                segval++;
-            } while (size < limit/3 && X < w/36);
+            } while (size < limit/6 && X < w/36);
 
             if (size > limit)
             {
+                remove_grid(cell, cellsegmap, segval, 0);
                 SDL_Surface* emptycell = SDL_CreateRGBSurface(0, 28, 28, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0);
                 size_t top, right, left, bottom;
-                find_extremity_coordinates(cellsegmap, segval-1, &top, &right, &left, &bottom);
+                find_extremity_coordinates(cellsegmap, segval, &top, &right, &left, &bottom);
                 SDL_Surface* croppedcell = cut_image(cell, top, bottom, left, right);
 
                 int max = croppedcell->w;
