@@ -11,7 +11,7 @@
 #include "utils/mem/mem-management.h"
 
 typedef struct nn_Node nn_Node;
-typedef struct nn_Node {
+struct nn_Node {
   // weights
   size_t num_weights;
   double* weights;
