@@ -27,6 +27,8 @@
 
 char *src_image_path = NULL;
 char *original_image_path = NULL;
+char *img_to_solve_path = NULL;
+
 int is_adjusted = 0;
 int is_rotated = 0;
 
@@ -84,7 +86,7 @@ int main(int argc, char **argv)
     GtkWidget *rotate_img_entry = NULL;
 
     // TOGGLES
-    GtkWidget *brightness_check = NULL;
+    GtkWidget *normalization_check = NULL;
 
     // Separators
     GtkWidget *hseparator = NULL;
@@ -98,7 +100,7 @@ int main(int argc, char **argv)
                                     &solve_sudoku_button,
                                     &solution_button,
                                     &apply_rotation_button,
-                                    &brightness_check,
+                                    &normalization_check,
                                     &adjust_img_button};
 
     // Errors
@@ -198,8 +200,8 @@ int main(int argc, char **argv)
     gtk_entry_set_placeholder_text(GTK_ENTRY(rotate_img_entry), "Enter angle degree");
 
     // Toggles creation
-    brightness_check = gtk_check_button_new_with_label("Bright");
-    gtk_widget_set_tooltip_text(brightness_check, "Tick if the image is too bright");
+    normalization_check = gtk_check_button_new_with_label("Normalize");
+    gtk_widget_set_tooltip_text(normalization_check, "Normalize the image");
 
     // Sets the top box and bottom buttons box position in the 'main_box'
     gtk_box_pack_start(GTK_BOX(main_box), top_box, TRUE, FALSE, 0);
@@ -226,7 +228,7 @@ int main(int argc, char **argv)
     //gtk_box_set_center_widget(GTK_BOX(top_right_box), adjust_img_button);
 
     // Sets the apply rotation entry and the rotation button to the 'rotation_wigets_box'
-    gtk_box_pack_start(GTK_BOX(rotation_wigets_box), brightness_check, FALSE, FALSE, 10);
+    gtk_box_pack_start(GTK_BOX(rotation_wigets_box), normalization_check, FALSE, FALSE, 10);
     gtk_box_pack_start(GTK_BOX(rotation_wigets_box), rotate_img_entry, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(rotation_wigets_box), apply_rotation_button, FALSE, FALSE, 5);
 
@@ -539,6 +541,10 @@ void display_rotated_image(GtkWidget *widget, gpointer user_data)
             src_image_path = (char*)malloc((strlen(SAVED_IMG_NAME_R) + 1) * sizeof(char));
             src_image_path = strcpy(src_image_path, SAVED_IMG_NAME_R);
 
+            free(img_to_solve_path);
+            img_to_solve_path = (char*)malloc((strlen(SAVED_IMG_NAME_R) + 1) * sizeof(char));
+            img_to_solve_path = strcpy(img_to_solve_path, SAVED_IMG_NAME_R);
+
             *image = gui_load_image(SAVED_IMG_NAME_R);
             //image_process(SAVED_IMG_NAME_R);
             is_rotated = 1;
@@ -560,14 +566,14 @@ void adjust_image(GtkWidget *widget, gpointer user_data)
     GtkWidget **frame = widget_pointers[1];
     GtkWidget **image = widget_pointers[2];
     GtkWidget **solve_sudoku_button = widget_pointers[4];
-    GtkWidget **brightness_check = widget_pointers[7];
+    GtkWidget **normalization_check = widget_pointers[7];
 
     GtkWidget *adjust_img_button = widget;
 
     if(is_adjusted == 0)
     {
         printf("Started image treatment part.\n");
-        image_process(src_image_path, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(*brightness_check)));
+        image_process(src_image_path, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(*normalization_check)));
         printf("Finished image treatment part.\n");
 
         printf("Started the grid detection part.\n");
@@ -596,6 +602,7 @@ void adjust_image(GtkWidget *widget, gpointer user_data)
 
     free(src_image_path);
     free(original_image_path);
+    free(img_to_solve_path);
 
     int filename_length = strlen(SAVED_IMG_NAME_AI);
 
@@ -604,6 +611,9 @@ void adjust_image(GtkWidget *widget, gpointer user_data)
 
     original_image_path = (char*)malloc((filename_length + 1) * sizeof(char));
     original_image_path = strcpy(original_image_path, SAVED_IMG_NAME_AI);
+
+    img_to_solve_path = (char*)malloc((filename_length + 1) * sizeof(char));
+    img_to_solve_path = strcpy(img_to_solve_path, SAVED_IMG_NAME_AI);
 
     *image = gui_load_image(SAVED_IMG_NAME_AI);
 
@@ -640,7 +650,7 @@ void launch_process(GtkWidget *widget, gpointer user_data)
     GtkWidget **image = widget_pointers[2];
     GtkWidget **solution_button = widget_pointers[5];
     GtkWidget **apply_rotation_button = widget_pointers[6];
-    GtkWidget **brightness_check = widget_pointers[7];
+    GtkWidget **normalization_check = widget_pointers[7];
     GtkWidget **adjust_img_button = widget_pointers[8];
 
     //===================================================
@@ -649,21 +659,14 @@ void launch_process(GtkWidget *widget, gpointer user_data)
 
     if(is_adjusted == 1)
     {
-        printf("Started grid detection part.\n");
-        if (is_rotated == 1)
-        {
-            save_cells(SAVED_IMG_NAME_R);
-        }
-        else
-        {
-            save_cells(SAVED_IMG_NAME_AI);
-        }
-        printf("Finished grid detection part.\n");
+        printf("Saving cells ...\n");
+        save_cells(img_to_solve_path);
+        printf("Finished saving cells.\n");
     }
     else
     {
         printf("Started image treatment part.\n");
-        image_process(src_image_path, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(*brightness_check)));
+        image_process(src_image_path, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(*normalization_check)));
         printf("Finished image treatment part.\n");
 
         printf("Started grid detection part.\n");

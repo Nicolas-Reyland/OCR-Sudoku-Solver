@@ -33,13 +33,14 @@ unsigned long long int integral_image_value(II_TYPE ii_type, Uint8 composant);
 
 void grayscale(Uint8 *r, Uint8 *g, Uint8 *b);
 
-SDL_Surface* gaussian_blur(SDL_Surface *src_surface);
+SDL_Surface* gaussian_blur(SDL_Surface *src_surface, int is_normalized,
+							int min_cmp_norm, int max_cmp_norm);
 
 long double sauvola_binarisation(unsigned long long int **mean_ii, 
 							unsigned long long int **std_deviation_ii, 
 							int i, int j);
 
-void image_process(char *path, int is_bright);
+void image_process(char *path, int is_normalized);
 
 void rotate_image(char *path, double angle);
 

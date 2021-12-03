@@ -234,7 +234,8 @@ void grayscale(Uint8 *r, Uint8 *g, Uint8 *b)
 }
 
 // Calculates the value of a pixel after applying a gaussian blur process
-SDL_Surface* gaussian_blur(SDL_Surface *src_surface)
+SDL_Surface* gaussian_blur(SDL_Surface *src_surface, int is_normalized,
+							int min_cmp_norm, int max_cmp_norm)
 {
 	Uint32 pixel;
 	Uint8 composant;
@@ -249,28 +250,63 @@ SDL_Surface* gaussian_blur(SDL_Surface *src_surface)
 
 	int mid_coordinates = G_BLUR_KERNEL_SIZE / 2;
 
-	for (int j = 0; j < src_surface_h; j++)
+	// We take into consideration the normalization
+	if(is_normalized == 1)
 	{
-		for (int i = 0; i < src_surface_w; i++)
-		{	
-			for (int k = 0; k < G_BLUR_KERNEL_SIZE; k++)
-			{
-				int current_i = i - mid_coordinates + k;
-
-				if(current_i >= 0 && current_i < src_surface_w)
+		for (int j = 0; j < src_surface_h; j++)
+		{
+			for (int i = 0; i < src_surface_w; i++)
+			{	
+				for (int k = 0; k < G_BLUR_KERNEL_SIZE; k++)
 				{
-					pixel = get_pixel(src_surface, current_i, j);
-					SDL_GetRGB(pixel, src_surface->format, 
-						&composant, &composant, &composant);
+					int current_i = i - mid_coordinates + k;
 
-					composant_sum += g_blur_kernel_5[k] * composant;
+					if(current_i >= 0 && current_i < src_surface_w)
+					{
+						pixel = get_pixel(src_surface, current_i, j);
+						SDL_GetRGB(pixel, src_surface->format, 
+							&composant, &composant, &composant);
+
+						composant = (Uint8)round((double)255 * 
+							((double)composant - (double)min_cmp_norm) / 
+							((double)max_cmp_norm - (double)min_cmp_norm));
+
+						composant_sum += g_blur_kernel_5[k] * composant;
+					}
 				}
+
+				intermediate_p_array[i * src_surface_h + j] = 
+				(unsigned int)(roundf(composant_sum));
+
+				composant_sum = 0.0f;
 			}
+		}
+	}
+	else // Normalization is not taken into consideration
+	{
+		for (int j = 0; j < src_surface_h; j++)
+		{
+			for (int i = 0; i < src_surface_w; i++)
+			{	
+				for (int k = 0; k < G_BLUR_KERNEL_SIZE; k++)
+				{
+					int current_i = i - mid_coordinates + k;
 
-			intermediate_p_array[i * src_surface_h + j] = 
-			(unsigned int)(roundf(composant_sum));
+					if(current_i >= 0 && current_i < src_surface_w)
+					{
+						pixel = get_pixel(src_surface, current_i, j);
+						SDL_GetRGB(pixel, src_surface->format, 
+							&composant, &composant, &composant);
 
-			composant_sum = 0.0f;
+						composant_sum += g_blur_kernel_5[k] * composant;
+					}
+				}
+
+				intermediate_p_array[i * src_surface_h + j] = 
+				(unsigned int)(roundf(composant_sum));
+
+				composant_sum = 0.0f;
+			}
 		}
 	}
 
@@ -390,15 +426,20 @@ long double sauvola_binarisation(unsigned long long int **mean_ii,
 	return threshold;
 }
 
-void image_process(char *path, int is_bright)
+void image_process(char *path, int is_normalized)
 {
 	SDL_Surface *surface = NULL;
+	
 	Uint32 pixel;
 	Uint8 r, g, b;
+
+	int min_composant = 255, 
+		max_composant = 0;
+
 	long double threshold;
 
-	if (is_bright)
-		K_BINARISATION = 0.01f;
+	if (is_normalized)
+		K_BINARISATION = 0.05f;
 	else
 		K_BINARISATION = 0.2f;
 
@@ -420,8 +461,14 @@ void image_process(char *path, int is_bright)
 
 			grayscale(&r, &g, &b);
 
-			pixel = SDL_MapRGB(surface->format, r, g, b);
+			pixel = SDL_MapRGB(surface->format, r, r, r);
 			put_pixel(surface, i, j, pixel);
+
+			if ((int)r > max_composant)
+				max_composant = (int)r;
+
+			if ((int)r < min_composant)
+				min_composant = (int)r;
 		}
 	}
 
@@ -432,7 +479,8 @@ void image_process(char *path, int is_bright)
 	//===================================================
 
 	// Transparency is not activated
-	SDL_Surface *blurred_surface = gaussian_blur(surface);
+	SDL_Surface *blurred_surface = 
+	gaussian_blur(surface, is_normalized, min_composant, max_composant);
 
 	if(blurred_surface == NULL)
 	{
