@@ -8,7 +8,8 @@
 #include "nn/functions_descriptors/functions_descriptors_enums.h"
 #include "utils/mem/mem-management.h"
 
-typedef struct nn_Model {
+typedef struct nn_Model nn_Model;
+struct nn_Model {
   size_t num_layers;
   nn_Layer** layers;
   losses loss;
@@ -18,7 +19,7 @@ typedef struct nn_Model {
   void (*printModelArchitecture)(struct nn_Model* model);
   double* (*use)(struct nn_Model* model, double*);
   void (*saveModel)(struct nn_Model* model, char*);
-} nn_Model;
+};
 
 #include "load_model.h"
 #include "save_model.h"

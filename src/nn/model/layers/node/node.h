@@ -10,6 +10,7 @@
 #include "nn/utils/misc/randomness.h"
 #include "utils/mem/mem-management.h"
 
+typedef struct nn_Node nn_Node;
 typedef struct nn_Node {
   // weights
   size_t num_weights;
@@ -24,7 +25,7 @@ typedef struct nn_Node {
   // raw values
   double raw_value;
   double d_raw_value;
-} nn_Node;
+};
 
 nn_Node* _nn_createNode(size_t num_weights, bool init_bias);
 void _nn_freeNode(nn_Node* node);
