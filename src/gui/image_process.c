@@ -767,7 +767,7 @@ void create_grids(int unsolved_sudoku[SUDOKU_GRID_SIZE][SUDOKU_GRID_SIZE],
 		}
 	}
 
-	SDL_SaveBMP(dflt_grid, SAVED_IMG_NAME_SG);
+	IMG_SavePNG(dflt_grid, SAVED_IMG_NAME_SG);
 
 	SDL_FreeSurface(dflt_grid);
 	for (int i = 0; i < SUDOKU_GRID_SIZE; i++)
