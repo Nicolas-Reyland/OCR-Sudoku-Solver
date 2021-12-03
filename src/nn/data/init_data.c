@@ -78,7 +78,7 @@ nn_Data* nn_loadSingleDataInputOutput(char* input_path, char* output_path, nn_Sh
         err_verbose_exit("ERROR 404: \"%s\", the file does not exist. Exiting...\n", output_path);
     }
 
-    nn_ShapeDescription output_description = emptyShapeDescription();
+    nn_ShapeDescription output_description = nn_emptyShapeDescription();
 
 	size_t num_tuples = 0;
     defineShapeDescription(description, &num_tuples, input_file);

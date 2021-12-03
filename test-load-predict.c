@@ -19,7 +19,7 @@ int main()
 
 	// load the dataset
 	verbose("Loading dataset...");
-	nn_ShapeDescription shape = emptyShapeDescription();
+	nn_ShapeDescription shape = nn_emptyShapeDescription();
 	nn_DataSet* dataset = nn_loadTestOnlyDataSet("datas/mnist/", &shape, true);
 
 	nn_Session* session = nn_createSession(

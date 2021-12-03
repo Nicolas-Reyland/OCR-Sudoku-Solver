@@ -21,7 +21,7 @@ int main(int argc, char** argv)
 	strcat(input_path, "/datas/xor/input.txt");
 	strcat(output_path, "/datas/xor/output.txt");
 
-	nn_ShapeDescription description = emptyShapeDescription();
+	nn_ShapeDescription description = nn_emptyShapeDescription();
 
 	nn_Data* data = nn_loadSingleDataInputOutput(
 		input_path,

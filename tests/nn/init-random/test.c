@@ -23,9 +23,9 @@ int main()
 	nn_initMemoryTracking();
 	// model architecture
 	nn_ShapeDescription model_architecture[3] = {
-		create1DShapeDescription(2),
-		create1DShapeDescription(3),
-		create1DShapeDescription(1),
+		nn_create1DShapeDescription(2),
+		nn_create1DShapeDescription(3),
+		nn_create1DShapeDescription(1),
 	};
 	// activation functions
 	activation activations[3] = {
