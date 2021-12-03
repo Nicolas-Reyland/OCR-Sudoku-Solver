@@ -22,7 +22,7 @@ int main()
 	nn_ShapeDescription shape = emptyShapeDescription();
 	nn_DataSet* dataset = nn_loadTestOnlyDataSet("datas/mnist/", &shape, true);
 
-	nn_Session* session = createSession(
+	nn_Session* session = nn_createSession(
 		dataset,
 		0,
 		0.1,

@@ -39,7 +39,7 @@ int main()
 	nn_ShapeDescription shape = emptyShapeDescription();
 	nn_DataSet* dataset = nn_loadDataSet("datas/mnist/1k-", &shape, true);
 
-	nn_Session* session = createSession(
+	nn_Session* session = nn_createSession(
 		dataset,
 		40,
 		0.1,

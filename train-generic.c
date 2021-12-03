@@ -94,7 +94,7 @@ int main(int argc, char** argv)
 	//
 	strcat(avg_loss_log_path, ".log");
 	strcat(avg_right_log_path, ".log");
-	nn_Session* session = createSession(
+	nn_Session* session = nn_createSession(
 		dataset,
 		10,
 		0.1,

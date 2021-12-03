@@ -45,7 +45,7 @@ int main()
     nn_DataSet* dataset = nn_createDataSet(data_tuple.data1, data_tuple.data2);
 
     // session
-	nn_Session* session = createSession(
+	nn_Session* session = nn_createSession(
 		dataset,
 		10,
 		0.1,

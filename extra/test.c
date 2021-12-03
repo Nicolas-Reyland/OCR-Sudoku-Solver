@@ -37,7 +37,7 @@ int main(int argc, char** argv)
 
 	nn_DataSet* dataset = nn_loadDataSet("datas/mnist/", &shape, true);
 
-	nn_Session* session = createSession(
+	nn_Session* session = nn_createSession(
 		dataset,
 		10,
 		0.1,

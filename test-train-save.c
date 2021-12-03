@@ -42,7 +42,7 @@ int main()
 	nn_ShapeDescription shape = emptyShapeDescription();
 	nn_DataSet* dataset = nn_loadDataSet("datas/numeric-", &shape, true);
 
-	nn_Session* session = createSession(
+	nn_Session* session = nn_createSession(
 		dataset,
 		5,
 		0.1,
