@@ -127,7 +127,7 @@ int main(int argc, char** argv)
 	// free model
 	freeModel(model);
 	//free session (and dataset)
-	//freeSession(session);
+	//nn_freeSession(session);
 	setVerbose(false);
 	free(GPL);
 

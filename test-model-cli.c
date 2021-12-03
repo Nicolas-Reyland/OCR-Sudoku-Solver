@@ -29,7 +29,7 @@ int main(int argc, char** argv)
     // nn_DataSet* dataset = nn_createDataSet(data_tuple.data1, data_tuple.data2);
 	nn_DataSet* dataset = nn_loadTestOnlyDataSet("datas/numeric-1k-", &shape, true);
 
-	nn_Session* session = createTestSession(
+	nn_Session* session = nn_createTestSession(
 		dataset, true
 	);
 
@@ -40,7 +40,7 @@ int main(int argc, char** argv)
 	// free model
 	freeModel(model);
 	// free session
-	freeSession(session);
+	nn_freeSession(session);
 
 	free(GPL);
 

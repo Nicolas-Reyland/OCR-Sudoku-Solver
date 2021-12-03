@@ -131,7 +131,7 @@ int main(int argc, char** argv)
     model->printModelLayers(model);
     model->printModelArchitecture(model);
     session->test(session,model);
-	freeSession(session);
+	nn_freeSession(session);
     freeModel(model);
     setVerbose(false);
     free(GPL);

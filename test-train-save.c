@@ -69,7 +69,7 @@ int main()
 	// free model
 	freeModel(model);
 	// free session
-	freeSession(session);
+	nn_freeSession(session);
 
 	verbose("Model freed.");
 

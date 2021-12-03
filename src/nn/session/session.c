@@ -275,7 +275,7 @@ void _nn_test_one_hot(struct nn_Session* session, nn_Model* model)
 	}
 }
 
-nn_Session* createTestSession(nn_DataSet* dataset, bool verbose)
+nn_Session* nn_createTestSession(nn_DataSet* dataset, bool verbose)
 {
 	return nn_createSession(dataset, 0, 0.0, false, verbose, 0.0, NULL, NULL);
 }
@@ -305,7 +305,7 @@ double learning_rate, const char* loss_log_file, const char* right_log_file)
 	return session;
 }
 
-void freeSession(nn_Session* session)
+void nn_freeSession(nn_Session* session)
 {
 	_nn_freeDataSet(session->dataset);
 	mem_free(session);

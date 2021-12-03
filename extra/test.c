@@ -57,7 +57,7 @@ int main(int argc, char** argv)
 	// free model
 	freeModel(model);
 	// free session
-	freeSession(session);
+	nn_freeSession(session);
 
 	verbose("Model freed.");
 
