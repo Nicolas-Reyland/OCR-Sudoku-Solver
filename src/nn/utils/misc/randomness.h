@@ -7,7 +7,7 @@
 #include <time.h>
 #include <stdbool.h>
 #include <errno.h>
-#include "utils/verbosity/verbose.h"
+#include "utils/verbosity/nn_verbose.h"
 #include "nn/data/in_out_tuple.h"
 
 static const double D_RAND_MAX = RAND_MAX;

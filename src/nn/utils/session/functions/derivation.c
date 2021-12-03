@@ -33,14 +33,14 @@ void _nn_derivativeLayerActivation(nn_Layer* layer)
             _nn_dSoftmax(layer);
             return;
         default:
-            err_verbose_exit(
+            nn_err_nn_verbose_exit(
                 "derivativeActivation: Unrecognised activation function: %s\n",
                 activation_str[layer->activation]);
             return;
     }
     // scalar function application
     if (scalar_fn == NULL) {
-        err_verbose_exit("Scalar function is NULL\n");
+        nn_err_nn_verbose_exit("Scalar function is NULL\n");
     }
     _nn_mapScalarFunction(layer, scalar_fn);
 }
@@ -74,7 +74,7 @@ void _nn_dSoftmax(nn_Layer* layer)
     // // then 'v = J x u' and 'x' is the matrix multiplication sign
     // for (size_t i = 0; i < N /* R1 */; i++) {
     //     for (size_t j = 0; j < N /* R2 */; j++) {
-    //         //verbose("jacobian value: %lf", jacobian_matrix[N * j + i]);
+    //         //nn_verbose("jacobian value: %lf", jacobian_matrix[N * j + i]);
     //         layer->nodes[j]->d_raw_value += jacobian_matrix[N * j + i] * layer->nodes[i]->raw_value;
     //     }
     // }
@@ -84,12 +84,12 @@ void _nn_dSoftmax(nn_Layer* layer)
     for (size_t i = 0; i < N; i++) {
         exponentials[i] = exp(layer->nodes[i]->raw_value);
         if (layer->nodes[i]->raw_value < -10e3) {
-            err_verbose_exit("WTF: %lu", layer->nodes[i]->raw_value);
+            nn_err_nn_verbose_exit("WTF: %lu", layer->nodes[i]->raw_value);
         }
         sum += exponentials[i];
     }
     if (sum < 10e-17) {
-        // verbose("\nWarning: sum is null in softmax. Adding 1e-3 for stability\n");
+        // nn_verbose("\nWarning: sum is null in softmax. Adding 1e-3 for stability\n");
         // exp(z_i) * sigma(expt(z_j!=i)) / sigma(expt(z_j)^2
     }
     double sum_squared = sum * sum;
@@ -97,7 +97,7 @@ void _nn_dSoftmax(nn_Layer* layer)
     for (size_t i = 0; i < N; i++) {
         layer->nodes[i]->d_raw_value = exponentials[i] * (sum - exponentials[i]) / sum_squared;
         if (isnan(layer->nodes[i]->d_raw_value)) {
-            verbose("isnan in dsoftmax: exp[i] = %lf, sum = %lf, sum_squared = %lf",
+            nn_verbose("isnan in dsoftmax: exp[i] = %lf, sum = %lf, sum_squared = %lf",
                 exponentials[i],
                 sum,
                 sum_squared

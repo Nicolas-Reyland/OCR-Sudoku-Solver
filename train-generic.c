@@ -2,15 +2,15 @@
 
 #include "nn/nn.h"
 #include "utils/mem/mem-management.h"
-#include "utils/verbosity/verbose.h"
+#include "utils/verbosity/nn_verbose.h"
 
 extern linked_list* GPL;
 
 int main(int argc, char** argv)
 {
-	setVerbose(true);
+	nn_setVerbose(true);
 	if (argc != 4)
-		err_verbose_exit("Usage: ./train-generic hidden-layer-size second-activation data-prefix");
+		nn_err_nn_verbose_exit("Usage: ./train-generic hidden-layer-size second-activation data-prefix");
 
 	char* hidden_layer_size_str = argv[1];
 	char* second_activation_str = argv[2];
@@ -29,10 +29,10 @@ int main(int argc, char** argv)
 		else
 			second_activation = SIGMOID;
 	}
-	verbose("Activation: %s", activation_str[second_activation]);
+	nn_verbose("Activation: %s", activation_str[second_activation]);
 	char save_model_str[255];
 	sprintf(save_model_str, "save/%s-%s-%s-", data_prefix, second_activation_str, hidden_layer_size_str);
-	verbose("Will be saved as: %s", save_model_str);
+	nn_verbose("Will be saved as: %s", save_model_str);
 
 	// init random
 	nn_initRandom();
@@ -51,7 +51,7 @@ int main(int argc, char** argv)
 		SIGMOID, second_activation//SOFTMAX
 	};
 	if (sizeof(activations) != num_activations * sizeof(activation)) {
-		err_verbose_exit("Sync your number of activations and layers !");
+		nn_err_nn_verbose_exit("Sync your number of activations and layers !");
 	}
 	// loss & optimizers
 	losses loss = CATEGORICALCROSSENTROPY;
@@ -105,7 +105,7 @@ int main(int argc, char** argv)
 		avg_right_log_path
 	);
 
-	verbose("Session created");
+	nn_verbose("Session created");
 
 	session->train_one_hot(session, model);
 	session->test_one_hot(session, model);
@@ -114,9 +114,9 @@ int main(int argc, char** argv)
     model->printModelArchitecture(model);
 
 	// save model
-	setVerbose(true);
+	nn_setVerbose(true);
 	model->saveModel(model, save_model_str);
-	verbose("Saved as: %s", save_model_str);
+	nn_verbose("Saved as: %s", save_model_str);
 
 	// free model
 	nn_freeModel(model);

@@ -10,7 +10,7 @@ Logger createLogger(const char* file_path)
         goto noLogFile;
     FILE* fptr = fopen(file_path, "w");
     if (fptr == NULL) {
-        err_verbose("Logging file could not be opened. This logger is disabled");
+        nn_err_nn_verbose("Logging file could not be opened. This logger is disabled");
         goto noLogFile;
     }
     return (Logger) {

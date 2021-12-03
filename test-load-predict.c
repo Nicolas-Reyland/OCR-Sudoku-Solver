@@ -2,23 +2,23 @@
 
 #include "nn/nn.h"
 #include "utils/mem/mem-management.h"
-#include "utils/verbosity/verbose.h"
+#include "utils/verbosity/nn_verbose.h"
 
 int main()
 {
-	setVerbose(true);
+	nn_setVerbose(true);
 
 	// init random
 	nn_initRandom();
 	nn_initMemoryTracking();
 
-	verbose("Loading model...");
+	nn_verbose("Loading model...");
 	// malloc model
 	nn_Model* model = nn_loadModel("save/mnist/5k-");
     model->printModelArchitecture(model);
 
 	// load the dataset
-	verbose("Loading dataset...");
+	nn_verbose("Loading dataset...");
 	nn_ShapeDescription shape = nn_emptyShapeDescription();
 	nn_DataSet* dataset = nn_loadTestOnlyDataSet("datas/mnist/", &shape, true);
 
@@ -33,7 +33,7 @@ int main()
 		NULL
 	);
 
-	verbose("Session created");
+	nn_verbose("Session created");
 
 	session->test_one_hot(session, model);
 
@@ -42,7 +42,7 @@ int main()
 	// free session
 	nn_freeSession(session);
 
-	verbose("Model freed.");
+	nn_verbose("Model freed.");
 
 	free(GPL);
 

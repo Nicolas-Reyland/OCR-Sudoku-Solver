@@ -6,7 +6,7 @@ void _nn_Model_saveArchitectureFn(nn_Model* model, char* path)
 
     if (architecture_file == NULL)
     {
-        err_verbose_exit("saveArchitecture: %s, the file does not exist. Exiting...\n", path);
+        nn_err_nn_verbose_exit("saveArchitecture: %s, the file does not exist. Exiting...\n", path);
     }
     fprintf(architecture_file,"%lu %d %d\n\n",model->num_layers, model->loss, model->optimizer);
     for (size_t i = 0; i < model->num_layers; i++)
@@ -27,7 +27,7 @@ void _nn_Model_saveWeightsAndBias(nn_Model* model, char* path)
 
     if (wab_file == NULL)
     {
-        err_verbose_exit("saveWeightsAndBias: %s, the file does not exist. Exiting...\n",path);
+        nn_err_nn_verbose_exit("saveWeightsAndBias: %s, the file does not exist. Exiting...\n",path);
     }
 
     // weights and biases for all except last

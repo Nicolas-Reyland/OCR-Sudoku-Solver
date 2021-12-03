@@ -7,7 +7,7 @@
 
 #include <math.h>
 #include "nn/model/layers/layer.h"
-#include "utils/verbosity/verbose.h"
+#include "utils/verbosity/nn_verbose.h"
 
 /* We must have a void return type and take a layer as input
  * because of the softmax activation function

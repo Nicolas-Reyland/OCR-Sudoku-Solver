@@ -2,27 +2,27 @@
 
 #include "nn/nn.h"
 #include "utils/mem/mem-management.h"
-#include "utils/verbosity/verbose.h"
+#include "utils/verbosity/nn_verbose.h"
 
 int main(int argc, char** argv)
 {
-	setVerbose(true);
+	nn_setVerbose(true);
 
 	if (argc != 2)
-		err_verbose_exit("Usage: ./test-real-output model-name");
+		nn_err_nn_verbose_exit("Usage: ./test-real-output model-name");
 	char* model_path = argv[1];
 
 	// init random
 	nn_initRandom();
 	nn_initMemoryTracking();
 
-	verbose("Loading model...");
+	nn_verbose("Loading model...");
 	// malloc model
 	nn_Model* model = nn_loadModel(model_path);
     model->printModelArchitecture(model);
 
 	// load the dataset
-	verbose("Loading dataset...");
+	nn_verbose("Loading dataset...");
 	nn_ShapeDescription shape = nn_emptyShapeDescription();
 	// nn_Data* data = nn_loadSingleDataInputOutput("datas/numeric-data.in", "datas/numeric-data.out", &shape, true, "Loading numeric data");
     // nn_DataTuple data_tuple = data->splitTrainTest(data, 0.3);

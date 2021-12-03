@@ -8,7 +8,7 @@
 #include "data.h"
 #include "nn/utils/structs/dataset.h"
 #include "in_out_tuple.h"
-#include "utils/verbosity/verbose.h"
+#include "utils/verbosity/nn_verbose.h"
 #include "utils/verbosity/progressbar.h"
 #include <stdlib.h>
 #include <string.h>

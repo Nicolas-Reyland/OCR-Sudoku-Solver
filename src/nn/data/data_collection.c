@@ -16,7 +16,7 @@ void _nn_freeDataCollection(nn_DataCollection* collection)
 {
     if(collection == NULL)
     {
-        err_verbose_exit("freeDataCollection: collection is null.\n");
+        nn_err_nn_verbose_exit("freeDataCollection: collection is null.\n");
     }
     for (size_t i = 0; i < collection->num_tuples; i++) {
         _nn_freeInOutTuple(collection->iot_array[i]);

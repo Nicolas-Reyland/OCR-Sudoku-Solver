@@ -2,7 +2,7 @@
 
 #include "nn/nn.h"
 #include "utils/mem/mem-management.h"
-#include "utils/verbosity/verbose.h"
+#include "utils/verbosity/nn_verbose.h"
 
 
 extern linked_list* GPL;
@@ -11,19 +11,19 @@ extern bool _nn_random_init_done;
 void oneLearningStep(nn_Model* model, double* input, double* output, double learning_rate)
 {
 	_nn_feedForward(model, input);
-	verbose("\tResult 1 : %lf", model->layers[model->num_layers - 1]->nodes[0]->value);
+	nn_verbose("\tResult 1 : %lf", model->layers[model->num_layers - 1]->nodes[0]->value);
 	_nn_backPropagation(model, output);
-	verbose("\tUpdating weights");
+	nn_verbose("\tUpdating weights");
 	_nn_updateWeights(model, learning_rate);
 	_nn_feedForward(model, input);
-	verbose("\tResult 2 : %lf", model->layers[model->num_layers - 1]->nodes[0]->value);
+	nn_verbose("\tResult 2 : %lf", model->layers[model->num_layers - 1]->nodes[0]->value);
 }
 
 int main(int argc, char** argv)
 {
 	PROGRESS_BAR_STATUS = false;
 
-	setVerbose(true);
+	nn_setVerbose(true);
 	srand( 1234567890 );
 	_nn_random_init_done = true;
 	printf("Next random integer is: %d\n", rand());
@@ -57,7 +57,7 @@ int main(int argc, char** argv)
 		false,
 		NULL
 	);
-	verbose("Created train data");
+	nn_verbose("Created train data");
 	test = nn_loadSingleDataInputOutput(
 		input_path,
 		output_path,
@@ -65,10 +65,10 @@ int main(int argc, char** argv)
 		false,
 		NULL
 	);
-	verbose("Created test data");
+	nn_verbose("Created test data");
 
 	nn_DataSet* dataset = nn_createDataSet(train,test);
-	verbose("Created dataset.");
+	nn_verbose("Created dataset.");
 
 	// model architecture
 	nn_ShapeDescription model_architecture[3] = {
@@ -114,21 +114,21 @@ int main(int argc, char** argv)
 	nn_Session* session = nn_createSession(dataset, 20000, 0.0000001, false, false, 0.15,
 	NULL,
 	NULL);
-	setVerbose(false);
+	nn_setVerbose(false);
 	session->train(session, model);
 	session->test(session, model);
 	model->printModelLayers(model);
 
-	verbose("Saving weights...");
-	//verbose("%s\n", save_path); // if we verbose the path, it will be the full path and the test will not work on different machines for sure
+	nn_verbose("Saving weights...");
+	//nn_verbose("%s\n", save_path); // if we nn_verbose the path, it will be the full path and the test will not work on different machines for sure
 	model->saveModel(model, save_path);
 
-	verbose("Saved weights !");
+	nn_verbose("Saved weights !");
 	// free model
 	nn_freeModel(model);
 	//free session (and dataset)
 	//nn_freeSession(session);
-	setVerbose(false);
+	nn_setVerbose(false);
 	free(GPL);
 
 	return 0;

@@ -2,7 +2,7 @@
 
 #include "nn/nn.h"
 #include "utils/mem/mem-management.h"
-#include "utils/verbosity/verbose.h"
+#include "utils/verbosity/nn_verbose.h"
 
 extern linked_list* GPL;
 extern bool _nn_random_init_done;
@@ -70,7 +70,7 @@ void oneLearningStep(nn_Model* model, double* input, double* output, double lear
 
 int main(int argc, char** argv)
 {
-	setVerbose(false);
+	nn_setVerbose(false);
 	// init random
 	// nn_initRandom(); // NOT initializing random this ways
 	// custom random init

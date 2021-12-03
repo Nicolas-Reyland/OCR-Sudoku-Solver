@@ -2,7 +2,7 @@
 
 #include "nn/nn.h"
 #include "utils/mem/mem-management.h"
-#include "utils/verbosity/verbose.h"
+#include "utils/verbosity/nn_verbose.h"
 
 extern linked_list* GPL;
 extern bool _nn_random_init_done;
@@ -11,7 +11,7 @@ void printLayer(int, nn_Layer* layer);
 
 int main()
 {
-	setVerbose(false);
+	nn_setVerbose(false);
 
 	// init random
 	// nn_initRandom(); // NOT initializing random this ways

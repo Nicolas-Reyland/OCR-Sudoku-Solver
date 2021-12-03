@@ -2,13 +2,13 @@
 
 #include "nn/nn.h"
 #include "utils/mem/mem-management.h"
-#include "utils/verbosity/verbose.h"
+#include "utils/verbosity/nn_verbose.h"
 
 extern linked_list* GPL;
 
 int main()
 {
-	setVerbose(true);
+	nn_setVerbose(true);
 
 	// init random
 	nn_initRandom();
@@ -27,7 +27,7 @@ int main()
 		SIGMOID, SOFTMAX
 	};
 	if (sizeof(activations) != num_activations * sizeof(activation)) {
-		err_verbose_exit("Sync your number of activations and layers !");
+		nn_err_nn_verbose_exit("Sync your number of activations and layers !");
 	}
 	// loss & optimizers
 	losses loss = CATEGORICALCROSSENTROPY;
@@ -35,7 +35,7 @@ int main()
 
 	// malloc model
 	nn_Model* model = nn_createModel(num_layers, model_architecture, activations, loss, optimizer);
-	verbose("Model created");
+	nn_verbose("Model created");
 	model->printModelArchitecture(model);
 
 	// load the dataset
@@ -53,7 +53,7 @@ int main()
 		"avg-right.log"
 	);
 
-	verbose("Session created");
+	nn_verbose("Session created");
 
 	session->train_one_hot(session, model);
 	session->test_one_hot(session, model);
@@ -62,8 +62,8 @@ int main()
     model->printModelArchitecture(model);
 
 	// save model
-	setVerbose(true);
-	verbose("Saving the model...");
+	nn_setVerbose(true);
+	nn_verbose("Saving the model...");
 	model->saveModel(model, "save/numeric-");
 
 	// free model
@@ -71,7 +71,7 @@ int main()
 	// free session
 	nn_freeSession(session);
 
-	verbose("Model freed.");
+	nn_verbose("Model freed.");
 
 	free(GPL);
 

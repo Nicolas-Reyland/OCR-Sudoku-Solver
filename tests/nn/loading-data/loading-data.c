@@ -2,7 +2,7 @@
 
 #include "nn/nn.h"
 #include "utils/mem/mem-management.h"
-#include "utils/verbosity/verbose.h"
+#include "utils/verbosity/nn_verbose.h"
 #include <string.h>
 
 extern linked_list* GPL;
@@ -10,7 +10,7 @@ extern bool _nn_random_init_done;
 
 int main(int argc, char** argv)
 {
-	setVerbose(true);
+	nn_setVerbose(true);
 	nn_initMemoryTracking();
 
 	// get path to project as arg

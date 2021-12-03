@@ -2,13 +2,13 @@
 
 #include "nn/nn.h"
 #include "utils/mem/mem-management.h"
-#include "utils/verbosity/verbose.h"
+#include "utils/verbosity/nn_verbose.h"
 
 extern linked_list* GPL;
 
 int main(int argc, char** argv)
 {
-	setVerbose(true);
+	nn_setVerbose(true);
 
 	// init random
 	nn_initRandom();
@@ -29,10 +29,10 @@ int main(int argc, char** argv)
 	losses loss = CATEGORICALCROSSENTROPY;
 	optimizer optimizer = ADAM;
 
-	verbose("Allocating model...");
+	nn_verbose("Allocating model...");
 	// malloc model
 	nn_Model* model = nn_createModel(3, model_architecture, activations, loss, optimizer);
-	verbose("Model allocated");
+	nn_verbose("Model allocated");
 	nn_ShapeDescription shape = nn_emptyShapeDescription();
 
 	nn_DataSet* dataset = nn_loadDataSet("datas/mnist/", &shape, true);
@@ -48,9 +48,9 @@ int main(int argc, char** argv)
 		NULL
 	);
 
-	verbose("Session allocated");
+	nn_verbose("Session allocated");
 
-	setVerbose(false);
+	nn_setVerbose(false);
 	session->train(session, model);
 	session->test(session, model);
 
@@ -59,7 +59,7 @@ int main(int argc, char** argv)
 	// free session
 	nn_freeSession(session);
 
-	verbose("Model freed.");
+	nn_verbose("Model freed.");
 
 	free(GPL);
 

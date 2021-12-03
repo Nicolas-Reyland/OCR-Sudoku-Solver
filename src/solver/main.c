@@ -12,7 +12,7 @@
 */
 
 
-#include "utils/verbosity/verbose.h"
+#include "utils/verbosity/nn_verbose.h"
 #include <stdlib.h>
 #include <err.h>
 #include <string.h>

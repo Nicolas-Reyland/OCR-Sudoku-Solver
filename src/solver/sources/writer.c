@@ -15,7 +15,7 @@
  * by Lilian Schall Sudoku Solver 2021 Epita
 */
 
-#include "utils/verbosity/verbose.h"
+#include "utils/verbosity/nn_verbose.h"
 #include <stdlib.h>
 #include <err.h>
 #include "./../headers/const.h"

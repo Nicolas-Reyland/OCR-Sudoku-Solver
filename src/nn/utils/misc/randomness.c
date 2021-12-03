@@ -19,7 +19,7 @@ void nn_initRandom()
 void _nn_assertRandomInitialization(void)
 {
   if (!_nn_random_init_done) {
-    err_verbose_exit("Randomness has not been initalized. Exiting (this is an assertion).\n");
+    nn_err_nn_verbose_exit("Randomness has not been initalized. Exiting (this is an assertion).\n");
   }
 }
 

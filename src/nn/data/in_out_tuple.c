@@ -4,12 +4,12 @@
 
 static void _nn_printTuple(nn_InOutTuple* tuple)
 {
-    verbose("number of input values: %ld", tuple->input->num_values);
-    verbose("number of output values: %ld", tuple->output->num_values);
+    nn_verbose("number of input values: %ld", tuple->input->num_values);
+    nn_verbose("number of output values: %ld", tuple->output->num_values);
 
-    verbose("Input:");
+    nn_verbose("Input:");
     tuple->input->print(tuple->input);
-    verbose("Output expected:");
+    nn_verbose("Output expected:");
     tuple->output->print(tuple->output);
 }
 
@@ -27,7 +27,7 @@ void _nn_freeInOutTuple(nn_InOutTuple* tuple)
 {
     if(tuple == NULL)
     {
-        err_verbose_exit("freeInOutTuple: tuple is null.");
+        nn_err_nn_verbose_exit("freeInOutTuple: tuple is null.");
     }
     freeSample(tuple->input);
     freeSample(tuple->output);

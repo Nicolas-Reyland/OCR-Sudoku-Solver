@@ -2,14 +2,14 @@
 
 #include "nn/nn.h"
 #include "utils/mem/mem-management.h"
-#include "utils/verbosity/verbose.h"
+#include "utils/verbosity/nn_verbose.h"
 
 #define NUM_LAYERS 3
 
 int main(int argc, char** argv)
 {
 	if (argc > 1 && argv[1][0]) {
-		setVerbose(false);
+		nn_setVerbose(false);
 	}
 
 	PROGRESS_BAR_STATUS = false;
@@ -31,17 +31,17 @@ int main(int argc, char** argv)
 	losses loss = CATEGORICALCROSSENTROPY;
 	optimizer optimizer = ADAM;
 
-	verbose("Allocating model...");
+	nn_verbose("Allocating model...");
 
 	// malloc model
 	nn_Model* model = nn_createModel(NUM_LAYERS, model_architecture, activations, loss, optimizer);
 
-	verbose("Model allocated.");
+	nn_verbose("Model allocated.");
 
 	// free model
 	nn_freeModel(model);
 
-	verbose("Model freed.");
+	nn_verbose("Model freed.");
 
 	free(GPL);
 

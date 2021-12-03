@@ -15,7 +15,7 @@ void _nn_freeDataSet(nn_DataSet* data_set)
 
 	if(data_set == NULL)
     {
-        err_verbose("freeDataSet: dataSet is null.");
+        nn_err_nn_verbose("freeDataSet: dataSet is null.");
 		return;
     }
 	_nn_freeData(data_set->test);
