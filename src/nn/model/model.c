@@ -6,7 +6,7 @@ static void _nn_printModelLayers(nn_Model* model);
 static void _nn_printModelLayersValues(nn_Model* model);
 static void _nn_printModelArchitecture(nn_Model* model);
 
-nn_Layer** _nn_createModelLayers(size_t num_layers, nn_ShapeDescription model_architecture[], activation activations[])
+nn_Layer** _nn_nn_createModelLayers(size_t num_layers, nn_ShapeDescription model_architecture[], activation activations[])
 {
   nn_Layer** const layers = mem_calloc(num_layers, sizeof(nn_Layer));
   // input & output layers
@@ -22,10 +22,10 @@ nn_Layer** _nn_createModelLayers(size_t num_layers, nn_ShapeDescription model_ar
   return layers;
 }
 
-nn_Model* createModel(size_t num_layers, nn_ShapeDescription model_architecture[], activation activations[], losses loss, optimizer optimizer)
+nn_Model* nn_createModel(size_t num_layers, nn_ShapeDescription model_architecture[], activation activations[], losses loss, optimizer optimizer)
 {
   _nn_assertRandomInitialization();
-  nn_Layer** layers = _nn_createModelLayers(num_layers, model_architecture, activations);
+  nn_Layer** layers = _nn_nn_createModelLayers(num_layers, model_architecture, activations);
   // malloc struct
   nn_Model* model = mem_malloc(sizeof(nn_Model));
   model->layers = layers;
@@ -42,7 +42,7 @@ nn_Model* createModel(size_t num_layers, nn_ShapeDescription model_architecture[
   return model;
 }
 
-void freeModel(nn_Model* model)
+void nn_freeModel(nn_Model* model)
 {
   for (size_t i = 0; i < model->num_layers; i++) {
     _nn_freeLayer(model->layers[i]);

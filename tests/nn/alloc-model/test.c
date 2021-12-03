@@ -34,12 +34,12 @@ int main(int argc, char** argv)
 	verbose("Allocating model...");
 
 	// malloc model
-	nn_Model* model = createModel(NUM_LAYERS, model_architecture, activations, loss, optimizer);
+	nn_Model* model = nn_createModel(NUM_LAYERS, model_architecture, activations, loss, optimizer);
 
 	verbose("Model allocated.");
 
 	// free model
-	freeModel(model);
+	nn_freeModel(model);
 
 	verbose("Model freed.");
 

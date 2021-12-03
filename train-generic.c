@@ -58,7 +58,7 @@ int main(int argc, char** argv)
 	optimizer optimizer = ADAM;
 
 	// malloc model
-	nn_Model* model = createModel(num_layers, model_architecture, activations, loss, optimizer);
+	nn_Model* model = nn_createModel(num_layers, model_architecture, activations, loss, optimizer);
 	model->printModelArchitecture(model);
 
 	// load the dataset (~from scratch~)
@@ -119,7 +119,7 @@ int main(int argc, char** argv)
 	verbose("Saved as: %s", save_model_str);
 
 	// free model
-	freeModel(model);
+	nn_freeModel(model);
 	// free session
 	nn_freeSession(session);
 

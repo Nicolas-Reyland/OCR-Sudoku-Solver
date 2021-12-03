@@ -36,5 +36,4 @@ nn_Session* nn_createTestSession(nn_DataSet* dataset, bool verbose);
 void nn_freeSession(nn_Session* session);
 
 
-
 #endif

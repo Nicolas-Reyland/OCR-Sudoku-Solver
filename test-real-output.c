@@ -36,7 +36,7 @@ int main(int argc, char** argv)
 	session->test_one_hot(session, model);
 
 	// free model
-	freeModel(model);
+	nn_freeModel(model);
 	// free session
 	nn_freeSession(session);
 

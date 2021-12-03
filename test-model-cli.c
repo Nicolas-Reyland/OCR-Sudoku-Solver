@@ -38,7 +38,7 @@ int main(int argc, char** argv)
 	setVerbose(true);
 
 	// free model
-	freeModel(model);
+	nn_freeModel(model);
 	// free session
 	nn_freeSession(session);
 

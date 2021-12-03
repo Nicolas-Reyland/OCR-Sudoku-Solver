@@ -34,7 +34,7 @@ int main()
 	optimizer optimizer = ADAM;
 
 	// malloc model
-	nn_Model* model = createModel(num_layers, model_architecture, activations, loss, optimizer);
+	nn_Model* model = nn_createModel(num_layers, model_architecture, activations, loss, optimizer);
 	verbose("Model created");
 	model->printModelArchitecture(model);
 
@@ -70,7 +70,7 @@ int main()
 	model->saveModel(model, "save/noisy+nn-sigmoid-sigmoid-128-");
 
 	// free model
-	freeModel(model);
+	nn_freeModel(model);
 	// free session
 	nn_freeSession(session);
 

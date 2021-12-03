@@ -92,7 +92,7 @@ int main(int argc, char** argv)
 	losses loss = MEANSQUAREDERROR;
 	optimizer optimizer = ADAM;
 	// malloc model
-	nn_Model* model = createModel(3, model_architecture, activations, loss, optimizer);
+	nn_Model* model = nn_createModel(3, model_architecture, activations, loss, optimizer);
 	
 	double weights[3][2] = {
     { 0.840188, 0.394383 },
@@ -147,7 +147,7 @@ int main(int argc, char** argv)
 	}
 
 	// free model
-	freeModel(model);
+	nn_freeModel(model);
 	//free session (and dataset)
 	//nn_freeSession(session);
 	free(GPL);

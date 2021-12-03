@@ -35,7 +35,7 @@ int main()
 	losses loss = CATEGORICALCROSSENTROPY;
 	optimizer optimizer = ADAM;
 	// malloc model
-	nn_Model* model = createModel(3, model_architecture, activations, loss, optimizer);
+	nn_Model* model = nn_createModel(3, model_architecture, activations, loss, optimizer);
 
 	// here
 	printLayer(0, model->layers[0]);
@@ -43,7 +43,7 @@ int main()
 	printLayer(2, model->layers[2]);
 
 	// free model
-	freeModel(model);
+	nn_freeModel(model);
 	free(GPL);
 
 	return 0;

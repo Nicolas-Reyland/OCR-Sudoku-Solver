@@ -30,7 +30,7 @@ nn_Model* _nn_Model_loadModelArchitecture(char* path)
     }
 
     fclose(file);
-    return createModel(size, shape_descriptions, activations, loss, opti);
+    return nn_createModel(size, shape_descriptions, activations, loss, opti);
 
 }
 

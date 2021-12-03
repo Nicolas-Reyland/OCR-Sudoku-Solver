@@ -31,7 +31,7 @@ int main(int argc, char** argv)
 
 	verbose("Allocating model...");
 	// malloc model
-	nn_Model* model = createModel(3, model_architecture, activations, loss, optimizer);
+	nn_Model* model = nn_createModel(3, model_architecture, activations, loss, optimizer);
 	verbose("Model allocated");
 	nn_ShapeDescription shape = emptyShapeDescription();
 
@@ -55,7 +55,7 @@ int main(int argc, char** argv)
 	session->test(session, model);
 
 	// free model
-	freeModel(model);
+	nn_freeModel(model);
 	// free session
 	nn_freeSession(session);
 

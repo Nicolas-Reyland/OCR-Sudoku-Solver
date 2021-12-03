@@ -37,7 +37,7 @@ int main(int argc, char** argv)
 	_nn_freeData(data);
 
 	// free model
-	//freeModel(model);
+	//nn_freeModel(model);
 	free(GPL);
 
 	return 0;

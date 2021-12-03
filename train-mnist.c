@@ -31,7 +31,7 @@ int main()
 
 	verbose("Allocating model...");
 	// malloc model
-	nn_Model* model = createModel(4, model_architecture, activations, loss, optimizer);
+	nn_Model* model = nn_createModel(4, model_architecture, activations, loss, optimizer);
 	verbose("Model allocated");
     model->printModelArchitecture(model);
 
@@ -63,7 +63,7 @@ int main()
 	model->saveModel(model, "save/mnist/1k-");
 
 	// free model
-	freeModel(model);
+	nn_freeModel(model);
 	// free session
 	nn_freeSession(session);
 
