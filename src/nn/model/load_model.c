@@ -22,7 +22,7 @@ nn_Model* _nn_Model_loadModelArchitecture(char* path)
         size_t x,y,z;
         int acti = 0;
         fscanf(file,"%lu %lu %lu\n", &x, &y, &z);
-        shape_descriptions[i] = createShapeDescription(x,y,z);
+        shape_descriptions[i] = nn_createShapeDescription(x,y,z);
 
         fscanf(file,"%d\n", &acti);
         if(acti != 0) // if activation value is not "no_activation":
@@ -30,7 +30,7 @@ nn_Model* _nn_Model_loadModelArchitecture(char* path)
     }
 
     fclose(file);
-    return createModel(size, shape_descriptions, activations, loss, opti);
+    return nn_createModel(size, shape_descriptions, activations, loss, opti);
 
 }
 

@@ -1,5 +1,6 @@
 # -*-Makefile-*-
 
+SHELL := bash
 # Setting the compiler and the default linker program
 CC = gcc
 # exec

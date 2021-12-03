@@ -11,7 +11,7 @@ extern bool _nn_random_init_done;
 int main(int argc, char** argv)
 {
 	setVerbose(true);
-	initMemoryTracking();
+	nn_initMemoryTracking();
 
 	// get path to project as arg
 	char input_path[255], output_path[255];
@@ -21,7 +21,7 @@ int main(int argc, char** argv)
 	strcat(input_path, "/datas/xor/input.txt");
 	strcat(output_path, "/datas/xor/output.txt");
 
-	nn_ShapeDescription description = emptyShapeDescription();
+	nn_ShapeDescription description = nn_emptyShapeDescription();
 
 	nn_Data* data = nn_loadSingleDataInputOutput(
 		input_path,
@@ -37,7 +37,7 @@ int main(int argc, char** argv)
 	_nn_freeData(data);
 
 	// free model
-	//freeModel(model);
+	//nn_freeModel(model);
 	free(GPL);
 
 	return 0;

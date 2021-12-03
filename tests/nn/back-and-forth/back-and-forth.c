@@ -72,16 +72,16 @@ int main(int argc, char** argv)
 {
 	setVerbose(false);
 	// init random
-	// initRandom(); // NOT initializing random this ways
+	// nn_initRandom(); // NOT initializing random this ways
 	// custom random init
-	initRandom(); // overwriting weights anyway
-	initMemoryTracking();
+	nn_initRandom(); // overwriting weights anyway
+	nn_initMemoryTracking();
 
 	// model architecture
 	nn_ShapeDescription model_architecture[3] = {
-		create1DShapeDescription(2),
-		create1DShapeDescription(2),
-		create1DShapeDescription(1),
+		nn_create1DShapeDescription(2),
+		nn_create1DShapeDescription(2),
+		nn_create1DShapeDescription(1),
 	};
 
 	// activation functions
@@ -92,7 +92,7 @@ int main(int argc, char** argv)
 	losses loss = MEANSQUAREDERROR;
 	optimizer optimizer = ADAM;
 	// malloc model
-	nn_Model* model = createModel(3, model_architecture, activations, loss, optimizer);
+	nn_Model* model = nn_createModel(3, model_architecture, activations, loss, optimizer);
 	
 	double weights[3][2] = {
     { 0.840188, 0.394383 },
@@ -147,9 +147,9 @@ int main(int argc, char** argv)
 	}
 
 	// free model
-	freeModel(model);
+	nn_freeModel(model);
 	//free session (and dataset)
-	//freeSession(session);
+	//nn_freeSession(session);
 	free(GPL);
 
 	return 0;

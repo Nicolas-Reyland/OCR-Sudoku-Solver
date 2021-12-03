@@ -11,14 +11,14 @@ int main()
 	setVerbose(true);
 
 	// init random
-	initRandom();
-	initMemoryTracking();
+	nn_initRandom();
+	nn_initMemoryTracking();
 
 	// model architecture
 	nn_ShapeDescription model_architecture[] = {
-		create2DShapeDescription(28, 28),
-		create1DShapeDescription(200),
-		create1DShapeDescription(9),
+		nn_create2DShapeDescription(28, 28),
+		nn_create1DShapeDescription(200),
+		nn_create1DShapeDescription(9),
 	};
 	const size_t num_layers = sizeof(model_architecture) / sizeof(nn_ShapeDescription);
 	const size_t num_activations = num_layers - 1;
@@ -34,15 +34,15 @@ int main()
 	optimizer optimizer = ADAM;
 
 	// malloc model
-	nn_Model* model = createModel(num_layers, model_architecture, activations, loss, optimizer);
+	nn_Model* model = nn_createModel(num_layers, model_architecture, activations, loss, optimizer);
 	verbose("Model created");
 	model->printModelArchitecture(model);
 
 	// load the dataset
-	nn_ShapeDescription shape = emptyShapeDescription();
+	nn_ShapeDescription shape = nn_emptyShapeDescription();
 	nn_DataSet* dataset = nn_loadDataSet("datas/numeric-", &shape, true);
 
-	nn_Session* session = createSession(
+	nn_Session* session = nn_createSession(
 		dataset,
 		5,
 		0.1,
@@ -67,9 +67,9 @@ int main()
 	model->saveModel(model, "save/numeric-");
 
 	// free model
-	freeModel(model);
+	nn_freeModel(model);
 	// free session
-	freeSession(session);
+	nn_freeSession(session);
 
 	verbose("Model freed.");
 

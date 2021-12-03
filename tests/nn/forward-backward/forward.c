@@ -12,17 +12,17 @@ int main()
 	setVerbose(false);
 
 	// init random
-	// initRandom(); // NOT initializing random this ways
+	// nn_initRandom(); // NOT initializing random this ways
 	// custom random init
 	srand( 1234567890 );
 	_nn_random_init_done = true;
 	printf("Next random integer is: %d\n", rand());
-	initMemoryTracking();
+	nn_initMemoryTracking();
 	// model architecture
 	nn_ShapeDescription model_architecture[3] = {
-		create1DShapeDescription(3),
-		create1DShapeDescription(4),
-		create1DShapeDescription(2),
+		nn_create1DShapeDescription(3),
+		nn_create1DShapeDescription(4),
+		nn_create1DShapeDescription(2),
 	};
 	// activation functions
 	activation activations[3] = {
@@ -32,7 +32,7 @@ int main()
 	losses loss = CATEGORICALCROSSENTROPY;
 	optimizer optimizer = ADAM;
 	// malloc model
-	nn_Model* model = createModel(3, model_architecture, activations, loss, optimizer);
+	nn_Model* model = nn_createModel(3, model_architecture, activations, loss, optimizer);
 
 	// print the layers weights
 	model->printModelLayers(model);
@@ -47,7 +47,7 @@ int main()
 	model->printModelLayersValues(model);
 
 	// free model
-	freeModel(model);
+	nn_freeModel(model);
 	free(GPL);
 
 	return 0;

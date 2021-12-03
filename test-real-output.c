@@ -13,8 +13,8 @@ int main(int argc, char** argv)
 	char* model_path = argv[1];
 
 	// init random
-	initRandom();
-	initMemoryTracking();
+	nn_initRandom();
+	nn_initMemoryTracking();
 
 	verbose("Loading model...");
 	// malloc model
@@ -23,22 +23,22 @@ int main(int argc, char** argv)
 
 	// load the dataset
 	verbose("Loading dataset...");
-	nn_ShapeDescription shape = emptyShapeDescription();
+	nn_ShapeDescription shape = nn_emptyShapeDescription();
 	// nn_Data* data = nn_loadSingleDataInputOutput("datas/numeric-data.in", "datas/numeric-data.out", &shape, true, "Loading numeric data");
     // nn_DataTuple data_tuple = data->splitTrainTest(data, 0.3);
     // nn_DataSet* dataset = nn_createDataSet(data_tuple.data1, data_tuple.data2);
 	nn_DataSet* dataset = nn_loadTestOnlyDataSet("datas/new-trainnn-", &shape, true);
 
-	nn_Session* session = createTestSession(
+	nn_Session* session = nn_createTestSession(
 		dataset, true
 	);
 
 	session->test_one_hot(session, model);
 
 	// free model
-	freeModel(model);
+	nn_freeModel(model);
 	// free session
-	freeSession(session);
+	nn_freeSession(session);
 
 	free(GPL);
 

@@ -27,7 +27,7 @@ int main(int argc, char** argv)
 	srand( 1234567890 );
 	_nn_random_init_done = true;
 	printf("Next random integer is: %d\n", rand());
-	initMemoryTracking();
+	nn_initMemoryTracking();
 
 	// get path to project as arg
 	char input_path[255], output_path[255], save_path[512];
@@ -73,8 +73,8 @@ int main(int argc, char** argv)
 	// model architecture
 	nn_ShapeDescription model_architecture[3] = {
 		train_description,
-		create1DShapeDescription(2),
-		create1DShapeDescription(1),
+		nn_create1DShapeDescription(2),
+		nn_create1DShapeDescription(1),
 	};
 	// activation functions
 	activation activations[2] = {
@@ -84,7 +84,7 @@ int main(int argc, char** argv)
 	losses loss = MEANSQUAREDERROR;
 	optimizer optimizer = ADAM;
 	// malloc model
-	nn_Model* model = createModel(3, model_architecture, activations, loss, optimizer);
+	nn_Model* model = nn_createModel(3, model_architecture, activations, loss, optimizer);
 
 	double weights[3][2] = {
 	    { 0.840188, 0.394383 },
@@ -111,7 +111,7 @@ int main(int argc, char** argv)
 	model->layers[1]->nodes[1]->bias = bias[1];
 	model->layers[2]->nodes[0]->bias = bias[2];
 
-	nn_Session* session = createSession(dataset, 20000, 0.0000001, false, false, 0.15,
+	nn_Session* session = nn_createSession(dataset, 20000, 0.0000001, false, false, 0.15,
 	NULL,
 	NULL);
 	setVerbose(false);
@@ -125,9 +125,9 @@ int main(int argc, char** argv)
 
 	verbose("Saved weights !");
 	// free model
-	freeModel(model);
+	nn_freeModel(model);
 	//free session (and dataset)
-	//freeSession(session);
+	//nn_freeSession(session);
 	setVerbose(false);
 	free(GPL);
 

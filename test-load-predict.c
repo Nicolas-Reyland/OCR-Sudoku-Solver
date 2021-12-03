@@ -9,8 +9,8 @@ int main()
 	setVerbose(true);
 
 	// init random
-	initRandom();
-	initMemoryTracking();
+	nn_initRandom();
+	nn_initMemoryTracking();
 
 	verbose("Loading model...");
 	// malloc model
@@ -19,10 +19,10 @@ int main()
 
 	// load the dataset
 	verbose("Loading dataset...");
-	nn_ShapeDescription shape = emptyShapeDescription();
+	nn_ShapeDescription shape = nn_emptyShapeDescription();
 	nn_DataSet* dataset = nn_loadTestOnlyDataSet("datas/mnist/", &shape, true);
 
-	nn_Session* session = createSession(
+	nn_Session* session = nn_createSession(
 		dataset,
 		0,
 		0.1,
@@ -38,9 +38,9 @@ int main()
 	session->test_one_hot(session, model);
 
 	// free model
-	freeModel(model);
+	nn_freeModel(model);
 	// free session
-	freeSession(session);
+	nn_freeSession(session);
 
 	verbose("Model freed.");
 

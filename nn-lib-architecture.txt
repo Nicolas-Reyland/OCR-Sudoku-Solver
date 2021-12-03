@@ -90,7 +90,7 @@ utils :
       ...library designed by nico
   Misc :
     // randomness
-    ($void) initRandom
+    ($void) nn_initRandom
     ($double) getRandomDouble
     ($double) getNormalizedRandomDouble
     ($double) getNormalizedPositiveRandomDouble

@@ -47,8 +47,8 @@ void display_solution_grid(GtkWidget *widget, gpointer user_data);
 int main(int argc, char **argv)
 {
     // init Neural Network & Co.
-    initRandom();
-    initMemoryTracking();
+    nn_initRandom();
+    nn_initMemoryTracking();
     nn_Model* model = nn_loadModel("save/mix-sigmoid-256-");
 	number_prediction_model = model;
 

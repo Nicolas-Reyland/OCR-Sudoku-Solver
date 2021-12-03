@@ -6,7 +6,7 @@ bool _nn_random_init_done = false;
 
 /* Initialize randomness
  */
-void initRandom()
+void nn_initRandom()
 {
   if (_nn_random_init_done)
     return;

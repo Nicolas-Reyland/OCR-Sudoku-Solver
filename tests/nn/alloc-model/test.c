@@ -15,13 +15,13 @@ int main(int argc, char** argv)
 	PROGRESS_BAR_STATUS = false;
 
 	// init random
-	initRandom();
-	initMemoryTracking();
+	nn_initRandom();
+	nn_initMemoryTracking();
 	// model architecture
 	nn_ShapeDescription model_architecture[NUM_LAYERS] = {
-		createShapeDescription(3, 3, 3), // { .dims = 3, .x = 3, .y = 3, .z = 3 },
-		create2DShapeDescription(5, 2), // { .dims = 2, .x = 5, .y = 2, .z = 1 },
-		create1DShapeDescription(1), // { .dims = 1, .x = 1, .y = 1, .z = 1 }
+		nn_createShapeDescription(3, 3, 3), // { .dims = 3, .x = 3, .y = 3, .z = 3 },
+		nn_create2DShapeDescription(5, 2), // { .dims = 2, .x = 5, .y = 2, .z = 1 },
+		nn_create1DShapeDescription(1), // { .dims = 1, .x = 1, .y = 1, .z = 1 }
 	};
 	// activation functions
 	activation activations[2] = {
@@ -34,12 +34,12 @@ int main(int argc, char** argv)
 	verbose("Allocating model...");
 
 	// malloc model
-	nn_Model* model = createModel(NUM_LAYERS, model_architecture, activations, loss, optimizer);
+	nn_Model* model = nn_createModel(NUM_LAYERS, model_architecture, activations, loss, optimizer);
 
 	verbose("Model allocated.");
 
 	// free model
-	freeModel(model);
+	nn_freeModel(model);
 
 	verbose("Model freed.");
 

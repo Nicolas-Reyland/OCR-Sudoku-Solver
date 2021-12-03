@@ -11,15 +11,15 @@ int main(int argc, char** argv)
 	setVerbose(true);
 
 	// init random
-	initRandom();
-	initMemoryTracking();
+	nn_initRandom();
+	nn_initMemoryTracking();
 
 	// model architecture
 	nn_ShapeDescription model_architecture[4] = {
-		create2DShapeDescription(28, 28),
-		create2DShapeDescription(16, 16),
-		create1DShapeDescription(128),
-		create1DShapeDescription(9),
+		nn_create2DShapeDescription(28, 28),
+		nn_create2DShapeDescription(16, 16),
+		nn_create1DShapeDescription(128),
+		nn_create1DShapeDescription(9),
 	};
 	// activation functions
 	activation activations[3] = {
@@ -31,13 +31,13 @@ int main(int argc, char** argv)
 
 	verbose("Allocating model...");
 	// malloc model
-	nn_Model* model = createModel(3, model_architecture, activations, loss, optimizer);
+	nn_Model* model = nn_createModel(3, model_architecture, activations, loss, optimizer);
 	verbose("Model allocated");
-	nn_ShapeDescription shape = emptyShapeDescription();
+	nn_ShapeDescription shape = nn_emptyShapeDescription();
 
 	nn_DataSet* dataset = nn_loadDataSet("datas/mnist/", &shape, true);
 
-	nn_Session* session = createSession(
+	nn_Session* session = nn_createSession(
 		dataset,
 		10,
 		0.1,
@@ -55,9 +55,9 @@ int main(int argc, char** argv)
 	session->test(session, model);
 
 	// free model
-	freeModel(model);
+	nn_freeModel(model);
 	// free session
-	freeSession(session);
+	nn_freeSession(session);
 
 	verbose("Model freed.");
 
