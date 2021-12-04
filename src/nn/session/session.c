@@ -6,8 +6,7 @@
 void _nn_train(struct nn_Session* session, nn_Model* model)
 {
 	// // TODO: make this an argument, in session or directly here
-	// size_t nb_verb_step = 100;
-	size_t verb_update_step = 10;
+	size_t verb_update_step = 0;
 
 	nn_InOutTuple* tuple_array = session->dataset->train.data_collection.iot_array;
 	size_t sample_size =session->dataset->train.data_collection.num_tuples;
@@ -39,8 +38,10 @@ void _nn_train(struct nn_Session* session, nn_Model* model)
 		while(i < sample_size)
 		{
 			// update the progress bar if necessary
-			if (i % verb_update_step == 0)
+			if (verb_update_step-- == 0) {
 				updateProgressBar(&training_bar, i);
+				verb_update_step = VERB_UPDATE_STEP;
+			}
 
 			// feed forward the input at index 'i'
 			_nn_feedForward(model, tuple_array[i].input.values);
@@ -80,8 +81,7 @@ void _nn_train(struct nn_Session* session, nn_Model* model)
 void _nn_train_one_hot(struct nn_Session* session, nn_Model* model)
 {
 	// // TODO: make this an argument, in session or directly here
-	// size_t nb_verb_step = 100;
-	size_t verb_update_step = 10;
+	size_t verb_update_step = 0;
 
 	nn_InOutTuple* tuple_array = session->dataset->train.data_collection.iot_array;
 	size_t sample_size =session->dataset->train.data_collection.num_tuples;
@@ -113,12 +113,13 @@ void _nn_train_one_hot(struct nn_Session* session, nn_Model* model)
 		for (size_t i = 0; i < sample_size; i++)
 		{
 			// update the progress bar if necessary
-			if (i % verb_update_step == 0) {
+			if (verb_update_step-- == 0) {
 				updateProgressBar(&training_bar, i);
 				if (i != 0) {
 					updateLogger(&loss_logger, loss_buffer / (double)i);
 					updateLogger(&right_logger, (double)num_right_predictions / (double)i);
 				}
+				verb_update_step = VERB_UPDATE_STEP;
 			}
 
 			// feed forward the input at index 'i'
@@ -202,7 +203,7 @@ void _nn_test_one_hot(struct nn_Session* session, nn_Model* model)
 	// TODO: add an average right prediction for each individual
 	// value of the one-hot values
 	// nn_verbose("Testing the model as one-hot");
-	size_t num_steps_verb = 100;
+	size_t num_steps_verb = 0;
 
 	nn_InOutTuple* tuple_array = session->dataset->test.data_collection.iot_array;
 	size_t num_samples = session->dataset->test.data_collection.num_tuples;
@@ -223,12 +224,10 @@ void _nn_test_one_hot(struct nn_Session* session, nn_Model* model)
 	{
 		// verbosity
 		if (session->verb_mode) {
-			if (num_steps_verb % 100 == 0)
+			if (num_steps_verb-- == 0) {
 				updateProgressBar(&testing_bar, i);
-				/*nn_verbose(" test session run: %.4g\% (%lu/%lu) done",
-					100.0 * (double)num_steps_verb/num_samples,
-					num_steps_verb,
-					num_samples);*/
+				num_steps_verb = VERB_UPDATE_STEP;
+			}
 			num_steps_verb++;
 		}
 		// model prediction

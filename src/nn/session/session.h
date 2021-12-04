@@ -3,6 +3,8 @@
 #ifndef NN_SESSION_H
 #define NN_SESSION_H
 
+#define VERB_UPDATE_STEP 100
+
 #include "nn/utils/structs/dataset.h"
 #include "nn/model/model.h"
 #include "nn/utils/misc/randomness.h"
