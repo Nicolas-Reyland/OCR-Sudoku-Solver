@@ -14,8 +14,8 @@ nn_DataTuple _nn_dataSplitTrainTest(nn_Data* data, double test_proportion)
     size_t split_nb        = (size_t) ((double)total_size * (1.0 - test_proportion));
     size_t after_split_nb  = total_size - split_nb;
 
-    nn_InOutTuple* before_split = mem_malloc(split_nb * sizeof(nn_InOutTuple*));
-    nn_InOutTuple* after_split  = mem_malloc(after_split_nb * sizeof(nn_InOutTuple*));
+    nn_InOutTuple* before_split = mem_malloc(split_nb * sizeof(nn_InOutTuple));
+    nn_InOutTuple* after_split  = mem_malloc(after_split_nb * sizeof(nn_InOutTuple));
 
     for(size_t i = 0; i < split_nb; i++)
     {
