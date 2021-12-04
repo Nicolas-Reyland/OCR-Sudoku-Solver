@@ -46,8 +46,8 @@ int main(int argc, char** argv)
 	nn_ShapeDescription train_description;
 	nn_ShapeDescription test_description;
 
-	nn_Data* train;
-	nn_Data* test;
+	nn_Data train;
+	nn_Data test;
 
 	train = nn_loadSingleDataInputOutput(
 		input_path,
@@ -66,7 +66,7 @@ int main(int argc, char** argv)
 	);
 	nn_verbose("Created test data");
 
-	nn_DataSet* dataset = nn_createDataSet(train,test);
+	nn_DataSet dataset = nn_createDataSet(train,test);
 	nn_verbose("Created dataset.");
 
 	// model architecture
@@ -110,7 +110,7 @@ int main(int argc, char** argv)
   model->layers[1]->nodes[1]->bias = bias[1];
   model->layers[2]->nodes[0]->bias = bias[2];
 
-	nn_Session* session = nn_createSession(dataset, 20000, 0.0000001, false, false, 0.15,
+	nn_Session* session = nn_createSession(&dataset, 20000, 0.0000001, false, false, 0.15,
 	NULL,
 	NULL);
 	nn_setVerbose(true);

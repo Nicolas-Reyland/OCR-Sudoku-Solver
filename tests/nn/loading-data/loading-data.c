@@ -23,7 +23,7 @@ int main(int argc, char** argv)
 
 	nn_ShapeDescription description = nn_emptyShapeDescription();
 
-	nn_Data* data = nn_loadSingleDataInputOutput(
+	nn_Data data = nn_loadSingleDataInputOutput(
 		input_path,
 		output_path,
 		&description,
@@ -31,7 +31,7 @@ int main(int argc, char** argv)
 		NULL
 	);
 	printf("created data.\n");
-	data->printData(data);
+	data.printData(data);
 
 	//free data
 	_nn_freeData(data);
