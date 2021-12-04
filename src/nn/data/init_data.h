@@ -15,8 +15,8 @@
 #include <sys/types.h>
 
 //public functions
-nn_Data* nn_loadSingleDataInputOutput(char* input_path, char* output_path, nn_ShapeDescription* description, bool verb_mode, const char* verb_string);
-nn_DataSet* nn_loadDataSet(char* data_dir_path, nn_ShapeDescription* description, bool verb_mode);
-nn_DataSet* nn_loadTestOnlyDataSet(char* data_dir_path, nn_ShapeDescription* description, bool verb_mode);
+nn_Data nn_loadSingleDataInputOutput(char* input_path, char* output_path, nn_ShapeDescription* description, bool verb_mode, const char* verb_string);
+nn_DataSet nn_loadDataSet(char* data_dir_path, nn_ShapeDescription* description, bool verb_mode);
+nn_DataSet nn_loadTestOnlyDataSet(char* data_dir_path, nn_ShapeDescription* description, bool verb_mode);
 
 #endif

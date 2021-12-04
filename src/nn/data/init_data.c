@@ -6,7 +6,7 @@
 ssize_t getline(char **restrict lineptr, size_t *restrict n,
 		FILE *restrict stream);
 
-nn_DataSet* nn_loadDataSet(char* data_dir_path, nn_ShapeDescription* description, bool verb_mode)
+nn_DataSet nn_loadDataSet(char* data_dir_path, nn_ShapeDescription* description, bool verb_mode)
 {
 	// alloc path strings
 	char train_input_path[255];
@@ -31,14 +31,14 @@ nn_DataSet* nn_loadDataSet(char* data_dir_path, nn_ShapeDescription* description
 	nn_verbose("test inputs:   %s", test_input_path);
 	nn_verbose("test outputs:  %s", test_output_path);
 	// load the paths
-	nn_Data* train_data = nn_loadSingleDataInputOutput(train_input_path, train_output_path, description, verb_mode, "Loading 'Train' dataset");
-	nn_Data* test_data = nn_loadSingleDataInputOutput(test_input_path, test_output_path, description, verb_mode, "Loading 'Test' dataset");
+	nn_Data train_data = nn_loadSingleDataInputOutput(train_input_path, train_output_path, description, verb_mode, "Loading 'Train' dataset");
+	nn_Data test_data = nn_loadSingleDataInputOutput(test_input_path, test_output_path, description, verb_mode, "Loading 'Test' dataset");
 	// create the dataset
-	nn_DataSet* dataset = nn_createDataSet(train_data, test_data);
+	nn_DataSet dataset = nn_createDataSet(train_data, test_data);
 	return dataset;
 }
 
-nn_DataSet* nn_loadTestOnlyDataSet(char* data_dir_path, nn_ShapeDescription* description, bool verb_mode)
+nn_DataSet nn_loadTestOnlyDataSet(char* data_dir_path, nn_ShapeDescription* description, bool verb_mode)
 {
 	nn_verbose("/!\\ Warning: only loading the test dataset");
 	// alloc path strings
@@ -54,17 +54,16 @@ nn_DataSet* nn_loadTestOnlyDataSet(char* data_dir_path, nn_ShapeDescription* des
 	nn_verbose("test inputs:   %s", test_input_path);
 	nn_verbose("test outputs:  %s", test_output_path);
 	// load the paths
-	nn_Data* train_data = NULL;
-	nn_Data* test_data = nn_loadSingleDataInputOutput(test_input_path, test_output_path, description, verb_mode, "Loading 'Test' dataset");
+	nn_Data train_data = { .active = false };
+	nn_Data test_data = nn_loadSingleDataInputOutput(test_input_path, test_output_path, description, verb_mode, "Loading 'Test' dataset");
 	// create the dataset
-	nn_DataSet* dataset = nn_createDataSet(train_data, test_data);
-	return dataset;
+	return nn_createDataSet(train_data, test_data);
 }
 
 char defineShapeDescription(nn_ShapeDescription* description, size_t* num_tuples, FILE* file);
 bool _readLineInFile(FILE* file, size_t num_values, double* values);
 
-nn_Data* nn_loadSingleDataInputOutput(char* input_path, char* output_path, nn_ShapeDescription* description, bool verb_mode, const char* verb_string)
+nn_Data nn_loadSingleDataInputOutput(char* input_path, char* output_path, nn_ShapeDescription* description, bool verb_mode, const char* verb_string)
 {
     FILE* input_file = fopen(input_path,"r+");
     FILE* output_file = fopen(output_path, "r+");
@@ -94,8 +93,8 @@ nn_Data* nn_loadSingleDataInputOutput(char* input_path, char* output_path, nn_Sh
 
 	// allocate memory for input output tuples
 	nn_InOutTuple* iot_array  = mem_malloc(num_tuples * sizeof(nn_InOutTuple));
-	double* all_input_values = calloc(input_data_size * num_tuples, sizeof(double)); // DANGER: calloc, not mem_calloc !
-	double* all_output_values = calloc(output_data_size * num_tuples, sizeof(double)); // DANGER: calloc, not mem_calloc !
+	double* all_input_values = mem_calloc(input_data_size * num_tuples, sizeof(double)); // DANGER: calloc, not mem_calloc !
+	double* all_output_values = mem_calloc(output_data_size * num_tuples, sizeof(double)); // DANGER: calloc, not mem_calloc !
 
 	// Progress bar
 	ProgressBar data_load_bar;
@@ -136,7 +135,6 @@ nn_Data* nn_loadSingleDataInputOutput(char* input_path, char* output_path, nn_Sh
           mem_free(input_values);
           mem_free(output_values);
           nn_err_nn_verbose_exit("Not same number of lines in input file and output file. Exiting...");
-          return NULL;
         }
 
         //
@@ -159,7 +157,7 @@ nn_Data* nn_loadSingleDataInputOutput(char* input_path, char* output_path, nn_Sh
     fclose(input_file);
     fclose(output_file);
 
-    return _nn_createData(_nn_loadDataCollection(iot_array, num_tuples));
+    return _nn_createData(_nn_loadDataCollection(iot_array, num_tuples, all_input_values, all_output_values));
 }
 
 

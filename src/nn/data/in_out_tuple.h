@@ -14,6 +14,5 @@ typedef struct nn_InOutTuple
 } nn_InOutTuple;
 
 nn_InOutTuple _nn_createInOutTuple(nn_Sample* input, nn_Sample* output);
-void _nn_freeInOutTuple(nn_InOutTuple tuple);
 
 #endif

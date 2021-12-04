@@ -22,9 +22,3 @@ nn_InOutTuple _nn_createInOutTuple(nn_Sample* input, nn_Sample* output)
     tuple.printTuple   = &_nn_printTuple;
     return tuple;
 }
-
-void _nn_freeInOutTuple(nn_InOutTuple tuple)
-{
-    freeSample(tuple.input);
-    freeSample(tuple.output);
-}

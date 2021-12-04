@@ -69,9 +69,9 @@ int main(int argc, char** argv)
 	strcpy(data_out_path, data_path);
 	strcat(data_in_path, "-data.in");
 	strcat(data_out_path, "-data.out");
-	nn_Data* data = nn_loadSingleDataInputOutput(data_in_path, data_out_path, &shape, true, "Loading data");
-    nn_DataTuple data_tuple = data->splitTrainTest(data, 0.3);
-    nn_DataSet* dataset = nn_createDataSet(data_tuple.data1, data_tuple.data2);
+	nn_Data data = nn_loadSingleDataInputOutput(data_in_path, data_out_path, &shape, true, "Loading data");
+    nn_DataTuple data_tuple = data.splitTrainTest(data, 0.3);
+    nn_DataSet dataset = nn_createDataSet(data_tuple.data1, data_tuple.data2);
 
     // session
 	sprintf(save_model_str, "save/%s-%s-%s-", data_prefix, second_activation_str, hidden_layer_size_str);
@@ -95,7 +95,7 @@ int main(int argc, char** argv)
 	strcat(avg_loss_log_path, ".log");
 	strcat(avg_right_log_path, ".log");
 	nn_Session* session = nn_createSession(
-		dataset,
+		&dataset,
 		10,
 		0.1,
 		false,
