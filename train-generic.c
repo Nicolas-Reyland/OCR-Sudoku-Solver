@@ -100,7 +100,7 @@ int main(int argc, char** argv)
 		0.1,
 		false,
 		true,
-		0.05,
+		0.1,
 		avg_loss_log_path,
 		avg_right_log_path
 	);
