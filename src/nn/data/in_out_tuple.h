@@ -10,10 +10,10 @@ typedef struct nn_InOutTuple
 {
     nn_Sample* input;
     nn_Sample* output;
-    void (*printTuple)(struct nn_InOutTuple*);
+    void (*printTuple)(struct nn_InOutTuple);
 } nn_InOutTuple;
 
-nn_InOutTuple* _nn_createInOutTuple(nn_Sample* input, nn_Sample* output);
-void _nn_freeInOutTuple(nn_InOutTuple* tuple);
+nn_InOutTuple _nn_createInOutTuple(nn_Sample* input, nn_Sample* output);
+void _nn_freeInOutTuple(nn_InOutTuple tuple);
 
 #endif

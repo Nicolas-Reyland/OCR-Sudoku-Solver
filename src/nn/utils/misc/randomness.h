@@ -20,6 +20,6 @@ double getNormalizedPositiveRandomDouble();
 double getNormalizedRandomDouble();
 
 
-void shuffleArray(nn_InOutTuple** array, size_t n);
+void shuffleArray(nn_InOutTuple* array, size_t n);
 
 #endif

@@ -8,14 +8,14 @@
 /// <Summary/>
 nn_DataTuple _nn_dataSplitTrainTest(nn_Data* data, double test_proportion)
 {
-    nn_InOutTuple** array_to_split = data->data_collection->iot_array;
+    nn_InOutTuple* array_to_split = data->data_collection->iot_array;
 
     size_t total_size      = data->data_collection->num_tuples;
     size_t split_nb        = (size_t) ((double)total_size * (1.0 - test_proportion));
     size_t after_split_nb  = total_size - split_nb;
 
-    nn_InOutTuple** before_split = mem_malloc(split_nb * sizeof(nn_InOutTuple*));
-    nn_InOutTuple** after_split  = mem_malloc(after_split_nb * sizeof(nn_InOutTuple*));
+    nn_InOutTuple* before_split = mem_malloc(split_nb * sizeof(nn_InOutTuple*));
+    nn_InOutTuple* after_split  = mem_malloc(after_split_nb * sizeof(nn_InOutTuple*));
 
     for(size_t i = 0; i < split_nb; i++)
     {
@@ -39,13 +39,9 @@ static void _nn_printData(nn_Data* data)
 {
     for(size_t i = 0; i < data->data_collection->num_tuples; i++)
     {
-        nn_InOutTuple* tuple = data->data_collection->iot_array[i];
-        if(tuple == NULL)
-        {
-            nn_err_nn_verbose_exit("tuple is not defined, exiting...");
-        }
+        nn_InOutTuple tuple = data->data_collection->iot_array[i];
         printf("%ld/\n",(i+1));
-        tuple->printTuple(tuple);
+        tuple.printTuple(tuple);
     }
 }
 

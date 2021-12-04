@@ -2,7 +2,7 @@
 
 #include "data_collection.h"
 
-nn_DataCollection* _nn_loadDataCollection(nn_InOutTuple** iot_array, size_t num_tuples)
+nn_DataCollection* _nn_loadDataCollection(nn_InOutTuple* iot_array, size_t num_tuples)
 {
     nn_DataCollection* data_collection = mem_malloc(sizeof(nn_DataCollection));
     data_collection->iot_array = iot_array;

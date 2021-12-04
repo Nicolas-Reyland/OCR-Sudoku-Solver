@@ -89,7 +89,7 @@ nn_Data* nn_loadSingleDataInputOutput(char* input_path, char* output_path, nn_Sh
 	}
 
 	// allocate memory for input output tuples
-	nn_InOutTuple** iot_array  = mem_malloc(num_tuples * sizeof(nn_InOutTuple*));
+	nn_InOutTuple* iot_array  = mem_malloc(num_tuples * sizeof(nn_InOutTuple));
 
     size_t input_data_size   =   description->range;
     size_t output_data_size  =   output_description.range;
@@ -100,6 +100,8 @@ nn_Data* nn_loadSingleDataInputOutput(char* input_path, char* output_path, nn_Sh
 		data_load_bar = createProgressBar(verb_string, 0, num_tuples, DEFAULT_PROGRESSBAR_WIDTH);
 	else
 		data_load_bar = createProgressBar(NULL, 0, num_tuples, DEFAULT_PROGRESSBAR_WIDTH);
+
+	//
 
     size_t  next_nn_verbose_print = 100,
 			next_nn_verbose_print_step = num_tuples / 100;
