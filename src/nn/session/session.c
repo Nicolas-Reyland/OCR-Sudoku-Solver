@@ -43,17 +43,17 @@ void _nn_train(struct nn_Session* session, nn_Model* model)
 				updateProgressBar(&training_bar, i);
 
 			// feed forward the input at index 'i'
-			_nn_feedForward(model, tuple_array[i].input->values);
+			_nn_feedForward(model, tuple_array[i].input.values);
 
 			//we calculate the loss function
 			double error = applyLosses(
 				model->layers[model->num_layers - 1],
-				tuple_array[i].output->values,
+				tuple_array[i].output.values,
 				model->loss);
 
 			loss_buffer += error;
 
-			_nn_backPropagation(model, tuple_array[i].output->values);
+			_nn_backPropagation(model, tuple_array[i].output.values);
 			_nn_updateWeights(model, session->learning_rate);
 
 			i++;
@@ -122,12 +122,12 @@ void _nn_train_one_hot(struct nn_Session* session, nn_Model* model)
 			}
 
 			// feed forward the input at index 'i'
-			_nn_feedForward(model, tuple_array[i].input->values);
+			_nn_feedForward(model, tuple_array[i].input.values);
 
 			// we calculate the loss
 			double error = applyLosses(
 				model->layers[model->num_layers - 1],
-				tuple_array[i].output->values,
+				tuple_array[i].output.values,
 				model->loss);
 
 			loss_buffer += error;
@@ -141,14 +141,14 @@ void _nn_train_one_hot(struct nn_Session* session, nn_Model* model)
 					max_index = j;
 			// get index of hot value (1.0) in output values
 			size_t result_index = 0;
-			for (; result_index < tuple_array[i].output->num_values; result_index++)
-				if (tuple_array[i].output->values[result_index]) // != 0
+			for (; result_index < tuple_array[i].output.num_values; result_index++)
+				if (tuple_array[i].output.values[result_index]) // != 0
 					break;
 			// indices must be the same for the model to have rightly predicted
 			if (max_index == result_index)
 				num_right_predictions++;
 
-			_nn_backPropagation(model, tuple_array[i].output->values);
+			_nn_backPropagation(model, tuple_array[i].output.values);
 			_nn_updateWeights(model, session->learning_rate);
 		}
 
@@ -181,7 +181,7 @@ void _nn_test(struct nn_Session* session, nn_Model* model)
 	{
 		nn_verbose("Testing Tuple:");
 		tuple_array[i].printTuple(tuple_array[i]);
-		_nn_feedForward(model, tuple_array[i].input->values);
+		_nn_feedForward(model, tuple_array[i].input.values);
 
 		nn_verbose("Result:");
 		for(size_t j = 0; j < model->layers[model->num_layers - 1]->num_nodes; j++)
@@ -191,7 +191,7 @@ void _nn_test(struct nn_Session* session, nn_Model* model)
 		//we calculate the loss function
 		double error = applyLosses(
 			model->layers[model->num_layers - 1],
-			tuple_array[i].output->values,
+			tuple_array[i].output.values,
 			model->loss);
 		nn_verbose("Losses error = %f",error);
 	}
@@ -232,7 +232,7 @@ void _nn_test_one_hot(struct nn_Session* session, nn_Model* model)
 			num_steps_verb++;
 		}
 		// model prediction
-		double* output_values = _nn_useModel(model, tuple_array[i].input->values);
+		double* output_values = _nn_useModel(model, tuple_array[i].input.values);
 		// get maximised value by the model
 		size_t max_index = 0;
 		for(size_t j = 1; j < output_layer->num_nodes; j++)
@@ -241,8 +241,8 @@ void _nn_test_one_hot(struct nn_Session* session, nn_Model* model)
 		mem_free(output_values);
 		// get index of hot value (1.0) in output values
 		size_t result_index = 0;
-		for (; result_index < tuple_array[i].output->num_values; result_index++)
-			if (tuple_array[i].output->values[result_index]) // != 0
+		for (; result_index < tuple_array[i].output.num_values; result_index++)
+			if (tuple_array[i].output.values[result_index]) // != 0
 				break;
 		// indices must be the same for the model to have rightly predicted
 		if (max_index == result_index) {
@@ -253,7 +253,7 @@ void _nn_test_one_hot(struct nn_Session* session, nn_Model* model)
 		// calculate the loss
 		double error = applyLosses(
 			model->layers[model->num_layers - 1],
-			tuple_array[i].output->values,
+			tuple_array[i].output.values,
 			model->loss);
 		// add the loss to a total (for later average loss calculation)
 		loss_sum += error;

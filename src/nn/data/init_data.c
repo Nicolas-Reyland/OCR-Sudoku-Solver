@@ -138,12 +138,12 @@ nn_Data nn_loadSingleDataInputOutput(char* input_path, char* output_path, nn_Sha
         }
 
         //
-        nn_Sample* input    = createSample(
+        nn_Sample input    = createSample(
 			*description,
 			input_values,
             description->range
 		);
-        nn_Sample* output   = createSample(
+        nn_Sample output   = createSample(
 			*description,
 			output_values,
             output_description.range
