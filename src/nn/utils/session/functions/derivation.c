@@ -58,17 +58,23 @@ void _nn_dSoftmax(nn_Layer* layer)
     double sum = 0;
     for (size_t i = 0; i < N; i++) {
         exponentials[i] = exp(layer->nodes[i]->raw_value);
-        if (layer->nodes[i]->raw_value < -10e3) {
-            nn_err_nn_verbose_exit("WTF: %lu", layer->nodes[i]->raw_value);
-        }
         sum += exponentials[i];
     }
     double sum_squared = sum * sum;
+    if (sum_squared < 1e-17 || isnan(sum)) {
+        // this means something went wrong
+        // better learn something (0.1) of this situation than nothing (0.0)
+        for (size_t i = 0; i < N; i++)
+            layer->nodes[i]->d_raw_value = 0.1;
+        mem_free(exponentials);
+        return;
+    }
     // calculate derivative values
     for (size_t i = 0; i < N; i++) {
         layer->nodes[i]->d_raw_value = exponentials[i] * (sum - exponentials[i]) / sum_squared;
         if (isnan(layer->nodes[i]->d_raw_value)) {
-            nn_verbose("isnan in dsoftmax: exp[i] = %lf, sum = %lf, sum_squared = %lf",
+            nn_verbose("isnan in dsoftmax: exp[%lu] = %lf, sum = %lf, sum_squared = %lf",
+                i,
                 exponentials[i],
                 sum,
                 sum_squared
