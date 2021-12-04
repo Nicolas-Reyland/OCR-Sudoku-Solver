@@ -1,8 +1,4 @@
-// train-example.c
-
 #include "nn/nn.h"
-
-// extern linked_list* GPL;
 
 int main()
 {
@@ -51,11 +47,7 @@ int main()
 	// save model
 	model->saveModel(model, "save/mnist/custom-model-");
 
-	// free model
-	nn_freeModel(model);
-	// free session
-	nn_freeSession(session);
-	// free remaining pointers and the Global Pointer List itself
+	// free remaining
 	mem_freeGPL(false);
 
 	return 0;
