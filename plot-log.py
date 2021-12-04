@@ -4,10 +4,13 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
 import sys
 
-assert len(sys.argv) == 3, "Usage: show-log.py loss-log-file rights-log-file"
+assert len(sys.argv) == 2, "Usage: show-log.py file-infix"
 
-losses_y = np.array(list(map(lambda x: float(x.strip()), open(sys.argv[1]).readlines())))
-rights_y = np.array(list(map(lambda x: float(x.strip()), open(sys.argv[2]).readlines())))
+avg_loss_file = f"avg-loss-{sys.argv[1]}.log"
+avg_right_file = f"avg-right-{sys.argv[1]}.log"
+
+losses_y = np.array(list(map(lambda x: float(x.strip()), open(avg_loss_file).readlines())))
+rights_y = np.array(list(map(lambda x: float(x.strip()), open(avg_right_file).readlines())))
 rights_y *= 100.0
 
 losses_x = np.linspace(0.0, losses_y.max(), len(losses_y))
