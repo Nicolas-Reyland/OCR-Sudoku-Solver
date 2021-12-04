@@ -20,6 +20,9 @@ save/xor/weightsandbias.mdl
 # bmp files in root folder
 /*.bmp
 
+# Solved sudoku image
+solved_grid.png
+
 # cells dir in root folder
 /cells/
 
