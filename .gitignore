@@ -17,8 +17,11 @@ save/xor/weightsandbias.mdl
 # log files
 *.log
 
-# bmp files
-./*.bmp
+# bmp files in root folder
+/*.bmp
+
+# cells dir in root folder
+/cells/
 
 # Object files
 *.o
