@@ -6,23 +6,23 @@
 
 int main(int argc, char** argv)
 {
-	nn_setVerbose(true);
+	setVerbose(true);
 
 	if (argc != 2)
-		nn_err_nn_verbose_exit("Usage: ./test-model-cli model-name");
+		err_verbose_exit("Usage: ./test-model-cli model-name");
 	char* model_path = argv[1];
 
 	// init random
 	nn_initRandom();
-	nn_initMemoryTracking();
+	initMemoryTracking();
 
-	nn_verbose("Loading model...");
+	verbose("Loading model...");
 	// malloc model
 	nn_Model* model = nn_loadModel(model_path);
     model->printModelArchitecture(model);
 
 	// load the dataset
-	nn_verbose("Loading dataset...");
+	verbose("Loading dataset...");
 	nn_ShapeDescription shape = nn_emptyShapeDescription();
 	// nn_Data* data = nn_loadSingleDataInputOutput("datas/numeric-data.in", "datas/numeric-data.out", &shape, true, "Loading numeric data");
     // nn_DataTuple data_tuple = data->splitTrainTest(data, 0.3);
@@ -35,7 +35,7 @@ int main(int argc, char** argv)
 
 	session->test_one_hot(session, model);
 
-	nn_setVerbose(true);
+	setVerbose(true);
 
 	// free model
 	nn_freeModel(model);

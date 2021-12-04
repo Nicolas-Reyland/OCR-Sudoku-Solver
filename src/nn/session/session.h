@@ -32,9 +32,9 @@ struct nn_Session {
 };
 
 nn_Session* nn_createSession(nn_DataSet* dataset, unsigned int nb_epochs,
-double loss_threshold, bool stop_on_loss_threshold_reached, bool nn_verbose,
+double loss_threshold, bool stop_on_loss_threshold_reached, bool verbose,
 double learning_rate, const char* loss_log_file, const char* right_log_file);
-nn_Session* nn_createTestSession(nn_DataSet* dataset, bool nn_verbose);
+nn_Session* nn_createTestSession(nn_DataSet* dataset, bool verbose);
 void nn_freeSession(nn_Session* session);
 
 

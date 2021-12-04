@@ -9,14 +9,14 @@
 int main(int argc, char** argv)
 {
 	if (argc > 1 && argv[1][0]) {
-		nn_setVerbose(false);
+		setVerbose(false);
 	}
 
 	PROGRESS_BAR_STATUS = false;
 
 	// init random
 	nn_initRandom();
-	nn_initMemoryTracking();
+	initMemoryTracking();
 	// model architecture
 	nn_ShapeDescription model_architecture[NUM_LAYERS] = {
 		nn_createShapeDescription(3, 3, 3), // { .dims = 3, .x = 3, .y = 3, .z = 3 },
@@ -31,17 +31,17 @@ int main(int argc, char** argv)
 	losses loss = CATEGORICALCROSSENTROPY;
 	optimizer optimizer = ADAM;
 
-	nn_verbose("Allocating model...");
+	verbose("Allocating model...");
 
 	// malloc model
 	nn_Model* model = nn_createModel(NUM_LAYERS, model_architecture, activations, loss, optimizer);
 
-	nn_verbose("Model allocated.");
+	verbose("Model allocated.");
 
 	// free model
 	nn_freeModel(model);
 
-	nn_verbose("Model freed.");
+	verbose("Model freed.");
 
 	mem_freeGPL(false);
 

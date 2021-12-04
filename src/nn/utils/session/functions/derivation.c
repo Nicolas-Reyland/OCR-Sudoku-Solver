@@ -33,14 +33,14 @@ void _nn_derivativeLayerActivation(nn_Layer* layer)
             _nn_dSoftmax(layer);
             return;
         default:
-            nn_err_nn_verbose_exit(
+            err_verbose_exit(
                 "derivativeActivation: Unrecognised activation function: %s\n",
                 activation_str[layer->activation]);
             return;
     }
     // scalar function application
     if (scalar_fn == NULL) {
-        nn_err_nn_verbose_exit("Scalar function is NULL\n");
+        err_verbose_exit("Scalar function is NULL\n");
     }
     _nn_mapScalarFunction(layer, scalar_fn);
 }
@@ -73,7 +73,7 @@ void _nn_dSoftmax(nn_Layer* layer)
     for (size_t i = 0; i < N; i++) {
         layer->nodes[i]->d_raw_value = exponentials[i] * (sum - exponentials[i]) / sum_squared;
         if (isnan(layer->nodes[i]->d_raw_value)) {
-            nn_verbose("isnan in dsoftmax: exp[%lu] = %lf, sum = %lf, sum_squared = %lf",
+            verbose("isnan in dsoftmax: exp[%lu] = %lf, sum = %lf, sum_squared = %lf",
                 i,
                 exponentials[i],
                 sum,

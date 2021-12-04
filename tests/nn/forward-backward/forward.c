@@ -9,7 +9,7 @@ extern bool _nn_random_init_done;
 
 int main()
 {
-	nn_setVerbose(false);
+	setVerbose(false);
 
 	// init random
 	// nn_initRandom(); // NOT initializing random this ways
@@ -17,7 +17,7 @@ int main()
 	srand( 1234567890 );
 	_nn_random_init_done = true;
 	printf("Next random integer is: %d\n", rand());
-	nn_initMemoryTracking();
+	initMemoryTracking();
 	// model architecture
 	nn_ShapeDescription model_architecture[3] = {
 		nn_create1DShapeDescription(3),

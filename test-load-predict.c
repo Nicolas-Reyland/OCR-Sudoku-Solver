@@ -6,19 +6,19 @@
 
 int main()
 {
-	nn_setVerbose(true);
+	setVerbose(true);
 
 	// init random
 	nn_initRandom();
-	nn_initMemoryTracking();
+	initMemoryTracking();
 
-	nn_verbose("Loading model...");
+	verbose("Loading model...");
 	// malloc model
 	nn_Model* model = nn_loadModel("save/mnist/5k-");
     model->printModelArchitecture(model);
 
 	// load the dataset
-	nn_verbose("Loading dataset...");
+	verbose("Loading dataset...");
 	nn_ShapeDescription shape = nn_emptyShapeDescription();
 	nn_DataSet* dataset = nn_loadTestOnlyDataSet("datas/mnist/", &shape, true);
 
@@ -33,7 +33,7 @@ int main()
 		NULL
 	);
 
-	nn_verbose("Session created");
+	verbose("Session created");
 
 	session->test_one_hot(session, model);
 
@@ -42,7 +42,7 @@ int main()
 	// free session
 	nn_freeSession(session);
 
-	nn_verbose("Model freed.");
+	verbose("Model freed.");
 
 	mem_freeGPL(false);
 

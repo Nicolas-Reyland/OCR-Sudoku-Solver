@@ -70,12 +70,12 @@ void oneLearningStep(nn_Model* model, double* input, double* output, double lear
 
 int main(int argc, char** argv)
 {
-	nn_setVerbose(false);
+	setVerbose(false);
 	// init random
 	// nn_initRandom(); // NOT initializing random this ways
 	// custom random init
 	nn_initRandom(); // overwriting weights anyway
-	nn_initMemoryTracking();
+	initMemoryTracking();
 
 	// model architecture
 	nn_ShapeDescription model_architecture[3] = {

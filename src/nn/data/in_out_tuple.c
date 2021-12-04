@@ -4,12 +4,12 @@
 
 static void _nn_printTuple(nn_InOutTuple tuple)
 {
-    nn_verbose("number of input values: %ld", tuple.input.num_values);
-    nn_verbose("number of output values: %ld", tuple.output.num_values);
+    verbose("number of input values: %ld", tuple.input.num_values);
+    verbose("number of output values: %ld", tuple.output.num_values);
 
-    nn_verbose("Input:");
+    verbose("Input:");
     tuple.input.print(tuple.input);
-    nn_verbose("Output expected:");
+    verbose("Output expected:");
     tuple.output.print(tuple.output);
 }
 

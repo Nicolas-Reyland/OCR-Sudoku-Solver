@@ -11,7 +11,7 @@ double applyLosses(nn_Layer* layer, double *desired_output, losses loss)
 	switch(loss)
 	{
 		case NO_LOSS:
-			nn_err_nn_verbose_exit("Tried to evaluate empty loss function (no loss defined)\n");
+			err_verbose_exit("Tried to evaluate empty loss function (no loss defined)\n");
 			return NAN;
 		case CATEGORICALCROSSENTROPY:
 			return _nn_categoricalCrossEntropy(layer, desired_output);
@@ -22,7 +22,7 @@ double applyLosses(nn_Layer* layer, double *desired_output, losses loss)
 		default:
 			break;
 	}
-	nn_err_nn_verbose_exit("ApplyLosses: unrecognized losses function: %s\n",
+	err_verbose_exit("ApplyLosses: unrecognized losses function: %s\n",
 		losses_str[loss]);
 	return NAN;
 }
@@ -62,7 +62,7 @@ double _nn_categoricalCrossEntropy(nn_Layer* layer, double* desired_output)
 				sum += -INFINITY;
 			}
 		} else if (layer->nodes[i]->value < 0) {
-			nn_err_nn_verbose_exit("FATAL ERROR CCE: injected value in log cannot be negative or zero: %lf", layer->nodes[i]->value);
+			err_verbose_exit("FATAL ERROR CCE: injected value in log cannot be negative or zero: %lf", layer->nodes[i]->value);
 		}
 		sum += desired_output[i] * log(layer->nodes[i]->value);
 	}

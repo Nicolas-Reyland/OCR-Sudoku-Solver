@@ -11,7 +11,7 @@ void printLayer(int, nn_Layer* layer);
 
 int main()
 {
-	nn_setVerbose(false);
+	setVerbose(false);
 
 	// init random
 	// nn_initRandom(); // NOT initializing random this ways
@@ -20,7 +20,7 @@ int main()
 	_nn_random_init_done = true;
 	printf("Next random integer is: %d\n", rand());
 	printf("Next random normalized double: %lf\n", getNormalizedRandomDouble());
-	nn_initMemoryTracking();
+	initMemoryTracking();
 	// model architecture
 	nn_ShapeDescription model_architecture[3] = {
 		nn_create1DShapeDescription(2),

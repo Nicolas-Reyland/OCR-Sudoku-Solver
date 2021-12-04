@@ -49,7 +49,7 @@ int main(int argc, char **argv)
 {
     // init Neural Network & Co.
     nn_initRandom();
-    nn_initMemoryTracking();
+    initMemoryTracking();
     nn_Model* model = nn_loadModel("save/mix-sigmoid-256-");
 	number_prediction_model = model;
 
@@ -644,7 +644,7 @@ int predictionToNumber(double* prediction)
 	for (int i = 1; i < 9; i++) {
 		if (prediction[i] > prediction[max_index]) {
 			max_index = i;
-            nn_verbose("Updated max_index to: %d", max_index);
+            verbose("Updated max_index to: %d", max_index);
 		}
 	}
 
@@ -726,13 +726,13 @@ void launch_process(GtkWidget *widget, gpointer user_data)
     // through the neural network
     for(unsigned int k = 0; k < nb_cells; k++)
     {
-        nn_verbose("predicting %lu/%lu ...", k + 1, nb_cells);
+        verbose("predicting %lu/%lu ...", k + 1, nb_cells);
         double* prediction = model->use(model, value_array[k]);
 
         for (size_t i = 0; i < 9; i++)
-            nn_verbose("prediction[%lu] = %f",i + 1, prediction[i]);
+            verbose("prediction[%lu] = %f",i + 1, prediction[i]);
 
-        nn_setVerbose(true);
+        setVerbose(true);
 
         int x = positions_array[k].x,
             y = positions_array[k].y;
@@ -741,11 +741,11 @@ void launch_process(GtkWidget *widget, gpointer user_data)
         // and stores it at the right place of the matrix
         unsolved_grid[y][x] = toNumber(prediction, 9);
 
-        nn_verbose("predicted a %d", unsolved_grid[y][x]);
+        verbose("predicted a %d", unsolved_grid[y][x]);
         mem_free(prediction);
     }
 
-    nn_verbose("done predicting");
+    verbose("done predicting");
 
     for(int i = 0; i < SIZE; i++)
         for(int j = 0; j < SIZE; j++)
@@ -755,23 +755,23 @@ void launch_process(GtkWidget *widget, gpointer user_data)
     //****************Sudoku solver part*****************
     //===================================================
 
-    nn_verbose("unsolved grid");
+    verbose("unsolved grid");
     for (size_t i = 0; i < SIZE; i++) {
         for (size_t j = 0; j < SIZE; j++) {
-            nn_verbose_no_endline("%lu ", unsolved_grid[i][j]);
+            verbose_no_endline("%lu ", unsolved_grid[i][j]);
         }
-        nn_verbose_endline();
+        verbose_endline();
     }
 
     //solve the new matrix
     solver(solved_grid);
 
-    nn_verbose("solved grid");
+    verbose("solved grid");
     for (size_t i = 0; i < SIZE; i++) {
         for (size_t j = 0; j < SIZE; j++) {
-            nn_verbose_no_endline("%lu ", solved_grid[i][j]);
+            verbose_no_endline("%lu ", solved_grid[i][j]);
         }
-        nn_verbose_endline();
+        verbose_endline();
     }
 
     //free the content of the arrays that we don't use anymore

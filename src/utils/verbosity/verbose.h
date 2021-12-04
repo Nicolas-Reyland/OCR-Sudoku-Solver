@@ -1,4 +1,4 @@
-// nn_verbose.h
+// verbose.h
 
 #ifndef UTILS_VERBOSITY_VERBOSE_H
 #define UTILS_VERBOSITY_VERBOSE_H
@@ -14,11 +14,11 @@
 
 extern bool VERBOSE;
 
-int nn_verbose(const char * restrict, ...);
-int nn_verbose_no_endline(const char * restrict, ...);
-int nn_err_nn_verbose(const char * restrict, ...);
-int nn_err_nn_verbose_exit(const char * restrict, ...);
-void nn_verbose_endline(void);
-void nn_setVerbose(bool);
+int verbose(const char * restrict, ...);
+int verbose_no_endline(const char * restrict, ...);
+int err_verbose(const char * restrict, ...);
+int err_verbose_exit(const char * restrict, ...);
+void verbose_endline(void);
+void setVerbose(bool);
 
 #endif

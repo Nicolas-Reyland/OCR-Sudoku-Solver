@@ -1,15 +1,15 @@
-// nn_verbose.c
+// verbose.c
 
 #include "verbose.h"
 
 bool VERBOSE = true;
 
-void nn_setVerbose(bool verb)
+void setVerbose(bool verb)
 {
     VERBOSE = verb;
 }
 
-int nn_verbose(const char * restrict format, ...) {
+int verbose(const char * restrict format, ...) {
     if ( !VERBOSE ) {
         return 0;
     }
@@ -23,7 +23,7 @@ int nn_verbose(const char * restrict format, ...) {
     return ret;
 }
 
-int nn_err_nn_verbose(const char * restrict format, ...) {
+int err_verbose(const char * restrict format, ...) {
     va_list args;
     va_start(args, format);
     fprintf(stderr, "ERROR: ");
@@ -34,7 +34,7 @@ int nn_err_nn_verbose(const char * restrict format, ...) {
     return ret;
 }
 
-int nn_err_nn_verbose_exit(const char * restrict format, ...) {
+int err_verbose_exit(const char * restrict format, ...) {
     va_list args;
     va_start(args, format);
     fprintf(stderr, "ERROR: ");
@@ -47,7 +47,7 @@ int nn_err_nn_verbose_exit(const char * restrict format, ...) {
 }
 
 // maybe force the flushing of the stdout stream ?
-int nn_verbose_no_endline(const char * restrict format, ...) {
+int verbose_no_endline(const char * restrict format, ...) {
     if ( !VERBOSE ) {
         return 0;
     }
@@ -60,7 +60,7 @@ int nn_verbose_no_endline(const char * restrict format, ...) {
     return ret;
 }
 
-void nn_verbose_endline(void)
+void verbose_endline(void)
 {
     printf("\n");
 }

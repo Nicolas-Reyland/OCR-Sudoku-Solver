@@ -6,7 +6,7 @@ void __converter(char* filepath, double* converted_cell);
 
 void converter(char* path, double** converted_cells, Cell* cells_position)
 {
-	nn_verbose("Reading directory at path: %s\n", path);
+	verbose("Reading directory at path: %s\n", path);
 	// I don't actually init sdl because I assume
 	// it has already been initialized by grid_description
 	DIR* directory;
@@ -18,7 +18,7 @@ void converter(char* path, double** converted_cells, Cell* cells_position)
 		errx(1, "CONVERTER Error: There is no directory.");
 	while((dir = readdir(directory)) != NULL)
 	{
-		nn_verbose("index: %3d ", index);
+		verbose("index: %3d ", index);
 
 		if (dir->d_type == DT_REG)
 		{
@@ -26,8 +26,8 @@ void converter(char* path, double** converted_cells, Cell* cells_position)
 			char buffer[1000];
 			strcpy(buffer, path);
 			strcat(buffer, dir->d_name);
-			nn_verbose("%s", buffer);
-			nn_verbose_endline();
+			verbose("%s", buffer);
+			verbose_endline();
 
 			//converting...
 			//allocatting memory to the double array
@@ -42,7 +42,7 @@ void converter(char* path, double** converted_cells, Cell* cells_position)
 		else
 		{
 			//symlinks are filtered
-			nn_verbose("Not a file: %s\n", dir->d_name);
+			verbose("Not a file: %s\n", dir->d_name);
 			index--;
 		}
 
@@ -54,7 +54,7 @@ void converter(char* path, double** converted_cells, Cell* cells_position)
 
 unsigned int count_files(char* path)
 {
-	nn_verbose("Reading directory at path: %s\n", path);
+	verbose("Reading directory at path: %s\n", path);
 
 	DIR* directory;
 	directory = opendir(path);

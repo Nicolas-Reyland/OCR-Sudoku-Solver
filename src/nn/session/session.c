@@ -13,16 +13,16 @@ void _nn_train(struct nn_Session* session, nn_Model* model)
 
 	bool loss_threshold_condition = true;
 
-	nn_verbose(" - Training for %lu epochs -", session->nb_epochs);
+	verbose(" - Training for %lu epochs -", session->nb_epochs);
 
-	// incrementing directly epoch : so the nn_verbose does not have to add 1
+	// incrementing directly epoch : so the verbose does not have to add 1
 	// when printing (first epoch : 1, not 0)
 	for (size_t epoch = 0; epoch++ < session->nb_epochs && loss_threshold_condition;)
 	{
 
 		if (session->verb_mode)
 		{
-			nn_verbose("Epoch number: %ld", epoch);
+			verbose("Epoch number: %ld", epoch);
 		}
 
 		ProgressBar training_bar = createProgressBar(
@@ -60,7 +60,7 @@ void _nn_train(struct nn_Session* session, nn_Model* model)
 			i++;
 
 			// if (session->verb_mode && i % nb_verb_step == 0) {
-			// 	nn_verbose(" train session run: %.2f%c  done (loss: %lf)", 100.0 * (double)i/sample_size, '%', error);
+			// 	verbose(" train session run: %.2f%c  done (loss: %lf)", 100.0 * (double)i/sample_size, '%', error);
 			// }
 		}
 
@@ -73,7 +73,7 @@ void _nn_train(struct nn_Session* session, nn_Model* model)
 			!session->stop_on_loss_threshold_reached ||
 			loss_buffer > session->loss_threshold;
 
-		nn_verbose("Epoch finished with:\n - avg loss: %lf\n", loss_buffer);
+		verbose("Epoch finished with:\n - avg loss: %lf\n", loss_buffer);
 	}
 	return;
 }
@@ -88,17 +88,17 @@ void _nn_train_one_hot(struct nn_Session* session, nn_Model* model)
 
 	bool loss_threshold_condition = true;
 
-	nn_verbose(" * Training for %lu epochs on %lu samples *", session->nb_epochs, sample_size);
+	verbose(" * Training for %lu epochs on %lu samples *", session->nb_epochs, sample_size);
 
 	Logger loss_logger = createLogger(session->loss_log_file);
 	Logger right_logger = createLogger(session->right_log_file);
 
-	// incrementing directly epoch : so the nn_verbose does not have to add 1
+	// incrementing directly epoch : so the verbose does not have to add 1
 	// when printing (first epoch : 1, not 0)
 	for (size_t epoch = 0; epoch++ < session->nb_epochs && loss_threshold_condition;)
 	{
 		if (session->verb_mode)
-			nn_verbose(" * Doing epoch %lu/%lu", epoch, session->nb_epochs);
+			verbose(" * Doing epoch %lu/%lu", epoch, session->nb_epochs);
 
 		ProgressBar training_bar = createProgressBar(
 			"Training",
@@ -163,7 +163,7 @@ void _nn_train_one_hot(struct nn_Session* session, nn_Model* model)
 			loss_buffer > session->loss_threshold;
 
 		if (session->verb_mode)
-			nn_verbose("Epoch finished with:\n - avg loss: %lf\n - avg right: %.2f %c\n", loss_buffer, 100.0 * (double)num_right_predictions/sample_size, '%');
+			verbose("Epoch finished with:\n - avg loss: %lf\n - avg right: %.2f %c\n", loss_buffer, 100.0 * (double)num_right_predictions/sample_size, '%');
 	}
 
 	endLogger(&loss_logger);
@@ -180,21 +180,21 @@ void _nn_test(struct nn_Session* session, nn_Model* model)
 	shuffleArray(tuple_array, sample_size);
 	for(size_t i = 0; i < sample_size; i++)
 	{
-		nn_verbose("Testing Tuple:");
+		verbose("Testing Tuple:");
 		tuple_array[i].printTuple(tuple_array[i]);
 		_nn_feedForward(model, tuple_array[i].input.values);
 
-		nn_verbose("Result:");
+		verbose("Result:");
 		for(size_t j = 0; j < model->layers[model->num_layers - 1]->num_nodes; j++)
-			nn_verbose_no_endline("%lf ",
+			verbose_no_endline("%lf ",
 			model->layers[model->num_layers - 1]->nodes[j]->value);
-		nn_verbose_endline();
+		verbose_endline();
 		//we calculate the loss function
 		double error = applyLosses(
 			model->layers[model->num_layers - 1],
 			tuple_array[i].output.values,
 			model->loss);
-		nn_verbose("Losses error = %f",error);
+		verbose("Losses error = %f",error);
 	}
 }
 
@@ -202,7 +202,7 @@ void _nn_test_one_hot(struct nn_Session* session, nn_Model* model)
 {
 	// TODO: add an average right prediction for each individual
 	// value of the one-hot values
-	// nn_verbose("Testing the model as one-hot");
+	// verbose("Testing the model as one-hot");
 	size_t num_steps_verb = 0;
 
 	nn_InOutTuple* tuple_array = session->dataset->test.data_collection.iot_array;
@@ -261,25 +261,25 @@ void _nn_test_one_hot(struct nn_Session* session, nn_Model* model)
 	double avg_loss = (double)loss_sum / (double)num_samples;
 	double avg_right_predictions = (double)num_right_predictions / (double)num_samples;
 	// print averages
-	nn_verbose("Testing finished with:");
-	nn_verbose(" - avg loss: %lf", avg_loss);
-	nn_verbose(" - avg right: %.2f %c", 100.0 * avg_right_predictions, '%');
-	nn_verbose("Specific right predictions:");
+	verbose("Testing finished with:");
+	verbose(" - avg loss: %lf", avg_loss);
+	verbose(" - avg right: %.2f %c", 100.0 * avg_right_predictions, '%');
+	verbose("Specific right predictions:");
 	for (size_t i = 0; i < output_layer->num_nodes; i++) {
 		int nrs = num_right_predictions_specific[i];
 		int nts = num_total_predictions_specific[i];
 		double avg_right_specific = (double)nrs / (double)nts;
-		nn_verbose(" * %lu : %.2f%c", i + 1, 100.0 * avg_right_specific, '%');
+		verbose(" * %lu : %.2f%c", i + 1, 100.0 * avg_right_specific, '%');
 	}
 }
 
-nn_Session* nn_createTestSession(nn_DataSet* dataset, bool nn_verbose)
+nn_Session* nn_createTestSession(nn_DataSet* dataset, bool verbose)
 {
-	return nn_createSession(dataset, 0, 0.0, false, nn_verbose, 0.0, NULL, NULL);
+	return nn_createSession(dataset, 0, 0.0, false, verbose, 0.0, NULL, NULL);
 }
 
 nn_Session* nn_createSession(nn_DataSet* dataset, unsigned int nb_epochs,
-double loss_threshold, bool stop_on_loss_threshold_reached, bool nn_verbose,
+double loss_threshold, bool stop_on_loss_threshold_reached, bool verbose,
 double learning_rate, const char* loss_log_file, const char* right_log_file)
 {
 	nn_Session* session = mem_malloc(sizeof(nn_Session));
@@ -287,7 +287,7 @@ double learning_rate, const char* loss_log_file, const char* right_log_file)
 	session->dataset 			= dataset;
 	session->nb_epochs 			= nb_epochs;
 	session->loss_threshold 	= loss_threshold;
-	session->verb_mode			= nn_verbose;
+	session->verb_mode			= verbose;
 	session->learning_rate		= learning_rate;
 
 	session->stop_on_loss_threshold_reached = stop_on_loss_threshold_reached;

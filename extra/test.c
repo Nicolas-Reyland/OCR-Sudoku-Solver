@@ -8,11 +8,11 @@ extern linked_list* GPL;
 
 int main(int argc, char** argv)
 {
-	nn_setVerbose(true);
+	setVerbose(true);
 
 	// init random
 	nn_initRandom();
-	nn_initMemoryTracking();
+	initMemoryTracking();
 
 	// model architecture
 	nn_ShapeDescription model_architecture[4] = {
@@ -29,10 +29,10 @@ int main(int argc, char** argv)
 	losses loss = CATEGORICALCROSSENTROPY;
 	optimizer optimizer = ADAM;
 
-	nn_verbose("Allocating model...");
+	verbose("Allocating model...");
 	// malloc model
 	nn_Model* model = nn_createModel(3, model_architecture, activations, loss, optimizer);
-	nn_verbose("Model allocated");
+	verbose("Model allocated");
 	nn_ShapeDescription shape = nn_emptyShapeDescription();
 
 	nn_DataSet* dataset = nn_loadDataSet("datas/mnist/", &shape, true);
@@ -48,9 +48,9 @@ int main(int argc, char** argv)
 		NULL
 	);
 
-	nn_verbose("Session allocated");
+	verbose("Session allocated");
 
-	nn_setVerbose(false);
+	setVerbose(false);
 	session->train(session, model);
 	session->test(session, model);
 
@@ -59,7 +59,7 @@ int main(int argc, char** argv)
 	// free session
 	nn_freeSession(session);
 
-	nn_verbose("Model freed.");
+	verbose("Model freed.");
 
 	mem_freeGPL(false);
 

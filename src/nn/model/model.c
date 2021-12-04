@@ -14,10 +14,10 @@ nn_Layer** _nn_nn_createModelLayers(size_t num_layers, nn_ShapeDescription model
   layers[num_layers - 1] = _nn_createOutputLayer(model_architecture[num_layers - 1], activations[num_layers - 2]);
   // hidden layers
   for (size_t i = 1; i < num_layers - 1; i++) {
-    nn_verbose("Allocating hidden layer ...");
+    verbose("Allocating hidden layer ...");
     layers[i] = _nn_createLayer(model_architecture[i], model_architecture[i + 1], activations[i - 1]);
   }
-  nn_verbose("layers are allocated.");
+  verbose("layers are allocated.");
 
   return layers;
 }
