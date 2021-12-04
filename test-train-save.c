@@ -49,8 +49,8 @@ int main()
 		false,
 		true,
 		0.05,
-		"avg-loss.log",
-		"avg-right.log"
+		"logs/avg-loss.log",
+		"logs/avg-right.log"
 	);
 
 	nn_verbose("Session created");

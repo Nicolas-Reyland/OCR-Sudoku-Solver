@@ -77,8 +77,8 @@ int main(int argc, char** argv)
 	sprintf(save_model_str, "save/%s-%s-%s-", data_prefix, second_activation_str, hidden_layer_size_str);
 	char avg_loss_log_path[255];
 	char avg_right_log_path[255];
-	strcpy(avg_loss_log_path, "avg-loss-");
-	strcpy(avg_right_log_path, "avg-right-");
+	strcpy(avg_loss_log_path, "logs/avg-loss-");
+	strcpy(avg_right_log_path, "logs/avg-right-");
 	//
 	strcat(avg_loss_log_path, data_prefix);
 	strcat(avg_loss_log_path, "-");
