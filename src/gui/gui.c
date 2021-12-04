@@ -51,7 +51,7 @@ int main(int argc, char **argv)
     nn_initRandom();
     initMemoryTracking();
     nn_Model* model = nn_loadModel("save/numeric-");
-	number_prediction_model = model;
+    number_prediction_model = model;
 
     // Window
     GtkWidget *window = NULL;

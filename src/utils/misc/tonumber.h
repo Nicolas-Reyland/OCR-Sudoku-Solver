@@ -1,7 +1,7 @@
 #ifndef TONUMBER_H
 #define TONUMBER_H
 
-#define THRESHOLD 0.5
+#define DIFF_THRESHOLD 0.1
 
 #include <stdlib.h>
 
