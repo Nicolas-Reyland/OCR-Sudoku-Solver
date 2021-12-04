@@ -17,6 +17,9 @@ save/xor/weightsandbias.mdl
 # log files
 *.log
 
+# bmp files
+./*.bmp
+
 # Object files
 *.o
 *.ko
