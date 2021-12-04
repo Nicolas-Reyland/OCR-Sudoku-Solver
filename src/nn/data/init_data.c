@@ -88,11 +88,14 @@ nn_Data* nn_loadSingleDataInputOutput(char* input_path, char* output_path, nn_Sh
 		nn_err_nn_verbose_exit("Not same amount of data described in input/output: %lu != %lu", num_tuples, num_tuples_output);
 	}
 
+	// data sizes
+	size_t input_data_size   =   description->range;
+    size_t output_data_size  =   output_description.range;
+
 	// allocate memory for input output tuples
 	nn_InOutTuple* iot_array  = mem_malloc(num_tuples * sizeof(nn_InOutTuple));
-
-    size_t input_data_size   =   description->range;
-    size_t output_data_size  =   output_description.range;
+	double* all_input_values = calloc(input_data_size * num_tuples, sizeof(double)); // DANGER: calloc, not mem_calloc !
+	double* all_output_values = calloc(output_data_size * num_tuples, sizeof(double)); // DANGER: calloc, not mem_calloc !
 
 	// Progress bar
 	ProgressBar data_load_bar;
@@ -100,8 +103,6 @@ nn_Data* nn_loadSingleDataInputOutput(char* input_path, char* output_path, nn_Sh
 		data_load_bar = createProgressBar(verb_string, 0, num_tuples, DEFAULT_PROGRESSBAR_WIDTH);
 	else
 		data_load_bar = createProgressBar(NULL, 0, num_tuples, DEFAULT_PROGRESSBAR_WIDTH);
-
-	//
 
     size_t  next_nn_verbose_print = 100,
 			next_nn_verbose_print_step = num_tuples / 100;
@@ -118,8 +119,8 @@ nn_Data* nn_loadSingleDataInputOutput(char* input_path, char* output_path, nn_Sh
         }
         //normally, if we do the right things, then we define the dimensions
         //that are not used to 1, so that it doesn't break the malloc sizing lol
-        double* input_values    = mem_calloc(input_data_size, sizeof(double));
-        double* output_values   = mem_calloc(output_data_size, sizeof(double));
+        double* input_values    = all_input_values + data_index * input_data_size;
+        double* output_values   = all_output_values + data_index * output_data_size;
         if (!_readLineInFile(input_file, input_data_size, input_values)) {
           mem_free(input_values);
           mem_free(output_values);
