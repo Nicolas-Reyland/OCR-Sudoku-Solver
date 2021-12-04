@@ -62,14 +62,13 @@ int main(int argc, char** argv)
 	model->printModelArchitecture(model);
 
 	// load the dataset (~from scratch~)
-	nn_ShapeDescription shape = nn_emptyShapeDescription();
 	char data_in_path[255];
 	char data_out_path[255];
 	strcpy(data_in_path, data_path);
 	strcpy(data_out_path, data_path);
 	strcat(data_in_path, "-data.in");
 	strcat(data_out_path, "-data.out");
-	nn_Data data = nn_loadSingleDataInputOutput(data_in_path, data_out_path, &shape, true, "Loading data");
+	nn_Data data = nn_loadSingleDataInputOutput(data_in_path, data_out_path, true, "Loading data");
     nn_DataTuple data_tuple = data.splitTrainTest(data, 0.3);
     nn_DataSet dataset = nn_createDataSet(data_tuple.data1, data_tuple.data2);
 

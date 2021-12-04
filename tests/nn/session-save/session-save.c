@@ -44,7 +44,6 @@ int main(int argc, char** argv)
 	strcat(save_path, "/save/");
 
 	nn_ShapeDescription train_description;
-	nn_ShapeDescription test_description;
 
 	nn_Data train;
 	nn_Data test;
@@ -52,7 +51,6 @@ int main(int argc, char** argv)
 	train = nn_loadSingleDataInputOutput(
 		input_path,
 		output_path,
-		&train_description,
 		false,
 		NULL
 	);
@@ -60,7 +58,6 @@ int main(int argc, char** argv)
 	test = nn_loadSingleDataInputOutput(
 		input_path,
 		output_path,
-		&test_description,
 		false,
 		NULL
 	);

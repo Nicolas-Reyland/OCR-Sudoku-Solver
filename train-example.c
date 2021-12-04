@@ -28,7 +28,7 @@ int main()
 	optimizer optimizer = ADAM;
 
 	// malloc model
-	nn_Model* model = nn_createModel(num_layers, model_architecture, activations, loss, optimizer);
+	nn_Model* model = nn_createModel(5, model_architecture, activations, loss, optimizer);
 
 	// load the dataset
     nn_DataSet dataset = nn_loadDataSet("datas/mnist/", true);
@@ -42,14 +42,14 @@ int main()
 		true,
 		0.05,
 		"avg-loss.log",
-		"avg-right.log",
+		"avg-right.log"
 	);
 
 	session->train_one_hot(session, model);
 	session->test_one_hot(session, model);
 
 	// save model
-	model->saveModel(model, save_model_str);
+	model->saveModel(model, "save/mnist/custom-model-");
 
 	// free model
 	nn_freeModel(model);

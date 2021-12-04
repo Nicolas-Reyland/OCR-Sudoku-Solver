@@ -45,23 +45,17 @@ int main(int argc, char** argv)
 	strcat(save_path, "/save/");
 
 	nn_ShapeDescription train_description;
-	nn_ShapeDescription test_description;
 
-	nn_Data train;
-	nn_Data test;
-
-	train = nn_loadSingleDataInputOutput(
+	nn_Data train = nn_loadSingleDataInputOutput(
 		input_path,
 		output_path,
-		&train_description,
 		false,
 		NULL
 	);
 	verbose("Created train data");
-	test = nn_loadSingleDataInputOutput(
+	nn_Data test = nn_loadSingleDataInputOutput(
 		input_path,
 		output_path,
-		&test_description,
 		false,
 		NULL
 	);
