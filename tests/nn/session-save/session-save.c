@@ -134,7 +134,7 @@ int main(int argc, char** argv)
 	nn_freeSession(session);
     nn_freeModel(model);
     nn_setVerbose(false);
-    free(GPL);
+    mem_freeGPL(false);
 
 	return 0;
 }

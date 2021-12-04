@@ -150,7 +150,7 @@ int main(int argc, char** argv)
 	nn_freeModel(model);
 	//free session (and dataset)
 	//nn_freeSession(session);
-	free(GPL);
+	mem_freeGPL(false);
 
 	return 0;
 }

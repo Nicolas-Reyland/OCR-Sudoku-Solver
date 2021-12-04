@@ -129,7 +129,7 @@ int main(int argc, char** argv)
 	//free session (and dataset)
 	//nn_freeSession(session);
 	nn_setVerbose(false);
-	free(GPL);
+	mem_freeGPL(false);
 
 	return 0;
 }

@@ -73,7 +73,7 @@ int main()
 
 	nn_verbose("Model freed.");
 
-	free(GPL);
+	mem_freeGPL(false);
 
 	return 0;
 }

@@ -46,3 +46,22 @@ void mem_free(void *ptr)
   	ptr = NULL;
 	}
 }
+
+
+void _mem_freeGPL(ll_node* node);
+
+void mem_freeGPL(bool re_init_gpl)
+{
+	ll_node* head = GPL->head;
+	_mem_freeGPL(head);
+	free(GPL);
+	if (re_init_gpl)
+		GPL = init_linked_list();
+}
+
+void _mem_freeGPL(ll_node* node)
+{
+	if (node->next != NULL) _free_linked_list_node(node->next);
+	free(node->value);
+	free(node);
+}

@@ -48,7 +48,7 @@ int main()
 
 	// free model
 	nn_freeModel(model);
-	free(GPL);
+	mem_freeGPL(false);
 
 	return 0;
 }

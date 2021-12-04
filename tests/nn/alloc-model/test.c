@@ -43,7 +43,7 @@ int main(int argc, char** argv)
 
 	nn_verbose("Model freed.");
 
-	free(GPL);
+	mem_freeGPL(false);
 
 	return 0;
 }

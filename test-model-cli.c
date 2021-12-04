@@ -42,7 +42,7 @@ int main(int argc, char** argv)
 	// free session
 	nn_freeSession(session);
 
-	free(GPL);
+	mem_freeGPL(false);
 
 	return 0;
 }
