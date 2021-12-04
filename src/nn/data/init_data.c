@@ -93,8 +93,8 @@ nn_Data nn_loadSingleDataInputOutput(char* input_path, char* output_path, nn_Sha
 
 	// allocate memory for input output tuples
 	nn_InOutTuple* iot_array  = mem_malloc(num_tuples * sizeof(nn_InOutTuple));
-	double* all_input_values = mem_calloc(input_data_size * num_tuples, sizeof(double)); // DANGER: calloc, not mem_calloc !
-	double* all_output_values = mem_calloc(output_data_size * num_tuples, sizeof(double)); // DANGER: calloc, not mem_calloc !
+	double* all_input_values = mem_calloc(input_data_size * num_tuples, sizeof(double));
+	double* all_output_values = mem_calloc(output_data_size * num_tuples, sizeof(double));
 
 	// Progress bar
 	ProgressBar data_load_bar;
