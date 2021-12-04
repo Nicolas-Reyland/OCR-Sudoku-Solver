@@ -228,7 +228,7 @@ void _nn_test_one_hot(struct nn_Session* session, nn_Model* model)
 				updateProgressBar(&testing_bar, i);
 				num_steps_verb = VERB_UPDATE_STEP;
 			}
-			num_steps_verb++;
+			num_steps_verb = VERB_UPDATE_STEP;
 		}
 		// model prediction
 		double* output_values = _nn_useModel(model, tuple_array[i].input.values);
