@@ -104,7 +104,7 @@ nn_Data* nn_loadSingleDataInputOutput(char* input_path, char* output_path, nn_Sh
 	else
 		data_load_bar = createProgressBar(NULL, 0, num_tuples, DEFAULT_PROGRESSBAR_WIDTH);
 
-    size_t  next_nn_verbose_print = 100,
+    size_t  next_nn_verbose_print = 0,
 			next_nn_verbose_print_step = num_tuples / 100;
 
     for (size_t data_index = 0; data_index < num_tuples; data_index++)
