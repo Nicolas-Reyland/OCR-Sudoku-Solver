@@ -6,8 +6,8 @@ import sys
 
 assert len(sys.argv) == 2, "Usage: show-log.py file-infix"
 
-avg_loss_file = f"avg-loss-{sys.argv[1]}.log"
-avg_right_file = f"avg-right-{sys.argv[1]}.log"
+avg_loss_file = f"logs/avg-loss-{sys.argv[1]}.log"
+avg_right_file = f"logs/avg-right-{sys.argv[1]}.log"
 
 losses_y = np.array(list(map(lambda x: float(x.strip()), open(avg_loss_file).readlines())))
 rights_y = np.array(list(map(lambda x: float(x.strip()), open(avg_right_file).readlines())))
