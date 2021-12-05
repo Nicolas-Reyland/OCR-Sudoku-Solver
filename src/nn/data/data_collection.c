@@ -2,9 +2,10 @@
 
 #include "data_collection.h"
 
-nn_DataCollection _nn_loadDataCollection(nn_InOutTuple* iot_array, size_t num_tuples, double* in_ptr, double* out_ptr)
-{
-    return (nn_DataCollection) {
+nn_DataCollection _nn_loadDataCollection(nn_InOutTuple *iot_array,
+                                         size_t num_tuples, double *in_ptr,
+                                         double *out_ptr) {
+    return (nn_DataCollection){
         num_tuples,
         iot_array,
         in_ptr,
@@ -12,9 +13,7 @@ nn_DataCollection _nn_loadDataCollection(nn_InOutTuple* iot_array, size_t num_tu
     };
 }
 
-
-void _nn_freeDataCollection(nn_DataCollection collection)
-{
+void _nn_freeDataCollection(nn_DataCollection collection) {
     mem_free(collection.in_ptr);
     mem_free(collection.out_ptr);
 }

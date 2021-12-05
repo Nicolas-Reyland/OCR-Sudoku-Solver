@@ -4,13 +4,10 @@
 
 bool VERBOSE = true;
 
-void setVerbose(bool verb)
-{
-    VERBOSE = verb;
-}
+void setVerbose(bool verb) { VERBOSE = verb; }
 
-int verbose(const char * restrict format, ...) {
-    if ( !VERBOSE ) {
+int verbose(const char *restrict format, ...) {
+    if (!VERBOSE) {
         return 0;
     }
 
@@ -23,7 +20,7 @@ int verbose(const char * restrict format, ...) {
     return ret;
 }
 
-int err_verbose(const char * restrict format, ...) {
+int err_verbose(const char *restrict format, ...) {
     va_list args;
     va_start(args, format);
     fprintf(stderr, "ERROR: ");
@@ -34,7 +31,7 @@ int err_verbose(const char * restrict format, ...) {
     return ret;
 }
 
-int err_verbose_exit(const char * restrict format, ...) {
+int err_verbose_exit(const char *restrict format, ...) {
     va_list args;
     va_start(args, format);
     fprintf(stderr, "ERROR: ");
@@ -47,8 +44,8 @@ int err_verbose_exit(const char * restrict format, ...) {
 }
 
 // maybe force the flushing of the stdout stream ?
-int verbose_no_endline(const char * restrict format, ...) {
-    if ( !VERBOSE ) {
+int verbose_no_endline(const char *restrict format, ...) {
+    if (!VERBOSE) {
         return 0;
     }
 
@@ -60,7 +57,4 @@ int verbose_no_endline(const char * restrict format, ...) {
     return ret;
 }
 
-void verbose_endline(void)
-{
-    printf("\n");
-}
+void verbose_endline(void) { printf("\n"); }

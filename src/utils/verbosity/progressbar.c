@@ -12,8 +12,8 @@ printf("\033[2J"); // Clear screen
 
 bool PROGRESS_BAR_STATUS = true;
 
-ProgressBar createProgressBar(const char* name, size_t start, size_t end, size_t width)
-{
+ProgressBar createProgressBar(const char *name, size_t start, size_t end,
+                              size_t width) {
     ProgressBar bar = {
         .name = name,
         .start = start,
@@ -37,12 +37,11 @@ ProgressBar createProgressBar(const char* name, size_t start, size_t end, size_t
     return bar;
 }
 
-void updateProgressBar(ProgressBar* bar, size_t state)
-{
+void updateProgressBar(ProgressBar *bar, size_t state) {
     if (!PROGRESS_BAR_STATUS)
         return;
 
-    float new_percentage = (float)state/(float)bar->range;
+    float new_percentage = (float)state / (float)bar->range;
     size_t should_drawn = new_percentage * (float)bar->width;
     if (should_drawn != bar->drawn) {
         size_t num_chars = should_drawn - bar->drawn;
@@ -66,8 +65,7 @@ void updateProgressBar(ProgressBar* bar, size_t state)
     bar->percentage = new_percentage;
 }
 
-void endProgressBar(ProgressBar* bar)
-{
+void endProgressBar(ProgressBar *bar) {
     if (bar->name == NULL || !PROGRESS_BAR_STATUS)
         return;
     // go to beginning of the line
@@ -78,4 +76,3 @@ void endProgressBar(ProgressBar* bar)
     printf("] 100%c", '%');
     printf(" (done)\n");
 }
-

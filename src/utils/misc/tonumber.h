@@ -5,6 +5,6 @@
 
 #include <stdlib.h>
 
-int toNumber(double* input, size_t size);
+int toNumber(double *input, size_t size);
 
 #endif

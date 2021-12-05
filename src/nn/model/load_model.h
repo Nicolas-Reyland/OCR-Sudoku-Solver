@@ -3,6 +3,6 @@
 
 #include "model.h"
 
-nn_Model* nn_loadModel(char* dirpath);
+nn_Model *nn_loadModel(char *dirpath);
 
 #endif

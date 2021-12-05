@@ -2,12 +2,12 @@
 #define SET_H
 
 typedef struct set {
-    struct set* parent;
+    struct set *parent;
     size_t value;
 } set;
 
-set* init_set(set* par, size_t val);
+set *init_set(set *par, size_t val);
 
-set* get_root(set* s);
+set *get_root(set *s);
 
 #endif

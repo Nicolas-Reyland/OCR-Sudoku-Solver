@@ -1,7 +1,6 @@
 #include "../headers/homography.h"
 
-Matrix* findhomography(double *src, double size)
-{
+Matrix *findhomography(double *src, double size) {
     double x1 = src[0];
     double y1 = src[1];
     double x2 = src[2];
@@ -59,7 +58,6 @@ Matrix* findhomography(double *src, double size)
 
     Matrix *R = matrix_multiply(INV_MULT1, MULT2);
 
-
     free_matrix(A);
     free_matrix(B);
     free_matrix(A_t);
@@ -70,8 +68,8 @@ Matrix* findhomography(double *src, double size)
     return R;
 }
 
-SDL_Surface* transformimage(Matrix *transform, SDL_Surface *image, double size)
-{
+SDL_Surface *transformimage(Matrix *transform, SDL_Surface *image,
+                            double size) {
     double a = matrix_getvalue(transform, 0, 0);
     double b = matrix_getvalue(transform, 1, 0);
     double c = matrix_getvalue(transform, 2, 0);
@@ -81,41 +79,43 @@ SDL_Surface* transformimage(Matrix *transform, SDL_Surface *image, double size)
     double g = matrix_getvalue(transform, 6, 0);
     double h = matrix_getvalue(transform, 7, 0);
 
-    SDL_Surface *output = SDL_CreateRGBSurface(0, (int)size, (int)size, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0);
+    SDL_Surface *output = SDL_CreateRGBSurface(
+        0, (int)size, (int)size, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0);
 
-    for (int y = 0; y < (int)size; y++)
-    {
-      double sxPre1 = b * (double)y + c;
-      double sxPre2 = h * (double)y + 1;
-      double syPre1 = e * (double)y + f;
-      double syPre2 = h * (double)y + 1;
+    for (int y = 0; y < (int)size; y++) {
+        double sxPre1 = b * (double)y + c;
+        double sxPre2 = h * (double)y + 1;
+        double syPre1 = e * (double)y + f;
+        double syPre2 = h * (double)y + 1;
 
-      for (int x = 0; x < (int)size; x++)
-      {
-        double sx = floor((a * (double)x + sxPre1)/(g * (double)x + sxPre2));
-        double sy = floor((d * (double)x + syPre1)/(g * (double)x + syPre2));
+        for (int x = 0; x < (int)size; x++) {
+            double sx =
+                floor((a * (double)x + sxPre1) / (g * (double)x + sxPre2));
+            double sy =
+                floor((d * (double)x + syPre1) / (g * (double)x + syPre2));
 
-        // Clamp values
-        if (sx < 0)
-          sx = 0;
+            // Clamp values
+            if (sx < 0)
+                sx = 0;
 
-        if (sy < 0)
-          sy = 0;
+            if (sy < 0)
+                sy = 0;
 
-        if (sx > (double)image->w - 1)
-          sx = (double)image->w - 1;
+            if (sx > (double)image->w - 1)
+                sx = (double)image->w - 1;
 
-        if (sy > (double)image->h - 1)
-          sy = (double)image->h - 1;
+            if (sy > (double)image->h - 1)
+                sy = (double)image->h - 1;
 
-        // printf("(sx, sy) = (%lf, %lf)\n", sx, sy);
+            // printf("(sx, sy) = (%lf, %lf)\n", sx, sy);
 
-        Uint32 pix = get_pixel(image, (unsigned int)sx, (unsigned int)sy);
-        Uint8 color;
-        SDL_GetRGB(pix, image->format, &color, &color, &color);
+            Uint32 pix = get_pixel(image, (unsigned int)sx, (unsigned int)sy);
+            Uint8 color;
+            SDL_GetRGB(pix, image->format, &color, &color, &color);
 
-        put_pixel(output, (unsigned int)x, (unsigned int)y, SDL_MapRGB(output->format, color, color, color));
-      }
+            put_pixel(output, (unsigned int)x, (unsigned int)y,
+                      SDL_MapRGB(output->format, color, color, color));
+        }
     }
     return output;
 }

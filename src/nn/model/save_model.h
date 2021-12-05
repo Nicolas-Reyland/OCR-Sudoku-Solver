@@ -3,6 +3,6 @@
 
 #include "model.h"
 
-void _nn_Model_saveModel(nn_Model* model, char* dirpath);
+void _nn_Model_saveModel(nn_Model *model, char *dirpath);
 
-#endif 
+#endif

@@ -9,13 +9,11 @@
 #define PROGRESSBAR_REMAIN '-'
 #define DEFAULT_PROGRESSBAR_WIDTH 100
 
-
 extern bool PROGRESS_BAR_STATUS;
 
 typedef struct ProgressBar ProgressBar;
-struct ProgressBar
-{
-    const char* name;
+struct ProgressBar {
+    const char *name;
     size_t start;
     size_t end;
     size_t range;
@@ -25,8 +23,9 @@ struct ProgressBar
     float percentage;
 };
 
-ProgressBar createProgressBar(const char* name, size_t start, size_t end, size_t width);
-void updateProgressBar(ProgressBar* bar, size_t state);
-void endProgressBar(ProgressBar* bar);
+ProgressBar createProgressBar(const char *name, size_t start, size_t end,
+                              size_t width);
+void updateProgressBar(ProgressBar *bar, size_t state);
+void endProgressBar(ProgressBar *bar);
 
 #endif
