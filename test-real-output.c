@@ -19,15 +19,14 @@ int main(int argc, char** argv)
 	verbose("Loading model...");
 	// malloc model
 	nn_Model* model = nn_loadModel(model_path);
-    model->printModelArchitecture(model);
+        model->printModelArchitecture(model);
 
 	// load the dataset
 	verbose("Loading dataset...");
-	nn_ShapeDescription shape = nn_emptyShapeDescription();
 	// nn_Data* data = nn_loadSingleDataInputOutput("datas/numeric-data.in", "datas/numeric-data.out", &shape, true, "Loading numeric data");
     // nn_DataTuple data_tuple = data->splitTrainTest(data, 0.3);
     // nn_DataSet* dataset = nn_createDataSet(data_tuple.data1, data_tuple.data2);
-	nn_DataSet dataset = nn_loadTestOnlyDataSet("datas/new-trainnn-", &shape, true);
+	nn_DataSet dataset = nn_loadTestOnlyDataSet("datas/new-trainnn-", true);
 
 	nn_Session* session = nn_createTestSession(
 		&dataset, true

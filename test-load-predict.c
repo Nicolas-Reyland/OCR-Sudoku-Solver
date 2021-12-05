@@ -14,26 +14,17 @@ int main()
 
 	verbose("Loading model...");
 	// malloc model
-	nn_Model* model = nn_loadModel("save/mnist/5k-");
-    model->printModelArchitecture(model);
+	nn_Model* model = nn_loadModel("save/emnist-big-");
+        model->printModelArchitecture(model);
 
 	// load the dataset
 	verbose("Loading dataset...");
-	nn_ShapeDescription shape = nn_emptyShapeDescription();
-	nn_DataSet* dataset = nn_loadTestOnlyDataSet("datas/mnist/", &shape, true);
+	nn_DataSet dataset = nn_loadTestOnlyDataSet("datas/emnist-", true);
 
-	nn_Session* session = nn_createSession(
-		dataset,
-		0,
-		0.1,
-		false,
-		true,
-		0.1,
-		NULL,
-		NULL
+	nn_Session* session = nn_createTestSession(
+		&dataset,
+		true
 	);
-
-	verbose("Session created");
 
 	session->test_one_hot(session, model);
 
@@ -41,8 +32,6 @@ int main()
 	nn_freeModel(model);
 	// free session
 	nn_freeSession(session);
-
-	verbose("Model freed.");
 
 	mem_freeGPL(false);
 
