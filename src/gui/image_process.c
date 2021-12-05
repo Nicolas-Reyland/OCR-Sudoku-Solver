@@ -220,13 +220,15 @@ void grayscale(Uint8 *r, Uint8 *g, Uint8 *b)
 {
 	Uint8 grayscale;
 	/* Mean method
-	grayscale = *r / 3 + *g / 3 + *b / 3;
+	grayscale = (double)*r / 3 + (double)*g / 3 + (double)*b / 3;
 	*/
 
-	///* BGR2GRAY -> opencv method
-	//grayscale = roundf(*r * 0.2126f + *g * 0.7152f + *b * 0.0722f);
-	grayscale = *g;
-	//*/
+	// BGR2GRAY -> opencv method
+	//grayscale = (Uint8)roundf((double)*r * 0.2126f + (double)*g * 0.7152f + (double)*b * 0.0722f);
+	//grayscale = *g;
+
+	// Luminance formula
+	grayscale = (Uint8)roundf((double)*r * 0.299f + (double)*g * 0.587f + (double)*b * 0.114f);
 
 	*r = grayscale;
 	*g = grayscale;
