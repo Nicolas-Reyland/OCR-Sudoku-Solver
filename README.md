@@ -18,6 +18,12 @@ To run our project :
 ./main
 ```
 
+## Test suite
+To run the test suite :
+```bash
+make test
+```
+
 ## Credits :
  * [Nicolas Reyland](https://github.com/Nicolas-Reyland)
  * [Lilian Schall](https://github.com/LilianSchall)
