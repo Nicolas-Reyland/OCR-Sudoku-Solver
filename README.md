@@ -1,5 +1,5 @@
 # OCR-Sudoku-Solver
-OCR Sudoku Solver Projet S3 Epita. Here is a [link to our website](https://reyland.dev/sudoku).
+OCR Sudoku Solver Projet S3 Epita. Here is a [link to the project's website](https://reyland.dev/sudoku).
 
 ## Installation
 You need to have these installed :
